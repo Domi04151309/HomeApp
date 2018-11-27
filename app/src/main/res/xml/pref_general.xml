@@ -1,0 +1,12 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <EditTextPreference
+        android:defaultValue="Default value"
+        android:key="edit_text_preference_1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="Edit text preference" />
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="switch_preference_1"
+        android:title="Switch preference" />
+</PreferenceScreen>

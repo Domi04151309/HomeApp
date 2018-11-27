@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(intent)
             }
             R.id.nav_settings -> {
-
+                startActivity(Intent(this, Preferences::class.java))
             }
             R.id.nav_source -> {
                 val uri = Uri.parse("https://github.com/Domi04151309/home")
@@ -104,5 +104,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    override fun onResume() {
+        super.onResume()
+        nav_view.setCheckedItem(R.id.nav_devices)
     }
 }
