@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_devices"
+            android:icon="@drawable/ic_nav_devices"
+            android:title="@string/nav_devices" />
+        <item
+            android:id="@+id/nav_wiki"
+            android:icon="@drawable/ic_nav_book"
+            android:title="@string/nav_wiki" />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_nav_settings"
+            android:title="@string/nav_settings" />
+        <item
+            android:id="@+id/nav_source"
+            android:icon="@drawable/ic_nav_memory"
+            android:title="@string/nav_source" />
+    </group>
+
+    <item android:title="@string/nav_other_apps">
+        <menu>
+            <item
+                android:id="@+id/nav_google_home"
+                android:icon="@drawable/ic_nav_exit_to_app"
+                android:title="@string/nav_google_home" />
+        </menu>
+    </item>
+
+</menu>

@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Home</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="nav_devices">Devices</string>
+    <string name="nav_wiki">Wiki</string>
+    <string name="nav_settings">Settings</string>
+    <string name="nav_source">Source code</string>
+    <string name="nav_other_apps">Other Apps</string>
+    <string name="nav_google_home">Google Home</string>
+
+    <string name="action_settings">Settings</string>
+</resources>
