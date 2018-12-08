@@ -34,6 +34,12 @@
                     android:maxLines="4"
                     android:textAppearance="@android:style/TextAppearance.Material.Small" />
 
+                <TextView
+                    android:id="@+id/hidden"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:visibility="gone" />
+
         </LinearLayout>
 
 </LinearLayout>

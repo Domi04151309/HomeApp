@@ -13,5 +13,14 @@
 
     <string name="action_settings">Settings</string>
 
+    <string name="main_device_unavailable">Device currently unavailable</string>
+
     <string name="pref">Settings</string>
+    <string name="pref_devices">Devices</string>
+    <string name="pref_edit">Edit device list</string>
+    <string name="pref_edit_summary">Edit the list of devices</string>
+    <string name="pref_other">Show other devices</string>
+    <string name="pref_other_summary">Show other devices in a second list</string>
+    <string name="pref_edit_text">Advanced editing</string>
+    <string name="pref_edit_text_summary">Edit the JSON string by yourself</string>
 </resources>

@@ -1,12 +1,20 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <EditTextPreference
-        android:defaultValue="Default value"
-        android:key="edit_text_preference_1"
-        android:selectAllOnFocus="true"
-        android:singleLine="true"
-        android:title="Edit text preference" />
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="switch_preference_1"
-        android:title="Switch preference" />
+    <PreferenceCategory android:title="@string/pref_devices">
+
+        <Preference
+            android:key="devices"
+            android:summary="@string/pref_edit_summary"
+            android:title="@string/pref_edit" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:enabled="false"
+            android:key="other_devices"
+            android:summary="@string/pref_other_summary"
+            android:title="@string/pref_other" />
+        <EditTextPreference
+            android:defaultValue='{"devices":{"No devices found":"localhost"}}'
+            android:key="devices_json"
+            android:summary="@string/pref_edit_text_summary"
+            android:title="@string/pref_edit_text" />
+    </PreferenceCategory>
 </PreferenceScreen>
