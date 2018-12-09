@@ -1,5 +1,6 @@
 package io.github.domi04151309.home
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
@@ -17,6 +18,7 @@ import kotlinx.android.synthetic.main.activity_web.*
 
 class WebActivity : AppCompatActivity() {
 
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_web)
@@ -43,6 +45,10 @@ class WebActivity : AppCompatActivity() {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                 activity!!.startActivity(intent)
                 return true
+            }
+
+            override fun onReceivedError(webView: WebView, errorCode: Int, description: String, failingUrl: String) {
+                webView.loadUrl("file:///android_asset/error.html")
             }
         }
         webView.loadUrl(uri)
