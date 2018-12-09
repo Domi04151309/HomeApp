@@ -3,30 +3,29 @@ package io.github.domi04151309.home
 import android.content.ComponentName
 import android.content.Intent
 import android.content.SharedPreferences
-import android.net.Uri
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
+import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ListView
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.app_bar_main.*
-import org.json.JSONObject
-import android.util.Log
-import java.util.*
-import org.json.JSONException
 import android.widget.TextView
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.app_bar_main.*
+import org.json.JSONException
+import org.json.JSONObject
+import java.util.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -114,7 +113,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun formatURL(url: String): String {
         var _url = url
         if (!(_url.startsWith("https://") || _url.startsWith("http://")))
-            _url = "http://" + _url
+            _url = "http://$_url"
         if (!_url.endsWith("/"))
             _url += "/"
         return _url
@@ -151,17 +150,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 // Handle the action
             }
             R.id.nav_wiki -> {
-                val uri = Uri.parse("https://github.com/Domi04151309/home/wiki")
-                val intent = Intent(Intent.ACTION_VIEW, uri)
-                startActivity(intent)
+                val uri = "https://github.com/Domi04151309/home/wiki"
+                startActivity(Intent(this, WebActivity::class.java).putExtra("URI", uri).putExtra("title", resources.getString(R.string.nav_wiki)))
             }
             R.id.nav_settings -> {
                 startActivity(Intent(this, Preferences::class.java))
             }
             R.id.nav_source -> {
-                val uri = Uri.parse("https://github.com/Domi04151309/home")
-                val intent = Intent(Intent.ACTION_VIEW, uri)
-                startActivity(intent)
+                val uri = "https://github.com/Domi04151309/home"
+                startActivity(Intent(this, WebActivity::class.java).putExtra("URI", uri).putExtra("title", resources.getString(R.string.nav_source)))
             }
             R.id.nav_google_home -> {
                 val intent = Intent()

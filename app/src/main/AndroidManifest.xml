@@ -29,6 +29,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="io.github.domi04151309.home.MainActivity" />
         </activity>
+        <activity android:name=".WebActivity"
+            android:label="@string/webView"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="io.github.domi04151309.home.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

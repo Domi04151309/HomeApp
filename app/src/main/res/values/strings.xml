@@ -15,6 +15,8 @@
 
     <string name="main_device_unavailable">Device currently unavailable</string>
 
+    <string name="webView">Web View</string>
+
     <string name="pref">Settings</string>
     <string name="pref_devices">Devices</string>
     <string name="pref_edit">Edit device list</string>
