@@ -17,6 +17,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ListView
 import android.widget.TextView
+import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
@@ -28,6 +29,14 @@ import org.json.JSONObject
 import java.util.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+    //val testTitles = arrayOf("One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten")
+    //val testSummaries = arrayOf("Online", "Online", "Online", "Online", "Online", "Online", "Online", "Offline", "Offline", "Offline")
+
+    private var prefs: SharedPreferences? = null
+    private var listView: ListView? = null
+    private var ips: Array<String?>? = null
+    private var level = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,67 +56,109 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         nav_view.setNavigationItemSelectedListener(this)
         nav_view.setCheckedItem(R.id.nav_devices)
 
-        val testTitles = arrayOf("One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten")
-        val testSummaries = arrayOf("Online", "Online", "Online", "Online", "Online", "Online", "Online", "Offline", "Offline", "Offline")
+        prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        listView = findViewById<View>(R.id.listView) as ListView
+        loadDevices()
 
-        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        val listView = findViewById<View>(R.id.listView) as ListView
-        //Example: {"devices": {"Arduino MKR1000": "192.168.20.45", "Raspberry Pi": "192.168.20.??"}}
-        loadDevices(prefs, listView)
-
-        listView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
-            val summary = view.findViewById(R.id.summary) as TextView
-            val hidden = view.findViewById(R.id.hidden) as TextView
-            val url = hidden.text.toString() + "commands"
-            Log.d("Home", url)
-            val queue = Volley.newRequestQueue(this)
-            val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null,
-                    Response.Listener { response ->
-                        summary.text = response.toString()
-                    },
-                    Response.ErrorListener { error ->
-                        summary.text = resources.getString(R.string.main_device_unavailable)
-                        Log.e("Home", error.toString())
-                    }
-            )
-            queue.add(jsonObjectRequest)
-
-            //adapter = ListAdapter(this, testTitles, summaries)
-            //listView.adapter = adapter
-
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+        listView!!.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+            if (level == 1)
+                loadCommands(view)
+            else if (level == 2)
+                execute(view)
         }
     }
 
-    private fun loadDevices(prefs: SharedPreferences, listView: ListView){
+    private fun loadDevices(){
         //Example: {"devices": {"Arduino MKR1000": "192.168.20.45", "Raspberry Pi": "192.168.20.??"}}
-        val jsonString = prefs.getString("devices_json", "{\"devices\":{\"No devices found\":\"null\"}}")
+        val jsonString = prefs!!.getString("devices_json", "{\"devices\":{\"null\":\"null\"}}")
         val jsonDevices = JSONObject(jsonString).getJSONObject("devices")
         val deviceList = jsonDevices.names()
         val titles = arrayOfNulls<String>(deviceList.length())
         val summaries = arrayOfNulls<String>(deviceList.length())
-        val ips = arrayOfNulls<String>(deviceList.length())
+        ips = arrayOfNulls(deviceList.length())
         var i = 0
         val count = deviceList.length()
         while (i < count) {
             try {
                 val mJsonString = deviceList.getString(i)
-                titles[i] = mJsonString.toString()
-                if (jsonDevices.getString(mJsonString) == "null")
-                    summaries[i] = "Add a device in the settings"
+                if (mJsonString.toString() == "null")
+                    titles[i] = resources.getString(R.string.main_no_devices)
                 else
-                    summaries[i] = jsonDevices.getString(mJsonString)
-                ips[i] = formatURL(jsonDevices.getString(mJsonString))
+                    titles[i] = mJsonString.toString()
+                if (jsonDevices.getString(mJsonString) == "null")
+                    summaries[i] = resources.getString(R.string.main_no_devices_summary)
+                else
+                    summaries[i] = resources.getString(R.string.main_tap_to_connect)
+                ips!![i] = formatURL(jsonDevices.getString(mJsonString))
             } catch (e: JSONException) {
-                e.printStackTrace()
+                Log.e("Home", e.toString())
             }
             i++
         }
         Log.d("Home", Arrays.toString(titles) + Arrays.toString(summaries))
 
         val adapter = ListAdapter(this, titles, summaries, ips)
-        listView.adapter = adapter
+        listView!!.adapter = adapter
+        level = 1
+    }
+
+    private fun loadCommands(view: View){
+        val summary = view.findViewById(R.id.summary) as TextView
+        val ip = view.findViewById(R.id.ip) as TextView
+        if (ip.text.toString() == "http://null/") return
+        val url = ip.text.toString() + "commands"
+        Log.d("Home", url)
+        val queue = Volley.newRequestQueue(this)
+        val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null,
+                Response.Listener { response ->
+                    Log.d("Home", response.toString())
+                    val jsonCommands = response.getJSONObject("commands")
+                    val commandsList = jsonCommands.names()
+                    val titles = arrayOfNulls<String>(commandsList.length())
+                    val summaries = arrayOfNulls<String>(commandsList.length())
+                    val commands = arrayOfNulls<String>(commandsList.length())
+                    var i = 0
+                    val count = commandsList.length()
+                    while (i < count) {
+                        try {
+                            val mJsonString = commandsList.getString(i)
+                            titles[i] = jsonCommands.getJSONObject(mJsonString).getString("title")
+                            summaries[i] = jsonCommands.getJSONObject(mJsonString).getString("summary")
+                            commands[i] = ip.text.toString() + mJsonString
+                        } catch (e: JSONException) {
+                            Log.e("Home", e.toString())
+                        }
+                        i++
+                    }
+
+                    val adapter = ListAdapter(this, titles, summaries, commands)
+                    listView!!.adapter = adapter
+                    level = 2
+                },
+                Response.ErrorListener { error ->
+                    summary.text = resources.getString(R.string.main_device_unavailable)
+                    Log.w("Home", error.toString())
+                }
+        )
+        queue.add(jsonObjectRequest)
+    }
+
+    private fun execute(view: View) {
+        val ip = view.findViewById(R.id.ip) as TextView
+        val url = ip.text.toString()
+        Log.d("Home", url)
+        val queue = Volley.newRequestQueue(this)
+        val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null,
+                Response.Listener { response ->
+                    Log.d("Home", response.toString())
+                    Toast.makeText(this, response.getString("toast"), Toast.LENGTH_LONG).show()
+                },
+                Response.ErrorListener { error ->
+                    Toast.makeText(this, resources.getString(R.string.main_execution_failed), Toast.LENGTH_LONG).show()
+                    Log.w("Home", error.toString())
+                }
+        )
+        queue.add(jsonObjectRequest)
     }
 
     private fun formatURL(url: String): String {
@@ -122,6 +173,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
+        } else if (level == 2) {
+            loadDevices()
         } else {
             super.onBackPressed()
         }
@@ -147,7 +200,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_devices -> {
-                // Handle the action
+                loadDevices()
             }
             R.id.nav_wiki -> {
                 val uri = "https://github.com/Domi04151309/home/wiki"
@@ -174,6 +227,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onResume() {
         super.onResume()
         nav_view.setCheckedItem(R.id.nav_devices)
-        loadDevices(prefs = PreferenceManager.getDefaultSharedPreferences(this),listView = findViewById<View>(R.id.listView) as ListView)
+        loadDevices()
     }
 }

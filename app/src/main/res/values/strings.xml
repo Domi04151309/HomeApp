@@ -13,7 +13,11 @@
 
     <string name="action_settings">Settings</string>
 
-    <string name="main_device_unavailable">Device currently unavailable</string>
+    <string name="main_no_devices">No devices found</string>
+    <string name="main_no_devices_summary">Add a new device in the settings</string>
+    <string name="main_tap_to_connect">Tap to connect</string>
+    <string name="main_device_unavailable">The device is currently unavailable</string>
+    <string name="main_execution_failed">Command execution failed</string>
 
     <string name="webView">Web View</string>
 

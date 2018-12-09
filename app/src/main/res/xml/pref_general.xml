@@ -12,7 +12,7 @@
             android:summary="@string/pref_other_summary"
             android:title="@string/pref_other" />
         <EditTextPreference
-            android:defaultValue='{"devices":{"No devices found":"localhost"}}'
+            android:defaultValue='{"devices":{"null":"null"}}'
             android:key="devices_json"
             android:summary="@string/pref_edit_text_summary"
             android:title="@string/pref_edit_text" />
