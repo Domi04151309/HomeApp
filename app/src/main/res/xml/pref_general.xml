@@ -4,7 +4,12 @@
         <Preference
             android:key="devices"
             android:summary="@string/pref_edit_summary"
-            android:title="@string/pref_edit" />
+            android:title="@string/pref_edit">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="io.github.domi04151309.home"
+                android:targetClass="io.github.domi04151309.home.DevicesActivity" />
+        </Preference>
         <SwitchPreference
             android:defaultValue="false"
             android:enabled="false"
@@ -12,7 +17,7 @@
             android:summary="@string/pref_other_summary"
             android:title="@string/pref_other" />
         <EditTextPreference
-            android:defaultValue='{"devices":{"null":"null"}}'
+            android:defaultValue='{"devices":{}}'
             android:key="devices_json"
             android:summary="@string/pref_edit_text_summary"
             android:title="@string/pref_edit_text" />

@@ -12,21 +12,21 @@ class ListAdapter extends BaseAdapter {
 
     private final String[] title;
     private final String[] summary;
-    private final String[] ip;
+    private final String[] hidden;
     private static LayoutInflater inflater = null;
 
     public ListAdapter(Context context, String[] title, String[] summary) {
         this.title = title;
         this.summary = summary;
-        this.ip = null;
+        this.hidden = null;
         inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    public ListAdapter(Context context, String[] title, String[] summary, String[] ip) {
+    public ListAdapter(Context context, String[] title, String[] summary, String[] hidden) {
         this.title = title;
         this.summary = summary;
-        this.ip = ip;
+        this.hidden = hidden;
         inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -53,7 +53,7 @@ class ListAdapter extends BaseAdapter {
             vi = inflater.inflate(R.layout.list_item, null);
         TextView titleTxt = vi.findViewById(R.id.title);
         TextView summaryTxt = vi.findViewById(R.id.summary);
-        TextView ipTxt = vi.findViewById(R.id.ip);
+        TextView ipTxt = vi.findViewById(R.id.hidden);
         titleTxt.setText(title[position]);
         try {
             summaryTxt.setText(summary[position]);
@@ -61,7 +61,7 @@ class ListAdapter extends BaseAdapter {
             Log.w("Home", String.valueOf(e.getClass()));
         }
         try {
-            ipTxt.setText(ip[position]);
+            ipTxt.setText(hidden[position]);
         } catch (Exception e){
             Log.w("Home", String.valueOf(e.getClass()));
         }

@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.design.widget.NavigationView
-import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
@@ -44,8 +43,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setSupportActionBar(toolbar)
 
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+            startActivity(Intent(this, DevicesActivity::class.java))
         }
 
         val toggle = ActionBarDrawerToggle(
@@ -70,30 +68,41 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun loadDevices(){
         //Example: {"devices": {"Arduino MKR1000": "192.168.20.45", "Raspberry Pi": "192.168.20.??"}}
-        val jsonString = prefs!!.getString("devices_json", "{\"devices\":{\"null\":\"null\"}}")
+        val jsonString = prefs!!.getString("devices_json", "{\"devices\":{}}")
         val jsonDevices = JSONObject(jsonString).getJSONObject("devices")
-        val deviceList = jsonDevices.names()
-        val titles = arrayOfNulls<String>(deviceList.length())
-        val summaries = arrayOfNulls<String>(deviceList.length())
-        ips = arrayOfNulls(deviceList.length())
+        val titles: Array<String?>?
+        val summaries: Array<String?>?
         var i = 0
-        val count = deviceList.length()
-        while (i < count) {
-            try {
-                val mJsonString = deviceList.getString(i)
-                if (mJsonString.toString() == "null")
-                    titles[i] = resources.getString(R.string.main_no_devices)
-                else
-                    titles[i] = mJsonString.toString()
-                if (jsonDevices.getString(mJsonString) == "null")
-                    summaries[i] = resources.getString(R.string.main_no_devices_summary)
-                else
-                    summaries[i] = resources.getString(R.string.main_tap_to_connect)
-                ips!![i] = formatURL(jsonDevices.getString(mJsonString))
-            } catch (e: JSONException) {
-                Log.e("Home", e.toString())
+        if (jsonDevices.length() == 0) {
+            titles = arrayOfNulls(1)
+            summaries = arrayOfNulls(1)
+            ips = arrayOfNulls(1)
+            titles[i] = resources.getString(R.string.main_no_devices)
+            summaries[i] = resources.getString(R.string.main_no_devices_summary)
+            ips!![i] = formatURL("null")
+        } else {
+            val deviceList = jsonDevices.names()
+            titles = arrayOfNulls(deviceList.length())
+            summaries = arrayOfNulls(deviceList.length())
+            ips = arrayOfNulls(deviceList.length())
+            val count = deviceList.length()
+            while (i < count) {
+                try {
+                    val mJsonString = deviceList.getString(i)
+                    if (mJsonString.toString() == "null")
+                        titles[i] = resources.getString(R.string.main_no_devices)
+                    else
+                        titles[i] = mJsonString.toString()
+                    if (jsonDevices.getString(mJsonString) == "null")
+                        summaries[i] = resources.getString(R.string.main_no_devices_summary)
+                    else
+                        summaries[i] = resources.getString(R.string.main_tap_to_connect)
+                    ips!![i] = formatURL(jsonDevices.getString(mJsonString))
+                } catch (e: JSONException) {
+                    Log.e("Home", e.toString())
+                }
+                i++
             }
-            i++
         }
         Log.d("Home", Arrays.toString(titles) + Arrays.toString(summaries))
 
@@ -104,7 +113,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun loadCommands(view: View){
         val summary = view.findViewById(R.id.summary) as TextView
-        val ip = view.findViewById(R.id.ip) as TextView
+        val ip = view.findViewById(R.id.hidden) as TextView
         if (ip.text.toString() == "http://null/") return
         val url = ip.text.toString() + "commands"
         Log.d("Home", url)
@@ -144,7 +153,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun execute(view: View) {
-        val ip = view.findViewById(R.id.ip) as TextView
+        val ip = view.findViewById(R.id.hidden) as TextView
         val url = ip.text.toString()
         Log.d("Home", url)
         val queue = Volley.newRequestQueue(this)

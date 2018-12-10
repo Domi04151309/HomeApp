@@ -25,6 +25,13 @@
     <string name="pref_devices">Devices</string>
     <string name="pref_edit">Edit device list</string>
     <string name="pref_edit_summary">Edit the list of devices</string>
+    <string name="pref_edit_device">Edit device</string>
+    <string name="pref_delete_device">Delete</string>
+    <string name="pref_add">Add a new device</string>
+    <string name="pref_add_summary">Add a new device with its IP address</string>
+    <string name="pref_add_name">Name</string>
+    <string name="pref_add_ip">IP address</string>
+    <string name="pref_add_unsuccessful">Please enter a name and an IP address</string>
     <string name="pref_other">Show other devices</string>
     <string name="pref_other_summary">Show other devices in a second list</string>
     <string name="pref_edit_text">Advanced editing</string>
