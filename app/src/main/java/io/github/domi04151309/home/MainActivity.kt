@@ -10,7 +10,6 @@ import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
@@ -36,6 +35,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var listView: ListView? = null
     private var ips: Array<String?>? = null
     private var level = 1
+    private var reset = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,43 +68,53 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun loadDevices(){
         //Example: {"devices": {"Arduino MKR1000": "192.168.20.45", "Raspberry Pi": "192.168.20.??"}}
-        val jsonString = prefs!!.getString("devices_json", "{\"devices\":{}}")
-        val jsonDevices = JSONObject(jsonString).getJSONObject("devices")
-        val titles: Array<String?>?
-        val summaries: Array<String?>?
+        var titles: Array<String?>?
+        var summaries: Array<String?>?
         var i = 0
-        if (jsonDevices.length() == 0) {
+        val jsonString = prefs!!.getString("devices_json", "{\"devices\":{}}")
+        try {
+            val jsonDevices = JSONObject(jsonString).getJSONObject("devices")
+            if (jsonDevices.length() == 0) {
+                titles = arrayOfNulls(1)
+                summaries = arrayOfNulls(1)
+                ips = arrayOfNulls(1)
+                titles[i] = resources.getString(R.string.main_no_devices)
+                summaries[i] = resources.getString(R.string.main_no_devices_summary)
+                ips!![i] = General.formatURL("null")
+            } else {
+                val deviceList = jsonDevices.names()
+                titles = arrayOfNulls(deviceList.length())
+                summaries = arrayOfNulls(deviceList.length())
+                ips = arrayOfNulls(deviceList.length())
+                val count = deviceList.length()
+                while (i < count) {
+                    try {
+                        val mJsonString = deviceList.getString(i)
+                        if (mJsonString.toString() == "null")
+                            titles[i] = resources.getString(R.string.main_no_devices)
+                        else
+                            titles[i] = mJsonString.toString()
+                        if (jsonDevices.getString(mJsonString) == "null")
+                            summaries[i] = resources.getString(R.string.main_no_devices_summary)
+                        else
+                            summaries[i] = resources.getString(R.string.main_tap_to_connect)
+                        ips!![i] = General.formatURL(jsonDevices.getString(mJsonString))
+                    } catch (e: JSONException) {
+                        Log.e(General.LOG_TAG, e.toString())
+                    }
+                    i++
+                }
+            }
+        } catch (e: Exception){
             titles = arrayOfNulls(1)
             summaries = arrayOfNulls(1)
             ips = arrayOfNulls(1)
-            titles[i] = resources.getString(R.string.main_no_devices)
-            summaries[i] = resources.getString(R.string.main_no_devices_summary)
-            ips!![i] = formatURL("null")
-        } else {
-            val deviceList = jsonDevices.names()
-            titles = arrayOfNulls(deviceList.length())
-            summaries = arrayOfNulls(deviceList.length())
-            ips = arrayOfNulls(deviceList.length())
-            val count = deviceList.length()
-            while (i < count) {
-                try {
-                    val mJsonString = deviceList.getString(i)
-                    if (mJsonString.toString() == "null")
-                        titles[i] = resources.getString(R.string.main_no_devices)
-                    else
-                        titles[i] = mJsonString.toString()
-                    if (jsonDevices.getString(mJsonString) == "null")
-                        summaries[i] = resources.getString(R.string.main_no_devices_summary)
-                    else
-                        summaries[i] = resources.getString(R.string.main_tap_to_connect)
-                    ips!![i] = formatURL(jsonDevices.getString(mJsonString))
-                } catch (e: JSONException) {
-                    Log.e("Home", e.toString())
-                }
-                i++
-            }
+            titles[i] = resources.getString(R.string.err_wrong_format)
+            summaries[i] = resources.getString(R.string.err_wrong_format_summary)
+            ips!![i] = General.formatURL("null")
+            Log.e(General.LOG_TAG, e.toString())
         }
-        Log.d("Home", Arrays.toString(titles) + Arrays.toString(summaries))
+        Log.d(General.LOG_TAG, Arrays.toString(titles) + Arrays.toString(summaries))
 
         val adapter = ListAdapter(this, titles, summaries, ips)
         listView!!.adapter = adapter
@@ -115,38 +125,45 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val summary = view.findViewById(R.id.summary) as TextView
         val ip = view.findViewById(R.id.hidden) as TextView
         if (ip.text.toString() == "http://null/") return
+        summary.text = resources.getString(R.string.main_connecting)
         val url = ip.text.toString() + "commands"
-        Log.d("Home", url)
+        Log.d(General.LOG_TAG, url)
         val queue = Volley.newRequestQueue(this)
         val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null,
                 Response.Listener { response ->
-                    Log.d("Home", response.toString())
-                    val jsonCommands = response.getJSONObject("commands")
-                    val commandsList = jsonCommands.names()
-                    val titles = arrayOfNulls<String>(commandsList.length())
-                    val summaries = arrayOfNulls<String>(commandsList.length())
-                    val commands = arrayOfNulls<String>(commandsList.length())
-                    var i = 0
-                    val count = commandsList.length()
-                    while (i < count) {
-                        try {
-                            val mJsonString = commandsList.getString(i)
-                            titles[i] = jsonCommands.getJSONObject(mJsonString).getString("title")
-                            summaries[i] = jsonCommands.getJSONObject(mJsonString).getString("summary")
-                            commands[i] = ip.text.toString() + mJsonString
-                        } catch (e: JSONException) {
-                            Log.e("Home", e.toString())
+                    try {
+                        Log.d(General.LOG_TAG, response.toString())
+                        val jsonCommands = response.getJSONObject("commands")
+                        val commandsList = jsonCommands.names()
+                        val titles = arrayOfNulls<String>(commandsList.length())
+                        val summaries = arrayOfNulls<String>(commandsList.length())
+                        val commands = arrayOfNulls<String>(commandsList.length())
+                        var i = 0
+                        val count = commandsList.length()
+                        while (i < count) {
+                            try {
+                                val mJsonString = commandsList.getString(i)
+                                titles[i] = jsonCommands.getJSONObject(mJsonString).getString("title")
+                                summaries[i] = jsonCommands.getJSONObject(mJsonString).getString("summary")
+                                commands[i] = ip.text.toString() + mJsonString
+                            } catch (e: JSONException) {
+                                Log.e(General.LOG_TAG, e.toString())
+                            }
+                            i++
                         }
-                        i++
-                    }
 
-                    val adapter = ListAdapter(this, titles, summaries, commands)
-                    listView!!.adapter = adapter
-                    level = 2
+                        val adapter = ListAdapter(this, titles, summaries, commands)
+                        listView!!.adapter = adapter
+                        level = 2
+                    } catch (e: Exception) {
+                        summary.text = resources.getString(R.string.err_wrong_format_summary)
+                        level = 1
+                        Log.e(General.LOG_TAG, e.toString())
+                    }
                 },
                 Response.ErrorListener { error ->
                     summary.text = resources.getString(R.string.main_device_unavailable)
-                    Log.w("Home", error.toString())
+                    Log.w(General.LOG_TAG, error.toString())
                 }
         )
         queue.add(jsonObjectRequest)
@@ -155,28 +172,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun execute(view: View) {
         val ip = view.findViewById(R.id.hidden) as TextView
         val url = ip.text.toString()
-        Log.d("Home", url)
+        Log.d(General.LOG_TAG, url)
         val queue = Volley.newRequestQueue(this)
         val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null,
                 Response.Listener { response ->
-                    Log.d("Home", response.toString())
-                    Toast.makeText(this, response.getString("toast"), Toast.LENGTH_LONG).show()
+                    Log.d(General.LOG_TAG, response.toString())
+                    try {
+                        Toast.makeText(this, response.getString("toast"), Toast.LENGTH_LONG).show()
+                    } catch (e: Exception) {
+                        Toast.makeText(this, resources.getString(R.string.err_wrong_format_summary), Toast.LENGTH_LONG).show()
+                        Log.e(General.LOG_TAG, e.toString())
+                    }
                 },
                 Response.ErrorListener { error ->
                     Toast.makeText(this, resources.getString(R.string.main_execution_failed), Toast.LENGTH_LONG).show()
-                    Log.w("Home", error.toString())
+                    Log.w(General.LOG_TAG, error.toString())
                 }
         )
         queue.add(jsonObjectRequest)
-    }
-
-    private fun formatURL(url: String): String {
-        var _url = url
-        if (!(_url.startsWith("https://") || _url.startsWith("http://")))
-            _url = "http://$_url"
-        if (!_url.endsWith("/"))
-            _url += "/"
-        return _url
     }
 
     override fun onBackPressed() {
@@ -194,22 +207,27 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (item.itemId) {
             R.id.nav_devices -> {
                 loadDevices()
+                reset = false
             }
             R.id.nav_wiki -> {
                 val uri = "https://github.com/Domi04151309/home/wiki"
                 startActivity(Intent(this, WebActivity::class.java).putExtra("URI", uri).putExtra("title", resources.getString(R.string.nav_wiki)))
+                reset = true
             }
             R.id.nav_settings -> {
                 startActivity(Intent(this, Preferences::class.java))
+                reset = true
             }
             R.id.nav_source -> {
                 val uri = "https://github.com/Domi04151309/home"
                 startActivity(Intent(this, WebActivity::class.java).putExtra("URI", uri).putExtra("title", resources.getString(R.string.nav_source)))
+                reset = true
             }
             R.id.nav_google_home -> {
                 val intent = Intent()
                 intent.component = ComponentName("com.google.android.apps.chromecast.app", "com.google.android.apps.chromecast.app.DiscoveryActivity")
                 startActivity(intent)
+                reset = true
             }
         }
 
@@ -220,6 +238,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onResume() {
         super.onResume()
         nav_view.setCheckedItem(R.id.nav_devices)
-        loadDevices()
+        if(reset) loadDevices()
     }
 }

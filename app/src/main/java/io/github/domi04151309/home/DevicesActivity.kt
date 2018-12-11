@@ -98,53 +98,60 @@ class DevicesActivity : AppCompatActivity() {
     }
 
     private fun loadDevices(){
-        val jsonString = prefs!!.getString("devices_json", "{\"devices\":{}}")
-        val jsonDevices = JSONObject(jsonString).getJSONObject("devices")
-        val titles: Array<String?>?
-        val summaries: Array<String?>?
-        val actions: Array<String?>?
+        var titles: Array<String?>?
+        var summaries: Array<String?>?
+        var actions: Array<String?>?
+        var drawables: IntArray?
         var i = 0
-        if (jsonDevices.length() == 0) {
-            titles = arrayOfNulls(2)
-            summaries = arrayOfNulls(2)
-            actions = arrayOfNulls(2)
-            titles[i] = resources.getString(R.string.main_no_devices)
-            summaries[i] = ""
-            actions[i] = "none"
-            i++
-        } else {
-            val deviceList = jsonDevices.names()
-            titles = arrayOfNulls(deviceList.length() + 1)
-            summaries = arrayOfNulls(deviceList.length() + 1)
-            actions = arrayOfNulls(deviceList.length() + 1)
-            val count = deviceList.length()
-            while (i < count) {
-                try {
-                    val mJsonString = deviceList.getString(i)
-                    titles[i] = mJsonString.toString()
-                    summaries[i] = formatURL(jsonDevices.getString(mJsonString))
-                    actions[i] = "edit"
-                } catch (e: JSONException) {
-                    Log.e("Home", e.toString())
-                }
+        try {
+            val jsonString = prefs!!.getString("devices_json", "{\"devices\":{}}")
+            val jsonDevices = JSONObject(jsonString).getJSONObject("devices")
+            if (jsonDevices.length() == 0) {
+                titles = arrayOfNulls(2)
+                summaries = arrayOfNulls(2)
+                actions = arrayOfNulls(2)
+                drawables = IntArray(2)
+                titles[i] = resources.getString(R.string.main_no_devices)
+                summaries[i] = ""
+                actions[i] = "none"
                 i++
+            } else {
+                val deviceList = jsonDevices.names()
+                titles = arrayOfNulls(deviceList.length() + 1)
+                summaries = arrayOfNulls(deviceList.length() + 1)
+                actions = arrayOfNulls(deviceList.length() + 1)
+                drawables = IntArray(deviceList.length() + 1)
+                val count = deviceList.length()
+                while (i < count) {
+                    try {
+                        val mJsonString = deviceList.getString(i)
+                        titles[i] = mJsonString.toString()
+                        summaries[i] = General.formatURL(jsonDevices.getString(mJsonString))
+                        actions[i] = "edit"
+                    } catch (e: JSONException) {
+                        Log.e(General.LOG_TAG, e.toString())
+                    }
+                    i++
+                }
             }
+            titles[i] = resources.getString(R.string.pref_add)
+            summaries[i] = resources.getString(R.string.pref_add_summary)
+            actions[i] = "add"
+            drawables[i] = R.drawable.ic_add
+        } catch (e: Exception) {
+            titles = arrayOfNulls(1)
+            summaries = arrayOfNulls(1)
+            actions = arrayOfNulls(1)
+            drawables = IntArray(1)
+            titles[i] = resources.getString(R.string.err_wrong_format)
+            summaries[i] = resources.getString(R.string.err_wrong_format_summary)
+            actions[i] = "null"
+            drawables[i] = R.drawable.ic_warning
+            Log.e(General.LOG_TAG, e.toString())
         }
-        titles[i] = resources.getString(R.string.pref_add)
-        summaries[i] = resources.getString(R.string.pref_add_summary)
-        actions[i] = "add"
-        Log.d("Home", Arrays.toString(titles) + Arrays.toString(summaries))
+        Log.d(General.LOG_TAG, Arrays.toString(titles) + Arrays.toString(summaries))
 
-        val adapter = ListAdapter(this, titles, summaries, actions)
+        val adapter = ListAdapter(this, titles, summaries, actions, drawables)
         listView!!.adapter = adapter
-    }
-
-    private fun formatURL(url: String): String {
-        var _url = url
-        if (!(_url.startsWith("https://") || _url.startsWith("http://")))
-            _url = "http://$_url"
-        if (!_url.endsWith("/"))
-            _url += "/"
-        return _url
     }
 }

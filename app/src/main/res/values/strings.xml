@@ -11,13 +11,15 @@
     <string name="nav_other_apps">Other Apps</string>
     <string name="nav_google_home">Google Home</string>
 
-    <string name="action_settings">Settings</string>
-
     <string name="main_no_devices">No devices found</string>
     <string name="main_no_devices_summary">Add a new device in the settings</string>
     <string name="main_tap_to_connect">Tap to connect</string>
+    <string name="main_connecting">Connecting</string>
     <string name="main_device_unavailable">The device is currently unavailable</string>
     <string name="main_execution_failed">Command execution failed</string>
+
+    <string name="err_wrong_format">Wrong format</string>
+    <string name="err_wrong_format_summary">The JSON string does not meet the requirements</string>
 
     <string name="webView">Web View</string>
 
