@@ -237,7 +237,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onResume() {
         super.onResume()
-        nav_view.setCheckedItem(R.id.nav_devices)
-        if(reset) loadDevices()
+        if(reset) {
+            nav_view.setCheckedItem(R.id.nav_devices)
+            loadDevices()
+            reset = false
+        }
     }
 }
