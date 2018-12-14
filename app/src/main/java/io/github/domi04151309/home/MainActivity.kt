@@ -28,9 +28,6 @@ import java.util.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    //val testTitles = arrayOf("One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten")
-    //val testSummaries = arrayOf("Online", "Online", "Online", "Online", "Online", "Online", "Online", "Offline", "Offline", "Offline")
-
     private var prefs: SharedPreferences? = null
     private var listView: ListView? = null
     private var ips: Array<String?>? = null
@@ -43,6 +40,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setSupportActionBar(toolbar)
 
         fab.setOnClickListener { view ->
+            reset = true
             startActivity(Intent(this, DevicesActivity::class.java))
         }
 
@@ -67,20 +65,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun loadDevices(){
-        //Example: {"devices": {"Arduino MKR1000": "192.168.20.45", "Raspberry Pi": "192.168.20.??"}}
         var titles: Array<String?>?
         var summaries: Array<String?>?
         var i = 0
-        val jsonString = prefs!!.getString("devices_json", "{\"devices\":{}}")
         try {
-            val jsonDevices = JSONObject(jsonString).getJSONObject("devices")
+            val jsonDevices = JSONObject(prefs!!.getString("devices_json", "{\"devices\":{}}")).getJSONObject("devices")
             if (jsonDevices.length() == 0) {
                 titles = arrayOfNulls(1)
                 summaries = arrayOfNulls(1)
                 ips = arrayOfNulls(1)
                 titles[i] = resources.getString(R.string.main_no_devices)
                 summaries[i] = resources.getString(R.string.main_no_devices_summary)
-                ips!![i] = General.formatURL("null")
+                ips!![i] = Global.formatURL("null")
             } else {
                 val deviceList = jsonDevices.names()
                 titles = arrayOfNulls(deviceList.length())
@@ -90,17 +86,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 while (i < count) {
                     try {
                         val mJsonString = deviceList.getString(i)
-                        if (mJsonString.toString() == "null")
-                            titles[i] = resources.getString(R.string.main_no_devices)
-                        else
-                            titles[i] = mJsonString.toString()
-                        if (jsonDevices.getString(mJsonString) == "null")
-                            summaries[i] = resources.getString(R.string.main_no_devices_summary)
-                        else
-                            summaries[i] = resources.getString(R.string.main_tap_to_connect)
-                        ips!![i] = General.formatURL(jsonDevices.getString(mJsonString))
+                        titles[i] = mJsonString.toString()
+                        summaries[i] = resources.getString(R.string.main_tap_to_connect)
+                        ips!![i] = Global.formatURL(jsonDevices.getString(mJsonString))
                     } catch (e: JSONException) {
-                        Log.e(General.LOG_TAG, e.toString())
+                        Log.e(Global.LOG_TAG, e.toString())
                     }
                     i++
                 }
@@ -111,10 +101,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             ips = arrayOfNulls(1)
             titles[i] = resources.getString(R.string.err_wrong_format)
             summaries[i] = resources.getString(R.string.err_wrong_format_summary)
-            ips!![i] = General.formatURL("null")
-            Log.e(General.LOG_TAG, e.toString())
+            ips!![i] = Global.formatURL("null")
+            Log.e(Global.LOG_TAG, e.toString())
         }
-        Log.d(General.LOG_TAG, Arrays.toString(titles) + Arrays.toString(summaries))
+        Log.d(Global.LOG_TAG, Arrays.toString(titles) + Arrays.toString(summaries))
 
         val adapter = ListAdapter(this, titles, summaries, ips)
         listView!!.adapter = adapter
@@ -127,12 +117,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (ip.text.toString() == "http://null/") return
         summary.text = resources.getString(R.string.main_connecting)
         val url = ip.text.toString() + "commands"
-        Log.d(General.LOG_TAG, url)
+        Log.d(Global.LOG_TAG, url)
         val queue = Volley.newRequestQueue(this)
         val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null,
                 Response.Listener { response ->
                     try {
-                        Log.d(General.LOG_TAG, response.toString())
+                        Log.d(Global.LOG_TAG, response.toString())
                         val jsonCommands = response.getJSONObject("commands")
                         val commandsList = jsonCommands.names()
                         val titles = arrayOfNulls<String>(commandsList.length())
@@ -147,7 +137,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                                 summaries[i] = jsonCommands.getJSONObject(mJsonString).getString("summary")
                                 commands[i] = ip.text.toString() + mJsonString
                             } catch (e: JSONException) {
-                                Log.e(General.LOG_TAG, e.toString())
+                                Log.e(Global.LOG_TAG, e.toString())
                             }
                             i++
                         }
@@ -158,12 +148,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     } catch (e: Exception) {
                         summary.text = resources.getString(R.string.err_wrong_format_summary)
                         level = 1
-                        Log.e(General.LOG_TAG, e.toString())
+                        Log.e(Global.LOG_TAG, e.toString())
                     }
                 },
                 Response.ErrorListener { error ->
                     summary.text = resources.getString(R.string.main_device_unavailable)
-                    Log.w(General.LOG_TAG, error.toString())
+                    Log.w(Global.LOG_TAG, error.toString())
                 }
         )
         queue.add(jsonObjectRequest)
@@ -172,21 +162,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun execute(view: View) {
         val ip = view.findViewById(R.id.hidden) as TextView
         val url = ip.text.toString()
-        Log.d(General.LOG_TAG, url)
+        Log.d(Global.LOG_TAG, url)
         val queue = Volley.newRequestQueue(this)
         val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null,
                 Response.Listener { response ->
-                    Log.d(General.LOG_TAG, response.toString())
+                    Log.d(Global.LOG_TAG, response.toString())
                     try {
                         Toast.makeText(this, response.getString("toast"), Toast.LENGTH_LONG).show()
                     } catch (e: Exception) {
                         Toast.makeText(this, resources.getString(R.string.err_wrong_format_summary), Toast.LENGTH_LONG).show()
-                        Log.e(General.LOG_TAG, e.toString())
+                        Log.e(Global.LOG_TAG, e.toString())
                     }
                 },
                 Response.ErrorListener { error ->
                     Toast.makeText(this, resources.getString(R.string.main_execution_failed), Toast.LENGTH_LONG).show()
-                    Log.w(General.LOG_TAG, error.toString())
+                    Log.w(Global.LOG_TAG, error.toString())
                 }
         )
         queue.add(jsonObjectRequest)
@@ -210,7 +200,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 reset = false
             }
             R.id.nav_wiki -> {
-                val uri = "https://github.com/Domi04151309/home/wiki"
+                val uri = "https://github.com/Domi04151309/HomeApp/wiki"
                 startActivity(Intent(this, WebActivity::class.java).putExtra("URI", uri).putExtra("title", resources.getString(R.string.nav_wiki)))
                 reset = true
             }
@@ -219,7 +209,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 reset = true
             }
             R.id.nav_source -> {
-                val uri = "https://github.com/Domi04151309/home"
+                val uri = "https://github.com/Domi04151309/HomeApp"
                 startActivity(Intent(this, WebActivity::class.java).putExtra("URI", uri).putExtra("title", resources.getString(R.string.nav_source)))
                 reset = true
             }

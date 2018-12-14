@@ -1,8 +1,8 @@
 package io.github.domi04151309.home
 
-object General {
+object Global {
 
-    const val LOG_TAG = "Home"
+    const val LOG_TAG = "HomeApp"
 
     fun formatURL(url: String): String {
         var _url = url

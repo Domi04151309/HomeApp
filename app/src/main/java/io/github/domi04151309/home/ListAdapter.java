@@ -77,12 +77,12 @@ class ListAdapter extends BaseAdapter {
         try {
             summaryTxt.setText(summary[position]);
         } catch (Exception e){
-            Log.w(General.LOG_TAG, String.valueOf(e.getClass()));
+            Log.w(Global.LOG_TAG, String.valueOf(e.getClass()));
         }
         try {
             hiddenTxt.setText(hidden[position]);
         } catch (Exception e){
-            Log.w(General.LOG_TAG, String.valueOf(e.getClass()));
+            Log.w(Global.LOG_TAG, String.valueOf(e.getClass()));
         }
         return vi;
     }

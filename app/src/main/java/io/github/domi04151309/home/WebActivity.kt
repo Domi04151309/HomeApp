@@ -27,7 +27,7 @@ class WebActivity : AppCompatActivity() {
         val title = intent.getStringExtra("title")
         val webView = findViewById<WebView>(R.id.webView)
         val webSettings = webView.settings
-        Log.d(General.LOG_TAG,uri)
+        Log.d(Global.LOG_TAG,uri)
         webSettings.javaScriptEnabled = true
         webView.webViewClient = object : WebViewClient() {
 
