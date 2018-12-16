@@ -7,16 +7,35 @@
     tools:context="io.github.domi04151309.home.MainActivity">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:elevation="0dp">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            android:layout_height="?attr/actionBarSize">
+
+            <ImageView
+                android:id="@+id/menu_icon"
+                android:layout_width="50dp"
+                android:layout_height="?attr/actionBarSize"
+                android:src="@drawable/ic_menu"
+                android:tint="@color/actionBarTextColor"
+                android:padding="13dp"
+                android:layout_centerVertical="true"
+                android:contentDescription="@null" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/actionBarTextColor"
+                android:gravity="center"
+                android:text="@string/app_name"
+                android:textSize="20sp" />
+
+        </RelativeLayout>
 
     </android.support.design.widget.AppBarLayout>
 

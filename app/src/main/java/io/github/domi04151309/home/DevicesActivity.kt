@@ -48,7 +48,10 @@ class DevicesActivity : AppCompatActivity() {
             var mName = ""
             var mIP = ""
 
-            layout.setPaddingRelative(80, 0, 80, 0)
+            val attributes = obtainStyledAttributes(intArrayOf(R.attr.dialogPreferredPadding))
+            val dimension = attributes.getDimensionPixelSize(0, 0)
+            attributes.recycle()
+            layout.setPaddingRelative(dimension, 0, dimension, 0)
 
             val jsonString = prefs!!.getString("devices_json", "{\"devices\":{}}")
             val jsonDevices = JSONObject(jsonString).getJSONObject("devices")

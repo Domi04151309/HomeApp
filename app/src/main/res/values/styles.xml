@@ -2,10 +2,25 @@
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="actionBarTheme">@style/AppTheme.ActionBarTheme</item>
+        <item name="android:windowBackground">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="buttonStyle">@style/AppTheme.Button</item>
+        <item name="android:listViewStyle">@style/AppTheme.ListView</item>
+    </style>
+
+    <style name="AppTheme.ActionBarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+        <item name="colorControlNormal">@color/actionBarTextColor</item>
+    </style>
+
+    <style name="AppTheme.Button" parent="Widget.AppCompat.Button">
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+
+    <style name="AppTheme.ListView" parent="Base.Widget.AppCompat.ListView">
+        <item name="android:divider">@null</item>
     </style>
 
     <style name="AppTheme.Splash" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -15,10 +30,6 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
-    <style name="AppTheme.ActionBarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
-        <item name="colorControlNormal">?android:attr/textColorPrimary</item>
-    </style>
-
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -26,7 +37,5 @@
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.ActionBar" />
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat" />
 
 </resources>

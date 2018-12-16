@@ -5,17 +5,14 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.support.design.widget.AppBarLayout
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
-import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ListView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
@@ -37,23 +34,32 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
+
+        prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        listView = findViewById<View>(R.id.listView) as ListView
+        val appBar = findViewById<AppBarLayout>(R.id.app_bar)
+
+
+        listView!!.viewTreeObserver.addOnScrollChangedListener({
+            if (Global.getScroll(listView!!) > 0)
+                appBar.elevation = 16f
+            else
+                appBar.elevation = 0f
+        })
 
         fab.setOnClickListener { view ->
             reset = true
             startActivity(Intent(this, DevicesActivity::class.java))
         }
 
-        val toggle = ActionBarDrawerToggle(
-                this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        drawer_layout.addDrawerListener(toggle)
-        toggle.syncState()
+        val menuButton = findViewById<View>(R.id.menu_icon) as ImageView
+        menuButton.setOnClickListener({
+            drawer_layout.openDrawer(GravityCompat.START)
+        })
 
         nav_view.setNavigationItemSelectedListener(this)
         nav_view.setCheckedItem(R.id.nav_devices)
 
-        prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        listView = findViewById<View>(R.id.listView) as ListView
         loadDevices()
 
         listView!!.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
@@ -193,7 +199,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_devices -> {
                 loadDevices()
