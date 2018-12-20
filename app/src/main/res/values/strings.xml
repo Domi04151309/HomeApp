@@ -35,4 +35,19 @@
     <string name="pref_other_summary">Show other devices in a second list</string>
     <string name="pref_edit_text">Advanced editing</string>
     <string name="pref_edit_text_summary">Edit the JSON string by yourself</string>
+    <string name="pref_info">Information</string>
+    <string name="pref_info_icons">Icons</string>
+    <string name="pref_info_icons_summary">Icons by Icons8 and Google</string>
+    <string name="pref_info_version">Version</string>
+    <string name="pref_info_version_summary">Unknown version</string>
+
+    <string-array name="pref_icons">
+        <item>Choose an icon</item>
+        <item>Laptop</item>
+        <item>Phone</item>
+        <item>Raspberry Pi</item>
+        <item>Stack</item>
+        <item>Tablet</item>
+        <item>TV</item>
+    </string-array>
 </resources>

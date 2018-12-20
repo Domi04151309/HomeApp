@@ -12,6 +12,8 @@ import android.widget.*
 import org.json.JSONException
 import org.json.JSONObject
 import java.util.*
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 
 class DevicesActivity : AppCompatActivity() {
 
@@ -45,6 +47,10 @@ class DevicesActivity : AppCompatActivity() {
             ipBox.hint = resources.getString(R.string.pref_add_ip)
             ipBox.setSingleLine()
 
+            val spinner = Spinner(this)
+            val spinnerArrayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, resources.getStringArray(R.array.pref_icons))
+            spinner.adapter = spinnerArrayAdapter
+
             var mName = ""
             var mIP = ""
 
@@ -53,8 +59,7 @@ class DevicesActivity : AppCompatActivity() {
             attributes.recycle()
             layout.setPaddingRelative(dimension, 0, dimension, 0)
 
-            val jsonString = prefs!!.getString("devices_json", "{\"devices\":{}}")
-            val jsonDevices = JSONObject(jsonString).getJSONObject("devices")
+            val jsonDevices = JSONObject(prefs!!.getString("devices_json", "{\"devices\":{}}")).getJSONObject("devices")
             if (action == "edit") {
                 builder.setTitle(resources.getString(R.string.pref_edit_device))
                 layout.orientation = LinearLayout.VERTICAL
@@ -63,6 +68,9 @@ class DevicesActivity : AppCompatActivity() {
                 layout.addView(nameBox)
                 ipBox.setText(summary)
                 layout.addView(ipBox)
+                layout.addView(spinner)
+
+                spinner.setSelection(spinnerArrayAdapter.getPosition(Devices.getIcon(title, this)))
 
                 val deleteBtn = Button(this)
                 deleteBtn.text = resources.getString(R.string.pref_delete_device)
@@ -83,8 +91,7 @@ class DevicesActivity : AppCompatActivity() {
                         return@OnClickListener
                     }
                     jsonDevices.remove(title)
-                    jsonDevices.put(mName, mIP)
-                    prefs!!.edit().putString("devices_json", JSONObject().put("devices", jsonDevices).toString()).apply()
+                    addDevice(jsonDevices, mName, mIP, spinner.selectedItem.toString())
                     loadDevices()
                 })
                 builder.setNegativeButton(resources.getString(android.R.string.cancel), { dialog, which -> dialog.cancel() })
@@ -102,6 +109,7 @@ class DevicesActivity : AppCompatActivity() {
 
                 layout.addView(nameBox)
                 layout.addView(ipBox)
+                layout.addView(spinner)
 
                 builder.setView(layout)
 
@@ -113,14 +121,19 @@ class DevicesActivity : AppCompatActivity() {
                         dialog.cancel()
                         return@OnClickListener
                     }
-                    jsonDevices.put(mName, mIP)
-                    prefs!!.edit().putString("devices_json", JSONObject().put("devices", jsonDevices).toString()).apply()
+                    addDevice(jsonDevices, mName, mIP, spinner.selectedItem.toString())
                     loadDevices()
                 })
                 builder.setNegativeButton(resources.getString(android.R.string.cancel), { dialog, which -> dialog.cancel() })
                 builder.show()
             }
         }
+    }
+
+    private fun addDevice(jsonDevices: JSONObject, name: String, address: String, icon: String) {
+        val deviceObject = JSONObject().put("address", address).put("icon", icon)
+        jsonDevices.put(name, deviceObject)
+        prefs!!.edit().putString("devices_json", JSONObject().put("devices", jsonDevices).toString()).apply()
     }
 
     private fun loadDevices(){
@@ -130,8 +143,7 @@ class DevicesActivity : AppCompatActivity() {
         var drawables: IntArray?
         var i = 0
         try {
-            val jsonDevices = JSONObject(prefs!!.getString("devices_json", "{\"devices\":{}}")).getJSONObject("devices")
-            if (jsonDevices.length() == 0) {
+            if (Devices.length(this) == 0) {
                 titles = arrayOfNulls(2)
                 summaries = arrayOfNulls(2)
                 actions = arrayOfNulls(2)
@@ -141,18 +153,18 @@ class DevicesActivity : AppCompatActivity() {
                 actions[i] = "none"
                 i++
             } else {
-                val deviceList = jsonDevices.names()
-                titles = arrayOfNulls(deviceList.length() + 1)
-                summaries = arrayOfNulls(deviceList.length() + 1)
-                actions = arrayOfNulls(deviceList.length() + 1)
-                drawables = IntArray(deviceList.length() + 1)
-                val count = deviceList.length()
+                val count = Devices.length(this)
+                titles = arrayOfNulls(count + 1)
+                summaries = arrayOfNulls(count + 1)
+                actions = arrayOfNulls(count + 1)
+                drawables = IntArray(count + 1)
                 while (i < count) {
                     try {
-                        val mJsonString = deviceList.getString(i)
-                        titles[i] = mJsonString.toString()
-                        summaries[i] = Global.formatURL(jsonDevices.getString(mJsonString))
+                        val name = Devices.getName(i, this)
+                        titles[i] = name
+                        summaries[i] = Global.formatURL(Devices.getAddress(name, this))
                         actions[i] = "edit"
+                        drawables[i] = Global.getIconId(Devices.getIcon(name, this))
                     } catch (e: JSONException) {
                         Log.e(Global.LOG_TAG, e.toString())
                     }

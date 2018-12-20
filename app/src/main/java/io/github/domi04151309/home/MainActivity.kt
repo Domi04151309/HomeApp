@@ -20,7 +20,6 @@ import com.android.volley.toolbox.Volley
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import org.json.JSONException
-import org.json.JSONObject
 import java.util.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -73,28 +72,31 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun loadDevices(){
         var titles: Array<String?>?
         var summaries: Array<String?>?
+        var drawables: IntArray?
         var i = 0
         try {
-            val jsonDevices = JSONObject(prefs!!.getString("devices_json", "{\"devices\":{}}")).getJSONObject("devices")
-            if (jsonDevices.length() == 0) {
+            if (Devices.length(this) == 0) {
                 titles = arrayOfNulls(1)
                 summaries = arrayOfNulls(1)
                 ips = arrayOfNulls(1)
+                drawables = IntArray(1)
                 titles[i] = resources.getString(R.string.main_no_devices)
                 summaries[i] = resources.getString(R.string.main_no_devices_summary)
                 ips!![i] = Global.formatURL("null")
+                drawables[i] = R.drawable.ic_info
             } else {
-                val deviceList = jsonDevices.names()
-                titles = arrayOfNulls(deviceList.length())
-                summaries = arrayOfNulls(deviceList.length())
-                ips = arrayOfNulls(deviceList.length())
-                val count = deviceList.length()
+                val count = Devices.length(this)
+                titles = arrayOfNulls(count)
+                summaries = arrayOfNulls(count)
+                drawables = IntArray(count)
+                ips = arrayOfNulls(count)
                 while (i < count) {
                     try {
-                        val mJsonString = deviceList.getString(i)
-                        titles[i] = mJsonString.toString()
+                        val name = Devices.getName(i, this)
+                        titles[i] = name
                         summaries[i] = resources.getString(R.string.main_tap_to_connect)
-                        ips!![i] = Global.formatURL(jsonDevices.getString(mJsonString))
+                        ips!![i] = Global.formatURL(Devices.getAddress(name, this))
+                        drawables[i] = Global.getIconId(Devices.getIcon(name, this))
                     } catch (e: JSONException) {
                         Log.e(Global.LOG_TAG, e.toString())
                     }
@@ -105,14 +107,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             titles = arrayOfNulls(1)
             summaries = arrayOfNulls(1)
             ips = arrayOfNulls(1)
+            drawables = IntArray(1)
             titles[i] = resources.getString(R.string.err_wrong_format)
             summaries[i] = resources.getString(R.string.err_wrong_format_summary)
+            drawables[i] = R.drawable.ic_warning
             ips!![i] = Global.formatURL("null")
             Log.e(Global.LOG_TAG, e.toString())
         }
         Log.d(Global.LOG_TAG, Arrays.toString(titles) + Arrays.toString(summaries))
 
-        val adapter = ListAdapter(this, titles, summaries, ips)
+        val adapter = ListAdapter(this, titles, summaries, ips, drawables)
         listView!!.adapter = adapter
         level = 1
     }

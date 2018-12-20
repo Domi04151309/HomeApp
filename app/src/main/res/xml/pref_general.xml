@@ -22,4 +22,17 @@
             android:summary="@string/pref_edit_text_summary"
             android:title="@string/pref_edit_text" />
     </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_info">
+
+        <Preference
+            android:key="version"
+            android:title="@string/pref_info_version"
+            android:summary="@string/pref_info_version_summary">
+        </Preference>
+        <Preference
+            android:title="@string/pref_info_icons"
+            android:summary="@string/pref_info_icons_summary">
+        </Preference>
+    </PreferenceCategory>
 </PreferenceScreen>

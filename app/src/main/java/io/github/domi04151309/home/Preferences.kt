@@ -4,6 +4,9 @@ import android.annotation.TargetApi
 import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceFragment
+import android.preference.Preference
+
+
 
 class Preferences : AppCompatPreferenceActivity() {
 
@@ -25,6 +28,8 @@ class Preferences : AppCompatPreferenceActivity() {
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             addPreferencesFromResource(R.xml.pref_general)
+            val version = findPreference("version")
+            version.summary = BuildConfig.VERSION_NAME
         }
     }
 }

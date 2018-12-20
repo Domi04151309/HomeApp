@@ -29,4 +29,17 @@ object Global {
         return scrollY
     }
 
+    fun getIconId(string: String): Int {
+        return when (string) {
+            "Laptop" -> R.drawable.ic_device_laptop
+            "Phone" -> R.drawable.ic_device_phone
+            "Raspberry Pi" -> R.drawable.ic_device_raspberry_pi
+            "Stack" -> R.drawable.ic_device_stack
+            "Tablet" -> R.drawable.ic_device_tablet
+            "TV" -> R.drawable.ic_device_tv
+            else -> {
+                0
+            }
+        }
+    }
 }
