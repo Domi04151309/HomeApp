@@ -11,7 +11,7 @@ object Devices {
 
     private fun getDevicesObject(c: Context): JSONObject {
         prefs = PreferenceManager.getDefaultSharedPreferences(c)
-        return JSONObject(prefs!!.getString("devices_json", "{\"devices\":{}}")).getJSONObject("devices")
+        return JSONObject(prefs!!.getString("devices_json", Global.DEFAULT_JSON)).getJSONObject("devices")
     }
 
     fun length(context: Context): Int {

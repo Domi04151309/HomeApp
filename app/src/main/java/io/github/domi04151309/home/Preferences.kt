@@ -5,7 +5,8 @@ import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceFragment
 import android.preference.Preference
-
+import android.preference.PreferenceManager
+import android.widget.Toast
 
 
 class Preferences : AppCompatPreferenceActivity() {
@@ -28,8 +29,12 @@ class Preferences : AppCompatPreferenceActivity() {
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             addPreferencesFromResource(R.xml.pref_general)
-            val version = findPreference("version")
-            version.summary = BuildConfig.VERSION_NAME
+            findPreference("version").summary = BuildConfig.VERSION_NAME
+            findPreference("reset_json").onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                PreferenceManager.getDefaultSharedPreferences(context).edit().putString("devices_json", Global.DEFAULT_JSON).apply()
+                Toast.makeText(context, resources.getString(R.string.pref_reset_toast), Toast.LENGTH_LONG).show()
+                true
+            }
         }
     }
 }

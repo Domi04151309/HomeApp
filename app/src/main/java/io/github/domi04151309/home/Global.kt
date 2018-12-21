@@ -7,6 +7,8 @@ object Global {
 
     const val LOG_TAG = "HomeApp"
 
+    const val DEFAULT_JSON = "{\"devices\":{}}"
+
     fun formatURL(url: String): String {
         var _url = url
         if (!(_url.startsWith("https://") || _url.startsWith("http://")))

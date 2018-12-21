@@ -21,6 +21,11 @@
             android:key="devices_json"
             android:summary="@string/pref_edit_text_summary"
             android:title="@string/pref_edit_text" />
+        <Preference
+            android:key="reset_json"
+            android:summary="@string/pref_reset_summary"
+            android:title="@string/pref_reset">
+        </Preference>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_info">

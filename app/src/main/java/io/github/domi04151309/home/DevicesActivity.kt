@@ -59,7 +59,7 @@ class DevicesActivity : AppCompatActivity() {
             attributes.recycle()
             layout.setPaddingRelative(dimension, 0, dimension, 0)
 
-            val jsonDevices = JSONObject(prefs!!.getString("devices_json", "{\"devices\":{}}")).getJSONObject("devices")
+            val jsonDevices = JSONObject(prefs!!.getString("devices_json", Global.DEFAULT_JSON)).getJSONObject("devices")
             if (action == "edit") {
                 builder.setTitle(resources.getString(R.string.pref_edit_device))
                 layout.orientation = LinearLayout.VERTICAL
