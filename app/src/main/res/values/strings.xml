@@ -46,9 +46,11 @@
 
     <string-array name="pref_icons">
         <item>Choose an icon</item>
+        <item>Lamp</item>
         <item>Laptop</item>
         <item>Phone</item>
         <item>Raspberry Pi</item>
+        <item>Speaker</item>
         <item>Stack</item>
         <item>Tablet</item>
         <item>TV</item>

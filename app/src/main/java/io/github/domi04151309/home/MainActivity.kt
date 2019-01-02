@@ -119,9 +119,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val adapter = ListAdapter(this, titles, summaries, ips, drawables)
         listView!!.adapter = adapter
         level = 1
+        setTitle(resources.getString(R.string.app_name))
     }
 
     private fun loadCommands(view: View){
+        val title = view.findViewById<TextView>(R.id.title).text
         val summary = view.findViewById(R.id.summary) as TextView
         val ip = view.findViewById(R.id.hidden) as TextView
         if (ip.text.toString() == "http://null/") return
@@ -155,9 +157,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         val adapter = ListAdapter(this, titles, summaries, commands)
                         listView!!.adapter = adapter
                         level = 2
+                        setTitle(title.toString())
                     } catch (e: Exception) {
                         summary.text = resources.getString(R.string.err_wrong_format_summary)
                         level = 1
+                        setTitle(resources.getString(R.string.app_name))
                         Log.e(Global.LOG_TAG, e.toString())
                     }
                 },
@@ -241,5 +245,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             loadDevices()
             reset = false
         }
+    }
+
+    private fun setTitle(title: String){
+        (findViewById<TextView>(R.id.title)).text = title
     }
 }

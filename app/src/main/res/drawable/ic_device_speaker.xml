@@ -1,0 +1,15 @@
+<vector android:height="24dp" android:viewportHeight="48.0"
+    android:viewportWidth="48.0" android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="#BBDEFB" android:pathData="M9,8C9,5.79 10.79,4 13,4L35,4C37.21,4 39,5.79 39,8L39,40C39,42.21 37.21,44 35,44L13,44C10.79,44 9,42.21 9,40Z"/>
+    <path android:fillColor="#8BC34A" android:pathData="M9,8C9,5.79 10.79,4 13,4L35,4C37.21,4 39,5.79 39,8L39,40C39,42.21 37.21,44 35,44L13,44C10.79,44 9,42.21 9,40Z"/>
+    <path android:fillColor="#37474F" android:pathData="M34,31C34,36.52 29.52,41 24,41C18.48,41 14,36.52 14,31C14,25.48 18.48,21 24,21C29.52,21 34,25.48 34,31Z"/>
+    <path android:fillColor="#37474F" android:pathData="M30,13C30,16.31 27.31,19 24,19C20.69,19 18,16.31 18,13C18,9.69 20.69,7 24,7C27.31,7 30,9.69 30,13Z"/>
+    <path android:fillColor="#CFD8DC" android:pathData="M32,31C32,35.42 28.42,39 24,39C19.58,39 16,35.42 16,31C16,26.58 19.58,23 24,23C28.42,23 32,26.58 32,31Z"/>
+    <path android:fillColor="#CFD8DC" android:pathData="M28,13C28,15.21 26.21,17 24,17C21.79,17 20,15.21 20,13C20,10.79 21.79,9 24,9C26.21,9 28,10.79 28,13Z"/>
+    <path android:fillColor="#455A64" android:pathData="M27,31C27,32.66 25.66,34 24,34C22.34,34 21,32.66 21,31C21,29.34 22.34,28 24,28C25.66,28 27,29.34 27,31Z"/>
+    <path android:fillColor="#455A64" android:pathData="M26,13C26,14.11 25.11,15 24,15C22.89,15 22,14.11 22,13C22,11.89 22.89,11 24,11C25.11,11 26,11.89 26,13Z"/>
+    <path android:fillColor="#004D40" android:pathData="M37,7C37,7.55 36.55,8 36,8C35.45,8 35,7.55 35,7C35,6.45 35.45,6 36,6C36.55,6 37,6.45 37,7Z"/>
+    <path android:fillColor="#004D40" android:pathData="M13,7C13,7.55 12.55,8 12,8C11.45,8 11,7.55 11,7C11,6.45 11.45,6 12,6C12.55,6 13,6.45 13,7Z"/>
+    <path android:fillColor="#004D40" android:pathData="M37,41C37,41.55 36.55,42 36,42C35.45,42 35,41.55 35,41C35,40.45 35.45,40 36,40C36.55,40 37,40.45 37,41Z"/>
+    <path android:fillColor="#004D40" android:pathData="M13,41C13,41.55 12.55,42 12,42C11.45,42 11,41.55 11,41C11,40.45 11.45,40 12,40C12.55,40 13,40.45 13,41Z"/>
+</vector>
