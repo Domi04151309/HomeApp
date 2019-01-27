@@ -15,6 +15,9 @@
     <string name="main_device_unavailable">The device is currently unavailable</string>
     <string name="main_execution_failed">Command execution failed</string>
 
+    <string name="main_device_icon">Device Icon</string>
+    <string name="main_device_name">Your Devices</string>
+
     <string name="err_wrong_format">Wrong format</string>
     <string name="err_wrong_format_summary">The JSON string does not meet the requirements</string>
 
@@ -39,10 +42,12 @@
     <string name="pref_reset_summary">This resets the JSON string and deletes all devices</string>
     <string name="pref_reset_toast">Reset the JSON string</string>
     <string name="pref_info">Information</string>
-    <string name="pref_info_icons">Icons</string>
-    <string name="pref_info_icons_summary">Icons by Icons8 and Google</string>
     <string name="pref_info_version">Version</string>
     <string name="pref_info_version_summary">Unknown version</string>
+    <string name="pref_info_icons">Icons</string>
+    <string name="pref_info_icons_summary">Icons by Icons8 and Google</string>
+    <string name="pref_info_header">Header background</string>
+    <string name="pref_info_header_summary">Header background by Dan Gold on Unsplash</string>
 
     <string-array name="pref_icons">
         <item>Choose an icon</item>

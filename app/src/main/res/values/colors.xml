@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#fff</color>
-    <color name="colorAccent">#4285F4</color>
+    <color name="colorAccent">#4285f4</color>
     <color name="colorAccent.32">#204285F4</color>
     <color name="colorAccent.16">#104285F4</color>
     <color name="actionBarTextColor">#757575</color>

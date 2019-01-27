@@ -3,6 +3,7 @@ package io.github.domi04151309.home
 import android.content.ComponentName
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.design.widget.AppBarLayout
@@ -19,6 +20,7 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.content_main.*
 import org.json.JSONException
 import java.util.*
 
@@ -37,7 +39,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         prefs = PreferenceManager.getDefaultSharedPreferences(this)
         listView = findViewById<View>(R.id.listView) as ListView
         val appBar = findViewById<AppBarLayout>(R.id.app_bar)
-
 
         listView!!.viewTreeObserver.addOnScrollChangedListener({
             if (Global.getScroll(listView!!) > 0)
@@ -118,8 +119,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val adapter = ListAdapter(this, titles, summaries, ips, drawables)
         listView!!.adapter = adapter
-        level = 1
-        setTitle(resources.getString(R.string.app_name))
+        setLevelOne()
     }
 
     private fun loadCommands(view: View){
@@ -156,12 +156,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                         val adapter = ListAdapter(this, titles, summaries, commands)
                         listView!!.adapter = adapter
-                        level = 2
-                        setTitle(title.toString())
+                        setLevelTwo(view.findViewById<ImageView>(R.id.drawable).drawable, title)
                     } catch (e: Exception) {
                         summary.text = resources.getString(R.string.err_wrong_format_summary)
-                        level = 1
-                        setTitle(resources.getString(R.string.app_name))
+                        setLevelOne()
                         Log.e(Global.LOG_TAG, e.toString())
                     }
                 },
@@ -238,6 +236,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
+    private fun setLevelOne() {
+        deviceIcon.setImageDrawable(resources.getDrawable(R.drawable.ic_home))
+        deviceName.text = resources.getString(R.string.main_device_name)
+        fab.show()
+        level = 1
+    }
+
+    private fun setLevelTwo(icon: Drawable, title: CharSequence) {
+        fab.hide()
+        deviceIcon.setImageDrawable(icon)
+        deviceName.text = title
+        level = 2
+    }
+
     override fun onResume() {
         super.onResume()
         if(reset) {
@@ -245,9 +257,5 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             loadDevices()
             reset = false
         }
-    }
-
-    private fun setTitle(title: String){
-        (findViewById<TextView>(R.id.title)).text = title
     }
 }

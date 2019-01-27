@@ -39,5 +39,9 @@
             android:title="@string/pref_info_icons"
             android:summary="@string/pref_info_icons_summary">
         </Preference>
+        <Preference
+            android:title="@string/pref_info_header"
+            android:summary="@string/pref_info_header_summary">
+        </Preference>
     </PreferenceCategory>
 </PreferenceScreen>
