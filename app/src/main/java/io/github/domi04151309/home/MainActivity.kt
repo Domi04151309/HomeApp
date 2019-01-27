@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private var devices: Devices? = null
     private var listView: ListView? = null
-    private var ips: Array<String?>? = null
+    private var addresses: Array<String?>? = null
     private var level = 1
     private var reset = false
 
@@ -78,24 +78,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             if (devices!!.length() == 0) {
                 titles = arrayOfNulls(1)
                 summaries = arrayOfNulls(1)
-                ips = arrayOfNulls(1)
+                addresses = arrayOfNulls(1)
                 drawables = IntArray(1)
                 titles[i] = resources.getString(R.string.main_no_devices)
                 summaries[i] = resources.getString(R.string.main_no_devices_summary)
-                ips!![i] = Global.formatURL("null")
+                addresses!![i] = Global.formatURL("null")
                 drawables[i] = R.drawable.ic_info
             } else {
                 val count = devices!!.length()
                 titles = arrayOfNulls(count)
                 summaries = arrayOfNulls(count)
                 drawables = IntArray(count)
-                ips = arrayOfNulls(count)
+                addresses = arrayOfNulls(count)
                 while (i < count) {
                     try {
                         val name = devices!!.getName(i)
                         titles[i] = name
                         summaries[i] = resources.getString(R.string.main_tap_to_connect)
-                        ips!![i] = Global.formatURL(devices!!.getAddress(name))
+                        addresses!![i] = Global.formatURL(devices!!.getAddress(name))
                         drawables[i] = Global.getIconId(devices!!.getIcon(name))
                     } catch (e: JSONException) {
                         Log.e(Global.LOG_TAG, e.toString())
@@ -106,17 +106,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         } catch (e: Exception){
             titles = arrayOfNulls(1)
             summaries = arrayOfNulls(1)
-            ips = arrayOfNulls(1)
+            addresses = arrayOfNulls(1)
             drawables = IntArray(1)
             titles[i] = resources.getString(R.string.err_wrong_format)
             summaries[i] = resources.getString(R.string.err_wrong_format_summary)
             drawables[i] = R.drawable.ic_warning
-            ips!![i] = Global.formatURL("null")
+            addresses!![i] = Global.formatURL("null")
             Log.e(Global.LOG_TAG, e.toString())
         }
         Log.d(Global.LOG_TAG, Arrays.toString(titles) + Arrays.toString(summaries))
 
-        val adapter = ListAdapter(this, titles, summaries, ips, drawables)
+        val adapter = ListAdapter(this, titles, summaries, addresses, drawables)
         listView!!.adapter = adapter
         setLevelOne()
     }
@@ -124,10 +124,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun loadCommands(view: View){
         val title = view.findViewById<TextView>(R.id.title).text
         val summary = view.findViewById(R.id.summary) as TextView
-        val ip = view.findViewById(R.id.hidden) as TextView
-        if (ip.text.toString() == "http://null/") return
+        val address = view.findViewById(R.id.hidden) as TextView
+        if (address.text.toString() == "http://null/") return
         summary.text = resources.getString(R.string.main_connecting)
-        val url = ip.text.toString() + "commands"
+        val url = address.text.toString() + "commands"
         Log.d(Global.LOG_TAG, url)
         val queue = Volley.newRequestQueue(this)
         val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null,
@@ -146,7 +146,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                                 val mJsonString = commandsList.getString(i)
                                 titles[i] = jsonCommands.getJSONObject(mJsonString).getString("title")
                                 summaries[i] = jsonCommands.getJSONObject(mJsonString).getString("summary")
-                                commands[i] = ip.text.toString() + mJsonString
+                                commands[i] = address.text.toString() + mJsonString
                             } catch (e: JSONException) {
                                 Log.e(Global.LOG_TAG, e.toString())
                             }
@@ -171,8 +171,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun execute(view: View) {
-        val ip = view.findViewById(R.id.hidden) as TextView
-        val url = ip.text.toString()
+        val address = view.findViewById(R.id.hidden) as TextView
+        val url = address.text.toString()
         Log.d(Global.LOG_TAG, url)
         val queue = Volley.newRequestQueue(this)
         val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null,
