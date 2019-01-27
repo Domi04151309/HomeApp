@@ -18,6 +18,7 @@ import android.widget.Spinner
 class DevicesActivity : AppCompatActivity() {
 
     private var prefs: SharedPreferences? = null
+    private var devices: Devices? = null
     private var listView: ListView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,6 +26,7 @@ class DevicesActivity : AppCompatActivity() {
         setContentView(R.layout.activity_devices)
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        devices = Devices(prefs!!)
         listView = findViewById<View>(R.id.listView) as ListView
         loadDevices()
 
@@ -70,7 +72,7 @@ class DevicesActivity : AppCompatActivity() {
                 layout.addView(ipBox)
                 layout.addView(spinner)
 
-                spinner.setSelection(spinnerArrayAdapter.getPosition(Devices.getIcon(title, this)))
+                spinner.setSelection(spinnerArrayAdapter.getPosition(devices!!.getIcon(title)))
 
                 val deleteBtn = Button(this)
                 deleteBtn.text = resources.getString(R.string.pref_delete_device)
@@ -143,7 +145,7 @@ class DevicesActivity : AppCompatActivity() {
         var drawables: IntArray?
         var i = 0
         try {
-            if (Devices.length(this) == 0) {
+            if (devices!!.length() == 0) {
                 titles = arrayOfNulls(2)
                 summaries = arrayOfNulls(2)
                 actions = arrayOfNulls(2)
@@ -153,18 +155,18 @@ class DevicesActivity : AppCompatActivity() {
                 actions[i] = "none"
                 i++
             } else {
-                val count = Devices.length(this)
+                val count = devices!!.length()
                 titles = arrayOfNulls(count + 1)
                 summaries = arrayOfNulls(count + 1)
                 actions = arrayOfNulls(count + 1)
                 drawables = IntArray(count + 1)
                 while (i < count) {
                     try {
-                        val name = Devices.getName(i, this)
+                        val name = devices!!.getName(i)
                         titles[i] = name
-                        summaries[i] = Global.formatURL(Devices.getAddress(name, this))
+                        summaries[i] = Global.formatURL(devices!!.getAddress(name))
                         actions[i] = "edit"
-                        drawables[i] = Global.getIconId(Devices.getIcon(name, this))
+                        drawables[i] = Global.getIconId(devices!!.getIcon(name))
                     } catch (e: JSONException) {
                         Log.e(Global.LOG_TAG, e.toString())
                     }

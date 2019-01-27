@@ -2,7 +2,6 @@ package io.github.domi04151309.home
 
 import android.content.ComponentName
 import android.content.Intent
-import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -26,7 +25,7 @@ import java.util.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    private var prefs: SharedPreferences? = null
+    private var devices: Devices? = null
     private var listView: ListView? = null
     private var ips: Array<String?>? = null
     private var level = 1
@@ -36,7 +35,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        devices = Devices(PreferenceManager.getDefaultSharedPreferences(this))
         listView = findViewById<View>(R.id.listView) as ListView
         val appBar = findViewById<AppBarLayout>(R.id.app_bar)
 
@@ -76,7 +75,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         var drawables: IntArray?
         var i = 0
         try {
-            if (Devices.length(this) == 0) {
+            if (devices!!.length() == 0) {
                 titles = arrayOfNulls(1)
                 summaries = arrayOfNulls(1)
                 ips = arrayOfNulls(1)
@@ -86,18 +85,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 ips!![i] = Global.formatURL("null")
                 drawables[i] = R.drawable.ic_info
             } else {
-                val count = Devices.length(this)
+                val count = devices!!.length()
                 titles = arrayOfNulls(count)
                 summaries = arrayOfNulls(count)
                 drawables = IntArray(count)
                 ips = arrayOfNulls(count)
                 while (i < count) {
                     try {
-                        val name = Devices.getName(i, this)
+                        val name = devices!!.getName(i)
                         titles[i] = name
                         summaries[i] = resources.getString(R.string.main_tap_to_connect)
-                        ips!![i] = Global.formatURL(Devices.getAddress(name, this))
-                        drawables[i] = Global.getIconId(Devices.getIcon(name, this))
+                        ips!![i] = Global.formatURL(devices!!.getAddress(name))
+                        drawables[i] = Global.getIconId(devices!!.getIcon(name))
                     } catch (e: JSONException) {
                         Log.e(Global.LOG_TAG, e.toString())
                     }
