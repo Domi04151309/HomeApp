@@ -22,7 +22,7 @@
                 android:layout_width="50dp"
                 android:layout_height="?attr/actionBarSize"
                 android:src="@drawable/ic_menu"
-                android:tint="@color/actionBarTextColor"
+                android:tint="@color/actionBarText"
                 android:padding="13dp"
                 android:layout_centerVertical="true"
                 android:contentDescription="@null" />
@@ -30,7 +30,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textColor="@color/actionBarTextColor"
+                android:textColor="?attr/actionBarTextColor"
                 android:gravity="center"
                 android:text="@string/app_name"
                 android:textSize="20sp" />

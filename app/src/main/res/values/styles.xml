@@ -1,18 +1,72 @@
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="actionBarTheme">@style/AppTheme.ActionBarTheme</item>
         <item name="android:windowBackground">@color/colorPrimary</item>
+        <item name="android:navigationBarColor">@color/colorPrimary</item>
+        <item name="actionBarTextColor">@color/actionBarText</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionBarTheme">@style/AppTheme.ActionBarTheme</item>
         <item name="buttonStyle">@style/AppTheme.Button</item>
         <item name="android:listViewStyle">@style/AppTheme.ListView</item>
     </style>
 
+    <style name="AppTheme.NoActionBar" parent="AppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="AppTheme.Dark" parent="Theme.AppCompat">
+        <item name="colorPrimary">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowBackground">@color/colorPrimaryDark</item>
+        <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
+        <item name="actionBarTextColor">@android:color/white</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionBarTheme">@style/AppTheme.ActionBarTheme</item>
+        <item name="buttonStyle">@style/AppTheme.Button</item>
+        <item name="android:listViewStyle">@style/AppTheme.ListView</item>
+    </style>
+
+    <style name="AppTheme.Dark.NoActionBar" parent="AppTheme.Dark">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="AppTheme.Black" parent="Theme.AppCompat">
+        <item name="colorPrimary">@color/colorPrimaryBlack</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryBlack</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowBackground">@color/colorPrimaryBlack</item>
+        <item name="android:navigationBarColor">@color/colorPrimaryBlack</item>
+        <item name="actionBarTextColor">@android:color/white</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionBarTheme">@style/AppTheme.ActionBarTheme</item>
+        <item name="buttonStyle">@style/AppTheme.Button</item>
+        <item name="android:listViewStyle">@style/AppTheme.ListView</item>
+    </style>
+
+    <style name="AppTheme.Black.NoActionBar" parent="AppTheme.Black">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="Light">
+        <item name="android:textColorPrimary">@android:color/black</item>
+    </style>
+
+    <style name="Dark">
+        <item name="android:textColorPrimary">@android:color/white</item>
+    </style>
+
     <style name="AppTheme.ActionBarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
-        <item name="colorControlNormal">@color/actionBarTextColor</item>
+        <item name="colorControlNormal">@color/actionBarText</item>
     </style>
 
     <style name="AppTheme.Button" parent="Widget.AppCompat.Button">
@@ -30,19 +84,18 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-    </style>
-
     <style name="AppTheme.Header">
         <item name="android:background">@drawable/header_bg_xml</item>
         <item name="android:gravity">bottom</item>
         <item name="android:orientation">horizontal</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
         <item name="android:paddingStart">@dimen/activity_horizontal_margin</item>
         <item name="android:paddingBottom">@dimen/activity_vertical_margin</item>
         <item name="android:paddingEnd">@dimen/activity_horizontal_margin</item>
+    </style>
+
+    <style name="AppTheme.Header.Land">
+        <item name="android:background">@null</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.ActionBar" />

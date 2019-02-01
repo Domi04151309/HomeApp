@@ -24,6 +24,19 @@
     <string name="webView">Web View</string>
 
     <string name="pref">Settings</string>
+    <string name="pref_general">General Settings</string>
+    <string name="pref_theme">Change theme</string>
+    <string name="pref_theme_summary">Changes the look of the app</string>
+    <string-array name="pref_theme_array">
+        <item>Light theme</item>
+        <item>Dark theme</item>
+        <item>Black theme</item>
+    </string-array>
+    <string-array name="pref_theme_array_values">
+        <item>light</item>
+        <item>dark</item>
+        <item>black</item>
+    </string-array>
     <string name="pref_devices">Devices</string>
     <string name="pref_edit">Edit device list</string>
     <string name="pref_edit_summary">Edit the list of devices</string>

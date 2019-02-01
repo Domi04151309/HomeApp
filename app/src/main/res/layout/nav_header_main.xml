@@ -2,23 +2,40 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:gravity="bottom"
     android:paddingBottom="@dimen/activity_vertical_margin">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawablePadding="@dimen/activity_horizontal_margin"
-        android:drawableStart="@mipmap/ic_launcher"
-        android:gravity="center_vertical"
-        android:text="@string/app_name"
-        android:textSize="16sp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            android:layout_width="@dimen/header_icon_height"
+            android:layout_height="@dimen/header_icon_height"
+            android:contentDescription="@string/main_device_icon"
+            app:srcCompat="@drawable/ic_home" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/header_icon_height"
+            android:gravity="center_vertical"
+            android:paddingEnd="@dimen/activity_horizontal_margin"
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:text="@string/app_name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/divider" />
+        android:background="?android:attr/listDivider" />
 
 </LinearLayout>

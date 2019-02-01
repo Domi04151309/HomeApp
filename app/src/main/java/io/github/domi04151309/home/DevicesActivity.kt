@@ -22,6 +22,7 @@ class DevicesActivity : AppCompatActivity() {
     private var listView: ListView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Theme.set(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_devices)
 

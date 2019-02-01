@@ -8,15 +8,28 @@ import android.preference.Preference
 import android.preference.PreferenceManager
 import android.widget.Toast
 import android.support.v7.app.AlertDialog
+import android.content.Intent
+import android.content.SharedPreferences
+
+
 
 class Preferences : AppCompatPreferenceActivity() {
 
+    private val spChanged = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+        if (key == "theme") {
+            startActivity(Intent(this@Preferences, MainActivity::class.java))
+            finish()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        Theme.set(this)
         super.onCreate(savedInstanceState)
         setupActionBar()
         fragmentManager.beginTransaction()
                 .replace(android.R.id.content, GeneralPreferenceFragment())
                 .commit()
+        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(spChanged)
     }
 
     private fun setupActionBar() {

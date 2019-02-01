@@ -16,6 +16,7 @@ class WebActivity : AppCompatActivity() {
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
+        Theme.set(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_web)
         val progress = findViewById<ProgressBar>(R.id.progressBar)

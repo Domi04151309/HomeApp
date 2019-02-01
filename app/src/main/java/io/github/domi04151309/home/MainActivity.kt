@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var reset = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Theme.setNoActionBar(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -236,7 +237,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun setLevelOne() {
-        deviceIcon.setImageDrawable(resources.getDrawable(R.drawable.ic_home))
+        val theme = resources.newTheme()
+        theme.applyStyle(R.style.Dark, false)
+        deviceIcon.setImageDrawable(resources.getDrawable(R.drawable.ic_home, theme))
         deviceName.text = resources.getString(R.string.main_device_name)
         fab.show()
         level = 1

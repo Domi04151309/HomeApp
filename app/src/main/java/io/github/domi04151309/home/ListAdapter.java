@@ -1,6 +1,10 @@
 package io.github.domi04151309.home;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
+import android.preference.PreferenceManager;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +19,7 @@ import android.widget.TextView;
 
 class ListAdapter extends BaseAdapter {
 
+    private final Context c;
     private final String[] title;
     private final String[] summary;
     private final String[] hidden;
@@ -22,6 +27,7 @@ class ListAdapter extends BaseAdapter {
     private static LayoutInflater inflater = null;
 
     public ListAdapter(Context context, String[] title, String[] summary, String[] hidden) {
+        this.c = context;
         this.title = title;
         this.summary = summary;
         this.hidden = hidden;
@@ -31,6 +37,7 @@ class ListAdapter extends BaseAdapter {
     }
 
     public ListAdapter(Context context, String[] title, String[] summary, String[] hidden, int[] drawable) {
+        this.c = context;
         this.title = title;
         this.summary = summary;
         this.hidden = hidden;
@@ -70,9 +77,10 @@ class ListAdapter extends BaseAdapter {
         }
         try {
             assert drawable != null;
-            drawableView.setImageDrawable(drawableView.getResources().getDrawable(drawable[position], null));
+            drawableView.setImageDrawable(coloredDrawable(drawable[position]));
         } catch (Exception e){
             drawableView.setImageDrawable(drawableView.getResources().getDrawable(android.R.color.transparent, null));
+            Log.w(Global.LOG_TAG, String.valueOf(e.getClass()));
         }
         try {
             summaryTxt.setText(summary[position]);
@@ -85,6 +93,17 @@ class ListAdapter extends BaseAdapter {
             Log.w(Global.LOG_TAG, String.valueOf(e.getClass()));
         }
         return vi;
+    }
+
+    private Drawable coloredDrawable(int drawable) {
+        final Resources.Theme theme = c.getResources().newTheme();
+        String pref = PreferenceManager.getDefaultSharedPreferences(c).getString("theme", "light");
+        if(pref.equals("dark") || pref.equals("black")) {
+            theme.applyStyle(R.style.Dark, false);
+        } else {
+            theme.applyStyle(R.style.Light, false);
+        }
+        return ResourcesCompat.getDrawable(c.getResources(), drawable, theme);
     }
 
     private void playAnimation(View v){
