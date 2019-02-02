@@ -1,9 +1,6 @@
 package io.github.domi04151309.home;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
-import android.preference.PreferenceManager;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -77,7 +74,7 @@ class ListAdapter extends BaseAdapter {
         }
         try {
             assert drawable != null;
-            drawableView.setImageDrawable(coloredDrawable(drawable[position]));
+            drawableView.setImageDrawable(ResourcesCompat.getDrawable(c.getResources(), drawable[position], c.getTheme()));
         } catch (Exception e){
             drawableView.setImageDrawable(drawableView.getResources().getDrawable(android.R.color.transparent, null));
             Log.w(Global.LOG_TAG, String.valueOf(e.getClass()));
@@ -93,17 +90,6 @@ class ListAdapter extends BaseAdapter {
             Log.w(Global.LOG_TAG, String.valueOf(e.getClass()));
         }
         return vi;
-    }
-
-    private Drawable coloredDrawable(int drawable) {
-        final Resources.Theme theme = c.getResources().newTheme();
-        String pref = PreferenceManager.getDefaultSharedPreferences(c).getString("theme", "light");
-        if(pref.equals("dark") || pref.equals("black")) {
-            theme.applyStyle(R.style.Dark, false);
-        } else {
-            theme.applyStyle(R.style.Light, false);
-        }
-        return ResourcesCompat.getDrawable(c.getResources(), drawable, theme);
     }
 
     private void playAnimation(View v){

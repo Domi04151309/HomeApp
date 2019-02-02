@@ -1,5 +1,6 @@
 package io.github.domi04151309.home
 
+import android.app.Dialog
 import android.content.DialogInterface
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -40,82 +41,48 @@ class DevicesActivity : AppCompatActivity() {
             val summary = summaryTxt.text.toString()
 
             val builder = AlertDialog.Builder(this)
-            val layout = LinearLayout(this)
-            layout.orientation = LinearLayout.VERTICAL
-            val attributes = obtainStyledAttributes(intArrayOf(R.attr.dialogPreferredPadding))
-            val dimension = attributes.getDimensionPixelSize(0, 0)
-            val halfDimension = dimension/2
-            attributes.recycle()
-            layout.setPaddingRelative(dimension, 0, dimension, 0)
-
-            val nameTxt = TextView(this)
-            nameTxt.text = resources.getString(R.string.pref_add_name)
-            nameTxt.setPaddingRelative(0,halfDimension,0,0)
-
-            val nameBox = EditText(this)
-            nameBox.hint = resources.getString(R.string.pref_add_name_example)
-            nameBox.setSingleLine()
-
-            val addressTxt = TextView(this)
-            addressTxt.text = resources.getString(R.string.pref_add_address)
-            addressTxt.setPaddingRelative(0,halfDimension,0,0)
-
-            val addressBox = EditText(this)
-            addressBox.hint = resources.getString(R.string.pref_add_address_example)
-            addressBox.setSingleLine()
-
-            val iconTxt = TextView(this)
-            iconTxt.text = resources.getString(R.string.pref_add_icon)
-            iconTxt.setPaddingRelative(0,halfDimension,0,0)
-
-            val spinner = Spinner(this)
-            val spinnerArrayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, resources.getStringArray(R.array.pref_icons))
-            spinner.adapter = spinnerArrayAdapter
-
-            layout.addView(nameTxt)
-            layout.addView(nameBox)
-            layout.addView(addressTxt)
-            layout.addView(addressBox)
-            layout.addView(iconTxt)
-            layout.addView(spinner)
 
             var mName = ""
             var mAddress = ""
 
             val jsonDevices = JSONObject(prefs!!.getString("devices_json", Global.DEFAULT_JSON)).getJSONObject("devices")
+
+            /*
+             * Edit a device
+             */
             if (action == "edit") {
                 builder.setTitle(resources.getString(R.string.pref_edit_device))
+                builder.setView(R.layout.dialog_edit)
 
-                nameBox.setText(title)
-                addressBox.setText(summary)
-                spinner.setSelection(spinnerArrayAdapter.getPosition(devices!!.getIcon(title)))
-
-                val deleteBtn = Button(this)
-                deleteBtn.text = resources.getString(R.string.pref_delete_device)
-                deleteBtn.isAllCaps = false
-                deleteBtn.textAlignment = View.TEXT_ALIGNMENT_TEXT_START
-                deleteBtn.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_delete, 0, 0, 0)
-                deleteBtn.background = resources.getDrawable(android.R.color.transparent)
-                iconTxt.setPaddingRelative(0,halfDimension,0,0)
-                layout.addView(deleteBtn)
-
-                builder.setView(layout)
                 builder.setPositiveButton(resources.getString(android.R.string.ok), DialogInterface.OnClickListener { dialog, _ ->
-                    mName = nameBox.text.toString()
-                    mAddress = addressBox.text.toString()
+                    val dialog2 = Dialog::class.java.cast(dialog)
+                    mName = dialog2.findViewById<EditText>(R.id.nameBox)!!.text.toString()
+                    mAddress = dialog2.findViewById<EditText>(R.id.addressBox)!!.text.toString()
                     if(mName == "" || mAddress == "") {
                         Toast.makeText(this,resources.getString(R.string.pref_add_unsuccessful),Toast.LENGTH_LONG).show()
                         dialog.cancel()
                         return@OnClickListener
                     }
                     jsonDevices.remove(title)
-                    addDevice(jsonDevices, mName, mAddress, spinner.selectedItem.toString())
+                    addDevice(
+                            jsonDevices,
+                            mName,
+                            mAddress,
+                            dialog2.findViewById<Spinner>(R.id.iconSpinner)!!.selectedItem.toString(),
+                            dialog2.findViewById<Spinner>(R.id.modeSpinner)!!.selectedItem.toString()
+                    )
                     loadDevices()
                 })
                 builder.setNegativeButton(resources.getString(android.R.string.cancel), { dialog, _ -> dialog.cancel() })
+
                 val dialog = builder.show()
 
-                deleteBtn.setOnClickListener {
+                dialog.findViewById<EditText>(R.id.nameBox)!!.setText(title)
+                dialog.findViewById<EditText>(R.id.addressBox)!!.setText(summary)
+                val iconSpinnerArrayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, resources.getStringArray(R.array.pref_icons))
+                dialog.findViewById<Spinner>(R.id.iconSpinner)!!.setSelection(iconSpinnerArrayAdapter.getPosition(devices!!.getIcon(title)))
+
+                dialog.findViewById<Button>(R.id.deleteBtn)!!.setOnClickListener {
                     val secondBuilder = AlertDialog.Builder(this)
                     secondBuilder.setTitle(resources.getString(R.string.pref_delete_device))
                     secondBuilder.setMessage(resources.getString(R.string.pref_delete_device_question))
@@ -128,19 +95,31 @@ class DevicesActivity : AppCompatActivity() {
                     secondBuilder.setNegativeButton(resources.getString(android.R.string.cancel), { dialog, _ -> dialog.cancel() })
                     secondBuilder.show()
                 }
-            } else if (action == "add") {
+            }
+
+            /*
+             * Add a device
+             */
+            else if (action == "add") {
                 builder.setTitle(resources.getString(R.string.pref_add))
-                builder.setView(layout)
+                builder.setView(R.layout.dialog_add)
 
                 builder.setPositiveButton(resources.getString(android.R.string.ok), DialogInterface.OnClickListener { dialog, _ ->
-                    mName = nameBox.text.toString()
-                    mAddress = addressBox.text.toString()
+                    val dialog2 = Dialog::class.java.cast(dialog)
+                    mName = dialog2.findViewById<EditText>(R.id.nameBox)!!.text.toString()
+                    mAddress = dialog2.findViewById<EditText>(R.id.addressBox)!!.text.toString()
                     if(mName == "" || mAddress == "") {
                         Toast.makeText(this,resources.getString(R.string.pref_add_unsuccessful),Toast.LENGTH_LONG).show()
                         dialog.cancel()
                         return@OnClickListener
                     }
-                    addDevice(jsonDevices, mName, mAddress, spinner.selectedItem.toString())
+                    addDevice(
+                            jsonDevices,
+                            mName,
+                            mAddress,
+                            dialog2.findViewById<Spinner>(R.id.iconSpinner)!!.selectedItem.toString(),
+                            dialog2.findViewById<Spinner>(R.id.modeSpinner)!!.selectedItem.toString()
+                    )
                     loadDevices()
                 })
                 builder.setNegativeButton(resources.getString(android.R.string.cancel), { dialog, _ -> dialog.cancel() })
@@ -149,8 +128,8 @@ class DevicesActivity : AppCompatActivity() {
         }
     }
 
-    private fun addDevice(jsonDevices: JSONObject, name: String, address: String, icon: String) {
-        val deviceObject = JSONObject().put("address", address).put("icon", icon)
+    private fun addDevice(jsonDevices: JSONObject, name: String, address: String, icon: String, mode: String) {
+        val deviceObject = JSONObject().put("address", address).put("icon", icon).put("mode", mode)
         jsonDevices.put(name, deviceObject)
         prefs!!.edit().putString("devices_json", JSONObject().put("devices", jsonDevices).toString()).apply()
     }
@@ -201,7 +180,7 @@ class DevicesActivity : AppCompatActivity() {
             drawables = IntArray(1)
             titles[i] = resources.getString(R.string.err_wrong_format)
             summaries[i] = resources.getString(R.string.err_wrong_format_summary)
-            actions[i] = "null"
+            actions[i] = "nonu"
             drawables[i] = R.drawable.ic_warning
             Log.e(Global.LOG_TAG, e.toString())
         }

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingStart="?dialogPreferredPadding"
+    android:paddingEnd="?dialogPreferredPadding">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dialog_item_margin"
+        android:text="@string/pref_add_name"
+        android:labelFor="@+id/nameBox" />
+
+    <EditText
+        android:id="@+id/nameBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/pref_add_name_example" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dialog_item_margin"
+        android:text="@string/pref_add_address"
+        android:labelFor="@+id/addressBox" />
+
+    <EditText
+        android:id="@+id/addressBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/pref_add_address_example" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dialog_item_margin"
+        android:text="@string/pref_add_icon" />
+
+    <Spinner
+        android:id="@+id/iconSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/pref_icons" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dialog_item_margin"
+        android:text="@string/pref_add_mode" />
+
+    <Spinner
+        android:id="@+id/modeSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/pref_add_mode_array" />
+
+    <Button
+        android:id="@+id/deleteBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dialog_item_margin"
+        android:drawableStart="@drawable/ic_delete"
+        android:background="@null"
+        android:text="@string/pref_delete_device"
+        android:textAlignment="textStart"
+        android:textAllCaps="false" />
+</LinearLayout>

@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.support.design.widget.AppBarLayout
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.AppCompatActivity
@@ -38,14 +37,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         devices = Devices(PreferenceManager.getDefaultSharedPreferences(this))
         listView = findViewById<View>(R.id.listView) as ListView
-        val appBar = findViewById<AppBarLayout>(R.id.app_bar)
-
-        listView!!.viewTreeObserver.addOnScrollChangedListener({
-            if (Global.getScroll(listView!!) > 0)
-                appBar.elevation = 16f
-            else
-                appBar.elevation = 0f
-        })
 
         fab.setOnClickListener { view ->
             reset = true
@@ -124,11 +115,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun loadCommands(view: View){
         val title = view.findViewById<TextView>(R.id.title).text
-        val summary = view.findViewById(R.id.summary) as TextView
-        val address = view.findViewById(R.id.hidden) as TextView
-        if (address.text.toString() == "http://null/") return
+        val summary = view.findViewById<TextView>(R.id.summary)
+        val address = view.findViewById<TextView>(R.id.hidden).text.toString()
+        if (address == "http://null/") return
         summary.text = resources.getString(R.string.main_connecting)
-        val url = address.text.toString() + "commands"
+        if (devices!!.getMode(title.toString()) == "Website"){
+            startActivity(Intent(this, WebActivity::class.java).putExtra("URI", address).putExtra("title", title))
+            reset = true
+            return
+        }
+        val url = address + "commands"
         Log.d(Global.LOG_TAG, url)
         val queue = Volley.newRequestQueue(this)
         val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null,
@@ -147,7 +143,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                                 val mJsonString = commandsList.getString(i)
                                 titles[i] = jsonCommands.getJSONObject(mJsonString).getString("title")
                                 summaries[i] = jsonCommands.getJSONObject(mJsonString).getString("summary")
-                                commands[i] = address.text.toString() + mJsonString
+                                commands[i] = address + mJsonString
                             } catch (e: JSONException) {
                                 Log.e(Global.LOG_TAG, e.toString())
                             }

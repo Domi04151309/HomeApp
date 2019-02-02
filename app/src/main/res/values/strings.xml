@@ -50,6 +50,11 @@
     <string name="pref_add_address">Address</string>
     <string name="pref_add_address_example">http://127.0.0.1/</string>
     <string name="pref_add_icon">Icon</string>
+    <string name="pref_add_mode">Mode</string>
+    <string-array name="pref_add_mode_array">
+        <item>Normal</item>
+        <item>Website</item>
+    </string-array>
     <string name="pref_add_unsuccessful">Please enter a name and an address</string>
     <string name="pref_other">Show other devices</string>
     <string name="pref_other_summary">Show other devices in a second list</string>

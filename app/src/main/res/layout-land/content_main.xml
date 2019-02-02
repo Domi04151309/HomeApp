@@ -11,20 +11,20 @@
     <LinearLayout
         style="@style/AppTheme.Header.Land"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/header_icon_height"
+        android:layout_height="wrap_content"
         tools:ignore="UseCompoundDrawables">
 
         <ImageView
             android:id="@+id/deviceIcon"
             android:layout_width="@dimen/header_icon_height"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/header_icon_height"
             android:contentDescription="@string/main_device_icon"
             app:srcCompat="@drawable/ic_home" />
 
         <TextView
             android:id="@+id/deviceName"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/header_icon_height"
             android:gravity="center_vertical"
             android:paddingEnd="@dimen/activity_horizontal_margin"
             android:paddingStart="@dimen/activity_horizontal_margin"

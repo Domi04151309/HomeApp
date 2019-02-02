@@ -30,4 +30,8 @@ class Devices constructor(prefs: SharedPreferences) {
     fun getIcon(name: String): String {
         return getDeviceObject(name).getString("icon")
     }
+
+    fun getMode(name: String): String {
+        return getDeviceObject(name).getString("mode")
+    }
 }
