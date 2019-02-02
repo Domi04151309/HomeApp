@@ -133,11 +133,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         Log.d(Global.LOG_TAG, response.toString())
                         val jsonCommands = response.getJSONObject("commands")
                         val commandsList = jsonCommands.names()
-                        val titles = arrayOfNulls<String>(commandsList.length())
-                        val summaries = arrayOfNulls<String>(commandsList.length())
-                        val commands = arrayOfNulls<String>(commandsList.length())
-                        var i = 0
                         val count = commandsList.length()
+                        val titles = arrayOfNulls<String>(count)
+                        val summaries = arrayOfNulls<String>(count)
+                        val commands = arrayOfNulls<String>(count)
+                        var i = 0
                         while (i < count) {
                             try {
                                 val mJsonString = commandsList.getString(i)

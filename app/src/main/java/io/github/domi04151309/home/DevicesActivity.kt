@@ -81,6 +81,8 @@ class DevicesActivity : AppCompatActivity() {
                 dialog.findViewById<EditText>(R.id.addressBox)!!.setText(summary)
                 val iconSpinnerArrayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, resources.getStringArray(R.array.pref_icons))
                 dialog.findViewById<Spinner>(R.id.iconSpinner)!!.setSelection(iconSpinnerArrayAdapter.getPosition(devices!!.getIcon(title)))
+                val modeSpinnerArrayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, resources.getStringArray(R.array.pref_add_mode_array))
+                dialog.findViewById<Spinner>(R.id.modeSpinner)!!.setSelection(modeSpinnerArrayAdapter.getPosition(devices!!.getMode(title)))
 
                 dialog.findViewById<Button>(R.id.deleteBtn)!!.setOnClickListener {
                     val secondBuilder = AlertDialog.Builder(this)
