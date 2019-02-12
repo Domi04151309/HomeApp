@@ -17,6 +17,7 @@
     <string name="main_device_client_error">The device is not compatible</string>
     <string name="main_command_client_error">The command does not exist</string>
     <string name="main_execution_failed">Command execution failed</string>
+    <string name="main_execution_completed">Execution completed successfully</string>
 
     <string name="main_device_icon">Device Icon</string>
     <string name="main_device_name">Your Devices</string>

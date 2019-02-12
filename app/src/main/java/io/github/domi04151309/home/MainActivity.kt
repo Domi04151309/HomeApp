@@ -185,8 +185,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     try {
                         Toast.makeText(this, response.getString("toast"), Toast.LENGTH_LONG).show()
                     } catch (e: Exception) {
-                        Toast.makeText(this, resources.getString(R.string.err_wrong_format_summary), Toast.LENGTH_LONG).show()
-                        Log.e(Global.LOG_TAG, e.toString())
+                        Toast.makeText(this, resources.getString(R.string.main_execution_completed), Toast.LENGTH_LONG).show()
+                        Log.w(Global.LOG_TAG, e.toString())
                     }
                 },
                 Response.ErrorListener { error ->
