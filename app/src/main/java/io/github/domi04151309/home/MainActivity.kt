@@ -12,8 +12,7 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
-import com.android.volley.Request
-import com.android.volley.Response
+import com.android.volley.*
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import kotlinx.android.synthetic.main.activity_main.*
@@ -149,7 +148,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             }
                             i++
                         }
-
                         val adapter = ListAdapter(this, titles, summaries, commands)
                         listView!!.adapter = adapter
                         setLevelTwo(view.findViewById<ImageView>(R.id.drawable).drawable, title)
@@ -161,6 +159,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 },
                 Response.ErrorListener { error ->
                     summary.text = resources.getString(R.string.main_device_unavailable)
+                    if(error is TimeoutError || error is NoConnectionError) {
+                        summary.text = resources.getString(R.string.main_device_unavailable)
+                    } else if(error is ParseError) {
+                        summary.text = resources.getString(R.string.main_parse_error)
+                    } else if(error is ClientError) {
+                        summary.text = resources.getString(R.string.main_device_client_error)
+                    } else {
+                        summary.text = resources.getString(R.string.main_device_unavailable)
+                    }
                     Log.w(Global.LOG_TAG, error.toString())
                 }
         )
@@ -183,7 +190,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     }
                 },
                 Response.ErrorListener { error ->
-                    Toast.makeText(this, resources.getString(R.string.main_execution_failed), Toast.LENGTH_LONG).show()
+                    if(error is TimeoutError || error is NoConnectionError) {
+                        Toast.makeText(this, resources.getString(R.string.main_device_unavailable), Toast.LENGTH_LONG).show()
+                    } else if(error is ParseError) {
+                        Toast.makeText(this, resources.getString(R.string.main_parse_error), Toast.LENGTH_LONG).show()
+                    } else if(error is ClientError) {
+                        Toast.makeText(this, resources.getString(R.string.main_command_client_error), Toast.LENGTH_LONG).show()
+                    } else {
+                        Toast.makeText(this, resources.getString(R.string.main_execution_failed), Toast.LENGTH_LONG).show()
+                    }
                     Log.w(Global.LOG_TAG, error.toString())
                 }
         )

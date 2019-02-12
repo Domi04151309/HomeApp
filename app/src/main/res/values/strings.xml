@@ -13,6 +13,9 @@
     <string name="main_tap_to_connect">Tap to connect</string>
     <string name="main_connecting">Connecting</string>
     <string name="main_device_unavailable">The device is currently unavailable</string>
+    <string name="main_parse_error">The response does not meet the requirements</string>
+    <string name="main_device_client_error">The device is not compatible</string>
+    <string name="main_command_client_error">The command does not exist</string>
     <string name="main_execution_failed">Command execution failed</string>
 
     <string name="main_device_icon">Device Icon</string>

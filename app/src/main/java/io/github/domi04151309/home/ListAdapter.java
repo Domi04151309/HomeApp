@@ -77,7 +77,6 @@ class ListAdapter extends BaseAdapter {
             drawableView.setImageDrawable(ResourcesCompat.getDrawable(c.getResources(), drawable[position], c.getTheme()));
         } catch (Exception e){
             drawableView.setImageDrawable(drawableView.getResources().getDrawable(android.R.color.transparent, null));
-            Log.w(Global.LOG_TAG, String.valueOf(e.getClass()));
         }
         try {
             summaryTxt.setText(summary[position]);
