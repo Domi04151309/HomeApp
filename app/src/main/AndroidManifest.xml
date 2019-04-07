@@ -7,13 +7,13 @@
 
     <application
         android:allowBackup="true"
+        android:fullBackupContent="@xml/backup_descriptor"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true"
-        android:fullBackupContent="@xml/backup_descriptor">
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".SplashScreen"
             android:theme="@style/AppTheme.Splash">
@@ -43,12 +43,20 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="io.github.domi04151309.home.MainActivity" />
         </activity>
-        <activity android:name=".DevicesActivity"
+        <activity
+            android:name=".DevicesActivity"
             android:label="@string/pref"
             android:parentActivityName=".Preferences">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="io.github.domi04151309.home.Preferences" />
+        </activity>
+        <activity android:name=".EditDeviceActivity"
+            android:label="@string/pref_add"
+            android:parentActivityName=".DevicesActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="io.github.domi04151309.home.DevicesActivity" />
         </activity>
     </application>
 

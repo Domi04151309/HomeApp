@@ -34,4 +34,17 @@ class Devices constructor(prefs: SharedPreferences) {
     fun getMode(name: String): String {
         return getDeviceObject(name).getString("mode")
     }
+
+    fun addDevice(name: String, address: String, icon: String, mode: String) {
+        val newObject = getDevicesObject()
+        val deviceObject = JSONObject().put("address", address).put("icon", icon).put("mode", mode)
+        newObject.put(name, deviceObject)
+        _prefs!!.edit().putString("devices_json", JSONObject().put("devices", newObject).toString()).apply()
+    }
+
+    fun deleteDevice(name: String) {
+        val newObject = getDevicesObject()
+        newObject.remove(name)
+        _prefs!!.edit().putString("devices_json", JSONObject().put("devices", newObject).toString()).apply()
+    }
 }

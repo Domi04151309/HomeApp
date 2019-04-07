@@ -11,8 +11,6 @@ import android.support.v7.app.AlertDialog
 import android.content.Intent
 import android.content.SharedPreferences
 
-
-
 class Preferences : AppCompatPreferenceActivity() {
 
     private val spChanged = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
@@ -44,15 +42,15 @@ class Preferences : AppCompatPreferenceActivity() {
             addPreferencesFromResource(R.xml.pref_general)
             findPreference("version").summary = BuildConfig.VERSION_NAME
             findPreference("reset_json").onPreferenceClickListener = Preference.OnPreferenceClickListener {
-                val builder = AlertDialog.Builder(context)
-                builder.setTitle(resources.getString(R.string.pref_reset))
-                builder.setMessage(resources.getString(R.string.pref_reset_question))
-                builder.setPositiveButton(resources.getString(android.R.string.ok), { _, _ ->
-                    PreferenceManager.getDefaultSharedPreferences(context).edit().putString("devices_json", Global.DEFAULT_JSON).apply()
-                    Toast.makeText(context, resources.getString(R.string.pref_reset_toast), Toast.LENGTH_LONG).show()
-                })
-                builder.setNegativeButton(resources.getString(android.R.string.cancel), { dialog, _ -> dialog.cancel() })
-                builder.show()
+                AlertDialog.Builder(context)
+                        .setTitle(resources.getString(R.string.pref_reset))
+                        .setMessage(resources.getString(R.string.pref_reset_question))
+                        .setPositiveButton(resources.getString(android.R.string.ok), { _, _ ->
+                            PreferenceManager.getDefaultSharedPreferences(context).edit().putString("devices_json", Global.DEFAULT_JSON).apply()
+                            Toast.makeText(context, resources.getString(R.string.pref_reset_toast), Toast.LENGTH_LONG).show()
+                        })
+                        .setNegativeButton(resources.getString(android.R.string.cancel), { dialog, _ -> dialog.cancel() })
+                        .show()
                 true
             }
         }

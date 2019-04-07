@@ -26,7 +26,7 @@ object Global {
             "Tablet" -> R.drawable.ic_device_tablet
             "TV" -> R.drawable.ic_device_tv
             else -> {
-                0
+                R.drawable.ic_warning
             }
         }
     }
