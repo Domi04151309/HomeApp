@@ -65,7 +65,7 @@ class DevicesActivity : AppCompatActivity() {
                     try {
                         val name = devices!!.getName(i)
                         titles[i] = name
-                        summaries[i] = Global.formatURL(devices!!.getAddress(name))
+                        summaries[i] = devices!!.getAddress(name)
                         actions[i] = "edit"
                         drawables[i] = Global.getIconId(devices!!.getIcon(name))
                     } catch (e: JSONException) {

@@ -33,6 +33,16 @@ class ListAdapter extends BaseAdapter {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
+    public ListAdapter(Context context, String[] title, String[] summary, int[] drawable) {
+        this.c = context;
+        this.title = title;
+        this.summary = summary;
+        this.hidden = null;
+        this.drawable = drawable;
+        inflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
     public ListAdapter(Context context, String[] title, String[] summary, String[] hidden, int[] drawable) {
         this.c = context;
         this.title = title;

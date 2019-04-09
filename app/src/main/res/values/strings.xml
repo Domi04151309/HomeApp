@@ -12,6 +12,7 @@
     <string name="main_no_devices_summary">Add a new device in the settings</string>
     <string name="main_tap_to_connect">Tap to connect</string>
     <string name="main_connecting">Connecting</string>
+    <string name="main_unknown_mode">The device uses an unknown mode</string>
     <string name="main_device_unavailable">The device is currently unavailable</string>
     <string name="main_parse_error">The response does not meet the requirements</string>
     <string name="main_device_client_error">The device is not compatible</string>

@@ -5,7 +5,7 @@ import org.json.JSONObject
 
 class Devices constructor(prefs: SharedPreferences) {
 
-    private var _prefs: SharedPreferences? = prefs
+    private val _prefs: SharedPreferences? = prefs
 
     private fun getDevicesObject(): JSONObject {
         return JSONObject(_prefs!!.getString("devices_json", Global.DEFAULT_JSON)).getJSONObject("devices")
@@ -24,7 +24,12 @@ class Devices constructor(prefs: SharedPreferences) {
     }
 
     fun getAddress(name: String): String {
-        return getDeviceObject(name).getString("address")
+        var url = getDeviceObject(name).getString("address")
+        if (!(url.startsWith("https://") || url.startsWith("http://")))
+            url = "http://$url"
+        if (!url.endsWith("/"))
+            url += "/"
+        return url
     }
 
     fun getIcon(name: String): String {

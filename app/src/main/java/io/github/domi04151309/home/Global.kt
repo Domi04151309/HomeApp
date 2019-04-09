@@ -6,15 +6,6 @@ object Global {
 
     const val DEFAULT_JSON = "{\"devices\":{}}"
 
-    fun formatURL(url: String): String {
-        var _url = url
-        if (!(_url.startsWith("https://") || _url.startsWith("http://")))
-            _url = "http://$_url"
-        if (!_url.endsWith("/"))
-            _url += "/"
-        return _url
-    }
-
     fun getIconId(string: String): Int {
         return when (string) {
             "Lamp" -> R.drawable.ic_device_lamp

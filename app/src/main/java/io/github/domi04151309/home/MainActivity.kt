@@ -25,7 +25,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private var devices: Devices? = null
     private var listView: ListView? = null
-    private var addresses: Array<String?>? = null
     private var level = 1
     private var reset = false
 
@@ -37,7 +36,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         devices = Devices(PreferenceManager.getDefaultSharedPreferences(this))
         listView = findViewById<View>(R.id.listView) as ListView
 
-        fab.setOnClickListener { view ->
+        fab.setOnClickListener { _ ->
             reset = true
             startActivity(Intent(this, DevicesActivity::class.java))
         }
@@ -52,9 +51,27 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         loadDevices()
 
-        listView!!.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
-            if (level == 1)
-                loadCommands(view)
+        listView!!.onItemClickListener = AdapterView.OnItemClickListener { _, view, _, _ ->
+            val name = view.findViewById<TextView>(R.id.title).text.toString()
+            if (name == resources.getString(R.string.main_no_devices)
+                    || name == resources.getString(R.string.err_wrong_format))
+                return@OnItemClickListener
+            if (level == 1) {
+                when (devices!!.getMode(name)) {
+                    "Website" -> {
+                        startActivity(
+                                Intent(this, WebActivity::class.java)
+                                        .putExtra("URI", devices!!.getAddress(name))
+                                        .putExtra("title", name)
+                        )
+                        reset = true
+                    }
+                    "Normal" ->
+                        loadCommands(view, name)
+                    else ->
+                        Toast.makeText(this, resources.getString(R.string.main_unknown_mode), Toast.LENGTH_LONG).show()
+                }
+            }
             else if (level == 2)
                 execute(view)
         }
@@ -69,24 +86,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             if (devices!!.length() == 0) {
                 titles = arrayOfNulls(1)
                 summaries = arrayOfNulls(1)
-                addresses = arrayOfNulls(1)
                 drawables = IntArray(1)
                 titles[i] = resources.getString(R.string.main_no_devices)
                 summaries[i] = resources.getString(R.string.main_no_devices_summary)
-                addresses!![i] = Global.formatURL("null")
                 drawables[i] = R.drawable.ic_info
             } else {
                 val count = devices!!.length()
                 titles = arrayOfNulls(count)
                 summaries = arrayOfNulls(count)
                 drawables = IntArray(count)
-                addresses = arrayOfNulls(count)
                 while (i < count) {
                     try {
                         val name = devices!!.getName(i)
                         titles[i] = name
                         summaries[i] = resources.getString(R.string.main_tap_to_connect)
-                        addresses!![i] = Global.formatURL(devices!!.getAddress(name))
                         drawables[i] = Global.getIconId(devices!!.getIcon(name))
                     } catch (e: JSONException) {
                         Log.e(Global.LOG_TAG, e.toString())
@@ -97,32 +110,23 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         } catch (e: Exception){
             titles = arrayOfNulls(1)
             summaries = arrayOfNulls(1)
-            addresses = arrayOfNulls(1)
             drawables = IntArray(1)
             titles[i] = resources.getString(R.string.err_wrong_format)
             summaries[i] = resources.getString(R.string.err_wrong_format_summary)
             drawables[i] = R.drawable.ic_warning
-            addresses!![i] = Global.formatURL("null")
             Log.e(Global.LOG_TAG, e.toString())
         }
         Log.d(Global.LOG_TAG, Arrays.toString(titles) + Arrays.toString(summaries))
 
-        val adapter = ListAdapter(this, titles, summaries, addresses, drawables)
+        val adapter = ListAdapter(this, titles, summaries, drawables)
         listView!!.adapter = adapter
         setLevelOne()
     }
 
-    private fun loadCommands(view: View){
-        val title = view.findViewById<TextView>(R.id.title).text
+    private fun loadCommands(view: View, device: String){
         val summary = view.findViewById<TextView>(R.id.summary)
-        val address = view.findViewById<TextView>(R.id.hidden).text.toString()
-        if (address == "http://null/") return
+        val address = devices!!.getAddress(device)
         summary.text = resources.getString(R.string.main_connecting)
-        if (devices!!.getMode(title.toString()) == "Website"){
-            startActivity(Intent(this, WebActivity::class.java).putExtra("URI", address).putExtra("title", title))
-            reset = true
-            return
-        }
         val url = address + "commands"
         Log.d(Global.LOG_TAG, url)
         val queue = Volley.newRequestQueue(this)
@@ -130,19 +134,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Response.Listener { response ->
                     try {
                         Log.d(Global.LOG_TAG, response.toString())
-                        val jsonCommands = response.getJSONObject("commands")
-                        val commandsList = jsonCommands.names()
-                        val count = commandsList.length()
+                        val commandsObject = Commands(response.getJSONObject("commands"))
+                        val count = commandsObject.length()
                         val titles = arrayOfNulls<String>(count)
                         val summaries = arrayOfNulls<String>(count)
                         val commands = arrayOfNulls<String>(count)
                         var i = 0
                         while (i < count) {
                             try {
-                                val mJsonString = commandsList.getString(i)
-                                titles[i] = jsonCommands.getJSONObject(mJsonString).getString("title")
-                                summaries[i] = jsonCommands.getJSONObject(mJsonString).getString("summary")
-                                commands[i] = address + mJsonString
+                                commandsObject.selectCommand(i)
+                                titles[i] = commandsObject.getSelectedTitle()
+                                summaries[i] = commandsObject.getSelectedSummary()
+                                commands[i] = address + commandsObject.getSelected()
                             } catch (e: JSONException) {
                                 Log.e(Global.LOG_TAG, e.toString())
                             }
@@ -150,7 +153,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         }
                         val adapter = ListAdapter(this, titles, summaries, commands)
                         listView!!.adapter = adapter
-                        setLevelTwo(view.findViewById<ImageView>(R.id.drawable).drawable, title)
+                        setLevelTwo(view.findViewById<ImageView>(R.id.drawable).drawable, device)
                     } catch (e: Exception) {
                         summary.text = resources.getString(R.string.err_wrong_format_summary)
                         setLevelOne()
@@ -158,7 +161,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     }
                 },
                 Response.ErrorListener { error ->
-                    summary.text = resources.getString(R.string.main_device_unavailable)
                     if(error is TimeoutError || error is NoConnectionError) {
                         summary.text = resources.getString(R.string.main_device_unavailable)
                     } else if(error is ParseError) {
