@@ -243,6 +243,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(intent)
                 reset = true
             }
+            R.id.nav_philips_hue -> {
+                val intent = Intent()
+                intent.component = ComponentName("com.philips.lighting.hue2", "com.philips.lighting.hue2.ContentActivity")
+                startActivity(intent)
+                reset = true
+            }
         }
 
         drawer_layout.closeDrawer(GravityCompat.START)

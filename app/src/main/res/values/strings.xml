@@ -7,6 +7,7 @@
     <string name="nav_source">Source code</string>
     <string name="nav_other_apps">Other Apps</string>
     <string name="nav_google_home">Google Home</string>
+    <string name="nav_philips_hue">Philips Hue</string>
 
     <string name="main_no_devices">No devices found</string>
     <string name="main_no_devices_summary">Add a new device in the settings</string>
