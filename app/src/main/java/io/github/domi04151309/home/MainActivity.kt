@@ -36,15 +36,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         devices = Devices(PreferenceManager.getDefaultSharedPreferences(this))
         listView = findViewById<View>(R.id.listView) as ListView
 
-        fab.setOnClickListener { _ ->
+        fab.setOnClickListener {
             reset = true
             startActivity(Intent(this, DevicesActivity::class.java))
         }
 
         val menuButton = findViewById<View>(R.id.menu_icon) as ImageView
-        menuButton.setOnClickListener({
+        menuButton.setOnClickListener {
             drawer_layout.openDrawer(GravityCompat.START)
-        })
+        }
 
         nav_view.setNavigationItemSelectedListener(this)
         nav_view.setCheckedItem(R.id.nav_devices)

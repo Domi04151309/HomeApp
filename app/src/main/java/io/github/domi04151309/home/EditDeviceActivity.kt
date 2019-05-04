@@ -41,11 +41,11 @@ class EditDeviceActivity : AppCompatActivity() {
                 AlertDialog.Builder(this)
                         .setTitle(resources.getString(R.string.pref_delete_device))
                         .setMessage(resources.getString(R.string.pref_delete_device_question))
-                        .setPositiveButton(resources.getString(android.R.string.ok), { _, _ ->
+                        .setPositiveButton(resources.getString(android.R.string.ok)) { _, _ ->
                             devices.deleteDevice(device)
                             finish()
-                        })
-                        .setNegativeButton(resources.getString(android.R.string.cancel), { _, _ -> })
+                        }
+                        .setNegativeButton(resources.getString(android.R.string.cancel)) { _, _ -> }
                         .show()
             }
         } else
@@ -57,7 +57,7 @@ class EditDeviceActivity : AppCompatActivity() {
                 AlertDialog.Builder(this)
                         .setTitle(resources.getString(R.string.pref_info))
                         .setMessage(resources.getString(R.string.pref_add_unsuccessful))
-                        .setPositiveButton(resources.getString(android.R.string.ok), { _, _ -> })
+                        .setPositiveButton(resources.getString(android.R.string.ok)) { _, _ -> }
                         .show()
                 return@setOnClickListener
             }

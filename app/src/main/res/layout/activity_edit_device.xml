@@ -48,7 +48,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dialog_item_margin"
-            android:labelFor="@+id/nameBox"
             android:text="@string/pref_add_name" />
 
         <EditText
@@ -56,13 +55,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:hint="@string/pref_add_name_example" />
+            android:hint="@string/pref_add_name_example"
+            android:inputType="text"
+            android:importantForAutofill="no"
+            tools:targetApi="o" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dialog_item_margin"
-            android:labelFor="@+id/addressBox"
             android:text="@string/pref_add_address" />
 
         <EditText
@@ -70,7 +71,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:hint="@string/pref_add_address_example" />
+            android:hint="@string/pref_add_address_example"
+            android:inputType="text"
+            android:importantForAutofill="no"
+            tools:targetApi="o" />
 
         <TextView
             android:layout_width="match_parent"
