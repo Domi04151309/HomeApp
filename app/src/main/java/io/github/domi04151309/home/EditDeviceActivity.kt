@@ -29,12 +29,12 @@ class EditDeviceActivity : AppCompatActivity() {
 
         if (device != null){
             title = resources.getString(R.string.pref_edit_device)
-            findViewById<ImageView>(R.id.deviceIcn).setImageDrawable(resources.getDrawable(Global.getIconId(devices.getIcon(device))))
+            findViewById<ImageView>(R.id.deviceIcn).setImageDrawable(resources.getDrawable(devices.getIconId(device), this.theme))
             nameTxt.text = device
 
             nameBox.setText(device)
             addressBox.setText(devices.getAddress(device))
-            iconSpinner.setSelection(iconSpinnerArrayAdapter.getPosition(devices.getIcon(device)))
+            iconSpinner.setSelection(iconSpinnerArrayAdapter.getPosition(devices.getIconName(device)))
             modeSpinner.setSelection(modeSpinnerArrayAdapter.getPosition(devices.getMode(device)))
 
             deleteBtn.setOnClickListener {

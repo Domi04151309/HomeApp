@@ -32,8 +32,24 @@ class Devices constructor(prefs: SharedPreferences) {
         return url
     }
 
-    fun getIcon(name: String): String {
+    fun getIconName(name: String): String {
         return getDeviceObject(name).getString("icon")
+    }
+
+    fun getIconId(name: String): Int {
+        return when (getIconName(name)) {
+            "Lamp" -> R.drawable.ic_device_lamp
+            "Laptop" -> R.drawable.ic_device_laptop
+            "Phone" -> R.drawable.ic_device_phone
+            "Raspberry Pi" -> R.drawable.ic_device_raspberry_pi
+            "Speaker" -> R.drawable.ic_device_speaker
+            "Stack" -> R.drawable.ic_device_stack
+            "Tablet" -> R.drawable.ic_device_tablet
+            "TV" -> R.drawable.ic_device_tv
+            else -> {
+                R.drawable.ic_warning
+            }
+        }
     }
 
     fun getMode(name: String): String {

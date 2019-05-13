@@ -16,16 +16,26 @@
     <string name="main_unknown_mode">The device uses an unknown mode</string>
     <string name="main_device_unavailable">The device is currently unavailable</string>
     <string name="main_parse_error">The response does not meet the requirements</string>
-    <string name="main_device_client_error">The device is not compatible</string>
-    <string name="main_command_client_error">The command does not exist</string>
-    <string name="main_execution_failed">Command execution failed</string>
+    <string name="main_client_error">The device did not answer</string>
     <string name="main_execution_completed">Execution completed successfully</string>
 
     <string name="main_device_icon">Device Icon</string>
     <string name="main_device_name">Your Devices</string>
 
+    <string name="err">Something went wrong</string>
     <string name="err_wrong_format">Wrong format</string>
     <string name="err_wrong_format_summary">The JSON string does not meet the requirements</string>
+
+    <string name="hue_connect">Connect to your Bridge</string>
+    <string name="hue_press_button">Please press the button on your bridge to continue.</string>
+    <string name="hue_state_on">Currently turned on</string>
+    <string name="hue_state_off">Currently turned off</string>
+    <string name="hue_whole_room">Control whole room</string>
+    <string name="hue_whole_room_summary">Control all lights in the room at once</string>
+    <string name="hue_on">On</string>
+    <string name="hue_off">Off</string>
+    <string name="hue_brightness">Brightness</string>
+    <string name="hue_color_temperature">Color temperature</string>
 
     <string name="webView">Web View</string>
 
@@ -87,6 +97,11 @@
     </string-array>
     <string-array name="pref_add_mode_array">
         <item>Normal</item>
+        <item>Hue Bridge</item>
         <item>Website</item>
     </string-array>
+
+    <string name="placeholder">Placeholder</string>
+    <string name="str_continue">Continue</string>
+    <string name="try_again">Please try again</string>
 </resources>

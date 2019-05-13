@@ -1,6 +1,7 @@
 package io.github.domi04151309.home
 
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -12,21 +13,163 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
-import com.android.volley.*
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
+import io.github.domi04151309.home.simplehome.SimpleHomeAPI
+import io.github.domi04151309.home.hue.HueAPI
+import io.github.domi04151309.home.hue.HueLampActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import org.json.JSONArray
 import org.json.JSONException
-import java.util.*
+import org.json.JSONObject
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private var devices: Devices? = null
     private var listView: ListView? = null
-    private var level = 1
+    private var currentView: View? = null
+    private var currentDevice = ""
+    private var hueRoom: String = ""
+    private var hueCurrentIcon: Drawable? = null
+    private var level = "one"
     private var reset = false
+
+    /*
+     * Things related to the Home API
+     */
+    private val homeAPI = SimpleHomeAPI(this)
+
+    private val homeRequestCallBack = object : SimpleHomeAPI.RequestCallBack {
+
+        override fun onExecutionFinished(context: Context, result: CharSequence) {
+            Toast.makeText(context, result, Toast.LENGTH_LONG).show()
+        }
+
+        override fun onCommandsLoaded(
+                context: Context,
+                errorMessage: String,
+                device: String,
+                titles: Array<String?>,
+                summaries: Array<String?>,
+                commandAddresses: Array<String?>
+        ) {
+            if (errorMessage == "") {
+                val adapter = ListAdapter(context, titles, summaries, commandAddresses)
+                listView!!.adapter = adapter
+                setLevelTwo(currentView!!.findViewById<ImageView>(R.id.drawable).drawable, device)
+            } else {
+                setLevelOne()
+                currentView!!.findViewById<TextView>(R.id.summary).text = errorMessage
+            }
+        }
+    }
+
+
+    /*
+     * Things related to the Hue API
+     */
+    private var hueAPI: HueAPI? = null
+
+    private val hueRequestCallBack = object : HueAPI.RequestCallBack {
+
+        override fun onGroupsLoaded(
+                context: Context,
+                response: JSONObject?,
+                device: String,
+                errorMessage: String
+        ) {
+            if (errorMessage == "") {
+                try {
+                    val count = response!!.length()
+                    val titles = arrayOfNulls<String>(count)
+                    val summaries = arrayOfNulls<String>(count)
+                    val drawables = IntArray(count)
+                    val lightIDs = arrayOfNulls<String>(count)
+                    var i = 0
+                    var currentObjectName: String?
+                    var currentObject: JSONObject?
+                    while (i < count) {
+                        try {
+                            currentObjectName = response.names().getString(i)
+                            currentObject = response.getJSONObject(currentObjectName)
+                            titles[i] = currentObject.getString("name")
+                            if (currentObject.getJSONObject("state").getBoolean("any_on"))
+                                summaries[i] = resources.getString(R.string.hue_state_on)
+                            else
+                                summaries[i] = resources.getString(R.string.hue_state_off)
+                            drawables[i] = R.drawable.ic_room
+                            lightIDs[i] = currentObject.getJSONArray("lights").toString() + "@" + currentObjectName
+                        } catch (e: JSONException) {
+                            Log.e(Global.LOG_TAG, e.toString())
+                        }
+                        i++
+                    }
+                    val adapter = ListAdapter(context, titles, summaries, lightIDs, drawables)
+                    listView!!.adapter = adapter
+                    hueCurrentIcon = resources.getDrawable(devices!!.getIconId(device), context.theme)
+                    setLevelTwoHue(hueCurrentIcon!!, device)
+                } catch (e: Exception) {
+                    setLevelOne()
+                    currentView!!.findViewById<TextView>(R.id.summary).text = resources.getString(R.string.err_wrong_format_summary)
+                    Log.e(Global.LOG_TAG, e.toString())
+                }
+            } else {
+                setLevelOne()
+                currentView!!.findViewById<TextView>(R.id.summary).text = errorMessage
+            }
+        }
+
+        override fun onLightsLoaded(
+                context: Context,
+                response: JSONObject?,
+                device: String,
+                errorMessage: String
+        ) {
+            if (errorMessage == "") {
+                try {
+                    val count = response!!.length() + 1
+                    val titles = arrayOfNulls<String>(count)
+                    val summaries = arrayOfNulls<String>(count)
+                    val drawables = IntArray(count)
+                    val lightIDs = arrayOfNulls<String>(count)
+                    titles[0] = resources.getString(R.string.hue_whole_room)
+                    summaries[0] = resources.getString(R.string.hue_whole_room_summary)
+                    drawables[0] = R.drawable.ic_room
+                    lightIDs[0] = "room#$hueRoom"
+                    var i = 1
+                    var currentObjectName: String?
+                    var currentObject: JSONObject?
+                    while (i < count) {
+                        try {
+                            currentObjectName = response.names().getString(i - 1)
+                            currentObject = response.getJSONObject(currentObjectName)
+                            titles[i] = currentObject!!.getString("name")
+                            if (currentObject!!.getJSONObject("state").getBoolean("on"))
+                                summaries[i] = resources.getString(R.string.hue_state_on)
+                            else
+                                summaries[i] = resources.getString(R.string.hue_state_off)
+                            drawables[i] = R.drawable.ic_device_lamp
+                            lightIDs[i] = currentObjectName
+                        } catch (e: JSONException) {
+                            Log.e(Global.LOG_TAG, e.toString())
+                        }
+                        i++
+                    }
+                    val adapter = ListAdapter(context, titles, summaries, lightIDs, drawables)
+                    listView!!.adapter = adapter
+                    setLevelThreeHue(resources.getDrawable(R.drawable.ic_device_lamp, context.theme), currentView!!.findViewById<TextView>(R.id.title).text)
+                } catch (e: Exception) {
+                    setLevelOne()
+                    currentView!!.findViewById<TextView>(R.id.summary).text = resources.getString(R.string.err_wrong_format_summary)
+                    Log.e(Global.LOG_TAG, e.toString())
+                }
+            } else {
+                setLevelTwoHue(hueCurrentIcon!!, device)
+                currentView!!.findViewById<TextView>(R.id.summary).text = errorMessage
+            }
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Theme.setNoActionBar(this)
@@ -37,12 +180,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         listView = findViewById<View>(R.id.listView) as ListView
 
         fab.setOnClickListener {
-            reset = true
             startActivity(Intent(this, DevicesActivity::class.java))
         }
 
-        val menuButton = findViewById<View>(R.id.menu_icon) as ImageView
-        menuButton.setOnClickListener {
+        findViewById<ImageView>(R.id.menu_icon).setOnClickListener {
             drawer_layout.openDrawer(GravityCompat.START)
         }
 
@@ -52,28 +193,42 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         loadDevices()
 
         listView!!.onItemClickListener = AdapterView.OnItemClickListener { _, view, _, _ ->
-            val name = view.findViewById<TextView>(R.id.title).text.toString()
-            if (name == resources.getString(R.string.main_no_devices)
-                    || name == resources.getString(R.string.err_wrong_format))
+            currentView = view
+            val title = view.findViewById<TextView>(R.id.title).text.toString()
+            if (title == resources.getString(R.string.main_no_devices) || title == resources.getString(R.string.err_wrong_format))
                 return@OnItemClickListener
-            if (level == 1) {
-                when (devices!!.getMode(name)) {
-                    "Website" -> {
-                        startActivity(
-                                Intent(this, WebActivity::class.java)
-                                        .putExtra("URI", devices!!.getAddress(name))
-                                        .putExtra("title", name)
-                        )
-                        reset = true
+            val hidden = view.findViewById<TextView>(R.id.hidden).text.toString()
+            when (level) {
+                "one" -> {
+                    view.findViewById<TextView>(R.id.summary).text = resources.getString(R.string.main_connecting)
+                    when (devices!!.getMode(title)) {
+                        "Website" -> {
+                            startActivity(
+                                    Intent(this, WebActivity::class.java)
+                                            .putExtra("URI", devices!!.getAddress(title))
+                                            .putExtra("title", title)
+                            )
+                            reset = true
+                        }
+                        "Normal" ->
+                            homeAPI.loadCommands (title, homeRequestCallBack)
+                        "Hue Bridge" -> {
+                            hueAPI = HueAPI(this, title)
+                            hueAPI!!.loadGroups(hueRequestCallBack)
+                        }
+                        else ->
+                            Toast.makeText(this, resources.getString(R.string.main_unknown_mode), Toast.LENGTH_LONG).show()
                     }
-                    "Normal" ->
-                        loadCommands(view, name)
-                    else ->
-                        Toast.makeText(this, resources.getString(R.string.main_unknown_mode), Toast.LENGTH_LONG).show()
                 }
+                "two" ->
+                    homeAPI.executeCommand(hidden, homeRequestCallBack)
+                "two_hue" -> {
+                    hueRoom = hidden.substring(hidden.lastIndexOf("@") + 1)
+                    hueAPI!!.loadLightsByIDs(JSONArray(hidden.substring(0 , hidden.indexOf("@"))), hueRequestCallBack)
+                }
+                "three_hue" ->
+                    startActivity(Intent(this, HueLampActivity::class.java).putExtra("ID", hidden).putExtra("Device", currentDevice))
             }
-            else if (level == 2)
-                execute(view)
         }
     }
 
@@ -100,7 +255,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         val name = devices!!.getName(i)
                         titles[i] = name
                         summaries[i] = resources.getString(R.string.main_tap_to_connect)
-                        drawables[i] = Global.getIconId(devices!!.getIcon(name))
+                        drawables[i] = devices!!.getIconId(name)
                     } catch (e: JSONException) {
                         Log.e(Global.LOG_TAG, e.toString())
                     }
@@ -116,105 +271,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             drawables[i] = R.drawable.ic_warning
             Log.e(Global.LOG_TAG, e.toString())
         }
-        Log.d(Global.LOG_TAG, Arrays.toString(titles) + Arrays.toString(summaries))
+        Log.d(Global.LOG_TAG, titles.toString() + summaries.toString())
 
         val adapter = ListAdapter(this, titles, summaries, drawables)
         listView!!.adapter = adapter
         setLevelOne()
     }
 
-    private fun loadCommands(view: View, device: String){
-        val summary = view.findViewById<TextView>(R.id.summary)
-        val address = devices!!.getAddress(device)
-        summary.text = resources.getString(R.string.main_connecting)
-        val url = address + "commands"
-        Log.d(Global.LOG_TAG, url)
-        val queue = Volley.newRequestQueue(this)
-        val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null,
-                Response.Listener { response ->
-                    try {
-                        Log.d(Global.LOG_TAG, response.toString())
-                        val commandsObject = Commands(response.getJSONObject("commands"))
-                        val count = commandsObject.length()
-                        val titles = arrayOfNulls<String>(count)
-                        val summaries = arrayOfNulls<String>(count)
-                        val commands = arrayOfNulls<String>(count)
-                        var i = 0
-                        while (i < count) {
-                            try {
-                                commandsObject.selectCommand(i)
-                                titles[i] = commandsObject.getSelectedTitle()
-                                summaries[i] = commandsObject.getSelectedSummary()
-                                commands[i] = address + commandsObject.getSelected()
-                            } catch (e: JSONException) {
-                                Log.e(Global.LOG_TAG, e.toString())
-                            }
-                            i++
-                        }
-                        val adapter = ListAdapter(this, titles, summaries, commands)
-                        listView!!.adapter = adapter
-                        setLevelTwo(view.findViewById<ImageView>(R.id.drawable).drawable, device)
-                    } catch (e: Exception) {
-                        summary.text = resources.getString(R.string.err_wrong_format_summary)
-                        setLevelOne()
-                        Log.e(Global.LOG_TAG, e.toString())
-                    }
-                },
-                Response.ErrorListener { error ->
-                    if(error is TimeoutError || error is NoConnectionError) {
-                        summary.text = resources.getString(R.string.main_device_unavailable)
-                    } else if(error is ParseError) {
-                        summary.text = resources.getString(R.string.main_parse_error)
-                    } else if(error is ClientError) {
-                        summary.text = resources.getString(R.string.main_device_client_error)
-                    } else {
-                        summary.text = resources.getString(R.string.main_device_unavailable)
-                    }
-                    Log.w(Global.LOG_TAG, error.toString())
-                }
-        )
-        queue.add(jsonObjectRequest)
-    }
-
-    private fun execute(view: View) {
-        val address = view.findViewById(R.id.hidden) as TextView
-        val url = address.text.toString()
-        Log.d(Global.LOG_TAG, url)
-        val queue = Volley.newRequestQueue(this)
-        val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null,
-                Response.Listener { response ->
-                    Log.d(Global.LOG_TAG, response.toString())
-                    try {
-                        Toast.makeText(this, response.getString("toast"), Toast.LENGTH_LONG).show()
-                    } catch (e: Exception) {
-                        Toast.makeText(this, resources.getString(R.string.main_execution_completed), Toast.LENGTH_LONG).show()
-                        Log.w(Global.LOG_TAG, e.toString())
-                    }
-                },
-                Response.ErrorListener { error ->
-                    if(error is TimeoutError || error is NoConnectionError) {
-                        Toast.makeText(this, resources.getString(R.string.main_device_unavailable), Toast.LENGTH_LONG).show()
-                    } else if(error is ParseError) {
-                        Toast.makeText(this, resources.getString(R.string.main_parse_error), Toast.LENGTH_LONG).show()
-                    } else if(error is ClientError) {
-                        Toast.makeText(this, resources.getString(R.string.main_command_client_error), Toast.LENGTH_LONG).show()
-                    } else {
-                        Toast.makeText(this, resources.getString(R.string.main_execution_failed), Toast.LENGTH_LONG).show()
-                    }
-                    Log.w(Global.LOG_TAG, error.toString())
-                }
-        )
-        queue.add(jsonObjectRequest)
-    }
-
     override fun onBackPressed() {
-        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
+        if (drawer_layout.isDrawerOpen(GravityCompat.START))
             drawer_layout.closeDrawer(GravityCompat.START)
-        } else if (level == 2) {
+        else if (level == "two" || level == "two_hue")
             loadDevices()
-        } else {
+        else if (level == "three_hue")
+            hueAPI!!.loadGroups(hueRequestCallBack)
+        else
             super.onBackPressed()
-        }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -238,19 +310,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 reset = true
             }
             R.id.nav_google_home -> {
-                val intent = Intent()
-                intent.component = ComponentName("com.google.android.apps.chromecast.app", "com.google.android.apps.chromecast.app.DiscoveryActivity")
-                startActivity(intent)
+                startActivity(Intent().setComponent(ComponentName("com.google.android.apps.chromecast.app", "com.google.android.apps.chromecast.app.DiscoveryActivity")))
                 reset = true
             }
             R.id.nav_philips_hue -> {
-                val intent = Intent()
-                intent.component = ComponentName("com.philips.lighting.hue2", "com.philips.lighting.hue2.ContentActivity")
-                startActivity(intent)
+                startActivity(Intent().setComponent(ComponentName("com.philips.lighting.hue2", "com.philips.lighting.hue2.ContentActivity")))
                 reset = true
             }
         }
-
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }
@@ -261,14 +328,28 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         deviceIcon.setImageDrawable(resources.getDrawable(R.drawable.ic_home, theme))
         deviceName.text = resources.getString(R.string.main_device_name)
         fab.show()
-        level = 1
+        level = "one"
     }
 
     private fun setLevelTwo(icon: Drawable, title: CharSequence) {
         fab.hide()
         deviceIcon.setImageDrawable(icon)
         deviceName.text = title
-        level = 2
+        level = "two"
+    }
+
+    private fun setLevelTwoHue(icon: Drawable, title: CharSequence) {
+        fab.hide()
+        deviceIcon.setImageDrawable(icon)
+        deviceName.text = title
+        currentDevice = title.toString()
+        level = "two_hue"
+    }
+
+    private fun setLevelThreeHue(icon: Drawable, title: CharSequence) {
+        deviceIcon.setImageDrawable(icon)
+        deviceName.text = title
+        level = "three_hue"
     }
 
     override fun onResume() {

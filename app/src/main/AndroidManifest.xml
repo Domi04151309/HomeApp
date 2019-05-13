@@ -15,6 +15,16 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".hue.HueConnectActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".hue.HueLampActivity"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="io.github.domi04151309.home.MainActivity" />
+        </activity>
+        <activity
             android:name=".SplashScreen"
             android:theme="@style/AppTheme.Splash">
             <intent-filter>
@@ -51,7 +61,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="io.github.domi04151309.home.Preferences" />
         </activity>
-        <activity android:name=".EditDeviceActivity"
+        <activity
+            android:name=".EditDeviceActivity"
             android:label="@string/pref_add"
             android:parentActivityName=".DevicesActivity">
             <meta-data

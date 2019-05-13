@@ -24,7 +24,7 @@ class DevicesActivity : AppCompatActivity() {
         devices = Devices(PreferenceManager.getDefaultSharedPreferences(this))
         listView = findViewById<View>(R.id.listView) as ListView
 
-        listView!!.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+        listView!!.onItemClickListener = AdapterView.OnItemClickListener { _, view, _, _ ->
             val actionTxt = view.findViewById(R.id.hidden) as TextView
             val action = actionTxt.text.toString()
             val titleTxt = view.findViewById(R.id.title) as TextView
@@ -67,7 +67,7 @@ class DevicesActivity : AppCompatActivity() {
                         titles[i] = name
                         summaries[i] = devices!!.getAddress(name)
                         actions[i] = "edit"
-                        drawables[i] = Global.getIconId(devices!!.getIcon(name))
+                        drawables[i] = devices!!.getIconId(name)
                     } catch (e: JSONException) {
                         Log.e(Global.LOG_TAG, e.toString())
                     }
