@@ -180,6 +180,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         listView = findViewById<View>(R.id.listView) as ListView
 
         fab.setOnClickListener {
+            reset = true
             startActivity(Intent(this, DevicesActivity::class.java))
         }
 
