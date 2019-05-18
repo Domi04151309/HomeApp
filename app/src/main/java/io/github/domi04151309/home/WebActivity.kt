@@ -46,7 +46,7 @@ class WebActivity : AppCompatActivity() {
 
     private fun injectCSS(webView: WebView) {
         try {
-            val inputStream = assets.open("style.css")
+            val inputStream = assets.open("github_style.css")
             val buffer = ByteArray(inputStream.available())
             inputStream.read(buffer)
             inputStream.close()
