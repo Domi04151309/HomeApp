@@ -12,7 +12,7 @@
         <item name="buttonStyle">@style/AppTheme.Button</item>
         <item name="dividerColor">@color/dividerBright</item>
         <item name="android:listDivider">@null</item>
-        <item name="android:windowLightNavigationBar" tools:targetApi="28">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
     </style>
 
     <style name="AppTheme.NoActionBar" parent="AppTheme">
@@ -33,7 +33,7 @@
         <item name="buttonStyle">@style/AppTheme.Button</item>
         <item name="dividerColor">@color/dividerDark</item>
         <item name="android:listDivider">@null</item>
-        <item name="android:windowLightNavigationBar" tools:targetApi="28">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
     </style>
 
     <style name="AppTheme.Dark.NoActionBar" parent="AppTheme.Dark">
