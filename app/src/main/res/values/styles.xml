@@ -10,6 +10,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="actionBarTheme">@style/AppTheme.ActionBarTheme</item>
         <item name="buttonStyle">@style/AppTheme.Button</item>
+        <item name="android:switchStyle">@style/AppTheme.Switch</item>
         <item name="dividerColor">@color/dividerBright</item>
         <item name="android:listDivider">@null</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
@@ -31,6 +32,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="actionBarTheme">@style/AppTheme.ActionBarTheme</item>
         <item name="buttonStyle">@style/AppTheme.Button</item>
+        <item name="android:switchStyle">@style/AppTheme.Switch</item>
         <item name="dividerColor">@color/dividerDark</item>
         <item name="android:listDivider">@null</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
@@ -68,6 +70,14 @@
         <item name="android:background">@null</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textColor">?attr/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.Switch" parent="Widget.AppCompat.CompoundButton.Switch">
+        <item name="android:background">@null</item>
+        <item name="android:switchMinWidth">64dp</item>
+        <item name="android:track">@drawable/theme_switch_track</item>
+        <item name="android:thumb">@drawable/theme_switch_thumb</item>
+        <item name="android:showText">false</item>
     </style>
 
     <style name="AppTheme.Splash" parent="Theme.AppCompat.Light.DarkActionBar">

@@ -1,0 +1,24 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+      <item android:state_checked="true">
+            <inset android:insetTop="14dp"
+                android:insetLeft="10dp"
+                android:insetBottom="14dp">
+                  <shape android:shape="oval">
+                        <size android:height="14dp" android:width="14dp"/>
+                        <solid android:color="@android:color/white"/>
+                        <padding android:left="-14dp"/>
+                  </shape>
+            </inset>
+      </item>
+      <item>
+            <inset android:insetTop="14dp"
+                android:insetLeft="10dp"
+                android:insetBottom="14dp">
+                  <shape android:shape="oval">
+                        <size android:height="14dp" android:width="14dp"/>
+                        <solid android:color="?android:attr/windowBackground"/>
+                        <padding android:left="-14dp"/>
+                  </shape>
+            </inset>
+      </item>
+</selector>
