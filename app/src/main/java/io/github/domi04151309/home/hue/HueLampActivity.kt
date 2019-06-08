@@ -42,7 +42,6 @@ class HueLampActivity : AppCompatActivity() {
             id = id.substring(id.lastIndexOf("#") + 1)
             val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, address + "api/" + hueAPI.getUsername() + "/groups/" + id, null,
                     Response.Listener { response ->
-                        Log.w(Global.LOG_TAG, response.toString())
                         findViewById<TextView>(R.id.nameTxt).text = response.getString("name")
                         try {
                             briBar.progress = response.getJSONObject("action").getInt("bri")
@@ -65,11 +64,11 @@ class HueLampActivity : AppCompatActivity() {
             queue.add(jsonObjectRequest)
 
             findViewById<Button>(R.id.onBtn).setOnClickListener {
-                hueAPI.turnOnGroupByID(id)
+                hueAPI.switchGroupByID(id, true)
             }
 
             findViewById<Button>(R.id.offBtn).setOnClickListener {
-                hueAPI.turnOffGroupByID(id)
+                hueAPI.switchGroupByID(id, false)
             }
 
             briBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
@@ -115,11 +114,11 @@ class HueLampActivity : AppCompatActivity() {
             queue.add(jsonObjectRequest)
 
             findViewById<Button>(R.id.onBtn).setOnClickListener {
-                hueAPI.turnOnLightByID(id)
+                hueAPI.switchLightByID(id, true)
             }
 
             findViewById<Button>(R.id.offBtn).setOnClickListener {
-                hueAPI.turnOffLightByID(id)
+                hueAPI.switchLightByID(id, false)
             }
 
             briBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {

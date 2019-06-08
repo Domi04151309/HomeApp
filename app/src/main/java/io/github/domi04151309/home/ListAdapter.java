@@ -11,7 +11,9 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
 import android.widget.BaseAdapter;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 class ListAdapter extends BaseAdapter {
@@ -21,6 +23,8 @@ class ListAdapter extends BaseAdapter {
     private final String[] summary;
     private final String[] hidden;
     private final int[] drawable;
+    private final boolean[] state;
+    private final CompoundButton.OnCheckedChangeListener stateListener;
     private static LayoutInflater inflater = null;
 
     public ListAdapter(Context context, String[] title, String[] summary, String[] hidden) {
@@ -29,6 +33,8 @@ class ListAdapter extends BaseAdapter {
         this.summary = summary;
         this.hidden = hidden;
         this.drawable = null;
+        this.state = null;
+        this.stateListener = null;
         inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -39,6 +45,8 @@ class ListAdapter extends BaseAdapter {
         this.summary = summary;
         this.hidden = null;
         this.drawable = drawable;
+        this.state = null;
+        this.stateListener = null;
         inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -49,6 +57,20 @@ class ListAdapter extends BaseAdapter {
         this.summary = summary;
         this.hidden = hidden;
         this.drawable = drawable;
+        this.state = null;
+        this.stateListener = null;
+        inflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    public ListAdapter(Context context, String[] title, String[] summary, String[] hidden, int[] drawable, boolean[] state, CompoundButton.OnCheckedChangeListener stateListener) {
+        this.c = context;
+        this.title = title;
+        this.summary = summary;
+        this.hidden = hidden;
+        this.drawable = drawable;
+        this.state = state;
+        this.stateListener = stateListener;
         inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -78,15 +100,16 @@ class ListAdapter extends BaseAdapter {
         TextView titleTxt = vi.findViewById(R.id.title);
         TextView summaryTxt = vi.findViewById(R.id.summary);
         TextView hiddenTxt = vi.findViewById(R.id.hidden);
+        Switch stateSwitch = vi.findViewById(R.id.state);
         titleTxt.setText(title[position]);
         if (drawable == null) {
             drawableView.setVisibility(View.GONE);
-        }
-        try {
-            assert drawable != null;
-            drawableView.setImageDrawable(ResourcesCompat.getDrawable(c.getResources(), drawable[position], c.getTheme()));
-        } catch (Exception e){
-            drawableView.setImageDrawable(drawableView.getResources().getDrawable(android.R.color.transparent, null));
+        } else {
+            try {
+                drawableView.setImageDrawable(ResourcesCompat.getDrawable(c.getResources(), drawable[position], c.getTheme()));
+            } catch (Exception e){
+                drawableView.setImageDrawable(drawableView.getResources().getDrawable(android.R.color.transparent, null));
+            }
         }
         try {
             summaryTxt.setText(summary[position]);
@@ -97,6 +120,12 @@ class ListAdapter extends BaseAdapter {
             hiddenTxt.setText(hidden[position]);
         } catch (Exception e){
             Log.w(Global.LOG_TAG, String.valueOf(e.getClass()));
+        }
+        if (state == null) {
+            stateSwitch.setVisibility(View.GONE);
+        } else {
+            stateSwitch.setChecked(state[position]);
+            stateSwitch.setOnCheckedChangeListener(stateListener);
         }
         return vi;
     }

@@ -22,6 +22,9 @@ import kotlinx.android.synthetic.main.content_main.*
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import android.widget.TextView
+import android.view.ViewGroup
+
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -33,6 +36,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var hueCurrentIcon: Drawable? = null
     private var level = "one"
     private var reset = false
+
+    private var hueGroupStateListener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
+        val row = compoundButton.parent as ViewGroup
+        val hidden = row.findViewById<TextView>(R.id.hidden).text
+        val room = hidden.substring(hidden.lastIndexOf("@") + 1)
+        hueAPI!!.switchGroupByID(room, b)
+    }
+
+    private var hueLampStateListener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
+        val row = compoundButton.parent as ViewGroup
+        val hidden = row.findViewById<TextView>(R.id.hidden).text.toString()
+        if (hidden.startsWith("room#")) {
+            val room = hidden.substring(hidden.lastIndexOf("#") + 1)
+            hueAPI!!.switchGroupByID(room, b)
+        } else {
+            hueAPI!!.switchLightByID(hidden, b)
+        }
+    }
 
     /*
      * Things related to the Home API
@@ -85,26 +106,30 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     val summaries = arrayOfNulls<String>(count)
                     val drawables = IntArray(count)
                     val lightIDs = arrayOfNulls<String>(count)
+                    val states = BooleanArray(count)
                     var i = 0
                     var currentObjectName: String?
                     var currentObject: JSONObject?
+                    var currentState: Boolean?
                     while (i < count) {
                         try {
                             currentObjectName = response.names().getString(i)
                             currentObject = response.getJSONObject(currentObjectName)
                             titles[i] = currentObject.getString("name")
-                            if (currentObject.getJSONObject("state").getBoolean("any_on"))
+                            currentState = currentObject.getJSONObject("state").getBoolean("any_on")
+                            if (currentState)
                                 summaries[i] = resources.getString(R.string.hue_state_on)
                             else
                                 summaries[i] = resources.getString(R.string.hue_state_off)
                             drawables[i] = R.drawable.ic_room
                             lightIDs[i] = currentObject.getJSONArray("lights").toString() + "@" + currentObjectName
+                            states[i] = currentState
                         } catch (e: JSONException) {
                             Log.e(Global.LOG_TAG, e.toString())
                         }
                         i++
                     }
-                    val adapter = ListAdapter(context, titles, summaries, lightIDs, drawables)
+                    val adapter = ListAdapter(context, titles, summaries, lightIDs, drawables, states, hueGroupStateListener)
                     listView!!.adapter = adapter
                     hueCurrentIcon = resources.getDrawable(devices!!.getIconId(device), context.theme)
                     setLevelTwoHue(hueCurrentIcon!!, device)
@@ -132,30 +157,35 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     val summaries = arrayOfNulls<String>(count)
                     val drawables = IntArray(count)
                     val lightIDs = arrayOfNulls<String>(count)
+                    val states = BooleanArray(count)
                     titles[0] = resources.getString(R.string.hue_whole_room)
                     summaries[0] = resources.getString(R.string.hue_whole_room_summary)
                     drawables[0] = R.drawable.ic_room
                     lightIDs[0] = "room#$hueRoom"
+                    states[0] = true
                     var i = 1
                     var currentObjectName: String?
                     var currentObject: JSONObject?
+                    var currentState: Boolean?
                     while (i < count) {
                         try {
                             currentObjectName = response.names().getString(i - 1)
                             currentObject = response.getJSONObject(currentObjectName)
                             titles[i] = currentObject!!.getString("name")
-                            if (currentObject!!.getJSONObject("state").getBoolean("on"))
+                            currentState = currentObject!!.getJSONObject("state").getBoolean("on")
+                            if (currentState!!)
                                 summaries[i] = resources.getString(R.string.hue_state_on)
                             else
                                 summaries[i] = resources.getString(R.string.hue_state_off)
                             drawables[i] = R.drawable.ic_device_lamp
                             lightIDs[i] = currentObjectName
+                            states[i] = currentState!!
                         } catch (e: JSONException) {
                             Log.e(Global.LOG_TAG, e.toString())
                         }
                         i++
                     }
-                    val adapter = ListAdapter(context, titles, summaries, lightIDs, drawables)
+                    val adapter = ListAdapter(context, titles, summaries, lightIDs, drawables, states, hueLampStateListener)
                     listView!!.adapter = adapter
                     setLevelThreeHue(resources.getDrawable(R.drawable.ic_device_lamp, context.theme), currentView!!.findViewById<TextView>(R.id.title).text)
                 } catch (e: Exception) {

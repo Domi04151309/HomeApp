@@ -80,17 +80,8 @@ class HueAPI(context: Context, device: String) {
         queue.add(jsonObjectRequest)
     }
 
-    fun turnOnLightByID(lightID: String) {
-        val jsonRequestObject = JSONObject("{\"on\":true}")
-        val request = CustomJsonArrayRequest(Request.Method.PUT, url + "api/" + getUsername() + "/lights/" + lightID + "/state", jsonRequestObject,
-                Response.Listener { },
-                Response.ErrorListener { e -> Log.e(Global.LOG_TAG, e.toString())}
-        )
-        queue.add(request)
-    }
-
-    fun turnOffLightByID(lightID: String) {
-        val jsonRequestObject = JSONObject("{\"on\":false}")
+    fun switchLightByID(lightID: String, on: Boolean) {
+        val jsonRequestObject = JSONObject("{\"on\":$on}")
         val request = CustomJsonArrayRequest(Request.Method.PUT, url + "api/" + getUsername() + "/lights/" + lightID + "/state", jsonRequestObject,
                 Response.Listener { },
                 Response.ErrorListener { e -> Log.e(Global.LOG_TAG, e.toString())}
@@ -116,17 +107,8 @@ class HueAPI(context: Context, device: String) {
         queue.add(request)
     }
 
-    fun turnOnGroupByID(groupID: String) {
-        val jsonRequestObject = JSONObject("{\"on\":true}")
-        val request = CustomJsonArrayRequest(Request.Method.PUT, url + "api/" + getUsername() + "/groups/" + groupID + "/action", jsonRequestObject,
-                Response.Listener { },
-                Response.ErrorListener { e -> Log.e(Global.LOG_TAG, e.toString())}
-        )
-        queue.add(request)
-    }
-
-    fun turnOffGroupByID(groupID: String) {
-        val jsonRequestObject = JSONObject("{\"on\":false}")
+    fun switchGroupByID(groupID: String, on: Boolean) {
+        val jsonRequestObject = JSONObject("{\"on\":$on}")
         val request = CustomJsonArrayRequest(Request.Method.PUT, url + "api/" + getUsername() + "/groups/" + groupID + "/action", jsonRequestObject,
                 Response.Listener { },
                 Response.ErrorListener { e -> Log.e(Global.LOG_TAG, e.toString())}
