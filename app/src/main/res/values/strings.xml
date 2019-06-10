@@ -28,8 +28,7 @@
 
     <string name="hue_connect">Connect to your Bridge</string>
     <string name="hue_press_button">Please press the button on your bridge to continue.</string>
-    <string name="hue_state_on">Currently turned on</string>
-    <string name="hue_state_off">Currently turned off</string>
+    <string name="hue_tap">Tap to select</string>
     <string name="hue_whole_room">Control whole room</string>
     <string name="hue_whole_room_summary">Control all lights in the room at once</string>
     <string name="hue_on">On</string>

@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var currentView: View? = null
     private var currentDevice = ""
     private var hueRoom: String = ""
+    private var hueRoomState: Boolean = false
     private var hueCurrentIcon: Drawable? = null
     private var level = "one"
     private var reset = false
@@ -110,20 +111,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     var i = 0
                     var currentObjectName: String?
                     var currentObject: JSONObject?
-                    var currentState: Boolean?
                     while (i < count) {
                         try {
                             currentObjectName = response.names().getString(i)
                             currentObject = response.getJSONObject(currentObjectName)
                             titles[i] = currentObject.getString("name")
-                            currentState = currentObject.getJSONObject("state").getBoolean("any_on")
-                            if (currentState)
-                                summaries[i] = resources.getString(R.string.hue_state_on)
-                            else
-                                summaries[i] = resources.getString(R.string.hue_state_off)
+                            summaries[i] = resources.getString(R.string.hue_tap)
                             drawables[i] = R.drawable.ic_room
                             lightIDs[i] = currentObject.getJSONArray("lights").toString() + "@" + currentObjectName
-                            states[i] = currentState
+                            states[i] = currentObject.getJSONObject("state").getBoolean("any_on")
                         } catch (e: JSONException) {
                             Log.e(Global.LOG_TAG, e.toString())
                         }
@@ -162,24 +158,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     summaries[0] = resources.getString(R.string.hue_whole_room_summary)
                     drawables[0] = R.drawable.ic_room
                     lightIDs[0] = "room#$hueRoom"
-                    states[0] = true
+                    states[0] = hueRoomState
                     var i = 1
                     var currentObjectName: String?
                     var currentObject: JSONObject?
-                    var currentState: Boolean?
                     while (i < count) {
                         try {
                             currentObjectName = response.names().getString(i - 1)
                             currentObject = response.getJSONObject(currentObjectName)
                             titles[i] = currentObject!!.getString("name")
-                            currentState = currentObject!!.getJSONObject("state").getBoolean("on")
-                            if (currentState!!)
-                                summaries[i] = resources.getString(R.string.hue_state_on)
-                            else
-                                summaries[i] = resources.getString(R.string.hue_state_off)
+                            summaries[i] = resources.getString(R.string.hue_tap)
                             drawables[i] = R.drawable.ic_device_lamp
                             lightIDs[i] = currentObjectName
-                            states[i] = currentState!!
+                            states[i] = currentObject!!.getJSONObject("state").getBoolean("on")
                         } catch (e: JSONException) {
                             Log.e(Global.LOG_TAG, e.toString())
                         }
@@ -255,6 +246,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     homeAPI.executeCommand(hidden, homeRequestCallBack)
                 "two_hue" -> {
                     hueRoom = hidden.substring(hidden.lastIndexOf("@") + 1)
+                    hueRoomState = view.findViewById<Switch>(R.id.state).isChecked
                     hueAPI!!.loadLightsByIDs(JSONArray(hidden.substring(0 , hidden.indexOf("@"))), hueRequestCallBack)
                 }
                 "three_hue" ->

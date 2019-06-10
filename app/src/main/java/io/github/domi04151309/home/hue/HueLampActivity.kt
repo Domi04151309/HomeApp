@@ -3,7 +3,6 @@ package io.github.domi04151309.home.hue
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.SeekBar
@@ -14,7 +13,6 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import io.github.domi04151309.home.Devices
-import io.github.domi04151309.home.Global
 import io.github.domi04151309.home.Global.volleyError
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.Theme
