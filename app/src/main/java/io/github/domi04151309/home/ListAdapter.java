@@ -119,7 +119,7 @@ class ListAdapter extends BaseAdapter {
         try {
             hiddenTxt.setText(hidden[position]);
         } catch (Exception e){
-            Log.w(Global.LOG_TAG, String.valueOf(e.getClass()));
+            hiddenTxt.setText("");
         }
         if (state == null) {
             stateSwitch.setVisibility(View.GONE);

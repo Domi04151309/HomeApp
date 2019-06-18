@@ -5,10 +5,11 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.view.View
 import android.widget.*
 import org.json.JSONException
 import java.util.*
+import android.support.v7.app.AlertDialog
+import android.view.View
 
 class DevicesActivity : AppCompatActivity() {
 
@@ -25,25 +26,33 @@ class DevicesActivity : AppCompatActivity() {
         listView = findViewById<View>(R.id.listView) as ListView
 
         listView!!.onItemClickListener = AdapterView.OnItemClickListener { _, view, _, _ ->
-            val actionTxt = view.findViewById(R.id.hidden) as TextView
-            val action = actionTxt.text.toString()
-            val titleTxt = view.findViewById(R.id.title) as TextView
+            val action =  view.findViewById<TextView>(R.id.hidden).text
+            val titleTxt = view.findViewById<TextView>(R.id.title).text.toString()
 
             if (action == "edit") {
                 reset = true
-                startActivity(Intent(this, EditDeviceActivity::class.java).putExtra("Device", titleTxt.text.toString()))
+                startActivity(Intent(this, EditDeviceActivity::class.java).putExtra("Device", titleTxt))
             } else if (action == "add") {
                 reset = true
-                startActivity(Intent(this, EditDeviceActivity::class.java))
+                val builder = AlertDialog.Builder(this)
+                builder.setTitle(R.string.pref_add_method)
+                builder.setItems(resources.getStringArray(R.array.pref_add_method_array)) { _, which ->
+                    if (which == 0) {
+                        startActivity(Intent(this, EditDeviceActivity::class.java))
+                    } else if (which == 1) {
+                        startActivity(Intent(this, SearchDevicesActivity::class.java))
+                    }
+                }
+                builder.show()
             }
         }
     }
 
     private fun loadDevices(){
-        var titles: Array<String?>?
-        var summaries: Array<String?>?
-        var actions: Array<String?>?
-        var drawables: IntArray?
+        var titles: Array<String?>
+        var summaries: Array<String?>
+        var actions: Array<String?>
+        var drawables: IntArray
         var i = 0
         try {
             if (devices!!.length() == 0) {

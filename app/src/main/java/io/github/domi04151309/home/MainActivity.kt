@@ -256,9 +256,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun loadDevices(){
-        var titles: Array<String?>?
-        var summaries: Array<String?>?
-        var drawables: IntArray?
+        var titles: Array<String?>
+        var summaries: Array<String?>
+        var drawables: IntArray
         var i = 0
         try {
             if (devices!!.length() == 0) {
