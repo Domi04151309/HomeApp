@@ -232,7 +232,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             )
                             reset = true
                         }
-                        "Normal" ->
+                        "SimpleHome API" ->
                             homeAPI.loadCommands (title, homeRequestCallBack)
                         "Hue Bridge" -> {
                             hueAPI = HueAPI(this, title)

@@ -93,10 +93,11 @@
         <item>Speaker</item>
         <item>Stack</item>
         <item>Tablet</item>
+        <item>Thermometer</item>
         <item>TV</item>
     </string-array>
     <string-array name="pref_add_mode_array">
-        <item>Normal</item>
+        <item>SimpleHome API</item>
         <item>Hue Bridge</item>
         <item>Website</item>
     </string-array>

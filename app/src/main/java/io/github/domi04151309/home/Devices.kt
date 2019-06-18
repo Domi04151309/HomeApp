@@ -46,6 +46,7 @@ class Devices constructor(prefs: SharedPreferences) {
             "Speaker" -> R.drawable.ic_device_speaker
             "Stack" -> R.drawable.ic_device_stack
             "Tablet" -> R.drawable.ic_device_tablet
+            "Thermometer" -> R.drawable.ic_device_thermometer
             "TV" -> R.drawable.ic_device_tv
             else -> {
                 R.drawable.ic_warning
