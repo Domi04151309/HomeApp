@@ -4,11 +4,12 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.support.design.widget.NavigationView
-import android.support.v4.view.GravityCompat
-import android.support.v7.app.AppCompatActivity
+import com.google.android.material.navigation.NavigationView
+import androidx.core.view.GravityCompat
+import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
@@ -333,16 +334,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 reset = true
             }
             R.id.nav_google_home -> {
-                startActivity(Intent().setComponent(ComponentName("com.google.android.apps.chromecast.app", "com.google.android.apps.chromecast.app.DiscoveryActivity")))
+                startApp("com.google.android.apps.chromecast.app", "com.google.android.apps.chromecast.app.DiscoveryActivity")
                 reset = true
             }
             R.id.nav_philips_hue -> {
-                startActivity(Intent().setComponent(ComponentName("com.philips.lighting.hue2", "com.philips.lighting.hue2.ContentActivity")))
+                startApp("com.philips.lighting.hue2", "com.philips.lighting.hue2.ContentActivity")
                 reset = true
             }
         }
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    private fun startApp(pkg: String, cls: String) {
+        try {
+            startActivity(Intent().setComponent(ComponentName(pkg, cls)))
+        } catch (e: java.lang.Exception) {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$pkg")))
+        }
     }
 
     private fun setLevelOne() {

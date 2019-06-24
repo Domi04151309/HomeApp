@@ -3,12 +3,12 @@ package io.github.domi04151309.home
 import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.widget.*
 import org.json.JSONException
 import java.util.*
-import android.support.v7.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import android.view.View
 
 class DevicesActivity : AppCompatActivity() {

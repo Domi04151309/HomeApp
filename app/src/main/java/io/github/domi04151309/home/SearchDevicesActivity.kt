@@ -1,7 +1,7 @@
 package io.github.domi04151309.home
 
 import android.content.Context
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ListView
 import android.net.wifi.WifiManager
@@ -11,7 +11,7 @@ import com._8rine.upnpdiscovery.UPnPDiscovery
 import org.json.JSONException
 import android.os.Handler
 import android.preference.PreferenceManager
-import android.support.v7.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import android.view.View
 import android.widget.AdapterView
 import android.widget.TextView
