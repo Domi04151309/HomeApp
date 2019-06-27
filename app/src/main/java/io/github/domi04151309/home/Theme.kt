@@ -12,7 +12,7 @@ object Theme {
     fun set(context: Context) {
         when (PreferenceManager.getDefaultSharedPreferences(context).getString("theme", "light")) {
             "light" -> {
-                context.setTheme(R.style.AppTheme)
+                context.setTheme(R.style.AppTheme27)
                 recent(context, R.color.colorPrimary)
             }
             "dark" -> {
@@ -24,7 +24,7 @@ object Theme {
                 recent(context, R.color.colorPrimaryBlack)
             }
             else -> {
-                context.setTheme(R.style.AppTheme)
+                context.setTheme(R.style.AppTheme27)
                 recent(context, R.color.colorPrimary)
             }
         }
