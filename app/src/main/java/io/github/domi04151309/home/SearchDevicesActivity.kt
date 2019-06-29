@@ -40,7 +40,7 @@ class SearchDevicesActivity : AppCompatActivity() {
         listView!!.adapter = firstAdapter
 
         //Get Router
-        val manager = super.getSystemService(Context.WIFI_SERVICE) as WifiManager
+        val manager = super.getApplicationContext().getSystemService(Context.WIFI_SERVICE) as WifiManager
         addresses += intToIp(manager.dhcpInfo.gateway)
         modes += "Website"
         icons += "Router"

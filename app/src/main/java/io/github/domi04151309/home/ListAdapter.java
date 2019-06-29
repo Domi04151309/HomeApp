@@ -1,7 +1,6 @@
 package io.github.domi04151309.home;
 
 import android.content.Context;
-import androidx.core.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -94,7 +93,7 @@ class ListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi = convertView;
         if (vi == null)
-            vi = inflater.inflate(R.layout.list_item, null);
+            vi = inflater.inflate(R.layout.list_item, parent, false);
         playAnimation(vi);
         ImageView drawableView = vi.findViewById(R.id.drawable);
         TextView titleTxt = vi.findViewById(R.id.title);
@@ -106,9 +105,9 @@ class ListAdapter extends BaseAdapter {
             drawableView.setVisibility(View.GONE);
         } else {
             try {
-                drawableView.setImageDrawable(ResourcesCompat.getDrawable(c.getResources(), drawable[position], c.getTheme()));
+                drawableView.setImageResource(drawable[position]);
             } catch (Exception e){
-                drawableView.setImageDrawable(drawableView.getResources().getDrawable(android.R.color.transparent, null));
+                drawableView.setImageResource(android.R.color.transparent);
             }
         }
         try {

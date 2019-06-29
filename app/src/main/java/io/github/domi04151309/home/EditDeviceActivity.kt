@@ -29,7 +29,7 @@ class EditDeviceActivity : AppCompatActivity() {
 
         if (device != null){
             title = resources.getString(R.string.pref_edit_device)
-            findViewById<ImageView>(R.id.deviceIcn).setImageDrawable(resources.getDrawable(devices.getIconId(device), this.theme))
+            findViewById<ImageView>(R.id.deviceIcn).setImageResource(devices.getIconId(device))
             nameTxt.text = device
 
             nameBox.setText(device)

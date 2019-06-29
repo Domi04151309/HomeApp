@@ -101,6 +101,23 @@
             android:layout_height="wrap_content"
             android:max="347" />
 
-
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/dialog_item_margin"
+        android:background="?attr/dividerColor" />
+
+    <GridView
+        android:id="@+id/scenes"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/dialog_item_margin"
+        android:paddingStart="?dialogPreferredPadding"
+        android:paddingEnd="?dialogPreferredPadding"
+        android:columnWidth="100dp"
+        android:numColumns="auto_fit"
+        android:verticalSpacing="@dimen/dialog_item_margin"
+        android:stretchMode="columnWidth" />
 </LinearLayout>

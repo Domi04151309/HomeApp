@@ -104,6 +104,10 @@ class HueAPI(context: Context, device: String) {
         putObject("/groups/$groupID/action", "{\"ct\":$ct}")
     }
 
+    fun activateSceneOfGroup(groupID: String, scene: String) {
+        putObject("/groups/$groupID/action", "{\"scene\":$scene}")
+    }
+
     private fun putObject(address: String, requestObject: String) {
         val request = CustomJsonArrayRequest(Request.Method.PUT, url + "api/" + getUsername() + address, JSONObject(requestObject),
                 Response.Listener { },
