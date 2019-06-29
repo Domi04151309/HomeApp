@@ -81,53 +81,31 @@ class HueAPI(context: Context, device: String) {
     }
 
     fun switchLightByID(lightID: String, on: Boolean) {
-        val jsonRequestObject = JSONObject("{\"on\":$on}")
-        val request = CustomJsonArrayRequest(Request.Method.PUT, url + "api/" + getUsername() + "/lights/" + lightID + "/state", jsonRequestObject,
-                Response.Listener { },
-                Response.ErrorListener { e -> Log.e(Global.LOG_TAG, e.toString())}
-        )
-        queue.add(request)
+        putObject("/lights/$lightID/state", "{\"on\":$on}")
     }
 
     fun changeBrightness(lightID: String, bri: Int) {
-        val jsonRequestObject = JSONObject("{\"bri\":$bri}")
-        val request = CustomJsonArrayRequest(Request.Method.PUT, url + "api/" + getUsername() + "/lights/" + lightID + "/state", jsonRequestObject,
-                Response.Listener { },
-                Response.ErrorListener { e -> Log.e(Global.LOG_TAG, e.toString())}
-        )
-        queue.add(request)
+        putObject("/lights/$lightID/state", "{\"bri\":$bri}")
     }
 
     fun changeColorTemperature(lightID: String, ct: Int) {
-        val jsonRequestObject = JSONObject("{\"ct\":$ct}")
-        val request = CustomJsonArrayRequest(Request.Method.PUT, url + "api/" + getUsername() + "/lights/" + lightID + "/state", jsonRequestObject,
-                Response.Listener { },
-                Response.ErrorListener { e -> Log.e(Global.LOG_TAG, e.toString())}
-        )
-        queue.add(request)
+        putObject("/lights/$lightID/state", "{\"ct\":$ct}")
     }
 
     fun switchGroupByID(groupID: String, on: Boolean) {
-        val jsonRequestObject = JSONObject("{\"on\":$on}")
-        val request = CustomJsonArrayRequest(Request.Method.PUT, url + "api/" + getUsername() + "/groups/" + groupID + "/action", jsonRequestObject,
-                Response.Listener { },
-                Response.ErrorListener { e -> Log.e(Global.LOG_TAG, e.toString())}
-        )
-        queue.add(request)
+        putObject("/groups/$groupID/action", "{\"on\":$on}")
     }
 
     fun changeBrightnessOfGroup(groupID: String, bri: Int) {
-        val jsonRequestObject = JSONObject("{\"bri\":$bri}")
-        val request = CustomJsonArrayRequest(Request.Method.PUT, url + "api/" + getUsername() + "/groups/" + groupID + "/action", jsonRequestObject,
-                Response.Listener { },
-                Response.ErrorListener { e -> Log.e(Global.LOG_TAG, e.toString())}
-        )
-        queue.add(request)
+        putObject("/groups/$groupID/action", "{\"bri\":$bri}")
     }
 
     fun changeColorTemperatureOfGroup(groupID: String, ct: Int) {
-        val jsonRequestObject = JSONObject("{\"ct\":$ct}")
-        val request = CustomJsonArrayRequest(Request.Method.PUT, url + "api/" + getUsername() + "/groups/" + groupID + "/action", jsonRequestObject,
+        putObject("/groups/$groupID/action", "{\"ct\":$ct}")
+    }
+
+    private fun putObject(address: String, requestObject: String) {
+        val request = CustomJsonArrayRequest(Request.Method.PUT, url + "api/" + getUsername() + address, JSONObject(requestObject),
                 Response.Listener { },
                 Response.ErrorListener { e -> Log.e(Global.LOG_TAG, e.toString())}
         )
