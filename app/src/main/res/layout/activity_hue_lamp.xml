@@ -116,8 +116,8 @@
         android:layout_marginTop="@dimen/dialog_item_margin"
         android:paddingStart="?dialogPreferredPadding"
         android:paddingEnd="?dialogPreferredPadding"
-        android:columnWidth="100dp"
-        android:numColumns="auto_fit"
+        android:columnWidth="0dp"
+        android:numColumns="3"
         android:verticalSpacing="@dimen/dialog_item_margin"
         android:stretchMode="columnWidth" />
 </LinearLayout>
