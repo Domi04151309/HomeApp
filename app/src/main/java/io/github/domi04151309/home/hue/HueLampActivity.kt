@@ -1,7 +1,9 @@
 package io.github.domi04151309.home.hue
 
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.preference.PreferenceManager
 import android.util.Log
 import android.view.View
@@ -45,6 +47,34 @@ class HueLampActivity : AppCompatActivity() {
         val gridView = findViewById<View>(R.id.scenes) as GridView
 
         //Get scenes
+        fun setProgress(seekBar: SeekBar, value: Int) {
+            if (Build.VERSION.SDK_INT >= 24)
+                seekBar.setProgress(value, true)
+            else
+                seekBar.progress = value
+        }
+
+        val roomDataRequest = JsonObjectRequest(Request.Method.GET, address + "api/" + hueAPI.getUsername() + "/groups/" + id, null,
+                Response.Listener { response ->
+                    findViewById<TextView>(R.id.nameTxt).text = response.getString("name")
+                    try {
+                        setProgress(briBar, response.getJSONObject("action").getInt("bri"))
+                    } catch (e: Exception) {
+                        findViewById<TextView>(R.id.briTxt).visibility = View.GONE
+                        briBar.visibility = View.GONE
+                    }
+                    try {
+                        setProgress(ctBar, response.getJSONObject("action").getInt("ct") - 153)
+                    } catch (e: Exception) {
+                        findViewById<TextView>(R.id.ctTxt).visibility = View.GONE
+                        ctBar.visibility = View.GONE
+                    }
+                },
+                Response.ErrorListener { error ->
+                    finish()
+                    Toast.makeText(this, volleyError(this, error), Toast.LENGTH_LONG).show()
+                }
+        )
         val scenesRequest = JsonObjectRequest(Request.Method.GET, address + "api/" + hueAPI.getUsername() + "/scenes/", null,
                 Response.Listener { response ->
                     try {
@@ -80,31 +110,13 @@ class HueLampActivity : AppCompatActivity() {
 
         gridView.onItemClickListener = AdapterView.OnItemClickListener { _, view, _, _ ->
             hueAPI.activateSceneOfGroup(id, view.findViewById<TextView>(R.id.hidden).text.toString())
+            Handler().postDelayed({
+                queue.add(roomDataRequest)
+            }, 250)
         }
 
         // Selected item is a whole room
         if (isRoom) {
-            val roomDataRequest = JsonObjectRequest(Request.Method.GET, address + "api/" + hueAPI.getUsername() + "/groups/" + id, null,
-                    Response.Listener { response ->
-                        findViewById<TextView>(R.id.nameTxt).text = response.getString("name")
-                        try {
-                            briBar.progress = response.getJSONObject("action").getInt("bri")
-                        } catch (e: Exception) {
-                            findViewById<TextView>(R.id.briTxt).visibility = View.GONE
-                            briBar.visibility = View.GONE
-                        }
-                        try {
-                            ctBar.progress = response.getJSONObject("action").getInt("ct") - 153
-                        } catch (e: Exception) {
-                            findViewById<TextView>(R.id.ctTxt).visibility = View.GONE
-                            ctBar.visibility = View.GONE
-                        }
-                    },
-                    Response.ErrorListener { error ->
-                        finish()
-                        Toast.makeText(this, volleyError(this, error), Toast.LENGTH_LONG).show()
-                    }
-            )
             queue.add(roomDataRequest)
 
             findViewById<Button>(R.id.onBtn).setOnClickListener {
