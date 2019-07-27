@@ -327,25 +327,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(Intent(this, WebActivity::class.java).putExtra("URI", uri).putExtra("title", resources.getString(R.string.nav_source)))
                 reset = true
             }
-            R.id.nav_google_home -> {
-                startApp("com.google.android.apps.chromecast.app", "com.google.android.apps.chromecast.app.DiscoveryActivity")
-                reset = true
-            }
-            R.id.nav_philips_hue -> {
-                startApp("com.philips.lighting.hue2", "com.philips.lighting.hue2.ContentActivity")
-                reset = true
-            }
         }
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
-    }
-
-    private fun startApp(pkg: String, cls: String) {
-        try {
-            startActivity(Intent().setComponent(ComponentName(pkg, cls)))
-        } catch (e: java.lang.Exception) {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$pkg")))
-        }
     }
 
     private fun setLevelOne() {

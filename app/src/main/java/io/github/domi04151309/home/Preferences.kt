@@ -40,7 +40,6 @@ class Preferences : AppCompatPreferenceActivity() {
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             addPreferencesFromResource(R.xml.pref_general)
-            findPreference("version").summary = BuildConfig.VERSION_NAME
             findPreference("reset_json").onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 AlertDialog.Builder(context)
                         .setTitle(resources.getString(R.string.pref_reset))
@@ -51,6 +50,10 @@ class Preferences : AppCompatPreferenceActivity() {
                         }
                         .setNegativeButton(resources.getString(android.R.string.cancel)) { dialog, _ -> dialog.cancel() }
                         .show()
+                true
+            }
+            findPreference("about").onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                startActivity(Intent(context, AboutActivity::class.java))
                 true
             }
         }

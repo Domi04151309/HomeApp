@@ -18,7 +18,15 @@
         android:theme="@style/AppTheme27"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".SearchDevicesActivity"
+        <activity android:name=".AboutActivity"
+            android:label="@string/about"
+            android:parentActivityName=".Preferences">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="io.github.domi04151309.home.Preferences" />
+        </activity>
+        <activity
+            android:name=".SearchDevicesActivity"
             android:label="@string/pref_add"
             android:parentActivityName=".DevicesActivity">
             <meta-data

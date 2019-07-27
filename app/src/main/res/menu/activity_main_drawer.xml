@@ -22,17 +22,4 @@
             android:title="@string/nav_source" />
     </group>
 
-    <item android:title="@string/nav_other_apps">
-        <menu>
-            <item
-                android:id="@+id/nav_google_home"
-                android:icon="@drawable/ic_nav_exit_to_app"
-                android:title="@string/nav_google_home" />
-            <item
-                android:id="@+id/nav_philips_hue"
-                android:icon="@drawable/ic_nav_exit_to_app"
-                android:title="@string/nav_philips_hue" />
-        </menu>
-    </item>
-
 </menu>
