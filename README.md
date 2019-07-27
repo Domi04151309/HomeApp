@@ -4,13 +4,12 @@ Communication between the devices uses HTTP requests and JSON strings. After the
 This app is especially useful if you are using microcontrollers or other small devices such as the Raspberry Pi for smart home automation.  
  
 Compatible with Philips Hue!  
- 
 <br />
 <img src="https://domi04151309.github.io/images/Android/HomeApp1.jpg" width="18%" />
 <img src="https://domi04151309.github.io/images/Android/HomeApp2.jpg" width="18%" />
 <img src="https://domi04151309.github.io/images/Android/HomeApp3.jpg" width="18%" />
 <img src="https://domi04151309.github.io/images/Android/HomeApp4.jpg" width="18%" />
-<img src="https://domi04151309.github.io/images/Android/HomeApp5.jpg" width="18%" />  
+<img src="https://domi04151309.github.io/images/Android/HomeApp5.jpg" width="18%" />
 <img src="https://domi04151309.github.io/images/Android/HomeApp6.jpg" width="18%" />  
  
 <i style="color:gray;">Android is a trademark of Google LLC.</i>
