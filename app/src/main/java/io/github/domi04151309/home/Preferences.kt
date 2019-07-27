@@ -47,7 +47,7 @@ class Preferences : AppCompatPreferenceActivity() {
                         .setMessage(resources.getString(R.string.pref_reset_question))
                         .setPositiveButton(resources.getString(android.R.string.ok)) { _, _ ->
                             PreferenceManager.getDefaultSharedPreferences(context).edit().putString("devices_json", Global.DEFAULT_JSON).apply()
-                            Toast.makeText(context, resources.getString(R.string.pref_reset_toast), Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, R.string.pref_reset_toast, Toast.LENGTH_LONG).show()
                         }
                         .setNegativeButton(resources.getString(android.R.string.cancel)) { dialog, _ -> dialog.cancel() }
                         .show()

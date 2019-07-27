@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import com.android.volley.Request
+import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
@@ -21,13 +22,17 @@ import java.lang.Exception
 
 class HueLampActivity : AppCompatActivity() {
 
+    private var isRoom: Boolean = false
+    private var queue: RequestQueue? = null
+    private var lightDataRequest: JsonObjectRequest? = null
+    private var roomDataRequest: JsonObjectRequest? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         Theme.set(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hue_lamp)
 
         val internId = intent.getStringExtra("ID")
-        val isRoom: Boolean
         val id: String
         if (internId.startsWith("room#")) {
             id = internId.substring(internId.lastIndexOf("#") + 1)
@@ -39,7 +44,7 @@ class HueLampActivity : AppCompatActivity() {
         val device = intent.getStringExtra("Device")
         val address = Devices(PreferenceManager.getDefaultSharedPreferences(this)).getAddress(device)
         val hueAPI = HueAPI(this, device)
-        val queue = Volley.newRequestQueue(this)
+        queue = Volley.newRequestQueue(this)
 
         title = device
         val briBar = findViewById<SeekBar>(R.id.briBar)
@@ -54,7 +59,29 @@ class HueLampActivity : AppCompatActivity() {
                 seekBar.progress = value
         }
 
-        val roomDataRequest = JsonObjectRequest(Request.Method.GET, address + "api/" + hueAPI.getUsername() + "/groups/" + id, null,
+        lightDataRequest = JsonObjectRequest(Request.Method.GET,  address + "api/" + hueAPI.getUsername() + "/lights/" + id, null,
+                Response.Listener { response ->
+                    findViewById<TextView>(R.id.nameTxt).text = response.getString("name")
+                    try {
+                        setProgress(briBar, response.getJSONObject("state").getInt("bri"))
+                    } catch (e: Exception) {
+                        findViewById<TextView>(R.id.briTxt).visibility = View.GONE
+                        briBar.visibility = View.GONE
+                    }
+                    try {
+                        setProgress(ctBar, response.getJSONObject("state").getInt("ct") - 153)
+                    } catch (e: Exception) {
+                        findViewById<TextView>(R.id.ctTxt).visibility = View.GONE
+                        ctBar.visibility = View.GONE
+                    }
+                },
+                Response.ErrorListener { error ->
+                    finish()
+                    Toast.makeText(this, volleyError(this, error), Toast.LENGTH_LONG).show()
+                }
+        )
+
+        roomDataRequest = JsonObjectRequest(Request.Method.GET, address + "api/" + hueAPI.getUsername() + "/groups/" + id, null,
                 Response.Listener { response ->
                     findViewById<TextView>(R.id.nameTxt).text = response.getString("name")
                     try {
@@ -106,18 +133,18 @@ class HueLampActivity : AppCompatActivity() {
                     Toast.makeText(this, volleyError(this, error), Toast.LENGTH_LONG).show()
                 }
         )
-        if (isRoom) queue.add(scenesRequest)
+        if (isRoom) queue!!.add(scenesRequest)
 
         gridView.onItemClickListener = AdapterView.OnItemClickListener { _, view, _, _ ->
             hueAPI.activateSceneOfGroup(id, view.findViewById<TextView>(R.id.hidden).text.toString())
             Handler().postDelayed({
-                queue.add(roomDataRequest)
+                queue!!.add(roomDataRequest)
             }, 250)
         }
 
         // Selected item is a whole room
         if (isRoom) {
-            queue.add(roomDataRequest)
+            queue!!.add(roomDataRequest)
 
             findViewById<Button>(R.id.onBtn).setOnClickListener {
                 hueAPI.switchGroupByID(id, true)
@@ -146,28 +173,7 @@ class HueLampActivity : AppCompatActivity() {
 
         // Selected item is a single light
         else {
-            val lightDataRequest = JsonObjectRequest(Request.Method.GET, address + "api/" + hueAPI.getUsername() + "/lights/" + id, null,
-                    Response.Listener { response ->
-                        findViewById<TextView>(R.id.nameTxt).text = response.getString("name")
-                        try {
-                            briBar.progress = response.getJSONObject("state").getInt("bri")
-                        } catch (e: Exception) {
-                            findViewById<TextView>(R.id.briTxt).visibility = View.GONE
-                            briBar.visibility = View.GONE
-                        }
-                        try {
-                            ctBar.progress = response.getJSONObject("state").getInt("ct") - 153
-                        } catch (e: Exception) {
-                            findViewById<TextView>(R.id.ctTxt).visibility = View.GONE
-                            ctBar.visibility = View.GONE
-                        }
-                    },
-                    Response.ErrorListener { error ->
-                        finish()
-                        Toast.makeText(this, volleyError(this, error), Toast.LENGTH_LONG).show()
-                    }
-            )
-            queue.add(lightDataRequest)
+            queue!!.add(lightDataRequest)
 
             findViewById<Button>(R.id.onBtn).setOnClickListener {
                 hueAPI.switchLightByID(id, true)
@@ -193,5 +199,11 @@ class HueLampActivity : AppCompatActivity() {
                 override fun onStopTrackingTouch(seekBar: SeekBar) {}
             })
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(isRoom) queue!!.add(roomDataRequest)
+        else queue!!.add(lightDataRequest)
     }
 }

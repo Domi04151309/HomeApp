@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 class ListAdapter extends BaseAdapter {
 
-    private final Context c;
     private final String[] title;
     private final String[] summary;
     private final String[] hidden;
@@ -27,7 +26,6 @@ class ListAdapter extends BaseAdapter {
     private static LayoutInflater inflater = null;
 
     public ListAdapter(Context context, String[] title, String[] summary, String[] hidden) {
-        this.c = context;
         this.title = title;
         this.summary = summary;
         this.hidden = hidden;
@@ -39,7 +37,6 @@ class ListAdapter extends BaseAdapter {
     }
 
     public ListAdapter(Context context, String[] title, String[] summary, int[] drawable) {
-        this.c = context;
         this.title = title;
         this.summary = summary;
         this.hidden = null;
@@ -51,7 +48,6 @@ class ListAdapter extends BaseAdapter {
     }
 
     public ListAdapter(Context context, String[] title, String[] summary, String[] hidden, int[] drawable) {
-        this.c = context;
         this.title = title;
         this.summary = summary;
         this.hidden = hidden;
@@ -63,7 +59,6 @@ class ListAdapter extends BaseAdapter {
     }
 
     public ListAdapter(Context context, String[] title, String[] summary, String[] hidden, int[] drawable, boolean[] state, CompoundButton.OnCheckedChangeListener stateListener) {
-        this.c = context;
         this.title = title;
         this.summary = summary;
         this.hidden = hidden;

@@ -39,14 +39,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var level = "one"
     private var reset = false
 
-    private var hueGroupStateListener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
+    private val hueGroupStateListener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
         val row = compoundButton.parent as ViewGroup
         val hidden = row.findViewById<TextView>(R.id.hidden).text
         val room = hidden.substring(hidden.lastIndexOf("@") + 1)
         hueAPI!!.switchGroupByID(room, b)
     }
 
-    private var hueLampStateListener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
+    private val hueLampStateListener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
         val row = compoundButton.parent as ViewGroup
         val hidden = row.findViewById<TextView>(R.id.hidden).text.toString()
         if (hidden.startsWith("room#")) {
@@ -109,10 +109,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     val drawables = IntArray(count)
                     val lightIDs = arrayOfNulls<String>(count)
                     val states = BooleanArray(count)
-                    var i = 0
                     var currentObjectName: String?
                     var currentObject: JSONObject?
-                    while (i < count) {
+                    for (i in 0 until count) {
                         try {
                             currentObjectName = response.names().getString(i)
                             currentObject = response.getJSONObject(currentObjectName)
@@ -124,7 +123,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         } catch (e: JSONException) {
                             Log.e(Global.LOG_TAG, e.toString())
                         }
-                        i++
                     }
                     val adapter = ListAdapter(context, titles, summaries, lightIDs, drawables, states, hueGroupStateListener)
                     listView!!.adapter = adapter
@@ -160,10 +158,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     drawables[0] = R.drawable.ic_room
                     lightIDs[0] = "room#$hueRoom"
                     states[0] = hueRoomState
-                    var i = 1
                     var currentObjectName: String?
                     var currentObject: JSONObject?
-                    while (i < count) {
+                    for (i in 1 until count) {
                         try {
                             currentObjectName = response.names().getString(i - 1)
                             currentObject = response.getJSONObject(currentObjectName)
@@ -175,7 +172,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         } catch (e: JSONException) {
                             Log.e(Global.LOG_TAG, e.toString())
                         }
-                        i++
                     }
                     val adapter = ListAdapter(context, titles, summaries, lightIDs, drawables, states, hueLampStateListener)
                     listView!!.adapter = adapter
@@ -240,7 +236,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             hueAPI!!.loadGroups(hueRequestCallBack)
                         }
                         else ->
-                            Toast.makeText(this, resources.getString(R.string.main_unknown_mode), Toast.LENGTH_LONG).show()
+                            Toast.makeText(this, R.string.main_unknown_mode, Toast.LENGTH_LONG).show()
                     }
                 }
                 "two" ->
@@ -260,21 +256,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         var titles: Array<String?>
         var summaries: Array<String?>
         var drawables: IntArray
-        var i = 0
         try {
             if (devices!!.length() == 0) {
                 titles = arrayOfNulls(1)
                 summaries = arrayOfNulls(1)
                 drawables = IntArray(1)
-                titles[i] = resources.getString(R.string.main_no_devices)
-                summaries[i] = resources.getString(R.string.main_no_devices_summary)
-                drawables[i] = R.drawable.ic_info
+                titles[0] = resources.getString(R.string.main_no_devices)
+                summaries[0] = resources.getString(R.string.main_no_devices_summary)
+                drawables[0] = R.drawable.ic_info
             } else {
                 val count = devices!!.length()
                 titles = arrayOfNulls(count)
                 summaries = arrayOfNulls(count)
                 drawables = IntArray(count)
-                while (i < count) {
+                for (i in 0 until count) {
                     try {
                         val name = devices!!.getName(i)
                         titles[i] = name
@@ -283,16 +278,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     } catch (e: JSONException) {
                         Log.e(Global.LOG_TAG, e.toString())
                     }
-                    i++
                 }
             }
         } catch (e: Exception){
             titles = arrayOfNulls(1)
             summaries = arrayOfNulls(1)
             drawables = IntArray(1)
-            titles[i] = resources.getString(R.string.err_wrong_format)
-            summaries[i] = resources.getString(R.string.err_wrong_format_summary)
-            drawables[i] = R.drawable.ic_warning
+            titles[0] = resources.getString(R.string.err_wrong_format)
+            summaries[0] = resources.getString(R.string.err_wrong_format_summary)
+            drawables[0] = R.drawable.ic_warning
             Log.e(Global.LOG_TAG, e.toString())
         }
         Log.d(Global.LOG_TAG, titles.toString() + summaries.toString())
