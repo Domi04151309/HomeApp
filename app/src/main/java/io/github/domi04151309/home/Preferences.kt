@@ -23,18 +23,12 @@ class Preferences : AppCompatActivity() {
         Theme.set(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
-        setupActionBar()
         supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.settings, GeneralPreferenceFragment())
                 .commit()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(spChanged)
-    }
-
-    private fun setupActionBar() {
-        val actionBar = supportActionBar
-        actionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     class GeneralPreferenceFragment : PreferenceFragmentCompat() {
