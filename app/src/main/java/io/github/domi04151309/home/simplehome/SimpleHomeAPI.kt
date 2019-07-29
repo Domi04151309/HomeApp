@@ -1,7 +1,7 @@
 package io.github.domi04151309.home.simplehome
 
 import android.content.Context
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import android.util.Log
 import com.android.volley.*
 import com.android.volley.toolbox.JsonObjectRequest

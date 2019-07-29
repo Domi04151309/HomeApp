@@ -2,7 +2,7 @@ package io.github.domi04151309.home
 
 import android.content.Intent
 import android.os.Bundle
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.widget.*

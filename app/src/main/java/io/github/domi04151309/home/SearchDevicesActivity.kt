@@ -10,7 +10,7 @@ import com._8rine.upnpdiscovery.UPnPDevice
 import com._8rine.upnpdiscovery.UPnPDiscovery
 import org.json.JSONException
 import android.os.Handler
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import androidx.appcompat.app.AlertDialog
 import android.view.View
 import android.widget.AdapterView

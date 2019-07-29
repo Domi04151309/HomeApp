@@ -1,12 +1,9 @@
 package io.github.domi04151309.home
 
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
-import android.net.Uri
 import android.os.Bundle
-import android.preference.PreferenceManager
 import com.google.android.material.navigation.NavigationView
 import androidx.core.view.GravityCompat
 import androidx.appcompat.app.AppCompatActivity
@@ -25,6 +22,7 @@ import org.json.JSONException
 import org.json.JSONObject
 import android.widget.TextView
 import android.view.ViewGroup
+import androidx.preference.PreferenceManager
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
