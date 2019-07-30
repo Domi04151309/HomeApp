@@ -107,7 +107,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     val drawables = IntArray(count)
                     val lightIDs = arrayOfNulls<String>(count)
                     val states = BooleanArray(count)
-                    var currentObjectName: String?
+                    var currentObjectName: String
                     var currentObject: JSONObject?
                     for (i in 0 until count) {
                         try {
@@ -156,7 +156,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     drawables[0] = R.drawable.ic_room
                     lightIDs[0] = "room#$hueRoom"
                     states[0] = hueRoomState
-                    var currentObjectName: String?
+                    var currentObjectName: String
                     var currentObject: JSONObject?
                     for (i in 1 until count) {
                         try {
