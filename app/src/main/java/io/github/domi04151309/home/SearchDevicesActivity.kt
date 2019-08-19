@@ -60,7 +60,7 @@ class SearchDevicesActivity : AppCompatActivity() {
                 Log.d("UPnPDiscovery", "Found new device: " + device.friendlyName)
                 if (device.server.contains("IpBridge") && !addresses.contains(device.hostAddress)) {
                     addresses += device.hostAddress
-                    modes += "Hue Bridge"
+                    modes += "Hue API"
                     icons += "Lamp"
                 }
             }

@@ -106,7 +106,7 @@
     </string-array>
     <string-array name="pref_add_mode_array">
         <item>SimpleHome API</item>
-        <item>Hue Bridge</item>
+        <item>Hue API</item>
         <item>Website</item>
     </string-array>
 

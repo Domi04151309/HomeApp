@@ -229,7 +229,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         }
                         "SimpleHome API" ->
                             homeAPI.loadCommands (title, homeRequestCallBack)
-                        "Hue Bridge" -> {
+                        "Hue API" -> {
                             hueAPI = HueAPI(this, title)
                             hueAPI!!.loadGroups(hueRequestCallBack)
                         }
