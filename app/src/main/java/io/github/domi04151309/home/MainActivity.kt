@@ -23,6 +23,7 @@ import org.json.JSONObject
 import android.widget.TextView
 import android.view.ViewGroup
 import androidx.preference.PreferenceManager
+import io.github.domi04151309.home.data.ListViewItem
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -68,14 +69,25 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         override fun onCommandsLoaded(
                 context: Context,
-                errorMessage: String,
+                response: JSONObject?,
                 device: String,
-                titles: Array<String?>,
-                summaries: Array<String?>,
-                commandAddresses: Array<String?>
+                errorMessage: String
         ) {
             if (errorMessage == "") {
-                val adapter = ListAdapter(context, titles, summaries, commandAddresses)
+                val commandsObject = Commands(response!!.getJSONObject("commands"))
+                var listItems: Array<ListViewItem> = arrayOf()
+                for (i in 0 until commandsObject.length()) {
+                    try {
+                        commandsObject.selectCommand(i)
+                        val commandItem = ListViewItem(commandsObject.getSelectedTitle())
+                        commandItem.summary = commandsObject.getSelectedSummary()
+                        commandItem.hidden = devices!!.getAddress(device) + commandsObject.getSelected()
+                        listItems += commandItem
+                    } catch (e: JSONException) {
+                        Log.e(Global.LOG_TAG, e.toString())
+                    }
+                }
+                val adapter = ListViewAdapter(context, listItems)
                 listView!!.adapter = adapter
                 setLevelTwo(currentView!!.findViewById<ImageView>(R.id.drawable).drawable, device)
             } else {
@@ -101,28 +113,25 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         ) {
             if (errorMessage == "") {
                 try {
-                    val count = response!!.length()
-                    val titles = arrayOfNulls<String>(count)
-                    val summaries = arrayOfNulls<String>(count)
-                    val drawables = IntArray(count)
-                    val lightIDs = arrayOfNulls<String>(count)
-                    val states = BooleanArray(count)
                     var currentObjectName: String
                     var currentObject: JSONObject?
-                    for (i in 0 until count) {
+                    var listItems: Array<ListViewItem> = arrayOf()
+                    for (i in 0 until response!!.length()) {
                         try {
-                            currentObjectName = response.names().getString(i)
+                            currentObjectName = response.names()!!.getString(i)
                             currentObject = response.getJSONObject(currentObjectName)
-                            titles[i] = currentObject.getString("name")
-                            summaries[i] = resources.getString(R.string.hue_tap)
-                            drawables[i] = R.drawable.ic_room
-                            lightIDs[i] = currentObject.getJSONArray("lights").toString() + "@" + currentObjectName
-                            states[i] = currentObject.getJSONObject("state").getBoolean("any_on")
+                            val listItem = ListViewItem(currentObject.getString("name"))
+                            listItem.summary = resources.getString(R.string.hue_tap)
+                            listItem.hidden = currentObject.getJSONArray("lights").toString() + "@" + currentObjectName
+                            listItem.icon = R.drawable.ic_room
+                            listItem.state = currentObject.getJSONObject("state").getBoolean("any_on")
+                            listItem.stateListener = hueGroupStateListener
+                            listItems += listItem
                         } catch (e: JSONException) {
                             Log.e(Global.LOG_TAG, e.toString())
                         }
                     }
-                    val adapter = ListAdapter(context, titles, summaries, lightIDs, drawables, states, hueGroupStateListener)
+                    val adapter = ListViewAdapter(context, listItems)
                     listView!!.adapter = adapter
                     hueCurrentIcon = resources.getDrawable(devices!!.getIconId(device), context.theme)
                     setLevelTwoHue(hueCurrentIcon!!, device)
@@ -146,36 +155,35 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             if (errorMessage == "") {
                 try {
                     val count = response!!.length() + 1
-                    val titles = arrayOfNulls<String>(count)
-                    val summaries = arrayOfNulls<String>(count)
-                    val drawables = IntArray(count)
-                    val lightIDs = arrayOfNulls<String>(count)
-                    val states = BooleanArray(count)
-                    titles[0] = resources.getString(R.string.hue_whole_room)
-                    summaries[0] = resources.getString(R.string.hue_whole_room_summary)
-                    drawables[0] = R.drawable.ic_room
-                    lightIDs[0] = "room#$hueRoom"
-                    states[0] = hueRoomState
+                    val roomItem = ListViewItem(resources.getString(R.string.hue_whole_room))
+                    roomItem.summary = resources.getString(R.string.hue_whole_room_summary)
+                    roomItem.hidden = "room#$hueRoom"
+                    roomItem.icon = R.drawable.ic_room
+                    roomItem.state = hueRoomState
+                    roomItem.stateListener = hueLampStateListener
                     var currentObjectName: String
                     var currentObject: JSONObject?
+                    var listItems: Array<ListViewItem> = arrayOf(roomItem)
                     for (i in 1 until count) {
                         try {
-                            currentObjectName = response.names().getString(i - 1)
+                            currentObjectName = response.names()!!.getString(i - 1)
                             currentObject = response.getJSONObject(currentObjectName)
-                            titles[i] = currentObject!!.getString("name")
-                            summaries[i] = resources.getString(R.string.hue_tap)
-                            drawables[i] = R.drawable.ic_device_lamp
-                            lightIDs[i] = currentObjectName
-                            states[i] = currentObject!!.getJSONObject("state").getBoolean("on")
+                            val listItem = ListViewItem(currentObject!!.getString("name"))
+                            listItem.summary = resources.getString(R.string.hue_tap)
+                            listItem.hidden = currentObjectName
+                            listItem.icon = R.drawable.ic_device_lamp
+                            listItem.state = currentObject!!.getJSONObject("state").getBoolean("on")
+                            listItem.stateListener = hueLampStateListener
+                            listItems += listItem
                         } catch (e: JSONException) {
                             Log.e(Global.LOG_TAG, e.toString())
                         }
                     }
-                    val adapter = ListAdapter(context, titles, summaries, lightIDs, drawables, states, hueLampStateListener)
+                    val adapter = ListViewAdapter(context, listItems)
                     listView!!.adapter = adapter
                     setLevelThreeHue(resources.getDrawable(R.drawable.ic_device_lamp, context.theme), currentView!!.findViewById<TextView>(R.id.title).text)
                 } catch (e: Exception) {
-                    setLevelOne()
+                    setLevelTwo(hueCurrentIcon!!, device)
                     currentView!!.findViewById<TextView>(R.id.summary).text = resources.getString(R.string.err_wrong_format_summary)
                     Log.e(Global.LOG_TAG, e.toString())
                 }
@@ -251,45 +259,32 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun loadDevices(){
-        var titles: Array<String?>
-        var summaries: Array<String?>
-        var drawables: IntArray
+        var listItems: Array<ListViewItem> = arrayOf()
         try {
             if (devices!!.length() == 0) {
-                titles = arrayOfNulls(1)
-                summaries = arrayOfNulls(1)
-                drawables = IntArray(1)
-                titles[0] = resources.getString(R.string.main_no_devices)
-                summaries[0] = resources.getString(R.string.main_no_devices_summary)
-                drawables[0] = R.drawable.ic_info
+                val emptyItem = ListViewItem(resources.getString(R.string.main_no_devices))
+                emptyItem.summary = resources.getString(R.string.main_no_devices_summary)
+                emptyItem.icon = R.drawable.ic_info
+                listItems += emptyItem
             } else {
-                val count = devices!!.length()
-                titles = arrayOfNulls(count)
-                summaries = arrayOfNulls(count)
-                drawables = IntArray(count)
-                for (i in 0 until count) {
-                    try {
-                        val name = devices!!.getName(i)
-                        titles[i] = name
-                        summaries[i] = resources.getString(R.string.main_tap_to_connect)
-                        drawables[i] = devices!!.getIconId(name)
-                    } catch (e: JSONException) {
-                        Log.e(Global.LOG_TAG, e.toString())
-                    }
+                for (i in 0 until devices!!.length()) {
+                    val name = devices!!.getName(i)
+                    val deviceItem = ListViewItem(name)
+                    deviceItem.summary = resources.getString(R.string.main_tap_to_connect)
+                    deviceItem.icon = devices!!.getIconId(name)
+                    listItems += deviceItem
                 }
             }
-        } catch (e: Exception){
-            titles = arrayOfNulls(1)
-            summaries = arrayOfNulls(1)
-            drawables = IntArray(1)
-            titles[0] = resources.getString(R.string.err_wrong_format)
-            summaries[0] = resources.getString(R.string.err_wrong_format_summary)
-            drawables[0] = R.drawable.ic_warning
+        } catch (e: Exception) {
+            val errorItem = ListViewItem(resources.getString(R.string.err_wrong_format))
+            errorItem.summary = resources.getString(R.string.err_wrong_format_summary)
+            errorItem.hidden = "none"
+            errorItem.icon = R.drawable.ic_warning
+            listItems += errorItem
             Log.e(Global.LOG_TAG, e.toString())
         }
-        Log.d(Global.LOG_TAG, titles.toString() + summaries.toString())
 
-        val adapter = ListAdapter(this, titles, summaries, drawables)
+        val adapter = ListViewAdapter(this, listItems)
         listView!!.adapter = adapter
         setLevelOne()
     }

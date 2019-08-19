@@ -9,7 +9,7 @@ import com.android.volley.toolbox.Volley
 import io.github.domi04151309.home.*
 import io.github.domi04151309.home.Global.volleyError
 import io.github.domi04151309.home.R
-import org.json.JSONException
+import org.json.JSONObject
 
 class SimpleHomeAPI(context: Context) {
 
@@ -18,11 +18,9 @@ class SimpleHomeAPI(context: Context) {
     interface RequestCallBack {
         fun onCommandsLoaded(
                 context: Context,
-                errorMessage: String,
-                device: String = "",
-                titles: Array<String?> = arrayOfNulls(0),
-                summaries: Array<String?> = arrayOfNulls(0),
-                commandAddresses: Array<String?> = arrayOfNulls(0)
+                response: JSONObject?,
+                device: String,
+                errorMessage: String = ""
         )
         fun onExecutionFinished(context: Context, result: CharSequence)
     }
@@ -32,34 +30,10 @@ class SimpleHomeAPI(context: Context) {
         val queue = Volley.newRequestQueue(c)
         val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url + "commands", null,
                 Response.Listener { response ->
-                    try {
-                        Log.d(Global.LOG_TAG, response.toString())
-                        val commandsObject = Commands(response.getJSONObject("commands"))
-                        val count = commandsObject.length()
-                        val titles = arrayOfNulls<String>(count)
-                        val summaries = arrayOfNulls<String>(count)
-                        val commandAddresses = arrayOfNulls<String>(count)
-                        var i = 0
-                        while (i < count) {
-                            try {
-                                commandsObject.selectCommand(i)
-                                titles[i] = commandsObject.getSelectedTitle()
-                                summaries[i] = commandsObject.getSelectedSummary()
-                                commandAddresses[i] = url + commandsObject.getSelected()
-                            } catch (e: JSONException) {
-                                Log.e(Global.LOG_TAG, e.toString())
-                            }
-                            i++
-                        }
-
-                        callback.onCommandsLoaded(c, "", device, titles, summaries, commandAddresses)
-                    } catch (e: Exception) {
-                        callback.onCommandsLoaded(c, c.resources.getString(R.string.err_wrong_format_summary))
-                        Log.e(Global.LOG_TAG, e.toString())
-                    }
+                    callback.onCommandsLoaded(c, response, device)
                 },
                 Response.ErrorListener { error ->
-                    callback.onCommandsLoaded(c, volleyError(c, error))
+                    callback.onCommandsLoaded(c, null, device, volleyError(c, error))
                 }
         )
         queue.add(jsonObjectRequest)

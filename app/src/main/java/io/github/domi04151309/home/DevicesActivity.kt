@@ -6,10 +6,9 @@ import androidx.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.widget.*
-import org.json.JSONException
-import java.util.*
 import androidx.appcompat.app.AlertDialog
 import android.view.View
+import io.github.domi04151309.home.data.ListViewItem
 
 class DevicesActivity : AppCompatActivity() {
 
@@ -49,58 +48,37 @@ class DevicesActivity : AppCompatActivity() {
     }
 
     private fun loadDevices(){
-        var titles: Array<String?>
-        var summaries: Array<String?>
-        var actions: Array<String?>
-        var drawables: IntArray
-        var i = 0
+        var listItems: Array<ListViewItem> = arrayOf()
         try {
             if (devices!!.length() == 0) {
-                titles = arrayOfNulls(2)
-                summaries = arrayOfNulls(2)
-                actions = arrayOfNulls(2)
-                drawables = IntArray(2)
-                titles[i] = resources.getString(R.string.main_no_devices)
-                summaries[i] = ""
-                actions[i] = "none"
-                i++
+                val emptyItem = ListViewItem(resources.getString(R.string.main_no_devices))
+                emptyItem.hidden = "none"
+                listItems += emptyItem
             } else {
-                val count = devices!!.length()
-                titles = arrayOfNulls(count + 1)
-                summaries = arrayOfNulls(count + 1)
-                actions = arrayOfNulls(count + 1)
-                drawables = IntArray(count + 1)
-                while (i < count) {
-                    try {
-                        val name = devices!!.getName(i)
-                        titles[i] = name
-                        summaries[i] = devices!!.getAddress(name)
-                        actions[i] = "edit"
-                        drawables[i] = devices!!.getIconId(name)
-                    } catch (e: JSONException) {
-                        Log.e(Global.LOG_TAG, e.toString())
-                    }
-                    i++
+                for (i in 0 until devices!!.length()) {
+                    val name = devices!!.getName(i)
+                    val deviceItem = ListViewItem(name)
+                    deviceItem.summary = devices!!.getAddress(name)
+                    deviceItem.hidden = "edit"
+                    deviceItem.icon = devices!!.getIconId(name)
+                    listItems += deviceItem
                 }
             }
-            titles[i] = resources.getString(R.string.pref_add)
-            summaries[i] = resources.getString(R.string.pref_add_summary)
-            actions[i] = "add"
-            drawables[i] = R.drawable.ic_add
+            val addItem = ListViewItem(resources.getString(R.string.pref_add))
+            addItem.summary = resources.getString(R.string.pref_add_summary)
+            addItem.hidden = "add"
+            addItem.icon = R.drawable.ic_add
+            listItems += addItem
         } catch (e: Exception) {
-            titles = arrayOfNulls(1)
-            summaries = arrayOfNulls(1)
-            actions = arrayOfNulls(1)
-            drawables = IntArray(1)
-            titles[i] = resources.getString(R.string.err_wrong_format)
-            summaries[i] = resources.getString(R.string.err_wrong_format_summary)
-            actions[i] = "none"
-            drawables[i] = R.drawable.ic_warning
+            val errorItem = ListViewItem(resources.getString(R.string.err_wrong_format))
+            errorItem.summary = resources.getString(R.string.err_wrong_format_summary)
+            errorItem.hidden = "none"
+            errorItem.icon = R.drawable.ic_warning
+            listItems += errorItem
             Log.e(Global.LOG_TAG, e.toString())
         }
-        Log.d(Global.LOG_TAG, Arrays.toString(titles) + Arrays.toString(summaries))
 
-        val adapter = ListAdapter(this, titles, summaries, actions, drawables)
+        val adapter = ListViewAdapter(this, listItems)
         listView!!.adapter = adapter
     }
 

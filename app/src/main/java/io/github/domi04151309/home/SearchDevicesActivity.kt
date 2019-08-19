@@ -8,13 +8,13 @@ import android.net.wifi.WifiManager
 import android.util.Log
 import com._8rine.upnpdiscovery.UPnPDevice
 import com._8rine.upnpdiscovery.UPnPDiscovery
-import org.json.JSONException
 import android.os.Handler
 import androidx.preference.PreferenceManager
 import androidx.appcompat.app.AlertDialog
 import android.view.View
 import android.widget.AdapterView
 import android.widget.TextView
+import io.github.domi04151309.home.data.ListViewItem
 
 class SearchDevicesActivity : AppCompatActivity() {
 
@@ -26,26 +26,24 @@ class SearchDevicesActivity : AppCompatActivity() {
 
         listView = findViewById<View>(R.id.listView) as ListView
         val devices = Devices(PreferenceManager.getDefaultSharedPreferences(this))
-        val names = mutableListOf<String>()
         val addresses = mutableListOf<String>()
-        val modes = mutableListOf<String>()
-        val icons = mutableListOf<String>()
 
-        val firstTitle: Array<String?> = arrayOfNulls(1)
-        val firstSummary: Array<String?> = arrayOfNulls(1)
-        val firstDrawable = IntArray(1)
-        firstTitle[0] = resources.getString(R.string.pref_add_wait)
-        firstSummary[0] = resources.getString(R.string.pref_add_wait_summary)
-        firstDrawable[0] = R.drawable.ic_info
-        val firstAdapter = ListAdapter(this, firstTitle, firstSummary, firstDrawable)
+        val waitItem = ListViewItem(resources.getString(R.string.pref_add_wait))
+        waitItem.summary = resources.getString(R.string.pref_add_wait_summary)
+        waitItem.icon = R.drawable.ic_info
+        val firstAdapter = ListViewAdapter(this, arrayOf(waitItem))
         listView!!.adapter = firstAdapter
+        var listItems: Array<ListViewItem> = arrayOf()
 
         //Get Router
         val manager = super.getApplicationContext().getSystemService(Context.WIFI_SERVICE) as WifiManager
-        names += "Router"
-        addresses += intToIp(manager.dhcpInfo.gateway)
-        modes += "Website"
-        icons += "Router"
+        val routerIp = intToIp(manager.dhcpInfo.gateway)
+        val routerItem = ListViewItem(resources.getString(R.string.pref_device_router))
+        routerItem.summary = routerIp
+        routerItem.hidden = "Website#Router"
+        routerItem.icon = R.drawable.ic_device_router
+        listItems += routerItem
+        addresses += routerIp
 
         //Get Hue Bridges
         val customQuery = "M-SEARCH * HTTP/1.1" + "\r\n" +
@@ -61,10 +59,12 @@ class SearchDevicesActivity : AppCompatActivity() {
             override fun OnFoundNewDevice(device: UPnPDevice) {
                 Log.d("UPnPDiscovery", "Found new device: " + device.friendlyName)
                 if (device.server.contains("IpBridge") && !addresses.contains(device.hostAddress)) {
-                    names += device.friendlyName
+                    val deviceItem = ListViewItem(device.friendlyName)
+                    deviceItem.summary = device.hostAddress
+                    deviceItem.hidden = "Hue API#Lamp"
+                    deviceItem.icon = R.drawable.ic_device_lamp
+                    listItems += deviceItem
                     addresses += device.hostAddress
-                    modes += "Hue API"
-                    icons += "Lamp"
                 }
             }
             override fun OnFinish(devices: HashSet<UPnPDevice>) {}
@@ -73,16 +73,19 @@ class SearchDevicesActivity : AppCompatActivity() {
             }
         }, customQuery, customAddress, customPort)
 
+        //Get compatible routers
         UPnPDiscovery.discoveryDevices(this, object : UPnPDiscovery.OnDiscoveryListener {
             override fun OnStart() {}
             override fun OnFoundNewDevice(device: UPnPDevice) {
                 val friendlyName = device.friendlyName
-                Log.d("UPnPDiscovery", "Found new device: " + friendlyName)
+                Log.d("UPnPDiscovery", "Found new device: $friendlyName")
                 if ((friendlyName.contains("FRITZ!Box") || friendlyName.contains("FRITZ!WLAN Repeater")) && !addresses.contains(device.hostAddress)) {
-                    names += friendlyName
+                    val deviceItem = ListViewItem(device.friendlyName)
+                    deviceItem.summary = device.hostAddress
+                    deviceItem.hidden = "Website#Router"
+                    deviceItem.icon = R.drawable.ic_device_router
+                    listItems += deviceItem
                     addresses += device.hostAddress
-                    modes += "Website"
-                    icons += "Router"
                 }
             }
             override fun OnFinish(devices: HashSet<UPnPDevice>) {}
@@ -93,28 +96,7 @@ class SearchDevicesActivity : AppCompatActivity() {
 
         //Display found devices
         Handler().postDelayed({
-            val devicesNumber = addresses.size
-            val titles: Array<String?> = arrayOfNulls(devicesNumber)
-            val summaries: Array<String?> = arrayOfNulls(devicesNumber)
-            val hidden: Array<String?> = arrayOfNulls(devicesNumber)
-            val drawables = IntArray(devicesNumber)
-            titles[0] = names[0]
-            summaries[0] = addresses[0]
-            hidden[0] = modes[0] + "#" + icons[0]
-            drawables[0] = R.drawable.ic_device_router
-            var i = 1
-            while (i < devicesNumber) {
-                try {
-                    titles[i] = names[i]
-                    summaries[i] = addresses[i]
-                    hidden[i] = modes[i] + "#" + icons[i]
-                    drawables[i] = Global.getIcon(icons[i])
-                } catch (e: JSONException) {
-                    Log.e(Global.LOG_TAG, e.toString())
-                }
-                i++
-            }
-            val adapter = ListAdapter(this, titles, summaries, hidden, drawables)
+            val adapter = ListViewAdapter(this, listItems)
             listView!!.adapter = adapter
         }, 10000)
 

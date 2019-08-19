@@ -86,7 +86,6 @@
     <string name="pref_info_header_summary">Header background by Dan Gold on Unsplash</string>
 
     <string name="pref_device_router">Router</string>
-    <string name="pref_device_hue_bridge">Hue Bridge</string>
 
     <string-array name="pref_add_method_array">
         <item>Add device by address</item>

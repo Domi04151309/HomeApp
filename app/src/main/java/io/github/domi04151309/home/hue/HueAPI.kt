@@ -35,11 +35,11 @@ class HueAPI(context: Context, device: String) {
         )
     }
 
-    fun getUsername(): String? {
-        val username = PreferenceManager.getDefaultSharedPreferences(c).getString(selectedDevice, "none")
+    fun getUsername(): String {
+        val username = PreferenceManager.getDefaultSharedPreferences(c).getString(selectedDevice, "none") ?: ""
         return if (username == "none") {
             c.startActivity(Intent(c, HueConnectActivity::class.java).putExtra("Device", selectedDevice).putExtra("URL", url))
-            null
+            ""
         } else {
             username
         }
