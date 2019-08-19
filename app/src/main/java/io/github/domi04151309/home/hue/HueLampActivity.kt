@@ -18,6 +18,7 @@ import io.github.domi04151309.home.Global
 import io.github.domi04151309.home.Global.volleyError
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.Theme
+import io.github.domi04151309.home.data.ScenesGridItem
 import java.lang.Exception
 
 class HueLampActivity : AppCompatActivity() {
@@ -105,24 +106,18 @@ class HueLampActivity : AppCompatActivity() {
         val scenesRequest = JsonObjectRequest(Request.Method.GET, address + "api/" + hueAPI.getUsername() + "/scenes/", null,
                 Response.Listener { response ->
                     try {
-                        val count = response.length()
-                        val drawables: ArrayList<Int> = arrayListOf()
-                        val names: ArrayList<String> = arrayListOf()
-                        val ids: ArrayList<String> = arrayListOf()
-                        var i = 0
-                        while (i < count) {
-                            val currentObjectName = response.names().getString(i)
+                        var gridItems: Array<ScenesGridItem> = arrayOf()
+                        for (i in 0 until response.length()) {
+                            val currentObjectName = response.names()!!.getString(i)
                             val currentObject = response.getJSONObject(currentObjectName)
                             if (currentObject.getString("group") == id) {
-                                if (currentObject.getString("group") == id) {
-                                    drawables.add(R.drawable.ic_hue_scene)
-                                    names.add(currentObject.getString("name"))
-                                    ids.add(currentObjectName)
-                                }
+                                val scene = ScenesGridItem(currentObject.getString("name"))
+                                scene.hidden = currentObjectName
+                                scene.icon = R.drawable.ic_hue_scene
+                                gridItems += scene
                             }
-                            i++
                         }
-                        val adapter = HueScenesGridAdapter(this, drawables.toIntArray(), names.toTypedArray(), ids.toTypedArray())
+                        val adapter = HueScenesGridAdapter(this, gridItems)
                         gridView.adapter = adapter
                     } catch (e: Exception){
                         Log.e(Global.LOG_TAG, e.toString())
