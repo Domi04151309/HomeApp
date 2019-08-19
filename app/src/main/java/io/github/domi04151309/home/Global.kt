@@ -13,6 +13,24 @@ object Global {
 
     const val DEFAULT_JSON = "{\"devices\":{}}"
 
+    fun getIcon(icon: String): Int {
+        return when (icon) {
+            "Lamp" -> R.drawable.ic_device_lamp
+            "Laptop" -> R.drawable.ic_device_laptop
+            "Phone" -> R.drawable.ic_device_phone
+            "Raspberry Pi" -> R.drawable.ic_device_raspberry_pi
+            "Router" -> R.drawable.ic_device_router
+            "Speaker" -> R.drawable.ic_device_speaker
+            "Stack" -> R.drawable.ic_device_stack
+            "Tablet" -> R.drawable.ic_device_tablet
+            "Thermometer" -> R.drawable.ic_device_thermometer
+            "TV" -> R.drawable.ic_device_tv
+            else -> {
+                R.drawable.ic_warning
+            }
+        }
+    }
+
     fun volleyError(c: Context, error: java.lang.Exception): String {
         Log.w(LOG_TAG, error)
         return if(error is TimeoutError || error is NoConnectionError)

@@ -26,6 +26,7 @@ class SearchDevicesActivity : AppCompatActivity() {
 
         listView = findViewById<View>(R.id.listView) as ListView
         val devices = Devices(PreferenceManager.getDefaultSharedPreferences(this))
+        val names = mutableListOf<String>()
         val addresses = mutableListOf<String>()
         val modes = mutableListOf<String>()
         val icons = mutableListOf<String>()
@@ -41,6 +42,7 @@ class SearchDevicesActivity : AppCompatActivity() {
 
         //Get Router
         val manager = super.getApplicationContext().getSystemService(Context.WIFI_SERVICE) as WifiManager
+        names += "Router"
         addresses += intToIp(manager.dhcpInfo.gateway)
         modes += "Website"
         icons += "Router"
@@ -59,6 +61,7 @@ class SearchDevicesActivity : AppCompatActivity() {
             override fun OnFoundNewDevice(device: UPnPDevice) {
                 Log.d("UPnPDiscovery", "Found new device: " + device.friendlyName)
                 if (device.server.contains("IpBridge") && !addresses.contains(device.hostAddress)) {
+                    names += device.friendlyName
                     addresses += device.hostAddress
                     modes += "Hue API"
                     icons += "Lamp"
@@ -70,6 +73,24 @@ class SearchDevicesActivity : AppCompatActivity() {
             }
         }, customQuery, customAddress, customPort)
 
+        UPnPDiscovery.discoveryDevices(this, object : UPnPDiscovery.OnDiscoveryListener {
+            override fun OnStart() {}
+            override fun OnFoundNewDevice(device: UPnPDevice) {
+                val friendlyName = device.friendlyName
+                Log.d("UPnPDiscovery", "Found new device: " + friendlyName)
+                if ((friendlyName.contains("FRITZ!Box") || friendlyName.contains("FRITZ!WLAN Repeater")) && !addresses.contains(device.hostAddress)) {
+                    names += friendlyName
+                    addresses += device.hostAddress
+                    modes += "Website"
+                    icons += "Router"
+                }
+            }
+            override fun OnFinish(devices: HashSet<UPnPDevice>) {}
+            override fun OnError(e: Exception) {
+                Log.d("UPnPDiscovery", "Error: " + e.localizedMessage)
+            }
+        })
+
         //Display found devices
         Handler().postDelayed({
             val devicesNumber = addresses.size
@@ -77,17 +98,17 @@ class SearchDevicesActivity : AppCompatActivity() {
             val summaries: Array<String?> = arrayOfNulls(devicesNumber)
             val hidden: Array<String?> = arrayOfNulls(devicesNumber)
             val drawables = IntArray(devicesNumber)
-            titles[0] = resources.getString(R.string.pref_device_router)
+            titles[0] = names[0]
             summaries[0] = addresses[0]
             hidden[0] = modes[0] + "#" + icons[0]
             drawables[0] = R.drawable.ic_device_router
             var i = 1
             while (i < devicesNumber) {
                 try {
-                    titles[i] = resources.getString(R.string.pref_device_hue_bridge)
+                    titles[i] = names[i]
                     summaries[i] = addresses[i]
                     hidden[i] = modes[i] + "#" + icons[i]
-                    drawables[i] = R.drawable.ic_device_lamp
+                    drawables[i] = Global.getIcon(icons[i])
                 } catch (e: JSONException) {
                     Log.e(Global.LOG_TAG, e.toString())
                 }
