@@ -38,12 +38,6 @@ class SearchDevicesActivity : AppCompatActivity() {
         //Get Router
         val manager = super.getApplicationContext().getSystemService(Context.WIFI_SERVICE) as WifiManager
         val routerIp = intToIp(manager.dhcpInfo.gateway)
-        val routerItem = ListViewItem(resources.getString(R.string.pref_device_router))
-        routerItem.summary = routerIp
-        routerItem.hidden = "Website#Router"
-        routerItem.icon = R.drawable.ic_device_router
-        listItems += routerItem
-        addresses += routerIp
 
         //Get Hue Bridges
         val customQuery = "M-SEARCH * HTTP/1.1" + "\r\n" +
@@ -96,6 +90,14 @@ class SearchDevicesActivity : AppCompatActivity() {
 
         //Display found devices
         Handler().postDelayed({
+            if (!addresses.contains(routerIp)) {
+                val routerItem = ListViewItem(resources.getString(R.string.pref_device_router))
+                routerItem.summary = routerIp
+                routerItem.hidden = "Website#Router"
+                routerItem.icon = R.drawable.ic_device_router
+                listItems += routerItem
+                addresses += routerIp
+            }
             val adapter = ListViewAdapter(this, listItems)
             listView!!.adapter = adapter
         }, 10000)

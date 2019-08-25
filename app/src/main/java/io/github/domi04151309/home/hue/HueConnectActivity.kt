@@ -27,7 +27,7 @@ class HueConnectActivity : AppCompatActivity() {
 
         val queue = Volley.newRequestQueue(this)
         val device = intent.getStringExtra("Device")
-        val url = intent.getStringExtra("URL")+ "api"
+        val url = intent.getStringExtra("URL") + "api"
         val jsonRequestObject = JSONObject("{\"devicetype\":\"HomeApp#" + getHostName() + "\"}")
         val requestToRegisterUser = CustomJsonArrayRequest(Request.Method.POST, url, jsonRequestObject,
                 Response.Listener { response ->
@@ -39,11 +39,9 @@ class HueConnectActivity : AppCompatActivity() {
                         PreferenceManager.getDefaultSharedPreferences(this).edit().putString(device, username).apply()
                         finish()
                     }
-                    else if (!enabled) {}
-                    else
-                        Toast.makeText(this, R.string.err, Toast.LENGTH_LONG).show()
+                    else if (!enabled) enabled = true
+                    else Toast.makeText(this, R.string.err, Toast.LENGTH_LONG).show()
                     Log.w(Global.LOG_TAG, responseObject.toString())
-                    enabled = true
                 },
                 Response.ErrorListener { error ->
                     Toast.makeText(this, R.string.err, Toast.LENGTH_LONG).show()
@@ -58,7 +56,7 @@ class HueConnectActivity : AppCompatActivity() {
         }
     }
 
-    private fun getHostName(): String? {
+    private fun getHostName(): String {
         return try {
             val getString = Build::class.java.getDeclaredMethod("getString", String::class.java)
             getString.isAccessible = true

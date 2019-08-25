@@ -21,3 +21,4 @@
 #-renamesourcefileattribute SourceFile
 
 -keep class org.xmlpull.v1.** { *; }
+-keep class com._8rine.upnpdiscovery.** { *; }

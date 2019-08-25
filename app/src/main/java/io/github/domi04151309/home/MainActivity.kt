@@ -124,7 +124,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             listItem.summary = resources.getString(R.string.hue_tap)
                             listItem.hidden = currentObject.getJSONArray("lights").toString() + "@" + currentObjectName
                             listItem.icon = R.drawable.ic_room
-                            listItem.state = currentObject.getJSONObject("state").getBoolean("any_on")
+                            listItem.state = currentObject.getJSONObject("action").getBoolean("on")
                             listItem.stateListener = hueGroupStateListener
                             listItems += listItem
                         } catch (e: JSONException) {
