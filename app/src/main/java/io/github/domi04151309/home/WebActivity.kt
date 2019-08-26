@@ -20,7 +20,7 @@ class WebActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_web)
         val progress = findViewById<ProgressBar>(R.id.progressBar)
-        val uri = intent.getStringExtra("URI")
+        val uri = intent.getStringExtra("URI") ?: ""
         val title = intent.getStringExtra("title")
         val webView = findViewById<WebView>(R.id.webView)
         val webSettings = webView.settings

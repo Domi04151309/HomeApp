@@ -92,6 +92,14 @@ class HueAPI(context: Context, device: String) {
         putObject("/lights/$lightID/state", "{\"ct\":$ct}")
     }
 
+    fun changeHue(lightID: String, hue: Int) {
+        putObject("/lights/$lightID/state", "{\"hue\":$hue}")
+    }
+
+    fun changeSaturation(lightID: String, sat: Int) {
+        putObject("/lights/$lightID/state", "{\"sat\":$sat}")
+    }
+
     fun switchGroupByID(groupID: String, on: Boolean) {
         putObject("/groups/$groupID/action", "{\"on\":$on}")
     }
@@ -102,6 +110,14 @@ class HueAPI(context: Context, device: String) {
 
     fun changeColorTemperatureOfGroup(groupID: String, ct: Int) {
         putObject("/groups/$groupID/action", "{\"ct\":$ct}")
+    }
+
+    fun changeHueOfGroup(groupID: String, hue: Int) {
+        putObject("/groups/$groupID/action", "{\"hue\":$hue}")
+    }
+
+    fun changeSaturationOfGroup(groupID: String, sat: Int) {
+        putObject("/groups/$groupID/action", "{\"sat\":$sat}")
     }
 
     fun activateSceneOfGroup(groupID: String, scene: String) {

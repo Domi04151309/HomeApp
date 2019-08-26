@@ -33,6 +33,8 @@
     <string name="hue_off">Off</string>
     <string name="hue_brightness">Brightness</string>
     <string name="hue_color_temperature">Color temperature</string>
+    <string name="hue_hue">Hue</string>
+    <string name="hue_saturation">Saturation</string>
 
     <string name="webView">Web View</string>
 
