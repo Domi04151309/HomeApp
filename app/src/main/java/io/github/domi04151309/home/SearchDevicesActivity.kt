@@ -35,11 +35,9 @@ class SearchDevicesActivity : AppCompatActivity() {
         listView!!.adapter = firstAdapter
         var listItems: Array<ListViewItem> = arrayOf()
 
-        //Get Router
+        //Device variables
         val manager = super.getApplicationContext().getSystemService(Context.WIFI_SERVICE) as WifiManager
         val routerIp = intToIp(manager.dhcpInfo.gateway)
-
-        //Get Hue Bridges
         val customQuery = "M-SEARCH * HTTP/1.1" + "\r\n" +
                 "HOST: 239.255.255.250:1900" + "\r\n" +
                 "MAN: ssdp:discover" + "\r\n" +
@@ -48,45 +46,49 @@ class SearchDevicesActivity : AppCompatActivity() {
                 "\r\n"
         val customPort = 1900
         val customAddress = "239.255.255.250"
-        UPnPDiscovery.discoveryDevices(this, object : UPnPDiscovery.OnDiscoveryListener {
-            override fun OnStart() {}
-            override fun OnFoundNewDevice(device: UPnPDevice) {
-                Log.d("UPnPDiscovery", "Found new device: " + device.friendlyName)
-                if (device.server.contains("IpBridge") && !addresses.contains(device.hostAddress)) {
-                    val deviceItem = ListViewItem(device.friendlyName)
-                    deviceItem.summary = device.hostAddress
-                    deviceItem.hidden = "Hue API#Lamp"
-                    deviceItem.icon = R.drawable.ic_device_lamp
-                    listItems += deviceItem
-                    addresses += device.hostAddress
-                }
-            }
-            override fun OnFinish(devices: HashSet<UPnPDevice>) {}
-            override fun OnError(e: Exception) {
-                Log.d("UPnPDiscovery", "Error: " + e.localizedMessage)
-            }
-        }, customQuery, customAddress, customPort)
 
-        //Get compatible routers
-        UPnPDiscovery.discoveryDevices(this, object : UPnPDiscovery.OnDiscoveryListener {
-            override fun OnStart() {}
-            override fun OnFoundNewDevice(device: UPnPDevice) {
-                val friendlyName = device.friendlyName
-                Log.d("UPnPDiscovery", "Found new device: $friendlyName")
-                if ((friendlyName.contains("FRITZ!Box") || friendlyName.contains("FRITZ!WLAN Repeater")) && !addresses.contains(device.hostAddress)) {
-                    val deviceItem = ListViewItem(device.friendlyName)
-                    deviceItem.summary = device.hostAddress
-                    deviceItem.hidden = "Website#Router"
-                    deviceItem.icon = R.drawable.ic_device_router
-                    listItems += deviceItem
-                    addresses += device.hostAddress
+        Thread(Runnable {
+            //Get Hue Bridges
+            UPnPDiscovery.discoveryDevices(this, object : UPnPDiscovery.OnDiscoveryListener {
+                override fun OnStart() {}
+                override fun OnFoundNewDevice(device: UPnPDevice) {
+                    Log.d("UPnPDiscovery", "Found new device: " + device.friendlyName)
+                    if (device.server.contains("IpBridge") && !addresses.contains(device.hostAddress)) {
+                        val deviceItem = ListViewItem(device.friendlyName)
+                        deviceItem.summary = device.hostAddress
+                        deviceItem.hidden = "Hue API#Lamp"
+                        deviceItem.icon = R.drawable.ic_device_lamp
+                        listItems += deviceItem
+                        addresses += device.hostAddress
+                    }
                 }
-            }
-            override fun OnFinish(devices: HashSet<UPnPDevice>) {}
-            override fun OnError(e: Exception) {
-                Log.d("UPnPDiscovery", "Error: " + e.localizedMessage)
-            }
-        })
+                override fun OnFinish(devices: HashSet<UPnPDevice>) {}
+                override fun OnError(e: Exception) {
+                    Log.d("UPnPDiscovery", "Error: " + e.localizedMessage)
+                }
+            }, customQuery, customAddress, customPort)
+
+            //Get compatible devices
+            UPnPDiscovery.discoveryDevices(this, object : UPnPDiscovery.OnDiscoveryListener {
+                override fun OnStart() {}
+                override fun OnFoundNewDevice(device: UPnPDevice) {
+                    val friendlyName = device.friendlyName
+                    Log.d("UPnPDiscovery", "Found new device: $friendlyName")
+                    if ((friendlyName.contains("FRITZ!Box") || friendlyName.contains("FRITZ!WLAN Repeater")) && !addresses.contains(device.hostAddress)) {
+                        val deviceItem = ListViewItem(device.friendlyName)
+                        deviceItem.summary = device.hostAddress
+                        deviceItem.hidden = "Website#Router"
+                        deviceItem.icon = R.drawable.ic_device_router
+                        listItems += deviceItem
+                        addresses += device.hostAddress
+                    }
+                }
+                override fun OnFinish(devices: HashSet<UPnPDevice>) {}
+                override fun OnError(e: Exception) {
+                    Log.d("UPnPDiscovery", "Error: " + e.localizedMessage)
+                }
+            })
+        }).start()
 
         //Display found devices
         Handler().postDelayed({
