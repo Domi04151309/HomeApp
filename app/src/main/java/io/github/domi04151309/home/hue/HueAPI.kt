@@ -13,24 +13,24 @@ import io.github.domi04151309.home.Global.volleyError
 import org.json.JSONArray
 import org.json.JSONObject
 
-class HueAPI(context: Context, device: String) {
+class HueAPI(context: Context, deviceId: String) {
 
     private val c = context
-    private val selectedDevice = device
-    private var url = Devices(PreferenceManager.getDefaultSharedPreferences(c)).getAddress(device)
+    private val selectedDevice = deviceId
+    private var url = Devices(c).getDeviceById(deviceId).address
     private val queue = Volley.newRequestQueue(c)
 
     interface RequestCallBack {
         fun onGroupsLoaded(
                 context: Context,
                 response: JSONObject?,
-                device: String,
+                deviceId: String,
                 errorMessage: String = ""
         )
         fun onLightsLoaded(
                 context: Context,
                 response: JSONObject?,
-                device: String,
+                deviceId: String,
                 errorMessage: String = ""
         )
     }

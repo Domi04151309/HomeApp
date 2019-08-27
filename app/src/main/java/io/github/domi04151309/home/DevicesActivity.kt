@@ -2,7 +2,6 @@ package io.github.domi04151309.home
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.widget.*
@@ -21,16 +20,15 @@ class DevicesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_devices)
 
-        devices = Devices(PreferenceManager.getDefaultSharedPreferences(this))
+        devices = Devices(this)
         listView = findViewById<View>(R.id.listView) as ListView
 
-        listView!!.onItemClickListener = AdapterView.OnItemClickListener { _, view, _, _ ->
+        listView!!.onItemClickListener = AdapterView.OnItemClickListener { _, view, pos, _ ->
             val action =  view.findViewById<TextView>(R.id.hidden).text
-            val titleTxt = view.findViewById<TextView>(R.id.title).text.toString()
-
             if (action == "edit") {
                 reset = true
-                startActivity(Intent(this, EditDeviceActivity::class.java).putExtra("Device", titleTxt))
+                val deviceId = devices!!.getDeviceByIndex(pos).id
+                startActivity(Intent(this, EditDeviceActivity::class.java).putExtra("deviceId", deviceId))
             } else if (action == "add") {
                 reset = true
                 val builder = AlertDialog.Builder(this)
@@ -56,11 +54,11 @@ class DevicesActivity : AppCompatActivity() {
                 listItems += emptyItem
             } else {
                 for (i in 0 until devices!!.length()) {
-                    val name = devices!!.getName(i)
-                    val deviceItem = ListViewItem(name)
-                    deviceItem.summary = devices!!.getAddress(name)
+                val currentDevice = devices!!.getDeviceByIndex(i)
+                    val deviceItem = ListViewItem(currentDevice.name)
+                    deviceItem.summary = currentDevice.address
                     deviceItem.hidden = "edit"
-                    deviceItem.icon = devices!!.getIconId(name)
+                    deviceItem.icon = currentDevice.iconId
                     listItems += deviceItem
                 }
             }

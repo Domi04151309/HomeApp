@@ -60,16 +60,16 @@ internal class ListViewAdapter(context: Context, private val itemArray: Array<Li
     private fun playAnimation(v: View) {
         val set = AnimationSet(true)
 
-        var animation: Animation = AlphaAnimation(0.0f, 1.0f)
-        animation.duration = 300
-        set.addAnimation(animation)
+        val firstAnimation: Animation = AlphaAnimation(0.0f, 1.0f)
+        firstAnimation.duration = 300
+        set.addAnimation(firstAnimation)
 
-        animation = TranslateAnimation(
+        val secondAnimation = TranslateAnimation(
                 Animation.RELATIVE_TO_SELF, -1.0f, Animation.RELATIVE_TO_SELF, 0.0f,
                 Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f
         )
-        animation.setDuration(300)
-        set.addAnimation(animation)
+        secondAnimation.duration = 300
+        set.addAnimation(secondAnimation)
 
         v.startAnimation(set)
     }

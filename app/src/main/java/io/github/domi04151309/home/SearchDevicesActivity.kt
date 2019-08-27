@@ -9,11 +9,11 @@ import android.util.Log
 import com._8rine.upnpdiscovery.UPnPDevice
 import com._8rine.upnpdiscovery.UPnPDiscovery
 import android.os.Handler
-import androidx.preference.PreferenceManager
 import androidx.appcompat.app.AlertDialog
 import android.view.View
 import android.widget.AdapterView
 import android.widget.TextView
+import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.data.ListViewItem
 
 class SearchDevicesActivity : AppCompatActivity() {
@@ -25,7 +25,7 @@ class SearchDevicesActivity : AppCompatActivity() {
         setContentView(R.layout.activity_devices)
 
         listView = findViewById<View>(R.id.listView) as ListView
-        val devices = Devices(PreferenceManager.getDefaultSharedPreferences(this))
+        val devices = Devices(this)
         val addresses = mutableListOf<String>()
 
         val waitItem = ListViewItem(resources.getString(R.string.pref_add_wait))
@@ -109,12 +109,12 @@ class SearchDevicesActivity : AppCompatActivity() {
             val action =  view.findViewById<TextView>(R.id.hidden).text
             if (action != "") {
                 val hidden = view.findViewById<TextView>(R.id.hidden).text.toString()
-                devices.addDevice(
-                        view.findViewById<TextView>(R.id.title).text.toString(),
-                        view.findViewById<TextView>(R.id.summary).text.toString(),
-                        hidden.substring(hidden.lastIndexOf("#") + 1),
-                        hidden.substring(0 , hidden.indexOf("#"))
-                )
+                val newItem = DeviceItem(devices.generateNewId())
+                newItem.name = view.findViewById<TextView>(R.id.title).text.toString()
+                newItem.address = view.findViewById<TextView>(R.id.summary).text.toString()
+                newItem.mode = hidden.substring(0 , hidden.indexOf("#"))
+                newItem.iconName = hidden.substring(hidden.lastIndexOf("#") + 1)
+                devices.addDevice(newItem)
                 AlertDialog.Builder(this)
                         .setTitle(resources.getString(R.string.pref_add_success))
                         .setMessage(resources.getString(R.string.pref_add_success_message))

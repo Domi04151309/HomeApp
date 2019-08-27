@@ -1,7 +1,6 @@
 package io.github.domi04151309.home.simplehome
 
 import android.content.Context
-import androidx.preference.PreferenceManager
 import android.util.Log
 import com.android.volley.*
 import com.android.volley.toolbox.JsonObjectRequest
@@ -19,21 +18,21 @@ class SimpleHomeAPI(context: Context) {
         fun onCommandsLoaded(
                 context: Context,
                 response: JSONObject?,
-                device: String,
+                deviceId: String,
                 errorMessage: String = ""
         )
         fun onExecutionFinished(context: Context, result: CharSequence)
     }
 
-    fun loadCommands(device: String, callback: RequestCallBack) {
-        val url = Devices(PreferenceManager.getDefaultSharedPreferences(c)).getAddress(device)
+    fun loadCommands(deviceId: String, callback: RequestCallBack) {
+        val url = Devices(c).getDeviceById(deviceId).address
         val queue = Volley.newRequestQueue(c)
         val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url + "commands", null,
                 Response.Listener { response ->
-                    callback.onCommandsLoaded(c, response, device)
+                    callback.onCommandsLoaded(c, response, deviceId)
                 },
                 Response.ErrorListener { error ->
-                    callback.onCommandsLoaded(c, null, device, volleyError(c, error))
+                    callback.onCommandsLoaded(c, null, deviceId, volleyError(c, error))
                 }
         )
         queue.add(jsonObjectRequest)

@@ -4,7 +4,6 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import androidx.preference.PreferenceManager
 import android.util.Log
 import android.view.View
 import android.widget.*
@@ -43,7 +42,7 @@ class HueLampActivity : AppCompatActivity() {
             isRoom = false
         }
         val device = intent.getStringExtra("Device") ?: ""
-        val address = Devices(PreferenceManager.getDefaultSharedPreferences(this)).getAddress(device)
+        val address = Devices(this).getDeviceById(device).address
         val hueAPI = HueAPI(this, device)
         queue = Volley.newRequestQueue(this)
 

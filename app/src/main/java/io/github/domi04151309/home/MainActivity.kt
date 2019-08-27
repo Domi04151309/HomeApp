@@ -22,7 +22,6 @@ import org.json.JSONException
 import org.json.JSONObject
 import android.widget.TextView
 import android.view.ViewGroup
-import androidx.preference.PreferenceManager
 import io.github.domi04151309.home.data.ListViewItem
 
 
@@ -70,7 +69,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         override fun onCommandsLoaded(
                 context: Context,
                 response: JSONObject?,
-                device: String,
+                deviceId: String,
                 errorMessage: String
         ) {
             if (errorMessage == "") {
@@ -81,7 +80,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         commandsObject.selectCommand(i)
                         val commandItem = ListViewItem(commandsObject.getSelectedTitle())
                         commandItem.summary = commandsObject.getSelectedSummary()
-                        commandItem.hidden = devices!!.getAddress(device) + commandsObject.getSelected()
+                        commandItem.hidden = devices!!.getDeviceById(deviceId).address + commandsObject.getSelected()
                         listItems += commandItem
                     } catch (e: JSONException) {
                         Log.e(Global.LOG_TAG, e.toString())
@@ -89,7 +88,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
                 val adapter = ListViewAdapter(context, listItems)
                 listView!!.adapter = adapter
-                setLevelTwo(currentView!!.findViewById<ImageView>(R.id.drawable).drawable, device)
+                setLevelTwo(currentView!!.findViewById<ImageView>(R.id.drawable).drawable, devices!!.getDeviceById(deviceId).name)
             } else {
                 setLevelOne()
                 currentView!!.findViewById<TextView>(R.id.summary).text = errorMessage
@@ -108,7 +107,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         override fun onGroupsLoaded(
                 context: Context,
                 response: JSONObject?,
-                device: String,
+                deviceId: String,
                 errorMessage: String
         ) {
             if (errorMessage == "") {
@@ -133,8 +132,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     }
                     val adapter = ListViewAdapter(context, listItems)
                     listView!!.adapter = adapter
-                    hueCurrentIcon = resources.getDrawable(devices!!.getIconId(device), context.theme)
-                    setLevelTwoHue(hueCurrentIcon!!, device)
+                    hueCurrentIcon = resources.getDrawable(devices!!.getDeviceById(deviceId).iconId, context.theme)
+                    setLevelTwoHue(deviceId, hueCurrentIcon!!, devices!!.getDeviceById(deviceId).name)
                 } catch (e: Exception) {
                     setLevelOne()
                     currentView!!.findViewById<TextView>(R.id.summary).text = resources.getString(R.string.err_wrong_format_summary)
@@ -149,7 +148,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         override fun onLightsLoaded(
                 context: Context,
                 response: JSONObject?,
-                device: String,
+                deviceId: String,
                 errorMessage: String
         ) {
             if (errorMessage == "") {
@@ -183,12 +182,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     listView!!.adapter = adapter
                     setLevelThreeHue(resources.getDrawable(R.drawable.ic_device_lamp, context.theme), currentView!!.findViewById<TextView>(R.id.title).text)
                 } catch (e: Exception) {
-                    setLevelTwo(hueCurrentIcon!!, device)
+                    setLevelTwo(hueCurrentIcon!!, devices!!.getDeviceById(deviceId).name)
                     currentView!!.findViewById<TextView>(R.id.summary).text = resources.getString(R.string.err_wrong_format_summary)
                     Log.e(Global.LOG_TAG, e.toString())
                 }
             } else {
-                setLevelTwoHue(hueCurrentIcon!!, device)
+                setLevelTwoHue(deviceId, hueCurrentIcon!!, devices!!.getDeviceById(deviceId).name)
                 currentView!!.findViewById<TextView>(R.id.summary).text = errorMessage
             }
         }
@@ -200,7 +199,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        devices = Devices(PreferenceManager.getDefaultSharedPreferences(this))
+        devices = Devices(this)
         listView = findViewById<View>(R.id.listView) as ListView
 
         fab.setOnClickListener {
@@ -226,19 +225,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             when (level) {
                 "one" -> {
                     view.findViewById<TextView>(R.id.summary).text = resources.getString(R.string.main_connecting)
-                    when (devices!!.getMode(title)) {
+                    when (devices!!.getDeviceById(hidden).mode) {
                         "Website" -> {
                             startActivity(
                                     Intent(this, WebActivity::class.java)
-                                            .putExtra("URI", devices!!.getAddress(title))
+                                            .putExtra("URI", devices!!.getDeviceById(hidden).address)
                                             .putExtra("title", title)
                             )
                             reset = true
                         }
                         "SimpleHome API" ->
-                            homeAPI.loadCommands (title, homeRequestCallBack)
+                            homeAPI.loadCommands(hidden, homeRequestCallBack)
                         "Hue API" -> {
-                            hueAPI = HueAPI(this, title)
+                            hueAPI = HueAPI(this, hidden)
                             hueAPI!!.loadGroups(hueRequestCallBack)
                         }
                         else ->
@@ -268,10 +267,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 listItems += emptyItem
             } else {
                 for (i in 0 until devices!!.length()) {
-                    val name = devices!!.getName(i)
-                    val deviceItem = ListViewItem(name)
+                    val currentDevice = devices!!.getDeviceByIndex(i)
+                    val deviceItem = ListViewItem(currentDevice.name)
                     deviceItem.summary = resources.getString(R.string.main_tap_to_connect)
-                    deviceItem.icon = devices!!.getIconId(name)
+                    deviceItem.hidden = currentDevice.id
+                    deviceItem.icon = currentDevice.iconId
                     listItems += deviceItem
                 }
             }
@@ -341,11 +341,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         level = "two"
     }
 
-    private fun setLevelTwoHue(icon: Drawable, title: CharSequence) {
+    private fun setLevelTwoHue(deviceId: String, icon: Drawable, title: CharSequence) {
         fab.hide()
         deviceIcon.setImageDrawable(icon)
         deviceName.text = title
-        currentDevice = title.toString()
+        currentDevice = deviceId
         level = "two_hue"
     }
 
