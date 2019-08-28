@@ -114,16 +114,41 @@
                 android:layout_height="wrap_content"
                 android:entries="@array/pref_add_mode_array" />
 
+        </LinearLayout>
+
+        <View
+            android:id="@+id/editDivider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/dialog_item_margin"
+            android:background="?attr/dividerColor" />
+
+        <LinearLayout
+            android:id="@+id/editSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="?dialogPreferredPadding"
+            android:paddingEnd="?dialogPreferredPadding">
+
+            <Button
+                android:id="@+id/shortcutBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dialog_item_margin"
+                android:drawableStart="@drawable/ic_add"
+                android:text="@string/pref_add_shortcut"
+                android:textAlignment="textStart"
+                android:textColor="?android:attr/textColorPrimary"/>
+
             <Button
                 android:id="@+id/deleteBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dialog_item_margin"
                 android:drawableStart="@drawable/ic_delete"
                 android:text="@string/pref_delete_device"
                 android:textAlignment="textStart"
                 android:textColor="?android:attr/textColorPrimary"/>
-
         </LinearLayout>
 
         <View

@@ -13,4 +13,6 @@
 
     <dimen name="about_item_margin">16dp</dimen>
     <dimen name="about_divider_margin">32dp</dimen>
+
+    <dimen name="drawable_padding">8dp</dimen>
 </resources>

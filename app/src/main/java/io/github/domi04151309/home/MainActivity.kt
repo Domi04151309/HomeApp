@@ -214,8 +214,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         nav_view.setNavigationItemSelectedListener(this)
         nav_view.setCheckedItem(R.id.nav_devices)
 
-        loadDevices()
-
         listView!!.onItemClickListener = AdapterView.OnItemClickListener { _, view, _, _ ->
             currentView = view
             val title = view.findViewById<TextView>(R.id.title).text.toString()
@@ -225,24 +223,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             when (level) {
                 "one" -> {
                     view.findViewById<TextView>(R.id.summary).text = resources.getString(R.string.main_connecting)
-                    when (devices!!.getDeviceById(hidden).mode) {
-                        "Website" -> {
-                            startActivity(
-                                    Intent(this, WebActivity::class.java)
-                                            .putExtra("URI", devices!!.getDeviceById(hidden).address)
-                                            .putExtra("title", title)
-                            )
-                            reset = true
-                        }
-                        "SimpleHome API" ->
-                            homeAPI.loadCommands(hidden, homeRequestCallBack)
-                        "Hue API" -> {
-                            hueAPI = HueAPI(this, hidden)
-                            hueAPI!!.loadGroups(hueRequestCallBack)
-                        }
-                        else ->
-                            Toast.makeText(this, R.string.main_unknown_mode, Toast.LENGTH_LONG).show()
-                    }
+                    handleLevelOne(hidden)
                 }
                 "two" ->
                     homeAPI.executeCommand(hidden, homeRequestCallBack)
@@ -255,9 +236,39 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     startActivity(Intent(this, HueLampActivity::class.java).putExtra("ID", hidden).putExtra("Device", currentDevice))
             }
         }
+
+        //Handle shortcut
+        if(intent.hasExtra("device")) {
+            val deviceId = intent.getStringExtra("device") ?: ""
+            handleLevelOne(deviceId)
+        } else {
+            loadDevices()
+        }
     }
 
-    private fun loadDevices(){
+    private fun handleLevelOne(deviceId: String) {
+        val deviceObj = devices!!.getDeviceById(deviceId)
+        when (deviceObj.mode) {
+            "Website" -> {
+                startActivity(
+                        Intent(this, WebActivity::class.java)
+                                .putExtra("URI", deviceObj.address)
+                                .putExtra("title", title)
+                )
+                reset = true
+            }
+            "SimpleHome API" ->
+                homeAPI.loadCommands(deviceId, homeRequestCallBack)
+            "Hue API" -> {
+                hueAPI = HueAPI(this, deviceId)
+                hueAPI!!.loadGroups(hueRequestCallBack)
+            }
+            else ->
+                Toast.makeText(this, R.string.main_unknown_mode, Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun loadDevices() {
         var listItems: Array<ListViewItem> = arrayOf()
         try {
             if (devices!!.length() == 0) {
