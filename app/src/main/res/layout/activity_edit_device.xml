@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,138 +9,155 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        tools:ignore="UseCompoundDrawables">
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/deviceIcn"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/header_icon_height"
-            android:layout_marginTop="@dimen/dialog_item_margin"
-            android:contentDescription="@string/main_device_icon"
-            app:srcCompat="@drawable/ic_device_lamp" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:ignore="UseCompoundDrawables">
 
-        <TextView
-            android:id="@+id/nameTxt"
+            <ImageView
+                android:id="@+id/deviceIcn"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/header_icon_height"
+                android:layout_marginTop="@dimen/dialog_item_margin"
+                android:contentDescription="@string/main_device_icon"
+                app:srcCompat="@drawable/ic_device_lamp" />
+
+            <TextView
+                android:id="@+id/nameTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dialog_item_margin"
+                android:text="@string/pref_add_new_device"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+            <TextView
+                android:id="@+id/idTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dialog_item_margin"
+                android:text="@string/pref_add_id"
+                android:textAlignment="center"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/dialog_item_margin"
+            android:background="?attr/dividerColor" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="?dialogPreferredPadding"
+            android:paddingEnd="?dialogPreferredPadding">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dialog_item_margin"
+                android:text="@string/pref_add_name" />
+
+            <EditText
+                android:id="@+id/nameBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:hint="@string/pref_add_name_example"
+                android:inputType="text"
+                android:importantForAutofill="no"
+                tools:targetApi="o" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dialog_item_margin"
+                android:text="@string/pref_add_address" />
+
+            <EditText
+                android:id="@+id/addressBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:hint="@string/pref_add_address_example"
+                android:inputType="text"
+                android:importantForAutofill="no"
+                tools:targetApi="o" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dialog_item_margin"
+                android:text="@string/pref_add_icon" />
+
+            <Spinner
+                android:id="@+id/iconSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/pref_icons" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dialog_item_margin"
+                android:text="@string/pref_add_mode" />
+
+            <Spinner
+                android:id="@+id/modeSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/pref_add_mode_array" />
+
+            <Button
+                android:id="@+id/deleteBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dialog_item_margin"
+                android:drawableStart="@drawable/ic_delete"
+                android:text="@string/pref_delete_device"
+                android:textAlignment="textStart"
+                android:textColor="?android:attr/textColorPrimary"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/dialog_item_margin"
+            android:background="?attr/dividerColor" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dialog_item_margin"
-            android:text="@string/pref_add_new_device"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+            android:orientation="horizontal"
+            android:paddingStart="?dialogPreferredPadding"
+            android:paddingEnd="?dialogPreferredPadding"
+            android:paddingBottom="@dimen/dialog_item_margin"
+            tools:ignore="ButtonStyle">
+
+            <Button
+                android:id="@+id/cancelBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@android:string/cancel" />
+
+            <Button
+                android:id="@+id/okBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@android:string/ok" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="@dimen/dialog_item_margin"
-        android:background="?attr/dividerColor" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingStart="?dialogPreferredPadding"
-        android:paddingEnd="?dialogPreferredPadding">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dialog_item_margin"
-            android:text="@string/pref_add_name" />
-
-        <EditText
-            android:id="@+id/nameBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:hint="@string/pref_add_name_example"
-            android:inputType="text"
-            android:importantForAutofill="no"
-            tools:targetApi="o" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dialog_item_margin"
-            android:text="@string/pref_add_address" />
-
-        <EditText
-            android:id="@+id/addressBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:hint="@string/pref_add_address_example"
-            android:inputType="text"
-            android:importantForAutofill="no"
-            tools:targetApi="o" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dialog_item_margin"
-            android:text="@string/pref_add_icon" />
-
-        <Spinner
-            android:id="@+id/iconSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:entries="@array/pref_icons" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dialog_item_margin"
-            android:text="@string/pref_add_mode" />
-
-        <Spinner
-            android:id="@+id/modeSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:entries="@array/pref_add_mode_array" />
-
-        <Button
-            android:id="@+id/deleteBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dialog_item_margin"
-            android:drawableStart="@drawable/ic_delete"
-            android:text="@string/pref_delete_device"
-            android:textAlignment="textStart"
-            android:textColor="?android:attr/textColorPrimary"/>
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="@dimen/dialog_item_margin"
-        android:background="?attr/dividerColor" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dialog_item_margin"
-        android:orientation="horizontal"
-        android:paddingStart="?dialogPreferredPadding"
-        android:paddingEnd="?dialogPreferredPadding"
-        tools:ignore="ButtonStyle">
-
-        <Button
-            android:id="@+id/cancelBtn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@android:string/cancel" />
-
-        <Button
-            android:id="@+id/okBtn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@android:string/ok" />
-
-    </LinearLayout>
-
-</LinearLayout>
+</ScrollView>

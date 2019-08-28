@@ -32,6 +32,8 @@ class EditDeviceActivity : AppCompatActivity() {
         val iconSpinnerArrayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, resources.getStringArray(R.array.pref_icons))
         val modeSpinnerArrayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, resources.getStringArray(R.array.pref_add_mode_array))
 
+        findViewById<TextView>(R.id.idTxt).text = (resources.getString(R.string.pref_add_id, deviceId))
+
         if (editing){
             title = resources.getString(R.string.pref_edit_device)
             val deviceObj = devices.getDeviceById(deviceId)

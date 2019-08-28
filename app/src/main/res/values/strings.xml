@@ -68,6 +68,7 @@
     <string name="pref_add_address_example">http://127.0.0.1/</string>
     <string name="pref_add_icon">Icon</string>
     <string name="pref_add_mode">Mode</string>
+    <string name="pref_add_id">Internal ID: %1$s</string>
     <string name="pref_add_unsuccessful">Please enter a name</string>
     <string name="pref_add_wait">Searching for compatible devices</string>
     <string name="pref_add_wait_summary">Please wait 10 seconds while the search is running</string>

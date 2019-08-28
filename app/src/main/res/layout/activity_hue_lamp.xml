@@ -138,11 +138,7 @@
         android:id="@+id/scenes"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/dialog_item_margin"
-        android:paddingStart="?dialogPreferredPadding"
-        android:paddingEnd="?dialogPreferredPadding"
         android:columnWidth="0dp"
         android:numColumns="3"
-        android:verticalSpacing="@dimen/dialog_item_margin"
         android:stretchMode="columnWidth" />
 </LinearLayout>

@@ -41,12 +41,13 @@ class HueLampActivity : AppCompatActivity() {
             id = internId
             isRoom = false
         }
-        val device = intent.getStringExtra("Device") ?: ""
-        val address = Devices(this).getDeviceById(device).address
-        val hueAPI = HueAPI(this, device)
+        val deviceId = intent.getStringExtra("Device") ?: ""
+        val device = Devices(this).getDeviceById(deviceId)
+        val address = device.address
+        val hueAPI = HueAPI(this, deviceId)
         queue = Volley.newRequestQueue(this)
 
-        title = device
+        title = device.name
         val briBar = findViewById<SeekBar>(R.id.briBar)
         val ctBar = findViewById<SeekBar>(R.id.ctBar)
         val hueBar = findViewById<SeekBar>(R.id.hueBar)
@@ -156,6 +157,7 @@ class HueLampActivity : AppCompatActivity() {
                 }
         )
         if (isRoom) queue!!.add(scenesRequest)
+        else gridView.visibility = View.GONE
 
         gridView.onItemClickListener = AdapterView.OnItemClickListener { _, view, _, _ ->
             hueAPI.activateSceneOfGroup(id, view.findViewById<TextView>(R.id.hidden).text.toString())
