@@ -59,7 +59,12 @@ class EditDeviceActivity : AppCompatActivity() {
                                     .setShortLabel(deviceObj.name)
                                     .setLongLabel(deviceObj.name)
                                     .setIcon(Icon.createWithResource(this, deviceObj.iconId))
-                                    .setIntent(Intent(this, MainActivity::class.java).putExtra("device", deviceId).setAction(Intent.ACTION_MAIN))
+                                    .setIntent(
+                                            Intent(this, MainActivity::class.java)
+                                                    .putExtra("device", deviceId)
+                                                    .setAction(Intent.ACTION_MAIN)
+                                                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                                    )
                                     .build()
                             shortcutManager.requestPinShortcut(shortcut, null)
                         } else

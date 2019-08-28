@@ -2,7 +2,6 @@ package io.github.domi04151309.home
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import com.google.android.material.navigation.NavigationView
 import androidx.core.view.GravityCompat
@@ -33,7 +32,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var currentDevice = ""
     private var hueRoom: String = ""
     private var hueRoomState: Boolean = false
-    private var hueCurrentIcon: Drawable? = null
+    private var hueCurrentIcon: Int = 0
     private var level = "one"
     private var reset = false
 
@@ -88,10 +87,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
                 val adapter = ListViewAdapter(context, listItems)
                 listView!!.adapter = adapter
-                setLevelTwo(currentView!!.findViewById<ImageView>(R.id.drawable).drawable, devices!!.getDeviceById(deviceId).name)
+                val device = devices!!.getDeviceById(deviceId)
+                setLevelTwo(device.iconId, device.name)
             } else {
-                setLevelOne()
-                currentView!!.findViewById<TextView>(R.id.summary).text = errorMessage
+                handleErrorOnLevelOne(errorMessage)
             }
         }
     }
@@ -132,16 +131,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     }
                     val adapter = ListViewAdapter(context, listItems)
                     listView!!.adapter = adapter
-                    hueCurrentIcon = resources.getDrawable(devices!!.getDeviceById(deviceId).iconId, context.theme)
-                    setLevelTwoHue(deviceId, hueCurrentIcon!!, devices!!.getDeviceById(deviceId).name)
+                    val device = devices!!.getDeviceById(deviceId)
+                    hueCurrentIcon = device.iconId
+                    setLevelTwoHue(deviceId, device.iconId, device.name)
                 } catch (e: Exception) {
-                    setLevelOne()
-                    currentView!!.findViewById<TextView>(R.id.summary).text = resources.getString(R.string.err_wrong_format_summary)
+                    handleErrorOnLevelOne(resources.getString(R.string.err_wrong_format_summary))
                     Log.e(Global.LOG_TAG, e.toString())
                 }
             } else {
-                setLevelOne()
-                currentView!!.findViewById<TextView>(R.id.summary).text = errorMessage
+                handleErrorOnLevelOne(errorMessage)
             }
         }
 
@@ -180,14 +178,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     }
                     val adapter = ListViewAdapter(context, listItems)
                     listView!!.adapter = adapter
-                    setLevelThreeHue(resources.getDrawable(R.drawable.ic_device_lamp, context.theme), currentView!!.findViewById<TextView>(R.id.title).text)
+                    setLevelThreeHue(currentView!!.findViewById<TextView>(R.id.title).text)
                 } catch (e: Exception) {
-                    setLevelTwo(hueCurrentIcon!!, devices!!.getDeviceById(deviceId).name)
+                    setLevelTwo(hueCurrentIcon, devices!!.getDeviceById(deviceId).name)
                     currentView!!.findViewById<TextView>(R.id.summary).text = resources.getString(R.string.err_wrong_format_summary)
                     Log.e(Global.LOG_TAG, e.toString())
                 }
             } else {
-                setLevelTwoHue(deviceId, hueCurrentIcon!!, devices!!.getDeviceById(deviceId).name)
+                setLevelTwoHue(deviceId, hueCurrentIcon, devices!!.getDeviceById(deviceId).name)
                 currentView!!.findViewById<TextView>(R.id.summary).text = errorMessage
             }
         }
@@ -240,7 +238,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         //Handle shortcut
         if(intent.hasExtra("device")) {
             val deviceId = intent.getStringExtra("device") ?: ""
-            handleLevelOne(deviceId)
+            if (devices!!.idExists(deviceId)) {
+                val device = devices!!.getDeviceById(deviceId)
+                deviceIcon.setImageResource(device.iconId)
+                deviceName.text = device.name
+                handleLevelOne(deviceId)
+            } else {
+                loadDevices()
+                Toast.makeText(this, R.string.main_device_nonexistent, Toast.LENGTH_LONG).show()
+            }
         } else {
             loadDevices()
         }
@@ -253,7 +259,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(
                         Intent(this, WebActivity::class.java)
                                 .putExtra("URI", deviceObj.address)
-                                .putExtra("title", title)
+                                .putExtra("title", deviceObj.name)
                 )
                 reset = true
             }
@@ -265,6 +271,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             else ->
                 Toast.makeText(this, R.string.main_unknown_mode, Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun handleErrorOnLevelOne(err: String) {
+        if (currentView == null) {
+            loadDevices()
+            Toast.makeText(this, err, Toast.LENGTH_LONG).show()
+        } else {
+            setLevelOne()
+            currentView!!.findViewById<TextView>(R.id.summary).text = err
         }
     }
 
@@ -345,23 +361,23 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         level = "one"
     }
 
-    private fun setLevelTwo(icon: Drawable, title: CharSequence) {
+    private fun setLevelTwo(icon: Int, title: CharSequence) {
         fab.hide()
-        deviceIcon.setImageDrawable(icon)
+        deviceIcon.setImageResource(icon)
         deviceName.text = title
         level = "two"
     }
 
-    private fun setLevelTwoHue(deviceId: String, icon: Drawable, title: CharSequence) {
+    private fun setLevelTwoHue(deviceId: String, icon: Int, title: CharSequence) {
         fab.hide()
-        deviceIcon.setImageDrawable(icon)
+        deviceIcon.setImageResource(icon)
         deviceName.text = title
         currentDevice = deviceId
         level = "two_hue"
     }
 
-    private fun setLevelThreeHue(icon: Drawable, title: CharSequence) {
-        deviceIcon.setImageDrawable(icon)
+    private fun setLevelThreeHue(title: CharSequence) {
+        deviceIcon.setImageResource(R.drawable.ic_device_lamp)
         deviceName.text = title
         level = "three_hue"
     }

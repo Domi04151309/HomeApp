@@ -9,6 +9,7 @@
 
     <string name="main_no_devices">No devices found</string>
     <string name="main_no_devices_summary">Add a new device in the settings</string>
+    <string name="main_device_nonexistent">The device does not exist in your list</string>
     <string name="main_tap_to_connect">Tap to connect</string>
     <string name="main_connecting">Connecting</string>
     <string name="main_unknown_mode">The device uses an unknown mode</string>

@@ -41,6 +41,10 @@ class Devices constructor(context: Context) {
         return getDevicesObject().length()
     }
 
+    fun idExists(id: String): Boolean {
+        return getDevicesObject().has(id)
+    }
+
     companion object {
         private const val ALLOWED_CHARACTERS = "0123456789abcdefghijklmnobqrstuvw"
     }
