@@ -10,9 +10,12 @@ import android.view.View
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ProgressBar
-import kotlinx.android.synthetic.main.activity_web.*
+import android.widget.RelativeLayout
 
 class WebActivity : AppCompatActivity() {
+
+    private var webView: WebView? = null
+    private var errorOccurred = false
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,26 +23,34 @@ class WebActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_web)
         val progress = findViewById<ProgressBar>(R.id.progressBar)
-        val uri = intent.getStringExtra("URI") ?: ""
+        val errorView = findViewById<RelativeLayout>(R.id.error)
+        val uri = intent.getStringExtra("URI") ?: "about:blank"
         val title = intent.getStringExtra("title")
-        val webView = findViewById<WebView>(R.id.webView)
-        val webSettings = webView.settings
+        webView = findViewById(R.id.webView)
+        val webSettings = webView!!.settings
         Log.d(Global.LOG_TAG,uri)
         webSettings.javaScriptEnabled = true
-        webView.webViewClient = object : WebViewClient() {
+        webView!!.webViewClient = object : WebViewClient() {
 
             override fun onPageFinished(view: WebView, url: String) {
-                if (url.contains("github.com")) injectCSS(webView)
+                if (url == "about:blank") {
+                    view.visibility = View.GONE
+                    return
+                }
+                if (url.contains("github.com")) injectCSS(webView!!)
                 progress.visibility = View.GONE
-                webView.visibility = View.VISIBLE
+                view.visibility = View.VISIBLE
                 super.onPageFinished(view, url)
             }
 
-            override fun onReceivedError(webView: WebView, errorCode: Int, description: String, failingUrl: String) {
-                webView.loadUrl("file:///android_asset/error.html")
+            override fun onReceivedError(view: WebView, errorCode: Int, description: String, failingUrl: String) {
+                view.loadUrl("about:blank")
+                errorOccurred = true
+                progress.visibility = View.GONE
+                errorView.visibility = View.VISIBLE
             }
         }
-        webView.loadUrl(uri)
+        webView!!.loadUrl(uri)
         if (title != null)
             setTitle(title)
     }
@@ -65,8 +76,8 @@ class WebActivity : AppCompatActivity() {
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_BACK && this.webView.canGoBack()) {
-            this.webView.goBack()
+        if (keyCode == KeyEvent.KEYCODE_BACK && webView!!.canGoBack() && !errorOccurred) {
+            webView!!.goBack()
             return true
         }
         return super.onKeyDown(keyCode, event)

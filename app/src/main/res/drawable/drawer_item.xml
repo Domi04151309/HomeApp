@@ -5,7 +5,7 @@
                 android:right="6dp"
                 android:bottom="4dp">
                 <shape android:shape="rectangle">
-                    <solid android:color="@color/colorAccent.16" />
+                    <solid android:color="@color/colorAccent16" />
                     <corners android:bottomRightRadius="32dp"
                         android:topRightRadius="32dp" />
                 </shape>
@@ -18,7 +18,7 @@
                 android:right="6dp"
                 android:bottom="4dp">
                 <shape android:shape="rectangle">
-                <solid android:color="@color/colorAccent.32" />
+                <solid android:color="@color/colorAccent32" />
                 <corners android:bottomRightRadius="32dp"
                     android:topRightRadius="32dp" />
             </shape>

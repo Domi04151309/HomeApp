@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#fff</color>
-    <color name="colorPrimaryDark">#202124</color>
+    <color name="colorPrimaryDark">#212121</color>
     <color name="colorPrimaryBlack">#000</color>
     <color name="colorAccent">#4285f4</color>
-    <color name="colorAccent.32">#204285F4</color>
-    <color name="colorAccent.16">#104285F4</color>
+    <color name="colorAccent32">#204285F4</color>
+    <color name="colorAccent16">#104285F4</color>
     <color name="actionBarText">#757575</color>
     <color name="dividerBright">#13000000</color>
     <color name="dividerDark">#13ffffff</color>

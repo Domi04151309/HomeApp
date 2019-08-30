@@ -38,6 +38,8 @@
     <string name="hue_saturation">Saturation</string>
 
     <string name="webView">Web View</string>
+    <string name="webView_error">Loading the website failed</string>
+    <string name="webView_error_summary">Please check your network connection or try again later</string>
 
     <string name="pref">Settings</string>
     <string name="pref_general">General Settings</string>
