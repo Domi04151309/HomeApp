@@ -21,13 +21,6 @@
             app:summary="@string/pref_edit_summary"
             app:title="@string/pref_edit"
             app:iconSpaceReserved="false" />
-        <SwitchPreference
-            app:defaultValue="false"
-            app:enabled="false"
-            app:key="other_devices"
-            app:summary="@string/pref_other_summary"
-            app:title="@string/pref_other"
-            app:iconSpaceReserved="false" />
         <EditTextPreference
             app:defaultValue='{"devices":{}}'
             app:key="devices_json"

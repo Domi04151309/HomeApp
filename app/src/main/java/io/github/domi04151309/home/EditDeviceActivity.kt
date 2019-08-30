@@ -12,6 +12,10 @@ import android.content.pm.ShortcutInfo
 import android.os.Build
 import android.content.pm.ShortcutManager
 import android.graphics.drawable.Icon
+import android.text.TextWatcher
+import android.text.Editable
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
 
 class EditDeviceActivity : AppCompatActivity() {
 
@@ -28,6 +32,7 @@ class EditDeviceActivity : AppCompatActivity() {
                     false
                 } else true
 
+        val deviceIcn = findViewById<ImageView>(R.id.deviceIcn)
         val nameTxt = findViewById<TextView>(R.id.nameTxt)
         val nameBox = findViewById<EditText>(R.id.nameBox)
         val addressBox = findViewById<EditText>(R.id.addressBox)
@@ -39,12 +44,27 @@ class EditDeviceActivity : AppCompatActivity() {
 
         findViewById<TextView>(R.id.idTxt).text = (resources.getString(R.string.pref_add_id, deviceId))
 
+        iconSpinner.onItemSelectedListener = object : OnItemSelectedListener {
+            override fun onItemSelected(parentView: AdapterView<*>, selectedItemView: View, position: Int, id: Long) {
+                deviceIcn.setImageResource(Global.getIcon(parentView.selectedItem.toString()))
+            }
+            override fun onNothingSelected(parentView: AdapterView<*>) {
+                deviceIcn.setImageResource(R.drawable.ic_device_lamp)
+            }
+        }
+        nameBox.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {}
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                val string = s.toString()
+                if (string == "") nameTxt.text = resources.getString(R.string.pref_add_name_example)
+                else nameTxt.text = string
+            }
+        })
+
         if (editing){
             title = resources.getString(R.string.pref_edit_device)
             val deviceObj = devices.getDeviceById(deviceId)
-            findViewById<ImageView>(R.id.deviceIcn).setImageResource(deviceObj.iconId)
-            nameTxt.text = deviceObj.name
-
             nameBox.setText(deviceObj.name)
             addressBox.setText(deviceObj.address)
             iconSpinner.setSelection(iconSpinnerArrayAdapter.getPosition(deviceObj.iconName))
