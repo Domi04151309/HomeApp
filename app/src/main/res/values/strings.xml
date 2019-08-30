@@ -74,7 +74,6 @@
     <string name="pref_add_mode">Mode</string>
     <string name="pref_add_unsuccessful">Please enter a name</string>
     <string name="pref_add_wait">Searching for compatible devices</string>
-    <string name="pref_add_wait_summary">Please wait 10 seconds while the search is running</string>
     <string name="pref_add_success">Add Device</string>
     <string name="pref_add_success_message">The device was successfully added to your devices</string>
     <string name="pref_other">Show other devices</string>

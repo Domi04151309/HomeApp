@@ -21,6 +21,7 @@ class SearchDevicesActivity : AppCompatActivity() {
     private var listView: ListView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Theme.set(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_devices)
 
@@ -28,14 +29,26 @@ class SearchDevicesActivity : AppCompatActivity() {
         val devices = Devices(this)
         val addresses = mutableListOf<String>()
 
+        //Countdown
         val waitItem = ListViewItem(resources.getString(R.string.pref_add_wait))
-        waitItem.summary = resources.getString(R.string.pref_add_wait_summary)
+        waitItem.summary = resources.getQuantityString(R.plurals.pref_add_wait_summary, 10, 10)
         waitItem.icon = R.drawable.ic_info
         val firstAdapter = ListViewAdapter(this, arrayOf(waitItem))
         listView!!.adapter = firstAdapter
-        var listItems: Array<ListViewItem> = arrayOf()
+        Thread(Runnable {
+            Thread.sleep(1000L)
+            val firstChildSummary = listView!!.getChildAt(0).findViewById<TextView>(R.id.summary)
+            for (i in 1 until 10) {
+                runOnUiThread {
+                    val count = 10 - i
+                    firstChildSummary.text = resources.getQuantityString(R.plurals.pref_add_wait_summary, count, count)
+                }
+                Thread.sleep(1000L)
+            }
+        }).start()
 
         //Device variables
+        var listItems: Array<ListViewItem> = arrayOf()
         val manager = super.getApplicationContext().getSystemService(Context.WIFI_SERVICE) as WifiManager
         val routerIp = intToIp(manager.dhcpInfo.gateway)
         val customQuery = "M-SEARCH * HTTP/1.1" + "\r\n" +
@@ -74,7 +87,7 @@ class SearchDevicesActivity : AppCompatActivity() {
                 override fun OnFoundNewDevice(device: UPnPDevice) {
                     val friendlyName = device.friendlyName
                     Log.d("UPnPDiscovery", "Found new device: $friendlyName")
-                    if ((friendlyName.contains("FRITZ!Box") || friendlyName.contains("FRITZ!WLAN Repeater")) && !addresses.contains(device.hostAddress)) {
+                    if (friendlyName.startsWith("FRITZ!") && !addresses.contains(device.hostAddress)) {
                         val deviceItem = ListViewItem(device.friendlyName)
                         deviceItem.summary = device.hostAddress
                         deviceItem.hidden = "Website#Router"
