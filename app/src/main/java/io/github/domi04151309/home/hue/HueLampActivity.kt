@@ -1,5 +1,6 @@
 package io.github.domi04151309.home.hue
 
+import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,6 +8,7 @@ import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.core.graphics.drawable.DrawableCompat
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.Response
@@ -48,11 +50,19 @@ class HueLampActivity : AppCompatActivity() {
         queue = Volley.newRequestQueue(this)
 
         title = device.name
+        val lampIcon = findViewById<ImageView>(R.id.lampIcon)
+        val nameTxt = findViewById<TextView>(R.id.nameTxt)
         val briBar = findViewById<SeekBar>(R.id.briBar)
         val ctBar = findViewById<SeekBar>(R.id.ctBar)
         val hueBar = findViewById<SeekBar>(R.id.hueBar)
         val satBar = findViewById<SeekBar>(R.id.satBar)
         val gridView = findViewById<View>(R.id.scenes) as GridView
+
+        //Reset tint
+        DrawableCompat.setTint(
+                DrawableCompat.wrap(lampIcon.drawable),
+                Color.parseColor("#FBC02D")
+        )
 
         //Get scenes
         fun setProgress(seekBar: SeekBar, value: Int) {
@@ -64,7 +74,7 @@ class HueLampActivity : AppCompatActivity() {
 
         lightDataRequest = JsonObjectRequest(Request.Method.GET,  address + "api/" + hueAPI.getUsername() + "/lights/" + id, null,
                 Response.Listener { response ->
-                    findViewById<TextView>(R.id.nameTxt).text = response.getString("name")
+                    nameTxt.text = response.getString("name")
                     val state = response.getJSONObject("state")
                     if (state.has("bri")) {
                         setProgress(briBar, state.getInt("bri"))
@@ -99,7 +109,7 @@ class HueLampActivity : AppCompatActivity() {
 
         roomDataRequest = JsonObjectRequest(Request.Method.GET, address + "api/" + hueAPI.getUsername() + "/groups/" + id, null,
                 Response.Listener { response ->
-                    findViewById<TextView>(R.id.nameTxt).text = response.getString("name")
+                    nameTxt.text = response.getString("name")
                     val action = response.getJSONObject("action")
                     if (action.has("bri")) {
                         setProgress(briBar, action.getInt("bri"))
@@ -187,7 +197,12 @@ class HueLampActivity : AppCompatActivity() {
             })
 
             ctBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {}
+                override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                    DrawableCompat.setTint(
+                            DrawableCompat.wrap(lampIcon.drawable),
+                            HueUtils.ctToRGB(seekBar.progress + 153)
+                    )
+                }
                 override fun onStartTrackingTouch(seekBar: SeekBar) {}
                 override fun onStopTrackingTouch(seekBar: SeekBar) {
                     hueAPI.changeColorTemperatureOfGroup(id, seekBar.progress + 153)
@@ -195,7 +210,12 @@ class HueLampActivity : AppCompatActivity() {
             })
 
             hueBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {}
+                override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                    DrawableCompat.setTint(
+                            DrawableCompat.wrap(lampIcon.drawable),
+                            HueUtils.hueSatToRGB(seekBar.progress, satBar.progress)
+                    )
+                }
                 override fun onStartTrackingTouch(seekBar: SeekBar) {}
                 override fun onStopTrackingTouch(seekBar: SeekBar) {
                     hueAPI.changeHueOfGroup(id, seekBar.progress)
@@ -203,7 +223,12 @@ class HueLampActivity : AppCompatActivity() {
             })
 
             satBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {}
+                override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                    DrawableCompat.setTint(
+                            DrawableCompat.wrap(lampIcon.drawable),
+                            HueUtils.hueSatToRGB(hueBar.progress, seekBar.progress)
+                    )
+                }
                 override fun onStartTrackingTouch(seekBar: SeekBar) {}
                 override fun onStopTrackingTouch(seekBar: SeekBar) {
                     hueAPI.changeSaturationOfGroup(id, seekBar.progress)
@@ -234,6 +259,10 @@ class HueLampActivity : AppCompatActivity() {
             ctBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                     hueAPI.changeColorTemperature(id, seekBar.progress + 153)
+                    DrawableCompat.setTint(
+                            DrawableCompat.wrap(lampIcon.drawable),
+                            HueUtils.ctToRGB(seekBar.progress + 153)
+                    )
                 }
                 override fun onStartTrackingTouch(seekBar: SeekBar) {}
                 override fun onStopTrackingTouch(seekBar: SeekBar) {}
@@ -242,6 +271,10 @@ class HueLampActivity : AppCompatActivity() {
             hueBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                     hueAPI.changeHue(id, seekBar.progress)
+                    DrawableCompat.setTint(
+                            DrawableCompat.wrap(lampIcon.drawable),
+                            HueUtils.hueSatToRGB(seekBar.progress, satBar.progress)
+                    )
                 }
                 override fun onStartTrackingTouch(seekBar: SeekBar) {}
                 override fun onStopTrackingTouch(seekBar: SeekBar) {}
@@ -250,6 +283,10 @@ class HueLampActivity : AppCompatActivity() {
             satBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                     hueAPI.changeSaturation(id, seekBar.progress)
+                    DrawableCompat.setTint(
+                            DrawableCompat.wrap(lampIcon.drawable),
+                            HueUtils.hueSatToRGB(hueBar.progress, seekBar.progress)
+                    )
                 }
                 override fun onStartTrackingTouch(seekBar: SeekBar) {}
                 override fun onStopTrackingTouch(seekBar: SeekBar) {}

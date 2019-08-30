@@ -6,29 +6,38 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         tools:ignore="UseCompoundDrawables">
 
         <ImageView
+            android:id="@+id/lampIcon"
             android:layout_width="match_parent"
             android:layout_height="@dimen/header_icon_height"
             android:layout_marginTop="@dimen/dialog_item_margin"
             android:contentDescription="@string/main_device_icon"
-            app:srcCompat="@drawable/ic_device_lamp" />
+            app:srcCompat="@drawable/ic_hue_lamp_color" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/header_icon_height"
+            android:layout_marginTop="@dimen/dialog_item_margin"
+            android:contentDescription="@string/main_device_icon"
+            app:srcCompat="@drawable/ic_hue_lamp_base" />
 
         <TextView
             android:id="@+id/nameTxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/lampIcon"
             android:layout_marginTop="@dimen/dialog_item_margin"
             android:text="@string/placeholder"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
