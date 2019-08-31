@@ -250,7 +250,7 @@ class HueLampActivity : AppCompatActivity() {
 
             briBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                    hueAPI.changeBrightness(id, seekBar.progress)
+                    if (fromUser) hueAPI.changeBrightness(id, seekBar.progress)
                 }
                 override fun onStartTrackingTouch(seekBar: SeekBar) {}
                 override fun onStopTrackingTouch(seekBar: SeekBar) {}
@@ -258,7 +258,7 @@ class HueLampActivity : AppCompatActivity() {
 
             ctBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                    hueAPI.changeColorTemperature(id, seekBar.progress + 153)
+                    if (fromUser) hueAPI.changeColorTemperature(id, seekBar.progress + 153)
                     DrawableCompat.setTint(
                             DrawableCompat.wrap(lampIcon.drawable),
                             HueUtils.ctToRGB(seekBar.progress + 153)
@@ -270,7 +270,7 @@ class HueLampActivity : AppCompatActivity() {
 
             hueBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                    hueAPI.changeHue(id, seekBar.progress)
+                    if (fromUser) hueAPI.changeHue(id, seekBar.progress)
                     DrawableCompat.setTint(
                             DrawableCompat.wrap(lampIcon.drawable),
                             HueUtils.hueSatToRGB(seekBar.progress, satBar.progress)
@@ -282,7 +282,7 @@ class HueLampActivity : AppCompatActivity() {
 
             satBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                    hueAPI.changeSaturation(id, seekBar.progress)
+                    if (fromUser) hueAPI.changeSaturation(id, seekBar.progress)
                     DrawableCompat.setTint(
                             DrawableCompat.wrap(lampIcon.drawable),
                             HueUtils.hueSatToRGB(hueBar.progress, seekBar.progress)

@@ -77,7 +77,7 @@ class SearchDevicesActivity : AppCompatActivity() {
                 }
                 override fun OnFinish(devices: HashSet<UPnPDevice>) {}
                 override fun OnError(e: Exception) {
-                    Log.d("UPnPDiscovery", "Error: " + e.localizedMessage)
+                    Log.e("UPnPDiscovery", "Error: " + e.localizedMessage)
                 }
             }, customQuery, customAddress, customPort)
 
@@ -98,7 +98,7 @@ class SearchDevicesActivity : AppCompatActivity() {
                 }
                 override fun OnFinish(devices: HashSet<UPnPDevice>) {}
                 override fun OnError(e: Exception) {
-                    Log.d("UPnPDiscovery", "Error: " + e.localizedMessage)
+                    Log.e("UPnPDiscovery", "Error: " + e.localizedMessage)
                 }
             })
         }).start()

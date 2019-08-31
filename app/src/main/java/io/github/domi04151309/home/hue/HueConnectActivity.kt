@@ -10,10 +10,7 @@ import androidx.preference.PreferenceManager
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.Volley
-import io.github.domi04151309.home.CustomJsonArrayRequest
-import io.github.domi04151309.home.Global
-import io.github.domi04151309.home.R
-import io.github.domi04151309.home.Theme
+import io.github.domi04151309.home.*
 import org.json.JSONObject
 
 class HueConnectActivity : AppCompatActivity() {
@@ -26,8 +23,8 @@ class HueConnectActivity : AppCompatActivity() {
         setContentView(R.layout.activity_hue_connect)
 
         val queue = Volley.newRequestQueue(this)
-        val device = intent.getStringExtra("Device")
-        val url = intent.getStringExtra("URL") + "api"
+        val deviceId = intent.getStringExtra("deviceId") ?: ""
+        val url = Devices(this).getDeviceById(deviceId).address + "api"
         val jsonRequestObject = JSONObject("{\"devicetype\":\"HomeApp#" + getHostName() + "\"}")
         val requestToRegisterUser = CustomJsonArrayRequest(Request.Method.POST, url, jsonRequestObject,
                 Response.Listener { response ->
@@ -36,12 +33,11 @@ class HueConnectActivity : AppCompatActivity() {
                         Toast.makeText(this, R.string.try_again, Toast.LENGTH_LONG).show()
                     else if (responseObject.has("success")) {
                         val username = responseObject.getJSONObject("success").getString("username")
-                        PreferenceManager.getDefaultSharedPreferences(this).edit().putString(device, username).apply()
+                        PreferenceManager.getDefaultSharedPreferences(this).edit().putString(deviceId, username).apply()
                         finish()
                     }
                     else if (!enabled) enabled = true
                     else Toast.makeText(this, R.string.err, Toast.LENGTH_LONG).show()
-                    Log.w(Global.LOG_TAG, responseObject.toString())
                 },
                 Response.ErrorListener { error ->
                     Toast.makeText(this, R.string.err, Toast.LENGTH_LONG).show()

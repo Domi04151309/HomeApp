@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Base64
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.webkit.WebView
@@ -28,7 +27,6 @@ class WebActivity : AppCompatActivity() {
         val title = intent.getStringExtra("title")
         webView = findViewById(R.id.webView)
         val webSettings = webView!!.settings
-        Log.d(Global.LOG_TAG,uri)
         webSettings.javaScriptEnabled = true
         webView!!.webViewClient = object : WebViewClient() {
 
