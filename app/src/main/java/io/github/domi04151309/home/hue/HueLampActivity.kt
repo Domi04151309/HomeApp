@@ -1,7 +1,6 @@
 package io.github.domi04151309.home.hue
 
 import android.graphics.Color
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -21,6 +20,8 @@ import io.github.domi04151309.home.R
 import io.github.domi04151309.home.Theme
 import io.github.domi04151309.home.data.ScenesGridItem
 import java.lang.Exception
+import android.view.animation.DecelerateInterpolator
+import android.animation.ObjectAnimator
 
 class HueLampActivity : AppCompatActivity() {
 
@@ -64,14 +65,15 @@ class HueLampActivity : AppCompatActivity() {
                 Color.parseColor("#FBC02D")
         )
 
-        //Get scenes
+        //Smooth seekBars
         fun setProgress(seekBar: SeekBar, value: Int) {
-            if (Build.VERSION.SDK_INT >= 24)
-                seekBar.setProgress(value, true)
-            else
-                seekBar.progress = value
+            val animation = ObjectAnimator.ofInt(seekBar, "progress", value)
+            animation.duration = 300
+            animation.interpolator = DecelerateInterpolator()
+            animation.start()
         }
 
+        //Get scenes
         lightDataRequest = JsonObjectRequest(Request.Method.GET,  address + "api/" + hueAPI.getUsername() + "/lights/" + id, null,
                 Response.Listener { response ->
                     nameTxt.text = response.getString("name")
