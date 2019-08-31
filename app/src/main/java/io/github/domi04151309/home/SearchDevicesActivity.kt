@@ -63,8 +63,8 @@ class SearchDevicesActivity : AppCompatActivity() {
         Thread(Runnable {
             //Get Hue Bridges
             UPnPDiscovery.discoveryDevices(this, object : UPnPDiscovery.OnDiscoveryListener {
-                override fun OnStart() {}
-                override fun OnFoundNewDevice(device: UPnPDevice) {
+                override fun onStart() {}
+                override fun onFoundNewDevice(device: UPnPDevice) {
                     Log.d("UPnPDiscovery01", "Found new device: " + device.friendlyName)
                     if (device.server.contains("IpBridge") && !addresses.contains(device.hostAddress)) {
                         val deviceItem = ListViewItem(device.friendlyName)
@@ -75,16 +75,16 @@ class SearchDevicesActivity : AppCompatActivity() {
                         addresses += device.hostAddress
                     }
                 }
-                override fun OnFinish(devices: HashSet<UPnPDevice>) {}
-                override fun OnError(e: Exception) {
+                override fun onFinish(devices: HashSet<UPnPDevice>) {}
+                override fun onError(e: Exception) {
                     Log.e("UPnPDiscovery", "Error: " + e.localizedMessage)
                 }
             }, customQuery, customAddress, customPort)
 
             //Get compatible devices
             UPnPDiscovery.discoveryDevices(this, object : UPnPDiscovery.OnDiscoveryListener {
-                override fun OnStart() {}
-                override fun OnFoundNewDevice(device: UPnPDevice) {
+                override fun onStart() {}
+                override fun onFoundNewDevice(device: UPnPDevice) {
                     val friendlyName = device.friendlyName
                     Log.d("UPnPDiscovery02", "Found new device: " + device.friendlyName)
                     if (friendlyName.startsWith("FRITZ!") && !addresses.contains(device.hostAddress)) {
@@ -104,8 +104,8 @@ class SearchDevicesActivity : AppCompatActivity() {
                         addresses += device.hostAddress
                     }
                 }
-                override fun OnFinish(devices: HashSet<UPnPDevice>) {}
-                override fun OnError(e: Exception) {
+                override fun onFinish(devices: HashSet<UPnPDevice>) {}
+                override fun onError(e: Exception) {
                     Log.e("UPnPDiscovery", "Error: " + e.localizedMessage)
                 }
             })
