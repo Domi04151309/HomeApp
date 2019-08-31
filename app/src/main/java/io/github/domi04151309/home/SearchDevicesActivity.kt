@@ -65,7 +65,7 @@ class SearchDevicesActivity : AppCompatActivity() {
             UPnPDiscovery.discoveryDevices(this, object : UPnPDiscovery.OnDiscoveryListener {
                 override fun OnStart() {}
                 override fun OnFoundNewDevice(device: UPnPDevice) {
-                    Log.d("UPnPDiscovery", "Found new device: " + device.friendlyName)
+                    Log.d("UPnPDiscovery01", "Found new device: " + device.friendlyName)
                     if (device.server.contains("IpBridge") && !addresses.contains(device.hostAddress)) {
                         val deviceItem = ListViewItem(device.friendlyName)
                         deviceItem.summary = device.hostAddress
@@ -86,12 +86,20 @@ class SearchDevicesActivity : AppCompatActivity() {
                 override fun OnStart() {}
                 override fun OnFoundNewDevice(device: UPnPDevice) {
                     val friendlyName = device.friendlyName
-                    Log.d("UPnPDiscovery", "Found new device: $friendlyName")
+                    Log.d("UPnPDiscovery02", "Found new device: " + device.friendlyName)
                     if (friendlyName.startsWith("FRITZ!") && !addresses.contains(device.hostAddress)) {
                         val deviceItem = ListViewItem(device.friendlyName)
                         deviceItem.summary = device.hostAddress
                         deviceItem.hidden = "Website#Router"
                         deviceItem.icon = R.drawable.ic_device_router
+                        listItems += deviceItem
+                        addresses += device.hostAddress
+                    }
+                    if (device.server.contains("SimpleHome") && !addresses.contains(device.hostAddress)) {
+                        val deviceItem = ListViewItem(device.friendlyName)
+                        deviceItem.summary = device.hostAddress
+                        deviceItem.hidden = "SimpleHome API#Raspberry Pi"
+                        deviceItem.icon = R.drawable.ic_device_raspberry_pi
                         listItems += deviceItem
                         addresses += device.hostAddress
                     }
