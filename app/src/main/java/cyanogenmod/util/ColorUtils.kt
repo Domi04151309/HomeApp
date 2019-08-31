@@ -14,14 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cyanogenmod.util;
+package cyanogenmod.util
+
+import kotlin.math.roundToInt
 
 /**
- * Helper class for colorspace conversions, and color-related
+ * Helper class for color space conversions, and color-related
  * algorithms which may be generally useful.
  */
-@SuppressWarnings("ALL")
-public class ColorUtils {
+object ColorUtils {
 
     /**
      * Convert a color temperature value (in Kelvin) to a RGB units as floats.
@@ -30,33 +31,33 @@ public class ColorUtils {
      * @param degreesK
      * @return array of floats representing rgb values 0->1
      */
-    public static int temperatureToRGB(int degreesK) {
-        int k = degreesK < 1000 ? 1000 : (degreesK > 20000 ? 20000 : degreesK);
-        float a = (k % 100) / 100.0f;
-        int i = ((k - 1000)/ 100) * 3;
+    fun temperatureToRGB(degreesK: Int): Int {
+        val k = if (degreesK < 1000) 1000 else if (degreesK > 20000) 20000 else degreesK
+        val a = k % 100 / 100.0f
+        val i = (k - 1000) / 100 * 3
 
-        int R = Math.round(255 * interp(i, a));
-        int G = Math.round(255 * interp(i+1, a));
-        int B = Math.round(255 * interp(i+2, a));
+        var r = (255 * interp(i, a)).roundToInt()
+        var g = (255 * interp(i + 1, a)).roundToInt()
+        var b = (255 * interp(i + 2, a)).roundToInt()
 
-        R = (R << 16) & 0x00FF0000;
-        G = (G << 8) & 0x0000FF00;
-        B = B & 0x000000FF;
+        r = r shl 16 and 0x00FF0000
+        g = g shl 8 and 0x0000FF00
+        b = b and 0x000000FF
 
-        return 0xFF000000 | R | G | B;
+        return -0x1000000 or r or g or b
     }
 
-    private static float interp(int i, float a) {
-        return (float)sColorTable[i] + ((float)sColorTable[i+3] - (float)sColorTable[i]) * a;
+    private fun interp(i: Int, a: Float): Float {
+        return sColorTable[i].toFloat() + (sColorTable[i + 3].toFloat() - sColorTable[i].toFloat()) * a
     }
 
     /**
-     * This table is a modified version of the original blackbody chart, found here:
+     * This table is a modified version of the original black body chart, found here:
      * http://www.vendian.org/mncharity/dir3/blackbody/UnstableURLs/bbr_color.html
      *
      * Created by Ingo Thiel.
      */
-    private static final double[] sColorTable = new double[] {
+    private val sColorTable = doubleArrayOf(
             1.00000000, 0.18172716, 0.00000000,
             1.00000000, 0.25503671, 0.00000000,
             1.00000000, 0.30942099, 0.00000000,
@@ -249,6 +250,6 @@ public class ColorUtils {
             0.65053187, 0.76917889, 1.00000000,
             0.64994941, 0.76876866, 1.00000000,
             0.64937392, 0.76836326, 1.00000000
-    };
+    )
 
 }
