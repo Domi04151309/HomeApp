@@ -13,14 +13,13 @@ import android.widget.*
 import io.github.domi04151309.home.simplehome.SimpleHomeAPI
 import io.github.domi04151309.home.hue.HueAPI
 import io.github.domi04151309.home.hue.HueLampActivity
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.app_bar_main.*
-import kotlinx.android.synthetic.main.content_main.*
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import android.widget.TextView
 import android.view.ViewGroup
+import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import io.github.domi04151309.home.data.ListViewItem
 
 
@@ -28,6 +27,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private var devices: Devices? = null
     private var listView: ListView? = null
+    private var deviceIcon: ImageView? = null
+    private var deviceName: TextView? = null
+    private var fab: FloatingActionButton? = null
+    private var drawerLayout: DrawerLayout? = null
+    private var navView: NavigationView? = null
     private var currentView: View? = null
     private var currentDevice = ""
     private var hueRoom: String = ""
@@ -199,18 +203,23 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         devices = Devices(this)
         listView = findViewById<View>(R.id.listView) as ListView
+        deviceIcon = findViewById(R.id.deviceIcon)
+        deviceName = findViewById(R.id.deviceName)
+        fab = findViewById(R.id.fab)
+        drawerLayout = findViewById(R.id.drawer_layout)
+        navView = findViewById(R.id.nav_view)
 
-        fab.setOnClickListener {
+        fab!!.setOnClickListener {
             reset = true
             startActivity(Intent(this, DevicesActivity::class.java))
         }
 
         findViewById<ImageView>(R.id.menu_icon).setOnClickListener {
-            drawer_layout.openDrawer(GravityCompat.START)
+            drawerLayout!!.openDrawer(GravityCompat.START)
         }
 
-        nav_view.setNavigationItemSelectedListener(this)
-        nav_view.setCheckedItem(R.id.nav_devices)
+        navView!!.setNavigationItemSelectedListener(this)
+        navView!!.setCheckedItem(R.id.nav_devices)
 
         listView!!.onItemClickListener = AdapterView.OnItemClickListener { _, view, _, _ ->
             currentView = view
@@ -240,8 +249,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val deviceId = intent.getStringExtra("device") ?: ""
             if (devices!!.idExists(deviceId)) {
                 val device = devices!!.getDeviceById(deviceId)
-                deviceIcon.setImageResource(device.iconId)
-                deviceName.text = device.name
+                deviceIcon!!.setImageResource(device.iconId)
+                deviceName!!.text = device.name
                 handleLevelOne(deviceId)
             } else {
                 loadDevices()
@@ -317,8 +326,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onBackPressed() {
-        if (drawer_layout.isDrawerOpen(GravityCompat.START))
-            drawer_layout.closeDrawer(GravityCompat.START)
+        if (drawerLayout!!.isDrawerOpen(GravityCompat.START))
+            drawerLayout!!.closeDrawer(GravityCompat.START)
         else if (level == "two" || level == "two_hue")
             loadDevices()
         else if (level == "three_hue")
@@ -348,44 +357,44 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 reset = true
             }
         }
-        drawer_layout.closeDrawer(GravityCompat.START)
+        drawerLayout!!.closeDrawer(GravityCompat.START)
         return true
     }
 
     private fun setLevelOne() {
         val theme = resources.newTheme()
         theme.applyStyle(R.style.Dark, false)
-        deviceIcon.setImageDrawable(resources.getDrawable(R.drawable.ic_home, theme))
-        deviceName.text = resources.getString(R.string.main_device_name)
-        fab.show()
+        deviceIcon!!.setImageDrawable(resources.getDrawable(R.drawable.ic_home, theme))
+        deviceName!!.text = resources.getString(R.string.main_device_name)
+        fab!!.show()
         level = "one"
     }
 
     private fun setLevelTwo(icon: Int, title: CharSequence) {
-        fab.hide()
-        deviceIcon.setImageResource(icon)
-        deviceName.text = title
+        fab!!.hide()
+        deviceIcon!!.setImageResource(icon)
+        deviceName!!.text = title
         level = "two"
     }
 
     private fun setLevelTwoHue(deviceId: String, icon: Int, title: CharSequence) {
-        fab.hide()
-        deviceIcon.setImageResource(icon)
-        deviceName.text = title
+        fab!!.hide()
+        deviceIcon!!.setImageResource(icon)
+        deviceName!!.text = title
         currentDevice = deviceId
         level = "two_hue"
     }
 
     private fun setLevelThreeHue(title: CharSequence) {
-        deviceIcon.setImageResource(R.drawable.ic_device_lamp)
-        deviceName.text = title
+        deviceIcon!!.setImageResource(R.drawable.ic_device_lamp)
+        deviceName!!.text = title
         level = "three_hue"
     }
 
     override fun onResume() {
         super.onResume()
         if(reset) {
-            nav_view.setCheckedItem(R.id.nav_devices)
+            navView!!.setCheckedItem(R.id.nav_devices)
             loadDevices()
             reset = false
         }
