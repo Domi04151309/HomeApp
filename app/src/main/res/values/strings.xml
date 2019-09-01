@@ -115,8 +115,7 @@
     </string-array>
 
     <string name="placeholder">Placeholder</string>
-    <string name="str_continue">Continue</string>
-    <string name="try_again">Please try again</string>
+    <string name="str_cancel">Cancel</string>
 
     <string name="about">About</string>
     <string name="about_summary">About the app</string>
