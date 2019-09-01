@@ -12,6 +12,8 @@ import io.github.domi04151309.home.R
 import io.github.domi04151309.home.Global.volleyError
 import org.json.JSONArray
 import org.json.JSONObject
+import android.os.Handler
+
 
 class HueAPI(context: Context, deviceId: String) {
 
@@ -19,6 +21,7 @@ class HueAPI(context: Context, deviceId: String) {
     private val selectedDevice = deviceId
     private var url = Devices(c).getDeviceById(deviceId).address
     private val queue = Volley.newRequestQueue(c)
+    private var readyForRequest = true
 
     interface RequestCallBack {
         fun onGroupsLoaded(
@@ -129,6 +132,10 @@ class HueAPI(context: Context, deviceId: String) {
                 Response.Listener { },
                 Response.ErrorListener { e -> Log.e(Global.LOG_TAG, e.toString())}
         )
-        queue.add(request)
+        if (readyForRequest) {
+            queue.add(request)
+            readyForRequest = false
+            Handler().postDelayed({ readyForRequest = true }, 100)
+        }
     }
 }
