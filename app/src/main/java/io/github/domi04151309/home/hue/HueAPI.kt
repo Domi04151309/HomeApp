@@ -55,6 +55,7 @@ class HueAPI(context: Context, deviceId: String) {
                 },
                 Response.ErrorListener { error ->
                     callback.onGroupsLoaded(c, null, selectedDevice, volleyError(c, error))
+                    if (error is ParseError) c.startActivity(Intent(c, HueConnectActivity::class.java).putExtra("deviceId", selectedDevice))
                 }
         )
         queue.add(jsonObjectRequest)

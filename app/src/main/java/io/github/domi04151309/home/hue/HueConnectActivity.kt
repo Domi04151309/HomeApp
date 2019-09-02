@@ -80,7 +80,6 @@ class HueConnectActivity : AppCompatActivity() {
         permissionHandler.postDelayed(object : Runnable {
             override fun run() {
                 queue!!.add(requestToRegisterUser)
-                Log.e(Global.LOG_TAG, "Sent!")
                 if (running) permissionHandler.postDelayed(this, handlerDelay)
             }
         }, handlerDelay)
