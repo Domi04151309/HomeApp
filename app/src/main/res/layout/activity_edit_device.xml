@@ -146,7 +146,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_delete"
-                android:text="@string/pref_delete_device"
+                android:text="@string/str_delete"
                 android:textAlignment="textStart"
                 android:textColor="?android:attr/textColorPrimary"/>
         </LinearLayout>

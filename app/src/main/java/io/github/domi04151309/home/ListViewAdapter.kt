@@ -14,7 +14,7 @@ import android.widget.Switch
 import android.widget.TextView
 import io.github.domi04151309.home.data.ListViewItem
 
-internal class ListViewAdapter(context: Context, private val itemArray: Array<ListViewItem>) : BaseAdapter() {
+internal class ListViewAdapter(context: Context, private val itemArray: Array<ListViewItem>, private val animate: Boolean = true) : BaseAdapter() {
 
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
@@ -34,8 +34,8 @@ internal class ListViewAdapter(context: Context, private val itemArray: Array<Li
         var vi: View? = convertView
         if (vi == null)
             vi = inflater.inflate(R.layout.list_item, parent, false)
-        playAnimation(vi!!)
-        val drawableView = vi.findViewById<ImageView>(R.id.drawable)
+        if (animate) playAnimation(vi!!)
+        val drawableView = vi!!.findViewById<ImageView>(R.id.drawable)
         val titleTxt = vi.findViewById<TextView>(R.id.title)
         val summaryTxt = vi.findViewById<TextView>(R.id.summary)
         val hiddenTxt = vi.findViewById<TextView>(R.id.hidden)

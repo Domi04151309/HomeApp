@@ -18,4 +18,10 @@ object HueUtils {
         val hsl: Array<Float> = arrayOf(newHue, newSat, 0.5F)
         return ColorUtils.HSLToColor(hsl.toFloatArray())
     }
+
+    fun briToPercent(bri: Int): String {
+        require(!(bri < 1 || bri > 254)) { "Argument out of range" }
+        val value: Int = (bri / 254F * 100).toInt()
+        return "$value%"
+    }
 }

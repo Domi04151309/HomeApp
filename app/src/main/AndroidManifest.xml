@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
 
     <application
         android:allowBackup="true"
@@ -19,7 +19,15 @@
         android:theme="@style/AppTheme27"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".AboutActivity"
+        <activity android:name=".hue.HueSceneActivity"
+            android:label="@string/hue_add_scene"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="io.github.domi04151309.home.MainActivity" />
+        </activity>
+        <activity
+            android:name=".AboutActivity"
             android:label="@string/about"
             android:parentActivityName=".Preferences">
             <meta-data
