@@ -10,7 +10,7 @@
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay"
+        android:theme="@style/AppThemeAppBarOverlay"
         app:elevation="0dp">
 
         <RelativeLayout
@@ -22,7 +22,8 @@
                 android:layout_width="50dp"
                 android:layout_height="?attr/actionBarSize"
                 android:src="@drawable/ic_menu"
-                android:tint="@color/actionBarText"
+                android:tint="?android:attr/textColorPrimary"
+                android:alpha="0.6"
                 android:padding="13dp"
                 android:layout_centerVertical="true"
                 android:contentDescription="@null" />
@@ -30,7 +31,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textColor="?attr/actionBarTextColor"
+                android:textColor="?android:attr/textColorPrimary"
+                android:alpha="0.6"
                 android:gravity="center"
                 android:text="@string/app_name"
                 android:textSize="20sp" />

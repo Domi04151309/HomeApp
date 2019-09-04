@@ -9,7 +9,7 @@
     tools:context="io.github.domi04151309.home.MainActivity">
 
     <LinearLayout
-        style="@style/AppTheme.Header"
+        style="@style/AppThemeHeader"
         android:layout_width="match_parent"
         android:layout_height="@dimen/header_height"
         tools:ignore="UseCompoundDrawables">

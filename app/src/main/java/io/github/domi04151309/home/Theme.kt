@@ -16,11 +16,11 @@ object Theme {
                 recent(context, R.color.colorPrimary)
             }
             "dark" -> {
-                context.setTheme(R.style.AppTheme_Dark)
+                context.setTheme(R.style.AppThemeDark)
                 recent(context, R.color.colorPrimaryDark)
             }
             "black" -> {
-                context.setTheme(R.style.AppTheme_Black)
+                context.setTheme(R.style.AppThemeBlack)
                 recent(context, R.color.colorPrimaryBlack)
             }
             else -> {
@@ -28,6 +28,7 @@ object Theme {
                 recent(context, R.color.colorPrimary)
             }
         }
+        context.setTheme(R.style.AppThemePatch)
     }
 
     fun setNoActionBar(context: Context) {
@@ -37,11 +38,11 @@ object Theme {
                 recent(context, R.color.colorPrimary)
             }
             "dark" -> {
-                context.setTheme(R.style.AppTheme_Dark_NoActionBar)
+                context.setTheme(R.style.AppThemeDark_NoActionBar)
                 recent(context, R.color.colorPrimaryDark)
             }
             "black" -> {
-                context.setTheme(R.style.AppTheme_Black_NoActionBar)
+                context.setTheme(R.style.AppThemeBlack_NoActionBar)
                 recent(context, R.color.colorPrimaryBlack)
             }
             else -> {
@@ -49,6 +50,7 @@ object Theme {
                 recent(context, R.color.colorPrimary)
             }
         }
+        context.setTheme(R.style.AppThemePatch)
     }
 
     private fun recent(c: Context, color: Int) {

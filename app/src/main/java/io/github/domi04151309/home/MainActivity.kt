@@ -363,7 +363,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun setLevelOne() {
         val theme = resources.newTheme()
-        theme.applyStyle(R.style.Dark, false)
+        theme.applyStyle(R.style.TintHouse, false)
         deviceIcon!!.setImageDrawable(resources.getDrawable(R.drawable.ic_home, theme))
         deviceName!!.text = resources.getString(R.string.main_device_name)
         fab!!.show()

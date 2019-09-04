@@ -6,8 +6,7 @@
     <color name="colorAccent">#4285f4</color>
     <color name="colorAccent32">#204285F4</color>
     <color name="colorAccent16">#104285F4</color>
-    <color name="actionBarText">#757575</color>
-    <color name="dividerBright">#13000000</color>
-    <color name="dividerDark">#13ffffff</color>
+    <color name="dividerLight">#14000000</color>
+    <color name="dividerDark">#14ffffff</color>
     <color name="navigationBarColor">#000001</color>
 </resources>

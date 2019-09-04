@@ -1,5 +1,12 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
+    <style name="AppThemeSplash" parent="Theme.AppCompat.Light">
+        <item name="android:windowBackground">@drawable/splash</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
     <style name="AppTheme27" parent="AppTheme">
         <item name="android:navigationBarColor">@color/colorPrimaryBlack</item>
     </style>
@@ -7,15 +14,9 @@
     <style name="AppTheme" parent="Base.Theme.AppCompat.Light">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>
-        <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowBackground">@color/colorPrimary</item>
-        <item name="actionBarTextColor">@color/actionBarText</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="actionBarTheme">@style/AppTheme.ActionBarTheme</item>
-        <item name="buttonStyle">@style/AppTheme.Button</item>
-        <item name="android:switchStyle">@style/AppTheme.Switch</item>
-        <item name="dividerColor">@color/dividerBright</item>
-        <item name="android:listDivider">@null</item>
+        <item name="dividerColor">@color/dividerLight</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="AppTheme.NoActionBar" parent="AppTheme27">
@@ -24,50 +25,49 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
-    <style name="AppTheme.Dark" parent="Theme.AppCompat">
+    <style name="AppThemeDark" parent="Theme.AppCompat">
         <item name="colorPrimary">@color/colorPrimaryDark</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowBackground">@color/colorPrimaryDark</item>
         <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
-        <item name="actionBarTextColor">@android:color/white</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="actionBarTheme">@style/AppTheme.ActionBarTheme</item>
-        <item name="buttonStyle">@style/AppTheme.Button</item>
-        <item name="android:switchStyle">@style/AppTheme.Switch</item>
         <item name="dividerColor">@color/dividerDark</item>
-        <item name="android:listDivider">@null</item>
+        <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
     </style>
 
-    <style name="AppTheme.Dark.NoActionBar" parent="AppTheme.Dark">
+    <style name="AppThemeDark.NoActionBar" parent="AppThemeDark">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
-    <style name="AppTheme.Black" parent="AppTheme.Dark">
+    <style name="AppThemeBlack" parent="AppThemeDark">
         <item name="colorPrimary">@color/colorPrimaryBlack</item>
         <item name="colorPrimaryDark">@color/colorPrimaryBlack</item>
         <item name="android:windowBackground">@color/colorPrimaryBlack</item>
         <item name="android:navigationBarColor">@color/navigationBarColor</item>
     </style>
 
-    <style name="AppTheme.Black.NoActionBar" parent="AppTheme.Black">
+    <style name="AppThemeBlack.NoActionBar" parent="AppThemeBlack">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
-    <style name="Dark">
-        <item name="android:textColorPrimary">@android:color/white</item>
+    <style name="AppThemePatch">
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionBarTheme">@style/AppThemeActionBarTheme</item>
+        <item name="buttonStyle">@style/AppThemeButton</item>
+        <item name="android:switchStyle">@style/AppThemeSwitch</item>
+        <item name="dialogCornerRadius">8dp</item>
+        <item name="android:listDivider">@null</item>
     </style>
 
-    <style name="AppTheme.ActionBarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
-        <item name="colorControlNormal">@color/actionBarText</item>
+    <style name="AppThemeActionBarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+        <item name="colorControlNormal">?android:attr/textColorSecondary</item>
     </style>
 
-    <style name="AppTheme.Button" parent="Widget.AppCompat.Button">
+    <style name="AppThemeButton" parent="Widget.AppCompat.Button">
         <item name="android:stateListAnimator">@null</item>
         <item name="android:background">@null</item>
         <item name="android:textAllCaps">false</item>
@@ -75,7 +75,7 @@
         <item name="android:textColor">?attr/colorAccent</item>
     </style>
 
-    <style name="AppTheme.Switch" parent="Widget.AppCompat.CompoundButton.Switch">
+    <style name="AppThemeSwitch" parent="Widget.AppCompat.CompoundButton.Switch">
         <item name="android:background">@null</item>
         <item name="android:switchMinWidth">64dp</item>
         <item name="android:track">@drawable/theme_switch_track</item>
@@ -83,14 +83,7 @@
         <item name="android:showText">false</item>
     </style>
 
-    <style name="AppTheme.Splash" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:windowBackground">@drawable/splash</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-    </style>
-
-    <style name="AppTheme.Header">
+    <style name="AppThemeHeader">
         <item name="android:background">@drawable/header_bg_xml</item>
         <item name="android:gravity">bottom</item>
         <item name="android:orientation">horizontal</item>
@@ -101,10 +94,14 @@
         <item name="android:paddingTop">@dimen/activity_vertical_margin</item>
     </style>
 
-    <style name="AppTheme.Header.Land">
+    <style name="AppThemeHeader.Land">
         <item name="android:background">@color/colorAccent</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.ActionBar" />
+    <style name="TintHouse">
+        <item name="android:textColorPrimary">@android:color/white</item>
+    </style>
+
+    <style name="AppThemeAppBarOverlay" parent="ThemeOverlay.AppCompat.ActionBar" />
 
 </resources>
