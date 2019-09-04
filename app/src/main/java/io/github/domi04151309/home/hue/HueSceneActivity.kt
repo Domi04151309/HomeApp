@@ -4,7 +4,6 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -23,7 +22,6 @@ import io.github.domi04151309.home.*
 import io.github.domi04151309.home.ListViewAdapter
 import io.github.domi04151309.home.data.ListViewItem
 import org.json.JSONObject
-import java.lang.Exception
 
 
 class HueSceneActivity : AppCompatActivity() {
@@ -44,11 +42,14 @@ class HueSceneActivity : AppCompatActivity() {
         val nameTxt = findViewById<TextView>(R.id.nameTxt)
         val nameBox = findViewById<EditText>(R.id.nameBox)
         val fab = findViewById<FloatingActionButton>(R.id.fab)
+        var requestsSent = 0
+        var responsesReceived = 0
 
         val roomDataRequest = JsonObjectRequest(Request.Method.GET, address + "api/" + hueAPI.getUsername() + "/groups/" + roomId, null,
                 Response.Listener { response ->
                     val lights = response.getJSONArray("lights")
                     for (i in 0 until lights.length()) {
+                        requestsSent++
                         val lightDataRequest = JsonObjectRequest(Request.Method.GET,  address + "api/" + hueAPI.getUsername() + "/lights/" + lights.get(i).toString(), null,
                                 Response.Listener { secondResponse ->
                                     val item = ListViewItem(secondResponse.getString("name"))
@@ -67,6 +68,7 @@ class HueSceneActivity : AppCompatActivity() {
                                     }
                                     item.icon = R.drawable.ic_circle
                                     listItems += item
+                                    responsesReceived++
                                 },
                                 Response.ErrorListener { error ->
                                     Toast.makeText(this, Global.volleyError(this, error), Toast.LENGTH_LONG).show()
@@ -81,16 +83,23 @@ class HueSceneActivity : AppCompatActivity() {
         )
         queue.add(roomDataRequest)
 
-        try {
-            Handler().postDelayed({
-                val adapter = ListViewAdapter(this, listItems, false)
+        listView.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
+            for (i in 0 until listView.count)
+                ImageViewCompat.setImageTintList(listView.getChildAt(i).findViewById(R.id.drawable), ColorStateList.valueOf(colorArray[i]))
+        }
+
+        Thread(Runnable {
+            while (requestsSent == 0 && responsesReceived == 0) {
+                Thread.sleep(16L)
+            }
+            while (requestsSent != responsesReceived) {
+                Thread.sleep(64L)
+            }
+            val adapter = ListViewAdapter(this, listItems, false)
+            runOnUiThread {
                 listView.adapter = adapter
-                Handler().postDelayed({
-                    for (i in colorArray.indices)
-                        ImageViewCompat.setImageTintList(listView.getChildAt(i).findViewById(R.id.drawable), ColorStateList.valueOf(colorArray[i]))
-                }, 200)
-            }, 200)
-        } catch (e: Exception) { }
+            }
+        }).start()
 
         nameBox.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {}
