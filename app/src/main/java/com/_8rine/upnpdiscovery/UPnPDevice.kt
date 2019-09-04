@@ -1,8 +1,12 @@
 package com._8rine.upnpdiscovery
 
-import com.stanfy.gsonxml.GsonXmlBuilder
-import com.stanfy.gsonxml.XmlParserCreator
+import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserFactory
+import java.io.ByteArrayInputStream
+import android.util.Log
+import io.github.domi04151309.home.Global
+import java.lang.Exception
+
 
 class UPnPDevice internal constructor(val hostAddress: String, header: String) {
     val location: String
@@ -28,17 +32,17 @@ class UPnPDevice internal constructor(val hostAddress: String, header: String) {
 
     init {
         val locationText = "LOCATION: "
-        this.location = parseHeader(header, locationText)
+        location = parseHeader(header, locationText)
         val serverText = "SERVER: "
-        this.server = parseHeader(header, serverText)
+        server = parseHeader(header, serverText)
         val usnText = "USN: "
-        this.usn = parseHeader(header, usnText)
+        usn = parseHeader(header, usnText)
         val stText = "ST: "
-        this.st = parseHeader(header, stText)
+        st = parseHeader(header, stText)
     }
 
     internal fun update(xml: String) {
-        this.descriptionXML = xml
+        descriptionXML = xml
         xmlParse(xml)
     }
 
@@ -72,53 +76,43 @@ class UPnPDevice internal constructor(val hostAddress: String, header: String) {
         return result
     }
 
-    private fun xmlParse(xml: String) {
-        val parserCreator = XmlParserCreator {
-            try {
-                return@XmlParserCreator XmlPullParserFactory.newInstance().newPullParser()
-            } catch (e: Exception) {
-                throw RuntimeException(e)
-            }
+    private fun readText(parser: XmlPullParser): String {
+        var result = ""
+        if (parser.next() == XmlPullParser.TEXT) {
+            result = parser.text
+            parser.nextTag()
         }
-
-        val gsonXml = GsonXmlBuilder()
-                .setXmlParserCreator(parserCreator)
-                .create()
-
-
-        val model = gsonXml.fromXml(xml, DescriptionModel::class.java)
-
-        this.friendlyName = model.device!!.friendlyName
-        this.deviceType = model.device.deviceType
-        this.presentationURL = model.device.presentationURL
-        this.serialNumber = model.device.serialNumber
-        this.modelName = model.device.modelName
-        this.modelNumber = model.device.modelNumber
-        this.modelURL = model.device.modelURL
-        this.manufacturer = model.device.manufacturer
-        this.manufacturerURL = model.device.manufacturerURL
-        this.udn = model.device.udn
-        this.urlBase = model.urlBase
+        return result
     }
 
-    private class Device {
-        val deviceType: String = ""
-        val friendlyName: String = ""
-        val presentationURL: String = ""
-        val serialNumber: String = ""
-        val modelName: String = ""
-        val modelNumber: String = ""
-        val modelURL: String = ""
-        val manufacturer: String = ""
-        val manufacturerURL: String = ""
-        val udn: String = ""
-
-    }
-
-    private class DescriptionModel {
-        val device: Device? = null
-        val urlBase: String = ""
-
+    private fun xmlParse(xml: String) {
+        val xmlFactoryObject = XmlPullParserFactory.newInstance()
+        val parser = xmlFactoryObject.newPullParser()
+        parser.setInput(ByteArrayInputStream(xml.toByteArray(Charsets.UTF_8)), null)
+        var event = parser.eventType
+        while (event != XmlPullParser.END_DOCUMENT) {
+            val name = parser.name
+            if (event == XmlPullParser.START_TAG) {
+                try {
+                    when (name) {
+                        "friendlyName" -> friendlyName = readText(parser)
+                        "deviceType" -> deviceType = readText(parser)
+                        "presentationURL" -> presentationURL = readText(parser)
+                        "serialNumber" -> serialNumber = readText(parser)
+                        "modelName" -> modelName = readText(parser)
+                        "modelNumber" -> modelNumber = readText(parser)
+                        "modelURL" -> modelURL = readText(parser)
+                        "manufacturer" -> manufacturer = readText(parser)
+                        "manufacturerURL" -> manufacturerURL = readText(parser)
+                        "UDN" -> udn = readText(parser)
+                        "URLBase" -> urlBase = readText(parser)
+                    }
+                } catch (e: Exception) {
+                    Log.w(Global.LOG_TAG, e.toString())
+                }
+            }
+            event = parser.next()
+        }
     }
 
     companion object {

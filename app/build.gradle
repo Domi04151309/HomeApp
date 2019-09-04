@@ -10,7 +10,7 @@ android {
         applicationId "io.github.domi04151309.home"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 7
+        versionCode 150
         versionName "1.5.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -41,5 +41,4 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'androidx.annotation:annotation:1.1.0'
     implementation 'com.android.volley:volley:1.1.1'
-    implementation 'com.stanfy:gson-xml-java:0.1.7'
 }
