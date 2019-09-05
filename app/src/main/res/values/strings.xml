@@ -27,7 +27,7 @@
     <string name="err_missing_name">Please enter a name</string>
     <string name="err_missing_name_summary">A name is important so that you can recognize the entry later</string>
     <string name="err_missing_address">Please enter an address</string>
-    <string name="err_missing_address_summary">An address is important because it allows us to reach the device</string>
+    <string name="err_missing_address_summary">An address is important because it allows the app to reach the device</string>
 
     <string name="hue_connect">Connect to your Bridge</string>
     <string name="hue_press_button">Please press the button on your bridge to continue.</string>
