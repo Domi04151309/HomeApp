@@ -115,9 +115,9 @@ class HueSceneActivity : AppCompatActivity() {
             val name = nameBox.text.toString()
             if (name == "") {
                 AlertDialog.Builder(this)
-                        .setTitle(resources.getString(R.string.err_missing_name))
-                        .setMessage(resources.getString(R.string.err_missing_name_summary))
-                        .setPositiveButton(resources.getString(android.R.string.ok)) { _, _ -> }
+                        .setTitle(R.string.err_missing_name)
+                        .setMessage(R.string.err_missing_name_summary)
+                        .setPositiveButton(android.R.string.ok) { _, _ -> }
                         .show()
                 return@setOnClickListener
             }

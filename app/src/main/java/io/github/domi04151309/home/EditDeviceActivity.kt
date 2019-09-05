@@ -96,9 +96,9 @@ class EditDeviceActivity : AppCompatActivity() {
 
             findViewById<Button>(R.id.deleteBtn).setOnClickListener {
                 AlertDialog.Builder(this)
-                        .setTitle(resources.getString(R.string.str_delete))
-                        .setMessage(resources.getString(R.string.pref_delete_device_question))
-                        .setPositiveButton(resources.getString(android.R.string.ok)) { _, _ ->
+                        .setTitle(R.string.str_delete)
+                        .setMessage(R.string.pref_delete_device_question)
+                        .setPositiveButton(android.R.string.ok) { _, _ ->
                             devices.deleteDevice(deviceId)
                             finish()
                         }
@@ -114,16 +114,16 @@ class EditDeviceActivity : AppCompatActivity() {
             val name = nameBox.text.toString()
             if (name == "") {
                 AlertDialog.Builder(this)
-                        .setTitle(resources.getString(R.string.err_missing_name))
-                        .setMessage(resources.getString(R.string.err_missing_name_summary))
-                        .setPositiveButton(resources.getString(android.R.string.ok)) { _, _ -> }
+                        .setTitle(R.string.err_missing_name)
+                        .setMessage(R.string.err_missing_name_summary)
+                        .setPositiveButton(android.R.string.ok) { _, _ -> }
                         .show()
                 return@setOnClickListener
             } else if (addressBox.text.toString() == "") {
                 AlertDialog.Builder(this)
-                        .setTitle(resources.getString(R.string.err_missing_address))
-                        .setMessage(resources.getString(R.string.err_missing_address_summary))
-                        .setPositiveButton(resources.getString(android.R.string.ok)) { _, _ -> }
+                        .setTitle(R.string.err_missing_address)
+                        .setMessage(R.string.err_missing_address_summary)
+                        .setPositiveButton(android.R.string.ok) { _, _ -> }
                         .show()
                 return@setOnClickListener
             }

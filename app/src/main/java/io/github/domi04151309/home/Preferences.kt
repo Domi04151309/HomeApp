@@ -40,13 +40,13 @@ class Preferences : AppCompatActivity() {
             }
             findPreference<Preference>("reset_json")!!.onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 AlertDialog.Builder(context!!)
-                        .setTitle(resources.getString(R.string.pref_reset))
-                        .setMessage(resources.getString(R.string.pref_reset_question))
-                        .setPositiveButton(resources.getString(android.R.string.ok)) { _, _ ->
+                        .setTitle(R.string.pref_reset)
+                        .setMessage(R.string.pref_reset_question)
+                        .setPositiveButton(android.R.string.ok) { _, _ ->
                             PreferenceManager.getDefaultSharedPreferences(context).edit().putString("devices_json", Global.DEFAULT_JSON).apply()
                             Toast.makeText(context, R.string.pref_reset_toast, Toast.LENGTH_LONG).show()
                         }
-                        .setNegativeButton(resources.getString(android.R.string.cancel)) { _, _ -> }
+                        .setNegativeButton(android.R.string.cancel) { _, _ -> }
                         .show()
                 true
             }

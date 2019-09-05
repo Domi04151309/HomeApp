@@ -335,10 +335,10 @@ class HueLampActivity : AppCompatActivity() {
             val input = view.findViewById<EditText>(R.id.input)
             input.setText(selectedSceneName)
             AlertDialog.Builder(this)
-                    .setTitle(resources.getString(R.string.str_rename))
-                    .setMessage(resources.getString(R.string.hue_rename_scene))
+                    .setTitle(R.string.str_rename)
+                    .setMessage(R.string.hue_rename_scene)
                     .setView(view)
-                    .setPositiveButton(resources.getString(android.R.string.ok)) { _, _ ->
+                    .setPositiveButton(android.R.string.ok) { _, _ ->
                         val requestObject = "{\"name\":\"" + input.text.toString() + "\"}"
                         val renameSceneRequest = CustomJsonArrayRequest(Request.Method.PUT, address + "api/" + hueAPI!!.getUsername() + "/scenes/$selectedScene", JSONObject(requestObject),
                                 Response.Listener { queue!!.add(scenesRequest) },
@@ -346,20 +346,20 @@ class HueLampActivity : AppCompatActivity() {
                         )
                         queue!!.add(renameSceneRequest)
                     }
-                    .setNegativeButton(resources.getString(android.R.string.cancel)) { _, _ -> }
+                    .setNegativeButton(android.R.string.cancel) { _, _ -> }
                     .show()
         } else if (item.title == resources.getString(R.string.str_delete)) {
             AlertDialog.Builder(this)
-                    .setTitle(resources.getString(R.string.str_delete))
-                    .setMessage(resources.getString(R.string.hue_delete_scene))
-                    .setPositiveButton(resources.getString(android.R.string.ok)) { _, _ ->
+                    .setTitle(R.string.str_delete)
+                    .setMessage(R.string.hue_delete_scene)
+                    .setPositiveButton(android.R.string.ok) { _, _ ->
                         val deleteSceneRequest = CustomJsonArrayRequest(Request.Method.DELETE, address + "api/" + hueAPI!!.getUsername() + "/scenes/" + selectedScene, null,
                                 Response.Listener { queue!!.add(scenesRequest) },
                                 Response.ErrorListener { e -> Log.e(Global.LOG_TAG, e.toString())}
                         )
                         queue!!.add(deleteSceneRequest)
                     }
-                    .setNegativeButton(resources.getString(android.R.string.cancel)) { _, _ -> }
+                    .setNegativeButton(android.R.string.cancel) { _, _ -> }
                     .show()
         }
         return super.onContextItemSelected(item)

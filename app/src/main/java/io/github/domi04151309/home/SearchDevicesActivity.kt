@@ -137,9 +137,9 @@ class SearchDevicesActivity : AppCompatActivity() {
                 newItem.iconName = hidden.substring(hidden.lastIndexOf("#") + 1)
                 devices.addDevice(newItem)
                 AlertDialog.Builder(this)
-                        .setTitle(resources.getString(R.string.pref_add_success))
-                        .setMessage(resources.getString(R.string.pref_add_success_message))
-                        .setPositiveButton(resources.getString(android.R.string.ok)) { _, _ -> }
+                        .setTitle(R.string.pref_add_success)
+                        .setMessage(R.string.pref_add_success_message)
+                        .setPositiveButton(android.R.string.ok) { _, _ -> }
                         .show()
             }
         }
