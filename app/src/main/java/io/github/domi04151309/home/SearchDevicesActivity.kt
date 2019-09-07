@@ -38,9 +38,10 @@ class SearchDevicesActivity : AppCompatActivity() {
         Thread(Runnable {
             Thread.sleep(1000L)
             val firstChildSummary = listView!!.getChildAt(0).findViewById<TextView>(R.id.summary)
+            var count: Int
             for (i in 1 until 10) {
                 runOnUiThread {
-                    val count = 10 - i
+                    count = 10 - i
                     firstChildSummary.text = resources.getQuantityString(R.plurals.pref_add_wait_summary, count, count)
                 }
                 Thread.sleep(1000L)

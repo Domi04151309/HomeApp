@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import android.view.View
+import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.data.ListViewItem
 
 class DevicesActivity : AppCompatActivity() {
@@ -53,8 +54,9 @@ class DevicesActivity : AppCompatActivity() {
                 emptyItem.hidden = "none"
                 listItems += emptyItem
             } else {
-                for (i in 0 until devices!!.length()) {
-                val currentDevice = devices!!.getDeviceByIndex(i)
+                var currentDevice: DeviceItem
+                for (i in 0 until devices!!.length()) { 
+                    currentDevice = devices!!.getDeviceByIndex(i)
                     val deviceItem = ListViewItem(currentDevice.name)
                     deviceItem.summary = currentDevice.address
                     deviceItem.hidden = "edit"

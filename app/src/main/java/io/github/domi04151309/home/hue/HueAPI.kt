@@ -67,8 +67,9 @@ class HueAPI(context: Context, deviceId: String) {
                     try {
                         val returnObject = JSONObject()
                         val count = lightIDs.length()
+                        var lightID: String
                         for (i in 0 until count) {
-                            val lightID = lightIDs.getString(i)
+                            lightID = lightIDs.getString(i)
                             returnObject.put(lightID, response.getJSONObject(lightID))
                         }
                         callback.onLightsLoaded(c, returnObject, selectedDevice)

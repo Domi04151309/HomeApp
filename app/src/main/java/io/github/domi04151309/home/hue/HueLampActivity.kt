@@ -128,9 +128,11 @@ class HueLampActivity : AppCompatActivity() {
                     Response.Listener { response ->
                         try {
                             var gridItems: Array<ScenesGridItem> = arrayOf()
+                            var currentObjectName: String
+                            var currentObject: JSONObject
                             for (i in 0 until response.length()) {
-                                val currentObjectName = response.names()!!.getString(i)
-                                val currentObject = response.getJSONObject(currentObjectName)
+                                currentObjectName = response.names()!!.getString(i)
+                                currentObject = response.getJSONObject(currentObjectName)
                                 if (currentObject.getString("group") == id) {
                                     val scene = ScenesGridItem(currentObject.getString("name"))
                                     scene.hidden = currentObjectName

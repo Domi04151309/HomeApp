@@ -20,6 +20,7 @@ import android.widget.TextView
 import android.view.ViewGroup
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.data.ListViewItem
 
 
@@ -116,7 +117,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             if (errorMessage == "") {
                 try {
                     var currentObjectName: String
-                    var currentObject: JSONObject?
+                    var currentObject: JSONObject
                     var listItems: Array<ListViewItem> = arrayOf()
                     for (i in 0 until response!!.length()) {
                         try {
@@ -155,7 +156,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         ) {
             if (errorMessage == "") {
                 try {
-                    val count = response!!.length() + 1
                     val roomItem = ListViewItem(resources.getString(R.string.hue_whole_room))
                     roomItem.summary = resources.getString(R.string.hue_whole_room_summary)
                     roomItem.hidden = "room#$hueRoom"
@@ -163,17 +163,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     roomItem.state = hueRoomState
                     roomItem.stateListener = hueLampStateListener
                     var currentObjectName: String
-                    var currentObject: JSONObject?
+                    var currentObject: JSONObject
                     var listItems: Array<ListViewItem> = arrayOf(roomItem)
+                    val count = response!!.length() + 1
                     for (i in 1 until count) {
                         try {
                             currentObjectName = response.names()!!.getString(i - 1)
                             currentObject = response.getJSONObject(currentObjectName)
-                            val listItem = ListViewItem(currentObject!!.getString("name"))
+                            val listItem = ListViewItem(currentObject.getString("name"))
                             listItem.summary = resources.getString(R.string.hue_tap)
                             listItem.hidden = currentObjectName
                             listItem.icon = R.drawable.ic_device_lamp
-                            listItem.state = currentObject!!.getJSONObject("state").getBoolean("on")
+                            listItem.state = currentObject.getJSONObject("state").getBoolean("on")
                             listItem.stateListener = hueLampStateListener
                             listItems += listItem
                         } catch (e: JSONException) {
@@ -302,8 +303,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 emptyItem.icon = R.drawable.ic_info
                 listItems += emptyItem
             } else {
+                var currentDevice: DeviceItem
                 for (i in 0 until devices!!.length()) {
-                    val currentDevice = devices!!.getDeviceByIndex(i)
+                    currentDevice = devices!!.getDeviceByIndex(i)
                     val deviceItem = ListViewItem(currentDevice.name)
                     deviceItem.summary = resources.getString(R.string.main_tap_to_connect)
                     deviceItem.hidden = currentDevice.id
