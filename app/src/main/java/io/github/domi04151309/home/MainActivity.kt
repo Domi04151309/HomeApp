@@ -76,8 +76,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 deviceId: String,
                 errorMessage: String
         ) {
-            if (errorMessage == "") {
-                val commandsObject = Commands(response!!.getJSONObject("commands"))
+            if (response != null) {
+                val commandsObject = Commands(response.getJSONObject("commands"))
                 var listItems: Array<ListViewItem> = arrayOf()
                 for (i in 0 until commandsObject.length()) {
                     try {
@@ -114,12 +114,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 deviceId: String,
                 errorMessage: String
         ) {
-            if (errorMessage == "") {
+            if (response != null) {
                 try {
                     var currentObjectName: String
                     var currentObject: JSONObject
                     var listItems: Array<ListViewItem> = arrayOf()
-                    for (i in 0 until response!!.length()) {
+                    for (i in 0 until response.length()) {
                         try {
                             currentObjectName = response.names()!!.getString(i)
                             currentObject = response.getJSONObject(currentObjectName)
@@ -154,7 +154,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 deviceId: String,
                 errorMessage: String
         ) {
-            if (errorMessage == "") {
+            if (response != null) {
                 try {
                     val roomItem = ListViewItem(resources.getString(R.string.hue_whole_room))
                     roomItem.summary = resources.getString(R.string.hue_whole_room_summary)
@@ -165,7 +165,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     var currentObjectName: String
                     var currentObject: JSONObject
                     var listItems: Array<ListViewItem> = arrayOf(roomItem)
-                    val count = response!!.length() + 1
+                    val count = response.length() + 1
                     for (i in 1 until count) {
                         try {
                             currentObjectName = response.names()!!.getString(i - 1)

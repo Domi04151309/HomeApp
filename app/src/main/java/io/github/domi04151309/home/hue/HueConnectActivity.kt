@@ -1,7 +1,6 @@
 package io.github.domi04151309.home.hue
 
 import android.content.Intent
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -32,7 +31,8 @@ class HueConnectActivity : AppCompatActivity() {
         queue = Volley.newRequestQueue(this)
         val deviceId = intent.getStringExtra("deviceId") ?: ""
         val url = Devices(this).getDeviceById(deviceId).address + "api"
-        val jsonRequestObject = JSONObject("{\"devicetype\":\"HomeApp#" + getHostName() + "\"}")
+        val product = android.os.Build.PRODUCT
+        val jsonRequestObject = JSONObject("{\"devicetype\":\"HomeApp#$product\"}")
         requestToRegisterUser = CustomJsonArrayRequest(Request.Method.POST, url, jsonRequestObject,
                 Response.Listener { response ->
                     val responseObject = response.getJSONObject(0)
@@ -83,15 +83,5 @@ class HueConnectActivity : AppCompatActivity() {
                 if (running) permissionHandler.postDelayed(this, handlerDelay)
             }
         }, handlerDelay)
-    }
-
-    private fun getHostName(): String {
-        return try {
-            val getString = Build::class.java.getDeclaredMethod("getString", String::class.java)
-            getString.isAccessible = true
-            getString.invoke(null, "net.hostname").toString()
-        } catch (ex: Exception) {
-            "unknown"
-        }
     }
 }
