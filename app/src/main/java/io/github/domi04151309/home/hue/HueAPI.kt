@@ -39,7 +39,7 @@ class HueAPI(context: Context, deviceId: String) {
     }
 
     fun getUsername(): String {
-        val username = PreferenceManager.getDefaultSharedPreferences(c).getString(selectedDevice, "none") ?: ""
+        val username = PreferenceManager.getDefaultSharedPreferences(c).getString(selectedDevice, "none") ?: "none"
         return if (username == "none") {
             c.startActivity(Intent(c, HueConnectActivity::class.java).putExtra("deviceId", selectedDevice))
             ""
@@ -66,9 +66,8 @@ class HueAPI(context: Context, deviceId: String) {
                 Response.Listener { response ->
                     try {
                         val returnObject = JSONObject()
-                        val count = lightIDs.length()
                         var lightID: String
-                        for (i in 0 until count) {
+                        for (i in 0 until lightIDs.length()) {
                             lightID = lightIDs.getString(i)
                             returnObject.put(lightID, response.getJSONObject(lightID))
                         }
