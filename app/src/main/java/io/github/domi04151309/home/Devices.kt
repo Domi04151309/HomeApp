@@ -9,10 +9,10 @@ import java.util.*
 
 class Devices constructor(context: Context) {
 
-    private val _prefs: SharedPreferences? = PreferenceManager.getDefaultSharedPreferences(context)
+    private val _prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
     private fun getDevicesObject(): JSONObject {
-        val devicesJSON = _prefs!!.getString("devices_json", Global.DEFAULT_JSON) ?: Global.DEFAULT_JSON
+        val devicesJSON = _prefs.getString("devices_json", Global.DEFAULT_JSON) ?: Global.DEFAULT_JSON
         return JSONObject(devicesJSON).getJSONObject("devices")
     }
 
@@ -72,12 +72,12 @@ class Devices constructor(context: Context) {
                 .put("mode", device.mode)
                 .put("icon", device.iconName)
         newObject.put(device.id, deviceObject)
-        _prefs!!.edit().putString("devices_json", JSONObject().put("devices", newObject).toString()).apply()
+        _prefs.edit().putString("devices_json", JSONObject().put("devices", newObject).toString()).apply()
     }
 
     fun deleteDevice(id: String) {
         val newObject = getDevicesObject()
         newObject.remove(id)
-        _prefs!!.edit().putString("devices_json", JSONObject().put("devices", newObject).toString()).apply()
+        _prefs.edit().putString("devices_json", JSONObject().put("devices", newObject).toString()).apply()
     }
 }

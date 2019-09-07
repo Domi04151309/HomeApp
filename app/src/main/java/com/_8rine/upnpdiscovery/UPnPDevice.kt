@@ -15,7 +15,7 @@ class UPnPDevice internal constructor(val hostAddress: String, header: String) {
     private val st: String
 
     // XML content
-    private var descriptionXML: String? = null
+    private var descriptionXML: String = ""
 
     // From description XML
     private var deviceType: String = ""

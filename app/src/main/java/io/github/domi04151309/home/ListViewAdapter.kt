@@ -31,11 +31,9 @@ internal class ListViewAdapter(context: Context, private val itemArray: Array<Li
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        var vi: View? = convertView
-        if (vi == null)
-            vi = inflater.inflate(R.layout.list_item, parent, false)
-        if (animate) playAnimation(vi!!)
-        val drawableView = vi!!.findViewById<ImageView>(R.id.drawable)
+        val vi: View = convertView ?: inflater.inflate(R.layout.list_item, parent, false)
+        if (animate) playAnimation(vi)
+        val drawableView = vi.findViewById<ImageView>(R.id.drawable)
         val titleTxt = vi.findViewById<TextView>(R.id.title)
         val summaryTxt = vi.findViewById<TextView>(R.id.summary)
         val hiddenTxt = vi.findViewById<TextView>(R.id.hidden)
