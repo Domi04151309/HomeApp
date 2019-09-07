@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
+import android.net.Uri
+
 
 class Preferences : AppCompatActivity() {
 
@@ -52,6 +54,24 @@ class Preferences : AppCompatActivity() {
             }
             findPreference<Preference>("about")!!.onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 startActivity(Intent(context, AboutActivity::class.java))
+                true
+            }
+            findPreference<Preference>("icons")!!.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                AlertDialog.Builder(context!!)
+                        .setTitle(R.string.pref_info_icons)
+                        .setItems(resources.getStringArray(R.array.pref_info_icons_array)) { _, which ->
+                            val intent: Intent = when (which) {
+                                0 -> Intent(Intent.ACTION_VIEW, Uri.parse("https://icons8.com/"))
+                                1 -> Intent(Intent.ACTION_VIEW, Uri.parse("https://material.io/resources/icons/"))
+                                else -> Intent(Intent.ACTION_VIEW, Uri.parse("about:blank"))
+                            }
+                            startActivity(intent)
+                        }
+                        .show()
+                true
+            }
+            findPreference<Preference>("header")!!.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://unsplash.com/photos/4HG3Ca3EzWw")))
                 true
             }
         }

@@ -31,16 +31,16 @@ class DevicesActivity : AppCompatActivity() {
                 startActivity(Intent(this, EditDeviceActivity::class.java).putExtra("deviceId", deviceId))
             } else if (action == "add") {
                 reset = true
-                val builder = AlertDialog.Builder(this)
-                builder.setTitle(R.string.pref_add_method)
-                builder.setItems(resources.getStringArray(R.array.pref_add_method_array)) { _, which ->
-                    if (which == 0) {
-                        startActivity(Intent(this, EditDeviceActivity::class.java))
-                    } else if (which == 1) {
-                        startActivity(Intent(this, SearchDevicesActivity::class.java))
-                    }
-                }
-                builder.show()
+                AlertDialog.Builder(this)
+                        .setTitle(R.string.pref_add_method)
+                        .setItems(resources.getStringArray(R.array.pref_add_method_array)) { _, which ->
+                            if (which == 0) {
+                                startActivity(Intent(this, EditDeviceActivity::class.java))
+                            } else if (which == 1) {
+                                startActivity(Intent(this, SearchDevicesActivity::class.java))
+                            }
+                        }
+                        .show()
             }
         }
     }

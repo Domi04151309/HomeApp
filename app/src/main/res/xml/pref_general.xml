@@ -44,10 +44,12 @@
             app:summary="@string/about_summary"
             app:iconSpaceReserved="false" />
         <Preference
+            app:key="icons"
             app:title="@string/pref_info_icons"
             app:summary="@string/pref_info_icons_summary"
             app:iconSpaceReserved="false" />
         <Preference
+            app:key="header"
             app:title="@string/pref_info_header"
             app:summary="@string/pref_info_header_summary"
             app:iconSpaceReserved="false" />
