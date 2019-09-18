@@ -42,22 +42,21 @@ class HueSceneActivity : AppCompatActivity() {
         val nameTxt = findViewById<TextView>(R.id.nameTxt)
         val nameBox = findViewById<EditText>(R.id.nameBox)
         val fab = findViewById<FloatingActionButton>(R.id.fab)
-        var requestsSent = 0
-        var responsesReceived = 0
 
         val roomDataRequest = JsonObjectRequest(Request.Method.GET, address + "api/" + hueAPI.getUsername() + "/groups/" + roomId, null,
                 Response.Listener { response ->
                     val lights = response.getJSONArray("lights")
-                    for (i in 0 until lights.length()) {
-                        requestsSent++
-                        val lightDataRequest = JsonObjectRequest(Request.Method.GET,  address + "api/" + hueAPI.getUsername() + "/lights/" + lights.get(i).toString(), null,
-                                Response.Listener { secondResponse ->
-                                    val item = ListViewItem(secondResponse.getString("name"))
-                                    val state = secondResponse.getJSONObject("state")
+                    val lightsDataRequest = JsonObjectRequest(Request.Method.GET,  address + "api/" + hueAPI.getUsername() + "/lights", null,
+                            Response.Listener { secondResponse ->
+                                var lightObj: JSONObject
+                                for (i in 0 until lights.length()) {
+                                    lightObj = secondResponse.getJSONObject(lights.get(i).toString())
+                                    val item = ListViewItem(lightObj.getString("name"))
+                                    val state = lightObj.getJSONObject("state")
                                     if (state.has("bri")) {
                                         item.summary = resources.getString(R.string.hue_brightness) + ": " + HueUtils.briToPercent(state.getString("bri").toInt())
                                     } else {
-                                        item.summary = resources.getString(R.string.hue_brightness) + ": 0%"
+                                        item.summary = resources.getString(R.string.hue_brightness) + ": 100%"
                                     }
                                     colorArray += if (state.has("hue") && state.has("sat")) {
                                         HueUtils.hueSatToRGB(state.getString("hue").toInt(), state.getString("sat").toInt())
@@ -68,14 +67,15 @@ class HueSceneActivity : AppCompatActivity() {
                                     }
                                     item.icon = R.drawable.ic_circle
                                     listItems += item
-                                    responsesReceived++
-                                },
-                                Response.ErrorListener { error ->
-                                    Toast.makeText(this, Global.volleyError(this, error), Toast.LENGTH_LONG).show()
                                 }
-                        )
-                        queue.add(lightDataRequest)
-                    }
+                                val adapter = ListViewAdapter(this, listItems, false)
+                                listView.adapter = adapter
+                            },
+                            Response.ErrorListener { error ->
+                                Toast.makeText(this, Global.volleyError(this, error), Toast.LENGTH_LONG).show()
+                            }
+                    )
+                    queue.add(lightsDataRequest)
                 },
                 Response.ErrorListener { error ->
                     Toast.makeText(this, Global.volleyError(this, error), Toast.LENGTH_LONG).show()
@@ -87,19 +87,6 @@ class HueSceneActivity : AppCompatActivity() {
             for (i in 0 until listView.count)
                 ImageViewCompat.setImageTintList(listView.getChildAt(i).findViewById(R.id.drawable), ColorStateList.valueOf(colorArray[i]))
         }
-
-        Thread(Runnable {
-            while (requestsSent == 0 && responsesReceived == 0) {
-                Thread.sleep(16L)
-            }
-            while (requestsSent != responsesReceived) {
-                Thread.sleep(64L)
-            }
-            val adapter = ListViewAdapter(this, listItems, false)
-            runOnUiThread {
-                listView.adapter = adapter
-            }
-        }).start()
 
         nameBox.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {}
