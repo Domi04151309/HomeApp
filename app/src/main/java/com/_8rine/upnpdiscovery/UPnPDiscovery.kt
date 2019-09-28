@@ -16,6 +16,7 @@ import java.io.IOException
 import java.net.DatagramPacket
 import java.net.DatagramSocket
 import java.net.InetAddress
+import java.net.InetSocketAddress
 import java.util.*
 
 class UPnPDiscovery : AsyncTask<Activity, UPnPDiscovery.OnDiscoveryListener, Void> {
@@ -65,8 +66,10 @@ class UPnPDiscovery : AsyncTask<Activity, UPnPDiscovery.OnDiscoveryListener, Voi
             val group = InetAddress.getByName(mInternetAddress)
             val port = mPort
             val query = mCustomQuery
-            socket = DatagramSocket(port)
+            socket = DatagramSocket(null)
             socket.reuseAddress = true
+            socket.broadcast = true
+            socket.bind(InetSocketAddress(port))
 
             val datagramPacketRequest = DatagramPacket(query.toByteArray(), query.length, group, port)
             socket.send(datagramPacketRequest)
