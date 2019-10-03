@@ -5,7 +5,9 @@ This app is especially useful if you are using microcontrollers or other small d
  
 Compatible with Philips Hue!  
 
+<a href='https://play.google.com/store/apps/details?id=io.github.domi04151309.home'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width="24%"/></a>  
+
 ## Previews
 <img src="https://domi04151309.github.io/images/Android/HomeApp1.jpg" width="18%" /><img src="https://domi04151309.github.io/images/Android/HomeApp2.jpg" width="18%" /><img src="https://domi04151309.github.io/images/Android/HomeApp3.jpg" width="18%" /><img src="https://domi04151309.github.io/images/Android/HomeApp4.jpg" width="18%" /><img src="https://domi04151309.github.io/images/Android/HomeApp5.jpg" width="18%" /><img src="https://domi04151309.github.io/images/Android/HomeApp6.jpg" width="18%" />  
  
-<i style="color:gray;">Android is a trademark of Google LLC.</i>
+<i style="color:gray;">Android, Google Play and the Google Play logo are trademarks of Google LLC.</i>
