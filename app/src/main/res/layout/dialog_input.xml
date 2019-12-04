@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:singleLine="true"
         android:hint="@string/str_name"
-        android:inputType="text"
+        android:inputType="textCapSentences"
         android:importantForAutofill="no"
         tools:targetApi="o" />
 </FrameLayout>

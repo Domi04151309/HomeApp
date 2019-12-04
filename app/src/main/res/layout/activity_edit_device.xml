@@ -70,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:hint="@string/pref_add_name_example"
-                android:inputType="text"
+                android:inputType="textCapSentences"
                 android:importantForAutofill="no"
                 tools:targetApi="o" />
 
