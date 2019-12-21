@@ -16,6 +16,7 @@ import android.text.TextWatcher
 import android.text.Editable
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class EditDeviceActivity : AppCompatActivity() {
 
@@ -110,7 +111,7 @@ class EditDeviceActivity : AppCompatActivity() {
             findViewById<LinearLayout>(R.id.editSection).visibility = View.GONE
         }
 
-        findViewById<Button>(R.id.okBtn).setOnClickListener {
+        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
             val name = nameBox.text.toString()
             if (name == "") {
                 AlertDialog.Builder(this)
@@ -134,10 +135,6 @@ class EditDeviceActivity : AppCompatActivity() {
             newItem.mode = modeSpinner.selectedItem.toString()
             newItem.iconName = iconSpinner.selectedItem.toString()
             devices.addDevice(newItem)
-            finish()
-        }
-
-        findViewById<Button>(R.id.cancelBtn).setOnClickListener {
             finish()
         }
     }

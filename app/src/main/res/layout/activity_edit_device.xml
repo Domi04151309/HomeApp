@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -151,38 +154,15 @@
                 android:textColor="?android:attr/textColorPrimary"/>
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="@dimen/dialog_item_margin"
-            android:background="?attr/dividerColor" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dialog_item_margin"
-            android:orientation="horizontal"
-            android:paddingStart="?dialogPreferredPadding"
-            android:paddingEnd="?dialogPreferredPadding"
-            android:paddingBottom="@dimen/dialog_item_margin"
-            tools:ignore="ButtonStyle">
-
-            <Button
-                android:id="@+id/cancelBtn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@android:string/cancel" />
-
-            <Button
-                android:id="@+id/okBtn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@android:string/ok" />
-
-        </LinearLayout>
-
     </LinearLayout>
 
 </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/fab"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|end"
+    android:layout_margin="@dimen/fab_margin"
+    app:srcCompat="@drawable/ic_done" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
