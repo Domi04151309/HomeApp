@@ -71,7 +71,7 @@ class Preferences : AppCompatActivity() {
                 true
             }
             findPreference<Preference>("header")!!.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://unsplash.com/photos/4HG3Ca3EzWw")))
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://unsplash.com/photos/mx4mSkK9zeo")))
                 true
             }
         }

@@ -83,21 +83,6 @@
         <item name="android:showText">false</item>
     </style>
 
-    <style name="AppThemeHeader">
-        <item name="android:background">@drawable/header_bg_xml</item>
-        <item name="android:gravity">bottom</item>
-        <item name="android:orientation">horizontal</item>
-        <item name="android:textColorPrimary">@android:color/white</item>
-        <item name="android:paddingStart">@dimen/activity_horizontal_margin</item>
-        <item name="android:paddingBottom">@dimen/activity_vertical_margin</item>
-        <item name="android:paddingEnd">@dimen/activity_horizontal_margin</item>
-        <item name="android:paddingTop">@dimen/activity_vertical_margin</item>
-    </style>
-
-    <style name="AppThemeHeader.Land">
-        <item name="android:background">@color/colorAccent</item>
-    </style>
-
     <style name="TintHouse">
         <item name="android:textColorPrimary">@android:color/white</item>
     </style>

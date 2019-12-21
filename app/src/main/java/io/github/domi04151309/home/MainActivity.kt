@@ -85,6 +85,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         val commandItem = ListViewItem(commandsObject.getSelectedTitle())
                         commandItem.summary = commandsObject.getSelectedSummary()
                         commandItem.hidden = devices!!.getDeviceById(deviceId).address + commandsObject.getSelected()
+                        commandItem.icon = R.drawable.ic_do
                         listItems += commandItem
                     } catch (e: JSONException) {
                         Log.e(Global.LOG_TAG, e.toString())
