@@ -1,0 +1,23 @@
+HomeApp is a small and easy to use smart home app with a simple framework. The goal of this application is to make remote execution of predefined features as easy and user-friendly as possible to help you get started with smart home technology.
+
+<font color="#2467d6"><b>Supported devices</b></font>
+- Philips Hue Bridge
+- Devices with a web interface
+- Devices using the SimpleHome API
+
+<font color="#2467d6"><b>Features</b></font>
+- Control your Philips Hue lights
+- Live preview of the current light color
+- Create, rename and delete scenes
+- Add devices to your home screen
+- Add devices with a web interface (e.g. Router)
+
+<font color="#2467d6"><b>How it works</b></font>
+Communication between the devices uses HTTP requests and JSON strings. After the commanding device has send a HTTP request to the smart home device, the smart home device sends back a JSON string containing the information the app needs.
+This app is especially useful if you are using microcontrollers or other small devices such as the Raspberry Pi for smart home automation.
+
+<font color="#2467d6"><b>Related Links</b></font>
+Source code: <a href="https://github.com/Domi04151309/HomeApp">https://github.com/Domi04151309/HomeApp</a>
+Documentation: <a href="https://github.com/Domi04151309/HomeApp/wiki">https://github.com/Domi04151309/HomeApp/wiki</a>
+Website: <a href="https://domi04151309.github.io/Android/HomeApp">https://domi04151309.github.io/Android/HomeApp</a>
+Icons8: <a href="https://icons8.com/">https://icons8.com/</a>
