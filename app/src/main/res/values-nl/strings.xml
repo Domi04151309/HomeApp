@@ -11,7 +11,7 @@
     <string name="main_no_devices_summary">Ga naar de instellingen en voeg een apparaat toe</string>
     <string name="main_device_nonexistent">Dit apparaat staat niet op je lijst</string>
     <string name="main_tap_to_connect">Druk hier om te verbinden</string>
-    <string name="main_connecting">Bezig met verbinden...</string>
+    <string name="main_connecting">Bezig met verbinden…</string>
     <string name="main_unknown_mode">Het apparaat maakt gebruik van een onbekende modus</string>
     <string name="main_device_unavailable">Het apparaat is momenteel niet beschikbaar</string>
     <string name="main_parse_error">De terugkoppeling voldoet niet aan de vereisten</string>
@@ -72,7 +72,7 @@
     <string name="pref_add_address_example">http://127.0.0.1/</string>
     <string name="pref_add_icon">Pictogram</string>
     <string name="pref_add_mode">Modus</string>
-    <string name="pref_add_wait">Bezig met zoeken naar apparaten...</string>
+    <string name="pref_add_wait">Bezig met zoeken naar apparaten…</string>
     <string name="pref_add_success">Apparaat toevoegen</string>
     <string name="pref_add_success_message">Het apparaat is toegevoegd aan je lijst</string>
     <string name="pref_edit_text">Expertmodus</string>
@@ -106,31 +106,9 @@
         <item>Donker thema</item>
         <item>Zwart thema</item>
     </string-array>
-    <string-array name="pref_theme_array_values">
-        <item>licht</item>
-        <item>donker</item>
-        <item>zwart</item>
-    </string-array>
     <string-array name="pref_add_method_array">
         <item>Apparaat toevoegen middels adres</item>
         <item>Zoeken naar compatibele apparaten (experimenteel)</item>
-    </string-array>
-    <string-array name="pref_icons">
-        <item>Lamp</item>
-        <item>Laptop</item>
-        <item>Telefoon</item>
-        <item>Raspberry Pi</item>
-        <item>Router</item>
-        <item>Luidspreker</item>
-        <item>Stack</item>
-        <item>Tablet</item>
-        <item>Thermometer</item>
-        <item>TV</item>
-    </string-array>
-    <string-array name="pref_add_mode_array">
-        <item>SimpleHome-API</item>
-        <item>Hue-API</item>
-        <item>Website</item>
     </string-array>
     <string-array name="pref_info_icons_array">
         <item>Icons8-website</item>

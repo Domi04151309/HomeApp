@@ -106,7 +106,7 @@
         <item>Dark theme</item>
         <item>Black theme</item>
     </string-array>
-    <string-array name="pref_theme_array_values">
+    <string-array name="pref_theme_array_values" translatable="false">
         <item>light</item>
         <item>dark</item>
         <item>black</item>
@@ -115,7 +115,7 @@
         <item>Add device by address</item>
         <item>Search for compatible devices (experimental)</item>
     </string-array>
-    <string-array name="pref_icons">
+    <string-array name="pref_icons" translatable="false">
         <item>Lamp</item>
         <item>Laptop</item>
         <item>Phone</item>
@@ -127,7 +127,7 @@
         <item>Thermometer</item>
         <item>TV</item>
     </string-array>
-    <string-array name="pref_add_mode_array">
+    <string-array name="pref_add_mode_array" translatable="false">
         <item>SimpleHome API</item>
         <item>Hue API</item>
         <item>Website</item>
