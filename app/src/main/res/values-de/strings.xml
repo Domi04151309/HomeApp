@@ -1,0 +1,112 @@
+<resources>
+    <string name="app_name">Home</string>
+    <string name="app_by">Home App von Domi04151309</string>
+
+    <string name="nav_devices">Geräte</string>
+    <string name="nav_wiki">Wiki</string>
+    <string name="nav_settings">Einstellungen</string>
+    <string name="nav_source">Quelltext</string>
+
+    <string name="main_no_devices">Keine Geräte gefunden</string>
+    <string name="main_no_devices_summary">Füge ein Gerät in den Einstellungen hinzu</string>
+    <string name="main_device_nonexistent">Diese Gerät existiert nicht</string>
+    <string name="main_tap_to_connect">Tippe zum Verbinden</string>
+    <string name="main_connecting">Verbinde</string>
+    <string name="main_unknown_mode">Das Gerät benutzt einen unbekannten Modus</string>
+    <string name="main_device_unavailable">Das Gerät ist momentan nicht verfügbar</string>
+    <string name="main_parse_error">Die Antwort erfüllt nicht die Voraussetzungen</string>
+    <string name="main_client_error">Das Gerät hat nicht geantwortet</string>
+    <string name="main_execution_completed">Erfolgreich ausgeführt</string>
+
+    <string name="main_device_icon">Gerätesymbol</string>
+    <string name="main_device_name">Deine Geräte</string>
+
+    <string name="err">Etwas ist schiefgegangen</string>
+    <string name="err_wrong_format">Falsches Format</string>
+    <string name="err_wrong_format_summary">Die JSON-Zeichenfolge erfüllt nicht die Voraussetzungen</string>
+    <string name="err_missing_name">Geben Sie bitte einen Namen ein</string>
+    <string name="err_missing_name_summary">Ein Name ist wichtig, damit sie Den Eintrag später wiedererkennen können</string>
+    <string name="err_missing_address">Geben Sie bitte eine Adresse ein</string>
+    <string name="err_missing_address_summary">Eine Adresse ist wichtig, damit die App das Gerät erreichen kann</string>
+
+    <string name="hue_connect">Verbinde dich mit deiner Bridge</string>
+    <string name="hue_press_button">Bitte drücke den Knopf auf deiner Bridge um fortzufahren.</string>
+    <string name="hue_tap">Tippe um Auszuwählen</string>
+    <string name="hue_whole_room">Ganzen Raum steuern</string>
+    <string name="hue_whole_room_summary">Alle Lampen im Raum gleichzeitig steuern</string>
+    <string name="hue_on">An</string>
+    <string name="hue_off">Aus</string>
+    <string name="hue_brightness">Helligkeit</string>
+    <string name="hue_color_temperature">Farbtemperatur</string>
+    <string name="hue_hue">Farbton</string>
+    <string name="hue_saturation">Sättigung</string>
+    <string name="hue_add_scene">Szene hinzufügen</string>
+    <string name="hue_new_scene">Neue Szene</string>
+    <string name="hue_add_scene_example">Szene</string>
+    <string name="hue_rename_scene">Geben Sie bitte einen neuen Namen ein</string>
+    <string name="hue_delete_scene">Sind Sie sich sicher, dass Sie diese Szene löschen möchten?</string>
+
+    <string name="webView">Internetansicht</string>
+    <string name="webView_error">Laden der Webseite fehlgeschlagen</string>
+    <string name="webView_error_summary">Bitte überprüfen Sie Ihre Verbindung oder versuchen Sie es später erneut</string>
+
+    <string name="pref">Einstellungen</string>
+    <string name="pref_general">Generelle Einstellungen</string>
+    <string name="pref_theme">Thema ändern</string>
+    <string name="pref_theme_summary">Ändert das Aussehen der App</string>
+    <string name="pref_devices">Geräte</string>
+    <string name="pref_edit">Geräteliste bearbeiten</string>
+    <string name="pref_edit_summary">Bearbeiten Sie Ihre Geräteliste</string>
+    <string name="pref_edit_device">Gerät bearbeiten</string>
+    <string name="pref_delete_device_question">Sind Sie sich sicher, dass Sie dieses Gerät löschen möchten?</string>
+    <string name="pref_add_shortcut">Zum Startbildschirm hinzufügen</string>
+    <string name="pref_add_shortcut_failed">Shortcuts werden von Ihrem System nicht unterstützt</string>
+    <string name="pref_add">Ein neues Gerät hinzufügen</string>
+    <string name="pref_add_summary">Ein neues Gerät mit seiner Adresse hinzufügen</string>
+    <string name="pref_add_method">Methode auswählen</string>
+    <string name="pref_add_new_device">Neues Gerät</string>
+    <string name="pref_add_id">Interne ID: %1$s</string>
+    <string name="pref_add_name">Name</string>
+    <string name="pref_add_name_example">Gerät</string>
+    <string name="pref_add_address">Adresse</string>
+    <string name="pref_add_address_example">http://127.0.0.1/</string>
+    <string name="pref_add_icon">Symbol</string>
+    <string name="pref_add_mode">Modus</string>
+    <string name="pref_add_wait">Suche nach kompatiblen Geräten</string>
+    <string name="pref_add_success">Gerät hinzufügen</string>
+    <string name="pref_add_success_message">Das Gerät wurde erfolgreich zu Ihren Geräten hinzugefügt</string>
+    <string name="pref_edit_text">Erweitertes Bearbeiten</string>
+    <string name="pref_edit_text_summary">Bearbeiten Sie die JSON-Zeichenfolge selbst</string>
+    <string name="pref_reset">JSON-Zeichenfolge zurücksetzen</string>
+    <string name="pref_reset_summary">Setzt die JSON-Zeichenfolge zurück und löscht alle Geräte</string>
+    <string name="pref_reset_question">Sind Sie sich sicher, dass Sie die JSON-Zeichenfolge zurücksetzen und alle Geräte löschen möchten??</string>
+    <string name="pref_reset_toast">JSON-Zeichenfolge zurückgesetzt</string>
+    <string name="pref_info">Informationen</string>
+    <string name="pref_info_header">Hintergrund des Kopfbereiches</string>
+    <string name="pref_info_header_summary">Hintergrund des Kopfbereiches von Alberto Castillo Q. auf Unsplash</string>
+    <string name="pref_device_router">Router</string>
+    <string name="placeholder">Platzhalter</string>
+
+    <string name="str_cancel">Abbrechen</string>
+    <string name="str_name">Name</string>
+    <string name="str_rename">Umbenennen</string>
+    <string name="str_delete">Löschen</string>
+
+    <string name="about">Über</string>
+    <string name="about_summary">Über die App</string>
+    <string name="about_version">Version %1$s</string>
+    <string name="about_github">Möglicherweise sind neuere Versionen auf <a href="https://github.com/Domi04151309/HomeApp">GitHub</a> verfügbar. Diese App ist und bleibt freie Software. Zahlen Sie nicht für diese App.</string>
+    <string name="about_license">Diese App wird unter den Bedingungen der <a href="https://github.com/Domi04151309/HomeApp/blob/master/LICENSE">GNU General Public License v3.0</a> zur Verfügung gestellt.</string>
+    <string name="about_damage">Ich bin nicht für Schäden an Ihrem Gerät verantwortlich.</string>
+    <string name="about_icons">Icons von <a href="https://icons8.com/">Icons8</a> und <a href="https://material.io/resources/icons/">Google</a>.</string>
+
+    <string-array name="pref_theme_array">
+        <item>Helles Thema</item>
+        <item>Dunkles Thema</item>
+        <item>Schwarzes Thema</item>
+    </string-array>
+    <string-array name="pref_add_method_array">
+        <item>Gerät mit Adresse hinzufügen</item>
+        <item>Nach kompatiblen Geräten suchen (experimentell)</item>
+    </string-array>
+</resources>
