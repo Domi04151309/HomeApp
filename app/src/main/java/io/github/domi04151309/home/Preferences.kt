@@ -56,20 +56,6 @@ class Preferences : AppCompatActivity() {
                 startActivity(Intent(context, AboutActivity::class.java))
                 true
             }
-            findPreference<Preference>("icons")!!.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-                AlertDialog.Builder(context!!)
-                        .setTitle(R.string.pref_info_icons)
-                        .setItems(resources.getStringArray(R.array.pref_info_icons_array)) { _, which ->
-                            val intent: Intent = when (which) {
-                                0 -> Intent(Intent.ACTION_VIEW, Uri.parse("https://icons8.com/"))
-                                1 -> Intent(Intent.ACTION_VIEW, Uri.parse("https://material.io/resources/icons/"))
-                                else -> Intent(Intent.ACTION_VIEW, Uri.parse("about:blank"))
-                            }
-                            startActivity(intent)
-                        }
-                        .show()
-                true
-            }
             findPreference<Preference>("header")!!.onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://unsplash.com/photos/mx4mSkK9zeo")))
                 true

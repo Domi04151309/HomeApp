@@ -82,8 +82,6 @@
     <string name="pref_reset_question">Are you sure you want to reset the JSON string and delete all devices?</string>
     <string name="pref_reset_toast">Reset the JSON string</string>
     <string name="pref_info">Information</string>
-    <string name="pref_info_icons">Icons</string>
-    <string name="pref_info_icons_summary">Icons by Icons8 and Google</string>
     <string name="pref_info_header">Header background</string>
     <string name="pref_info_header_summary">Header background by Alberto Castillo Q. on Unsplash</string>
     <string name="pref_device_router">Router</string>
@@ -132,9 +130,5 @@
         <item>SimpleHome API</item>
         <item>Hue API</item>
         <item>Website</item>
-    </string-array>
-    <string-array name="pref_info_icons_array">
-        <item>Icons8\'s website</item>
-        <item>Google\'s website</item>
     </string-array>
 </resources>

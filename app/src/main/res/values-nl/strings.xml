@@ -82,8 +82,6 @@
     <string name="pref_reset_question">Weet je zeker dat je wilt doorgaan?</string>
     <string name="pref_reset_toast">Standaardwaarden teruggezet</string>
     <string name="pref_info">Informatie</string>
-    <string name="pref_info_icons">Pictogrammen</string>
-    <string name="pref_info_icons_summary">De pictogrammen zijn gemaakt door Icons8 en Google</string>
     <string name="pref_info_header">Kopachtergrond</string>
     <string name="pref_info_header_summary">De kopachtergrond is gemaakt door Alberto Castillo Q. van Unsplash</string>
     <string name="pref_device_router">Router</string>
@@ -110,9 +108,5 @@
     <string-array name="pref_add_method_array">
         <item>Apparaat toevoegen middels adres</item>
         <item>Zoeken naar compatibele apparaten (experimenteel)</item>
-    </string-array>
-    <string-array name="pref_info_icons_array">
-        <item>Icons8-website</item>
-        <item>Google-website</item>
     </string-array>
 </resources>
