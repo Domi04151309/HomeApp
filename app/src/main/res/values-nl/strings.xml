@@ -1,0 +1,139 @@
+<resources>
+    <string name="app_name">Huis</string>
+    <string name="app_by">Huis-app, gemaakt door @Domi04151309</string>
+
+    <string name="nav_devices">Apparaten</string>
+    <string name="nav_wiki">Wiki</string>
+    <string name="nav_settings">Instellingen</string>
+    <string name="nav_source">Broncode</string>
+
+    <string name="main_no_devices">Geen apparaten aangetroffen</string>
+    <string name="main_no_devices_summary">Ga naar de instellingen en voeg een apparaat toe</string>
+    <string name="main_device_nonexistent">Dit apparaat staat niet op je lijst</string>
+    <string name="main_tap_to_connect">Druk hier om te verbinden</string>
+    <string name="main_connecting">Bezig met verbinden...</string>
+    <string name="main_unknown_mode">Het apparaat maakt gebruik van een onbekende modus</string>
+    <string name="main_device_unavailable">Het apparaat is momenteel niet beschikbaar</string>
+    <string name="main_parse_error">De terugkoppeling voldoet niet aan de vereisten</string>
+    <string name="main_client_error">Het apparaat stuurde geen terugkoppeling</string>
+    <string name="main_execution_completed">Uitvoeren voltooid</string>
+
+    <string name="main_device_icon">Apparaatpictogram</string>
+    <string name="main_device_name">Mijn apparaten</string>
+
+    <string name="err">Er is iets misgegaan</string>
+    <string name="err_wrong_format">Onbekend formaat</string>
+    <string name="err_wrong_format_summary">De JSON-string voldoet niet aan de vereisten</string>
+    <string name="err_missing_name">Voer een naam in</string>
+    <string name="err_missing_name_summary">Voer een naam in om het apparaat makkelijk te herkennen</string>
+    <string name="err_missing_address">Voer een adres in</string>
+    <string name="err_missing_address_summary">Voer een adres in zodat de app verbinding kan maken met het apparaat</string>
+
+    <string name="hue_connect">Koppel je Bridge</string>
+    <string name="hue_press_button">Druk op de knop op je bridge om door te gaan.</string>
+    <string name="hue_tap">Druk hier om te kiezen</string>
+    <string name="hue_whole_room">Gehele kamer bedienen</string>
+    <string name="hue_whole_room_summary">Bedien alle lampen in de kamer tegelijkertijd</string>
+    <string name="hue_on">Aan</string>
+    <string name="hue_off">Uit</string>
+    <string name="hue_brightness">Helderheid</string>
+    <string name="hue_color_temperature">Kleurtemperatuur</string>
+    <string name="hue_hue">Tint</string>
+    <string name="hue_saturation">Verzadiging</string>
+    <string name="hue_add_scene">Scène toevoegen</string>
+    <string name="hue_new_scene">Nieuwe scène</string>
+    <string name="hue_add_scene_example">Scène</string>
+    <string name="hue_rename_scene">Geef de scène een naam</string>
+    <string name="hue_delete_scene">Weet je zeker dat je deze scène wilt verwijderen?</string>
+
+    <string name="webView">Webweergave</string>
+    <string name="webView_error">De website kan niet worden geladen</string>
+    <string name="webView_error_summary">Controleer je internetverbinding of probeer het later opnieuw</string>
+
+    <string name="pref">Instellingen</string>
+    <string name="pref_general">Algemeen</string>
+    <string name="pref_theme">Thema wijzigen</string>
+    <string name="pref_theme_summary">Pas het uiterlijk van de app aan</string>
+    <string name="pref_devices">Apparaten</string>
+    <string name="pref_edit">Apparaatlijst bewerken</string>
+    <string name="pref_edit_summary">Bewerk de lijst met apparaten</string>
+    <string name="pref_edit_device">Apparaat bewerken</string>
+    <string name="pref_delete_device_question">Weet je zeker dat je dit apparaat wilt verwijderen?</string>
+    <string name="pref_add_shortcut">Toevoegen aan startscherm</string>
+    <string name="pref_add_shortcut_failed">Je systeem heeft geen ondersteuning voor snelkoppelingen</string>
+    <string name="pref_add">Apparaat toevoegen</string>
+    <string name="pref_add_summary">Voeg een apparaat (met bijbehorend adres) toe</string>
+    <string name="pref_add_method">Methode kiezen</string>
+    <string name="pref_add_new_device">Nieuw apparaat</string>
+    <string name="pref_add_id">Interne id: %1$s</string>
+    <string name="pref_add_name">Naam</string>
+    <string name="pref_add_name_example">Apparaat</string>
+    <string name="pref_add_address">Adres</string>
+    <string name="pref_add_address_example">http://127.0.0.1/</string>
+    <string name="pref_add_icon">Pictogram</string>
+    <string name="pref_add_mode">Modus</string>
+    <string name="pref_add_wait">Bezig met zoeken naar apparaten...</string>
+    <string name="pref_add_success">Apparaat toevoegen</string>
+    <string name="pref_add_success_message">Het apparaat is toegevoegd aan je lijst</string>
+    <string name="pref_edit_text">Expertmodus</string>
+    <string name="pref_edit_text_summary">Pas de JSON-string handmatig aan</string>
+    <string name="pref_reset">Standaardwaarden van JSON-string</string>
+    <string name="pref_reset_summary">Herstel de standaardwaarden van de JSON-string en verwijder alle apparaten</string>
+    <string name="pref_reset_question">Weet je zeker dat je wilt doorgaan?</string>
+    <string name="pref_reset_toast">Standaardwaarden teruggezet</string>
+    <string name="pref_info">Informatie</string>
+    <string name="pref_info_icons">Pictogrammen</string>
+    <string name="pref_info_icons_summary">De pictogrammen zijn gemaakt door Icons8 en Google</string>
+    <string name="pref_info_header">Kopachtergrond</string>
+    <string name="pref_info_header_summary">De kopachtergrond is gemaakt door Alberto Castillo Q. van Unsplash</string>
+    <string name="pref_device_router">Router</string>
+    <string name="placeholder">Plaatshouder</string>
+
+    <string name="str_cancel">Annuleren</string>
+    <string name="str_name">Naam</string>
+    <string name="str_rename">Naam wijzigen</string>
+    <string name="str_delete">Verwijderen</string>
+
+    <string name="about">Over</string>
+    <string name="about_summary">Over de app</string>
+    <string name="about_version">Versie %1$s</string>
+
+    <string name="about_disclaimer1">Er is mogelijk een nieuwere versie beschikbaar op GitHub. Deze app is gratis en zal dat ook altijd blijven. Betaal niet voor deze app.</string>
+    <string name="about_disclaimer2">Ik ben niet aansprakelijk voor schade aan je apparaat.</string>
+
+    <string-array name="pref_theme_array">
+        <item>Licht thema</item>
+        <item>Donker thema</item>
+        <item>Zwart thema</item>
+    </string-array>
+    <string-array name="pref_theme_array_values">
+        <item>licht</item>
+        <item>donker</item>
+        <item>zwart</item>
+    </string-array>
+    <string-array name="pref_add_method_array">
+        <item>Apparaat toevoegen middels adres</item>
+        <item>Zoeken naar compatibele apparaten (experimenteel)</item>
+    </string-array>
+    <string-array name="pref_icons">
+        <item>Lamp</item>
+        <item>Laptop</item>
+        <item>Telefoon</item>
+        <item>Raspberry Pi</item>
+        <item>Router</item>
+        <item>Luidspreker</item>
+        <item>Stack</item>
+        <item>Tablet</item>
+        <item>Thermometer</item>
+        <item>TV</item>
+    </string-array>
+    <string-array name="pref_add_mode_array">
+        <item>SimpleHome-API</item>
+        <item>Hue-API</item>
+        <item>Website</item>
+    </string-array>
+    <string-array name="pref_info_icons_array">
+        <item>Icons8-website</item>
+        <item>Google-website</item>
+    </string-array>
+</resources>
