@@ -6,7 +6,16 @@ This app is especially useful if you are using microcontrollers or other small d
 
 Compatible with Philips Hue!
 
-<a href='https://play.google.com/store/apps/details?id=io.github.domi04151309.home'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="80"/></a>
+<a href='https://play.google.com/store/apps/details?id=io.github.domi04151309.home'>
+  <img src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'
+  alt='Get it on Google Play'
+  height="80"/>
+</a>
+<a href="https://f-droid.org/packages/io.github.domi04151309.home">
+  <img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+  alt="Get it on F-Droid"
+  height="80"/>
+</a>
 
 ## Previews
 <img src="https://domi04151309.github.io/images/Android/HomeApp1.jpg" width="18%" /><img src="https://domi04151309.github.io/images/Android/HomeApp2.jpg" width="18%" /><img src="https://domi04151309.github.io/images/Android/HomeApp3.jpg" width="18%" /><img src="https://domi04151309.github.io/images/Android/HomeApp4.jpg" width="18%" /><img src="https://domi04151309.github.io/images/Android/HomeApp5.jpg" width="18%" /><img src="https://domi04151309.github.io/images/Android/HomeApp6.jpg" width="18%" />
