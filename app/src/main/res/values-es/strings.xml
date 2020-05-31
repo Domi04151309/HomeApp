@@ -78,11 +78,11 @@
     <string name="pref_edit_text">Edición avanzada</string>
     <string name="pref_edit_text_summary">Edita la cadena JSON por tu cuenta</string>
     <string name="pref_reset">Reestablecer cadena JSON</string>
-    <string name="pref_reset_summary">Esto reinicia la cadena de JSON y borra todos los dispositivos</cadena>
+    <string name="pref_reset_summary">Esto reinicia la cadena de JSON y borra todos los dispositivos</string>
     <string name="pref_reset_question">¿Estás seguro de que quieres reestablecer la cadena JSON y borrar todos los dispositivos?</string>
-    <string name="pref_reset_toast">Reiniciar la cadena de JSON</cadena>
+    <string name="pref_reset_toast">Reiniciar la cadena de JSON</string>
     <string name="pref_info">Información</string>
-    <string name="pref_info_header">Fondo de cabecera</cadena>
+    <string name="pref_info_header">Fondo de cabecera</string>
     <string name="pref_info_header_summary">Fondo de cabecera por Alberto Castillo Q. en Unsplash</string>
     <string name="pref_device_router">Router</string>
     <string name="placeholder">Marcador</string>
@@ -95,7 +95,7 @@
     <string name="about">Acerca de</string>
     <string name="about_summary">Sobre la aplicación</string>
     <string name="about_version">Versión %1$s</string>
-    <string name="about_github">Puede que existan versiones más recientes disponibles en <a href="https://github.com/Domi04151309/HomeApp">GitHub</a>. Esta aplicación es y siempre será software libre. No pague por esta aplicación.
+    <string name="about_github">Puede que existan versiones más recientes disponibles en <a href="https://github.com/Domi04151309/HomeApp">GitHub</a>. Esta aplicación es y siempre será software libre. No pague por esta aplicación.</string>
     <string name="about_license">Esta aplicación se distribuye bajo los términos y condiciones de la <a href="https://github.com/Domi04151309/HomeApp/blob/master/LICENSE">GNU General Public License v3.0</a></string>
     <string name="about_damage" >No soy responsable de ningún daño a su dispositivo.</string>
     <string name="about_icons">Iconos de <a href="https://icons8.com/">Icon8</a> y <a href="https://material.io/resources/icons/">Google</a>.</string>
