@@ -79,7 +79,7 @@
     <string name="pref_edit_text_summary">Bearbeiten Sie die JSON-Zeichenfolge selbst</string>
     <string name="pref_reset">JSON-Zeichenfolge zurücksetzen</string>
     <string name="pref_reset_summary">Setzt die JSON-Zeichenfolge zurück und löscht alle Geräte</string>
-    <string name="pref_reset_question">Sind Sie sich sicher, dass Sie die JSON-Zeichenfolge zurücksetzen und alle Geräte löschen möchten??</string>
+    <string name="pref_reset_question">Sind Sie sich sicher, dass Sie die JSON-Zeichenfolge zurücksetzen und alle Geräte löschen möchten?</string>
     <string name="pref_reset_toast">JSON-Zeichenfolge zurückgesetzt</string>
     <string name="pref_info">Informationen</string>
     <string name="pref_info_header">Hintergrund des Kopfbereiches</string>

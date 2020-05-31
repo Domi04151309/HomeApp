@@ -41,7 +41,7 @@ class Preferences : AppCompatActivity() {
                 true
             }
             findPreference<Preference>("reset_json")!!.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-                AlertDialog.Builder(context!!)
+                AlertDialog.Builder(requireContext())
                         .setTitle(R.string.pref_reset)
                         .setMessage(R.string.pref_reset_question)
                         .setPositiveButton(android.R.string.ok) { _, _ ->
