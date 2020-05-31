@@ -5,8 +5,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.preference.PreferenceManager
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import io.github.domi04151309.home.*
 import io.github.domi04151309.home.R
@@ -87,7 +91,15 @@ class Tasmota(context: Context, deviceId: String) {
     }
 
     fun execute(command: String) {
-
+        val request = StringRequest(Request.Method.GET, url + command,
+                Response.Listener { response ->
+                    Toast.makeText(c, R.string.main_execution_completed, Toast.LENGTH_LONG).show()
+                },
+                Response.ErrorListener { error ->
+                    Toast.makeText(c, Global.volleyError(c, error), Toast.LENGTH_LONG).show()
+                }
+        )
+        queue.add(request)
     }
 
     fun executeOnce() {
