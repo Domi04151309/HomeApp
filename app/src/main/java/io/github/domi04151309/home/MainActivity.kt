@@ -250,6 +250,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
                 "three_hue" ->
                     startActivity(Intent(this, HueLampActivity::class.java).putExtra("ID", hidden).putExtra("Device", currentDevice))
+                "two_tasmota" -> {
+                    when (hidden) {
+                        "add" -> tasmota!!.addToList()
+                        "execute_once" -> tasmota!!.executeOnce()
+                        else -> tasmota!!.execute(view.findViewById<TextView>(R.id.summary).text.toString())
+                    }
+                }
             }
         }
 
@@ -344,7 +351,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onBackPressed() {
         if (drawerLayout!!.isDrawerOpen(GravityCompat.START))
             drawerLayout!!.closeDrawer(GravityCompat.START)
-        else if (level == "two" || level == "two_hue")
+        else if (level == "two" || level == "two_hue" || level == "two_tasmota")
             loadDevices()
         else if (level == "three_hue")
             hueAPI!!.loadGroups(hueRequestCallBack)
