@@ -63,15 +63,15 @@ class HueConnectActivity : AppCompatActivity() {
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-        running = false
-    }
-
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
         running = true
         startHandler()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        running = false
     }
 
     private fun startHandler() {

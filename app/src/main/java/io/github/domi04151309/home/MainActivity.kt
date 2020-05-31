@@ -394,8 +394,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         level = "three_hue"
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
         if(reset) {
             navView!!.setCheckedItem(R.id.nav_devices)
             loadDevices()

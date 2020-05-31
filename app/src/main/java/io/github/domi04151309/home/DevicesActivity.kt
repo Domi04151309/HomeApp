@@ -82,8 +82,8 @@ class DevicesActivity : AppCompatActivity() {
         listView!!.adapter = adapter
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
         if (reset){
             loadDevices()
             reset = false

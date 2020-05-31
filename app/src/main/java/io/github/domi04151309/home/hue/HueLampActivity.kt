@@ -368,8 +368,8 @@ class HueLampActivity : AppCompatActivity() {
 
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
         if(isRoom) {
             queue!!.add(roomDataRequest)
             queue!!.add(scenesRequest)
