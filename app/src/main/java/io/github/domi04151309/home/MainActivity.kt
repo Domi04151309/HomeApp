@@ -22,6 +22,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.data.ListViewItem
+import io.github.domi04151309.home.tasmota.Tasmota
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -198,6 +199,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
 
+    /*
+     * Things related to Tasmota
+     */
+    private var tasmota: Tasmota? = null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         Theme.setNoActionBar(this)
         super.onCreate(savedInstanceState)
@@ -279,6 +286,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             "Hue API" -> {
                 hueAPI = HueAPI(this, deviceId)
                 hueAPI!!.loadGroups(hueRequestCallBack)
+            }
+            "Tasmota" -> {
+                tasmota = Tasmota(this, deviceId)
+                val adapter = ListViewAdapter(this, tasmota!!.loadList())
+                listView!!.adapter = adapter
+                setLevelTwoTasmota(deviceObj.iconId, deviceObj.name)
             }
             else ->
                 Toast.makeText(this, R.string.main_unknown_mode, Toast.LENGTH_LONG).show()
@@ -386,6 +399,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         deviceName!!.text = title
         currentDevice = deviceId
         level = "two_hue"
+    }
+
+    private fun setLevelTwoTasmota(icon: Int, title: CharSequence) {
+        fab!!.hide()
+        deviceIcon!!.setImageResource(icon)
+        deviceName!!.text = title
+        level = "two_tasmota"
     }
 
     private fun setLevelThreeHue(title: CharSequence) {

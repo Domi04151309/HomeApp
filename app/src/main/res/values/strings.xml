@@ -46,6 +46,13 @@
     <string name="hue_rename_scene">Please enter a new name</string>
     <string name="hue_delete_scene">Are you sure you want to delete this scene?</string>
 
+    <string name="tasmota_empty_list">No commands added yet</string>
+    <string name="tasmota_empty_list_summary">Add commands below</string>
+    <string name="tasmota_add_command">Add command to list</string>
+    <string name="tasmota_add_command_summary">Add a new command to your list</string>
+    <string name="tasmota_execute_once">Execute command</string>
+    <string name="tasmota_execute_once_summary">Execute command once without adding it to the list</string>
+
     <string name="webView">Web View</string>
     <string name="webView_error">Loading the website failed</string>
     <string name="webView_error_summary">Please check your network connection or try again later</string>
@@ -129,6 +136,7 @@
     <string-array name="pref_add_mode_array" translatable="false">
         <item>SimpleHome API</item>
         <item>Hue API</item>
+        <item>Tasmota</item>
         <item>Website</item>
     </string-array>
 </resources>
