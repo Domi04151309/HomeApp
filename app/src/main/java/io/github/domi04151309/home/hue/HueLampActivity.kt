@@ -354,7 +354,7 @@ class HueLampActivity : AppCompatActivity() {
             AlertDialog.Builder(this)
                     .setTitle(R.string.str_delete)
                     .setMessage(R.string.hue_delete_scene)
-                    .setPositiveButton(android.R.string.ok) { _, _ ->
+                    .setPositiveButton(R.string.str_delete) { _, _ ->
                         val deleteSceneRequest = CustomJsonArrayRequest(Request.Method.DELETE, address + "api/" + hueAPI!!.getUsername() + "/scenes/" + selectedScene, null,
                                 Response.Listener { queue!!.add(scenesRequest) },
                                 Response.ErrorListener { e -> Log.e(Global.LOG_TAG, e.toString())}

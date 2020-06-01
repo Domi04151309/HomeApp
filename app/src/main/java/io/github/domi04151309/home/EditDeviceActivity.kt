@@ -99,11 +99,11 @@ class EditDeviceActivity : AppCompatActivity() {
                 AlertDialog.Builder(this)
                         .setTitle(R.string.str_delete)
                         .setMessage(R.string.pref_delete_device_question)
-                        .setPositiveButton(android.R.string.ok) { _, _ ->
+                        .setPositiveButton(R.string.str_delete) { _, _ ->
                             devices.deleteDevice(deviceId)
                             finish()
                         }
-                        .setNegativeButton(resources.getString(android.R.string.cancel)) { _, _ -> }
+                        .setNegativeButton(android.R.string.cancel) { _, _ -> }
                         .show()
             }
         } else {
