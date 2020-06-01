@@ -48,7 +48,7 @@ class Tasmota(context: Context, deviceId: String) {
                     currentItem = list.getJSONObject(i)
                     val listItem = ListViewItem(currentItem.getString("title"))
                     listItem.summary = currentItem.getString("command")
-                    listItem.hidden = url + currentItem.getString("command")
+                    listItem.hidden = "tasmota_command"
                     listItem.icon = R.drawable.ic_do
                     listItems += listItem
                 } catch (e: JSONException) {
@@ -71,23 +71,27 @@ class Tasmota(context: Context, deviceId: String) {
         return listItems
     }
 
-    fun addToList() {
+    fun addToList(title: String = "", command: String = "") {
         val view = LayoutInflater.from(c).inflate(R.layout.dialog_tasmota_add, nullParent, false)
-        val title = view.findViewById<EditText>(R.id.title)
-        val command = view.findViewById<EditText>(R.id.command)
+        val titleTxt = view.findViewById<EditText>(R.id.title)
+        val commandTxt = view.findViewById<EditText>(R.id.command)
+        titleTxt.setText(title)
+        commandTxt.setText(command)
         AlertDialog.Builder(c)
                 .setTitle(R.string.tasmota_add_command)
                 .setView(view)
                 .setPositiveButton(android.R.string.ok) { _, _ ->
-                    val commandObj = JSONObject().put("title", title.text.toString()).put("command", command.text.toString())
+                    val commandObj = JSONObject().put("title", titleTxt.text.toString()).put("command", commandTxt.text.toString())
                     prefs.edit().putString(selectedDevice, JSONArray(prefs.getString(selectedDevice, EMPTY_ARRAY)).put(commandObj).toString()).apply()
                 }
                 .setNegativeButton(android.R.string.cancel) { _, _ -> }
                 .show()
     }
 
-    fun removeFromList() {
-
+    fun removeFromList(index: Int) {
+        val array = JSONArray(prefs.getString(selectedDevice, EMPTY_ARRAY))
+        array.remove(index)
+        prefs.edit().putString(selectedDevice, array.toString()).apply()
     }
 
     fun execute(command: String) {

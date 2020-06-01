@@ -7,6 +7,7 @@ import com.google.android.material.navigation.NavigationView
 import androidx.core.view.GravityCompat
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
+import android.view.ContextMenu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
@@ -18,6 +19,7 @@ import org.json.JSONException
 import org.json.JSONObject
 import android.widget.TextView
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import io.github.domi04151309.home.data.DeviceItem
@@ -39,6 +41,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var hueRoom: String = ""
     private var hueRoomState: Boolean = false
     private var hueCurrentIcon: Int = 0
+    private var tasmotaPosition: Int = 0
     private var level = "one"
     private var reset = false
 
@@ -260,6 +263,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
 
+        registerForContextMenu(listView)
+
         //Handle shortcut
         if(intent.hasExtra("device")) {
             val deviceId = intent.getStringExtra("device") ?: ""
@@ -382,6 +387,39 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         drawerLayout!!.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
+        super.onCreateContextMenu(menu, v, menuInfo)
+        tasmotaPosition = (menuInfo as AdapterView.AdapterContextMenuInfo).position
+        val hidden = listView!!.getChildAt(tasmotaPosition).findViewById<TextView>(R.id.hidden).text
+        if (hidden == "tasmota_command") {
+            menuInflater.inflate(R.menu.activity_main_tasmota_context, menu)
+        }
+    }
+
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        when (item.title) {
+            resources.getString(R.string.str_edit) -> {
+                val editing = listView!!.getChildAt(tasmotaPosition)
+                tasmota!!.removeFromList(tasmotaPosition)
+                tasmota!!.addToList(
+                        editing.findViewById<TextView>(R.id.title).text.toString(),
+                        editing.findViewById<TextView>(R.id.summary).text.toString()
+                )
+            }
+            resources.getString(R.string.str_delete) -> {
+                AlertDialog.Builder(this)
+                        .setTitle(R.string.str_delete)
+                        .setMessage(R.string.tasmota_delete_command)
+                        .setPositiveButton(R.string.str_delete) { _, _ ->
+                            tasmota!!.removeFromList(tasmotaPosition)
+                        }
+                        .setNegativeButton(android.R.string.cancel) { _, _ -> }
+                        .show()
+            }
+        }
+        return super.onContextItemSelected(item)
     }
 
     private fun setLevelOne() {
