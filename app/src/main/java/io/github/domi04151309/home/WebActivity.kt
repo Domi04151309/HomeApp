@@ -1,20 +1,28 @@
 package io.github.domi04151309.home
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Base64
 import android.view.KeyEvent
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.webkit.HttpAuthHandler
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
+import androidx.appcompat.app.AlertDialog
 
 class WebActivity : AppCompatActivity() {
 
     private var webView: WebView? = null
     private var errorOccurred = false
+    private var c: Context = this
+    private val nullParent: ViewGroup? = null
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +47,21 @@ class WebActivity : AppCompatActivity() {
                 progress.visibility = View.GONE
                 view.visibility = View.VISIBLE
                 super.onPageFinished(view, url)
+            }
+
+            override fun onReceivedHttpAuthRequest(view: WebView, handler: HttpAuthHandler, host: String, realm: String) {
+                val dialogView = LayoutInflater.from(c).inflate(R.layout.dialog_web_authentication, nullParent, false)
+                AlertDialog.Builder(c)
+                        .setTitle(R.string.webView_authentication)
+                        .setView(dialogView)
+                        .setPositiveButton(android.R.string.ok) { _, _ ->
+                            handler.proceed(
+                                    dialogView.findViewById<EditText>(R.id.username).text.toString(),
+                                    dialogView.findViewById<EditText>(R.id.password).text.toString()
+                            )
+                        }
+                        .setNegativeButton(android.R.string.cancel) { _, _ -> }
+                        .show()
             }
 
             override fun onReceivedError(view: WebView, errorCode: Int, description: String, failingUrl: String) {
