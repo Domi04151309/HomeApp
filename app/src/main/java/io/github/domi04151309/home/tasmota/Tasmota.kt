@@ -33,6 +33,10 @@ class Tasmota(context: Context, deviceId: String) {
     private val prefs = PreferenceManager.getDefaultSharedPreferences(c)
     private val nullParent: ViewGroup? = null
 
+    interface RequestCallBack {
+        fun onItemsChanged(context: Context)
+    }
+
     fun loadList(): Array<ListViewItem> {
         val list = JSONArray(prefs.getString(selectedDevice, EMPTY_ARRAY))
         var listItems: Array<ListViewItem> = arrayOf()
@@ -71,7 +75,7 @@ class Tasmota(context: Context, deviceId: String) {
         return listItems
     }
 
-    fun addToList(title: String = "", command: String = "") {
+    fun addToList(callback: RequestCallBack, title: String = "", command: String = "") {
         val view = LayoutInflater.from(c).inflate(R.layout.dialog_tasmota_add, nullParent, false)
         val titleTxt = view.findViewById<EditText>(R.id.title)
         val commandTxt = view.findViewById<EditText>(R.id.command)
@@ -83,15 +87,17 @@ class Tasmota(context: Context, deviceId: String) {
                 .setPositiveButton(android.R.string.ok) { _, _ ->
                     val commandObj = JSONObject().put("title", titleTxt.text.toString()).put("command", commandTxt.text.toString())
                     prefs.edit().putString(selectedDevice, JSONArray(prefs.getString(selectedDevice, EMPTY_ARRAY)).put(commandObj).toString()).apply()
+                    callback.onItemsChanged(c)
                 }
                 .setNegativeButton(android.R.string.cancel) { _, _ -> }
                 .show()
     }
 
-    fun removeFromList(index: Int) {
+    fun removeFromList(callback: RequestCallBack, index: Int) {
         val array = JSONArray(prefs.getString(selectedDevice, EMPTY_ARRAY))
         array.remove(index)
         prefs.edit().putString(selectedDevice, array.toString()).apply()
+        callback.onItemsChanged(c)
     }
 
     fun execute(command: String) {

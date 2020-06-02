@@ -95,8 +95,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         Log.e(Global.LOG_TAG, e.toString())
                     }
                 }
-                val adapter = ListViewAdapter(context, listItems)
-                listView!!.adapter = adapter
+                updateList(listItems)
                 val device = devices!!.getDeviceById(deviceId)
                 setLevelTwo(device.iconId, device.name)
             } else {
@@ -139,8 +138,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             Log.e(Global.LOG_TAG, e.toString())
                         }
                     }
-                    val adapter = ListViewAdapter(context, listItems)
-                    listView!!.adapter = adapter
+                    updateList(listItems)
                     val device = devices!!.getDeviceById(deviceId)
                     hueCurrentIcon = device.iconId
                     setLevelTwoHue(deviceId, device.iconId, device.name)
@@ -186,8 +184,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             Log.e(Global.LOG_TAG, e.toString())
                         }
                     }
-                    val adapter = ListViewAdapter(context, listItems)
-                    listView!!.adapter = adapter
+                    updateList(listItems)
                     setLevelThreeHue(currentView!!.findViewById<TextView>(R.id.title).text)
                 } catch (e: Exception) {
                     setLevelTwo(hueCurrentIcon, devices!!.getDeviceById(deviceId).name)
@@ -206,6 +203,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
      * Things related to Tasmota
      */
     private var tasmota: Tasmota? = null
+    private val tasmotaRequestCallBack = object : Tasmota.RequestCallBack {
+
+        override fun onItemsChanged(context: Context) {
+            listView!!.adapter = ListViewAdapter(context, tasmota!!.loadList(), false)
+        }
+    }
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -255,7 +259,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     startActivity(Intent(this, HueLampActivity::class.java).putExtra("ID", hidden).putExtra("Device", currentDevice))
                 "two_tasmota" -> {
                     when (hidden) {
-                        "add" -> tasmota!!.addToList()
+                        "add" -> tasmota!!.addToList(tasmotaRequestCallBack)
                         "execute_once" -> tasmota!!.executeOnce()
                         else -> tasmota!!.execute(view.findViewById<TextView>(R.id.summary).text.toString())
                     }
@@ -301,8 +305,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             "Tasmota" -> {
                 tasmota = Tasmota(this, deviceId)
-                val adapter = ListViewAdapter(this, tasmota!!.loadList())
-                listView!!.adapter = adapter
+                updateList(tasmota!!.loadList())
                 setLevelTwoTasmota(deviceObj.iconId, deviceObj.name)
             }
             else ->
@@ -348,8 +351,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             Log.e(Global.LOG_TAG, e.toString())
         }
 
-        val adapter = ListViewAdapter(this, listItems)
-        listView!!.adapter = adapter
+        updateList(listItems)
         setLevelOne()
     }
 
@@ -402,8 +404,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (item.title) {
             resources.getString(R.string.str_edit) -> {
                 val editing = listView!!.getChildAt(tasmotaPosition)
-                tasmota!!.removeFromList(tasmotaPosition)
+                tasmota!!.removeFromList(tasmotaRequestCallBack, tasmotaPosition)
                 tasmota!!.addToList(
+                        tasmotaRequestCallBack,
                         editing.findViewById<TextView>(R.id.title).text.toString(),
                         editing.findViewById<TextView>(R.id.summary).text.toString()
                 )
@@ -413,7 +416,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         .setTitle(R.string.str_delete)
                         .setMessage(R.string.tasmota_delete_command)
                         .setPositiveButton(R.string.str_delete) { _, _ ->
-                            tasmota!!.removeFromList(tasmotaPosition)
+                            tasmota!!.removeFromList(tasmotaRequestCallBack, tasmotaPosition)
                         }
                         .setNegativeButton(android.R.string.cancel) { _, _ -> }
                         .show()
@@ -457,6 +460,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         deviceIcon!!.setImageResource(R.drawable.ic_device_lamp)
         deviceName!!.text = title
         level = "three_hue"
+    }
+
+    private fun updateList(items: Array<ListViewItem>) {
+        listView!!.adapter = ListViewAdapter(this, items)
     }
 
     override fun onStart() {
