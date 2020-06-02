@@ -51,9 +51,9 @@
     <string name="tasmota_add_command">Add command to list</string>
     <string name="tasmota_add_command_summary">Add a new command to your list</string>
     <string name="tasmota_add_command_dialog_title">Title</string>
-    <string name="tasmota_add_command_dialog_command">\?user=admin&amp;password=joker&amp;cmnd=Power%20Toggle</string>
+    <string name="tasmota_add_command_dialog_command" translatable="false">\?cmnd=Power%20On</string>
     <string name="tasmota_add_command_dialog_title_empty">Command</string>
-    <string name="tasmota_add_command_dialog_command_empty">\?</string>
+    <string name="tasmota_add_command_dialog_command_empty" translatable="false">\?</string>
     <string name="tasmota_delete_command">Are you sure you want to delete this entry?</string>
     <string name="tasmota_execute_once">Execute command</string>
     <string name="tasmota_execute_once_summary">Execute command once without adding it to the list</string>

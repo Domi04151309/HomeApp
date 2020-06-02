@@ -87,10 +87,11 @@ class Tasmota(context: Context, deviceId: String) {
                 .setPositiveButton(android.R.string.ok) { _, _ ->
                     val newTitle = titleTxt.text.toString()
                     val newCommand = commandTxt.text.toString()
-                    val commandObj = JSONObject()
-                            .put("title", if (newTitle == "") c.resources.getString(R.string.tasmota_add_command_dialog_title_empty) else newTitle)
-                            .put("command", if (newCommand == "") c.resources.getString(R.string.tasmota_add_command_dialog_command_empty) else newCommand)
-                    prefs.edit().putString(selectedDevice, JSONArray(prefs.getString(selectedDevice, EMPTY_ARRAY)).put(commandObj).toString()).apply()
+                    prefs.edit().putString(selectedDevice, JSONArray(
+                            prefs.getString(selectedDevice, EMPTY_ARRAY)).put(JSONObject()
+                                    .put("title", if (newTitle == "") c.resources.getString(R.string.tasmota_add_command_dialog_title_empty) else newTitle)
+                                    .put("command", if (newCommand == "") c.resources.getString(R.string.tasmota_add_command_dialog_command_empty) else newCommand)
+                            ).toString()).apply()
                     callback.onItemsChanged(c)
                 }
                 .setNegativeButton(android.R.string.cancel) { _, _ -> }
