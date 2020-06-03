@@ -54,20 +54,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var canReceiveRequest = false
 
     private val hueGroupStateListener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
-        val row = compoundButton.parent as ViewGroup
-        val hidden = row.findViewById<TextView>(R.id.hidden).text
-        val room = hidden.substring(hidden.lastIndexOf("@") + 1)
-        hueAPI!!.switchGroupByID(room, b)
+        if (compoundButton.isPressed) {
+            val row = compoundButton.parent as ViewGroup
+            val hidden = row.findViewById<TextView>(R.id.hidden).text
+            val room = hidden.substring(hidden.lastIndexOf("@") + 1)
+            hueAPI!!.switchGroupByID(room, b)
+        }
     }
 
     private val hueLampStateListener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
-        val row = compoundButton.parent as ViewGroup
-        val hidden = row.findViewById<TextView>(R.id.hidden).text.toString()
-        if (hidden.startsWith("room#")) {
-            val room = hidden.substring(hidden.lastIndexOf("#") + 1)
-            hueAPI!!.switchGroupByID(room, b)
-        } else {
-            hueAPI!!.switchLightByID(hidden, b)
+        if (compoundButton.isPressed) {
+            val row = compoundButton.parent as ViewGroup
+            val hidden = row.findViewById<TextView>(R.id.hidden).text.toString()
+            if (hidden.startsWith("room#")) {
+                val room = hidden.substring(hidden.lastIndexOf("#") + 1)
+                hueAPI!!.switchGroupByID(room, b)
+            } else {
+                hueAPI!!.switchLightByID(hidden, b)
+            }
         }
     }
 
