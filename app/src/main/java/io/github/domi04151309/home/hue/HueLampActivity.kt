@@ -25,6 +25,7 @@ import io.github.domi04151309.home.R
 import io.github.domi04151309.home.data.ScenesGridItem
 import io.github.domi04151309.home.helpers.CustomJsonArrayRequest
 import io.github.domi04151309.home.helpers.Devices
+import io.github.domi04151309.home.helpers.UpdateHandler
 import io.github.domi04151309.home.objects.Global
 import io.github.domi04151309.home.objects.Global.volleyError
 import io.github.domi04151309.home.objects.Theme
@@ -32,10 +33,6 @@ import org.json.JSONObject
 
 
 class HueLampActivity : AppCompatActivity() {
-
-    companion object {
-        private const val UPDATE_DELAY = 500L
-    }
 
     private var canReceiveRequest: Boolean = false
     private var isRoom: Boolean = false
@@ -349,18 +346,15 @@ class HueLampActivity : AppCompatActivity() {
             })
         }
 
-        val updateHandler = Handler()
-        updateHandler.postDelayed(object : Runnable {
-            override fun run() {
-                if (canReceiveRequest && hueAPI?.readyForRequest == true) {
-                    if(isRoom) {
-                        queue!!.add(roomDataRequest)
-                        queue!!.add(scenesRequest)
-                    } else queue!!.add(lightDataRequest)
-                }
-                updateHandler.postDelayed(this, UPDATE_DELAY)
+        val updateHandler = UpdateHandler()
+        updateHandler.setUpdateFunction {
+            if (canReceiveRequest && hueAPI?.readyForRequest == true) {
+                if(isRoom) {
+                    queue!!.add(roomDataRequest)
+                    queue!!.add(scenesRequest)
+                } else queue!!.add(lightDataRequest)
             }
-        }, 0)
+        }
     }
 
     override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
