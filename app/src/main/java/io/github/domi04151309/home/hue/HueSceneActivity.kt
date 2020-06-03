@@ -36,8 +36,8 @@ class HueSceneActivity : AppCompatActivity() {
         val hueAPI = HueAPI(this, deviceId)
         val address = Devices(this).getDeviceById(deviceId).address
         val queue = Volley.newRequestQueue(this)
-        var listItems: Array<ListViewItem> = arrayOf()
-        var colorArray: Array<Int> = arrayOf()
+        val listItems: ArrayList<ListViewItem> = arrayListOf()
+        val colorArray: ArrayList<Int> = arrayListOf()
         val listView = findViewById<ListView>(R.id.listView)
         val nameTxt = findViewById<TextView>(R.id.nameTxt)
         val nameBox = findViewById<EditText>(R.id.nameBox)

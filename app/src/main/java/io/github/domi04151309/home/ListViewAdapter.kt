@@ -14,7 +14,7 @@ import android.widget.Switch
 import android.widget.TextView
 import io.github.domi04151309.home.data.ListViewItem
 
-internal class ListViewAdapter(context: Context, private val itemArray: Array<ListViewItem>, private val animate: Boolean = true) : BaseAdapter() {
+internal class ListViewAdapter(context: Context, private val itemArray: ArrayList<ListViewItem>, private val animate: Boolean = true) : BaseAdapter() {
 
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 

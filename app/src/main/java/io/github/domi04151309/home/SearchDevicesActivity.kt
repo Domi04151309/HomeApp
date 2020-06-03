@@ -33,7 +33,7 @@ class SearchDevicesActivity : AppCompatActivity() {
         val waitItem = ListViewItem(resources.getString(R.string.pref_add_wait))
         waitItem.summary = resources.getQuantityString(R.plurals.pref_add_wait_summary, 10, 10)
         waitItem.icon = R.drawable.ic_info
-        listView!!.adapter = ListViewAdapter(this, arrayOf(waitItem))
+        listView!!.adapter = ListViewAdapter(this, arrayListOf(waitItem))
         Thread(Runnable {
             Thread.sleep(1000L)
             val firstChildSummary = listView!!.getChildAt(0).findViewById<TextView>(R.id.summary)
@@ -48,7 +48,7 @@ class SearchDevicesActivity : AppCompatActivity() {
         }).start()
 
         //Device variables
-        var listItems: Array<ListViewItem> = arrayOf()
+        val listItems: ArrayList<ListViewItem> = arrayListOf()
         val manager = super.getApplicationContext().getSystemService(Context.WIFI_SERVICE) as WifiManager
         val routerIp = intToIp(manager.dhcpInfo.gateway)
         val customQuery = "M-SEARCH * HTTP/1.1" + "\r\n" +

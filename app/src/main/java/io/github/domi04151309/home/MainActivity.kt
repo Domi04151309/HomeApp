@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         ) {
             if (response != null) {
                 val commandsObject = Commands(response.getJSONObject("commands"))
-                var listItems: Array<ListViewItem> = arrayOf()
+                val listItems: ArrayList<ListViewItem> = arrayListOf()
                 for (i in 0 until commandsObject.length()) {
                     try {
                         commandsObject.selectCommand(i)
@@ -122,7 +122,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 try {
                     var currentObjectName: String
                     var currentObject: JSONObject
-                    var listItems: Array<ListViewItem> = arrayOf()
+                    val listItems: ArrayList<ListViewItem> = arrayListOf()
                     for (i in 0 until response.length()) {
                         try {
                             currentObjectName = response.names()!!.getString(i)
@@ -167,7 +167,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     roomItem.stateListener = hueLampStateListener
                     var currentObjectName: String
                     var currentObject: JSONObject
-                    var listItems: Array<ListViewItem> = arrayOf(roomItem)
+                    val listItems: ArrayList<ListViewItem> = arrayListOf(roomItem)
                     val count = response.length() + 1
                     for (i in 1 until count) {
                         try {
@@ -324,7 +324,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun loadDevices() {
-        var listItems: Array<ListViewItem> = arrayOf()
+        val listItems: ArrayList<ListViewItem> = arrayListOf()
         try {
             if (devices!!.length() == 0) {
                 val emptyItem = ListViewItem(resources.getString(R.string.main_no_devices))
@@ -462,7 +462,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         level = "three_hue"
     }
 
-    private fun updateList(items: Array<ListViewItem>) {
+    private fun updateList(items: ArrayList<ListViewItem>) {
         listView!!.adapter = ListViewAdapter(this, items)
     }
 

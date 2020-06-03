@@ -37,9 +37,9 @@ class Tasmota(context: Context, deviceId: String) {
         fun onItemsChanged(context: Context)
     }
 
-    fun loadList(): Array<ListViewItem> {
+    fun loadList(): ArrayList<ListViewItem> {
         val list = JSONArray(prefs.getString(selectedDevice, EMPTY_ARRAY))
-        var listItems: Array<ListViewItem> = arrayOf()
+        val listItems: ArrayList<ListViewItem> = arrayListOf()
         if (list.length() == 0) {
             val listItem = ListViewItem(c.resources.getString(R.string.tasmota_empty_list))
             listItem.summary = c.resources.getString(R.string.tasmota_empty_list_summary)
