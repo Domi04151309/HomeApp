@@ -346,13 +346,12 @@ class HueLampActivity : AppCompatActivity() {
             })
         }
 
+        if(isRoom) queue!!.add(scenesRequest)
         val updateHandler = UpdateHandler()
         updateHandler.setUpdateFunction {
             if (canReceiveRequest && hueAPI?.readyForRequest == true) {
-                if(isRoom) {
-                    queue!!.add(roomDataRequest)
-                    queue!!.add(scenesRequest)
-                } else queue!!.add(lightDataRequest)
+                if(isRoom) queue!!.add(roomDataRequest)
+                else queue!!.add(lightDataRequest)
             }
         }
     }
