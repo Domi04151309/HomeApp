@@ -7,21 +7,16 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import io.github.domi04151309.home.objects.Global.volleyError
 import io.github.domi04151309.home.R
+import io.github.domi04151309.home.data.RequestCallbackObject
 import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.objects.Global
-import org.json.JSONObject
 
 class SimpleHomeAPI(context: Context) {
 
     private val c = context
 
     interface RequestCallBack {
-        fun onCommandsLoaded(
-                context: Context,
-                response: JSONObject?,
-                deviceId: String,
-                errorMessage: String = ""
-        )
+        fun onCommandsLoaded(holder: RequestCallbackObject)
         fun onExecutionFinished(context: Context, result: CharSequence)
     }
 
@@ -30,10 +25,10 @@ class SimpleHomeAPI(context: Context) {
         val queue = Volley.newRequestQueue(c)
         val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url + "commands", null,
                 Response.Listener { response ->
-                    callback.onCommandsLoaded(c, response, deviceId)
+                    callback.onCommandsLoaded(RequestCallbackObject(c, response, deviceId))
                 },
                 Response.ErrorListener { error ->
-                    callback.onCommandsLoaded(c, null, deviceId, volleyError(c, error))
+                    callback.onCommandsLoaded(RequestCallbackObject(c, null, deviceId, volleyError(c, error)))
                 }
         )
         queue.add(jsonObjectRequest)

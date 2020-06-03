@@ -12,6 +12,7 @@ import io.github.domi04151309.home.objects.Global.volleyError
 import org.json.JSONArray
 import org.json.JSONObject
 import android.os.Handler
+import io.github.domi04151309.home.data.RequestCallbackObject
 import io.github.domi04151309.home.helpers.CustomJsonArrayRequest
 import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.objects.Global
@@ -26,18 +27,8 @@ class HueAPI(context: Context, deviceId: String) {
     var readyForRequest = true
 
     interface RequestCallBack {
-        fun onGroupsLoaded(
-                context: Context,
-                response: JSONObject?,
-                deviceId: String,
-                errorMessage: String = ""
-        )
-        fun onLightsLoaded(
-                context: Context,
-                response: JSONObject?,
-                deviceId: String,
-                errorMessage: String = ""
-        )
+        fun onGroupsLoaded(holder: RequestCallbackObject)
+        fun onLightsLoaded(holder: RequestCallbackObject)
     }
 
     fun getUsername(): String {
@@ -47,10 +38,10 @@ class HueAPI(context: Context, deviceId: String) {
     fun loadGroups(callback: RequestCallBack) {
         val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url + "api/" + getUsername() + "/groups", null,
                 Response.Listener { response ->
-                    callback.onGroupsLoaded(c, response, selectedDevice)
+                    callback.onGroupsLoaded(RequestCallbackObject(c, response, selectedDevice))
                 },
                 Response.ErrorListener { error ->
-                    callback.onGroupsLoaded(c, null, selectedDevice, volleyError(c, error))
+                    callback.onGroupsLoaded(RequestCallbackObject(c, null, selectedDevice, volleyError(c, error)))
                     if (error is ParseError) c.startActivity(Intent(c, HueConnectActivity::class.java).putExtra("deviceId", selectedDevice))
                 }
         )
@@ -67,14 +58,14 @@ class HueAPI(context: Context, deviceId: String) {
                             lightID = lightIDs.getString(i)
                             returnObject.put(lightID, response.getJSONObject(lightID))
                         }
-                        callback.onLightsLoaded(c, returnObject, selectedDevice)
+                        callback.onLightsLoaded(RequestCallbackObject(c, returnObject, selectedDevice))
                     } catch (e: Exception) {
-                        callback.onLightsLoaded(c, null, selectedDevice, c.resources.getString(R.string.err_wrong_format_summary))
+                        callback.onLightsLoaded(RequestCallbackObject(c, null, selectedDevice, c.resources.getString(R.string.err_wrong_format_summary)))
                         Log.e(Global.LOG_TAG, e.toString())
                     }
                 },
                 Response.ErrorListener { error ->
-                    callback.onLightsLoaded(c, null, selectedDevice, volleyError(c, error))
+                    callback.onLightsLoaded(RequestCallbackObject(c, null, selectedDevice, volleyError(c, error)))
                 }
         )
         queue.add(jsonObjectRequest)

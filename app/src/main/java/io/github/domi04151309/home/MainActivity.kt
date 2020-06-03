@@ -24,6 +24,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.data.ListViewItem
+import io.github.domi04151309.home.data.RequestCallbackObject
 import io.github.domi04151309.home.helpers.Commands
 import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.helpers.ListViewAdapter
@@ -82,21 +83,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             Toast.makeText(context, result, Toast.LENGTH_LONG).show()
         }
 
-        override fun onCommandsLoaded(
-                context: Context,
-                response: JSONObject?,
-                deviceId: String,
-                errorMessage: String
-        ) {
-            if (response != null) {
-                val commandsObject = Commands(response.getJSONObject("commands"))
+        override fun onCommandsLoaded(holder: RequestCallbackObject) {
+            if (holder.response != null) {
+                val commandsObject = Commands(holder.response.getJSONObject("commands"))
                 val listItems: ArrayList<ListViewItem> = arrayListOf()
                 for (i in 0 until commandsObject.length()) {
                     try {
                         commandsObject.selectCommand(i)
                         val commandItem = ListViewItem(commandsObject.getSelectedTitle())
                         commandItem.summary = commandsObject.getSelectedSummary()
-                        commandItem.hidden = devices!!.getDeviceById(deviceId).address + commandsObject.getSelected()
+                        commandItem.hidden = devices!!.getDeviceById(holder.deviceId).address + commandsObject.getSelected()
                         commandItem.icon = R.drawable.ic_do
                         listItems += commandItem
                     } catch (e: JSONException) {
@@ -104,10 +100,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     }
                 }
                 updateList(listItems)
-                val device = devices!!.getDeviceById(deviceId)
+                val device = devices!!.getDeviceById(holder.deviceId)
                 setLevelTwo(device.iconId, device.name)
             } else {
-                handleErrorOnLevelOne(errorMessage)
+                handleErrorOnLevelOne(holder.errorMessage)
             }
         }
     }
@@ -120,21 +116,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private val hueRequestCallBack = object : HueAPI.RequestCallBack {
 
-        override fun onGroupsLoaded(
-                context: Context,
-                response: JSONObject?,
-                deviceId: String,
-                errorMessage: String
-        ) {
-            if (response != null) {
+        override fun onGroupsLoaded(holder: RequestCallbackObject) {
+            if (holder.response != null) {
                 try {
                     var currentObjectName: String
                     var currentObject: JSONObject
                     val listItems: ArrayList<ListViewItem> = arrayListOf()
-                    for (i in 0 until response.length()) {
+                    for (i in 0 until holder.response.length()) {
                         try {
-                            currentObjectName = response.names()!!.getString(i)
-                            currentObject = response.getJSONObject(currentObjectName)
+                            currentObjectName = holder.response.names()!!.getString(i)
+                            currentObject = holder.response.getJSONObject(currentObjectName)
                             val listItem = ListViewItem(currentObject.getString("name"))
                             listItem.summary = resources.getString(R.string.hue_tap)
                             listItem.hidden = currentObject.getJSONArray("lights").toString() + "@" + currentObjectName
@@ -147,25 +138,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         }
                     }
                     updateList(listItems)
-                    val device = devices!!.getDeviceById(deviceId)
+                    val device = devices!!.getDeviceById(holder.deviceId)
                     hueCurrentIcon = device.iconId
-                    setLevelTwoHue(deviceId, device.iconId, device.name)
+                    setLevelTwoHue(holder.deviceId, device.iconId, device.name)
                 } catch (e: Exception) {
                     handleErrorOnLevelOne(resources.getString(R.string.err_wrong_format_summary))
                     Log.e(Global.LOG_TAG, e.toString())
                 }
             } else {
-                handleErrorOnLevelOne(errorMessage)
+                handleErrorOnLevelOne(holder.errorMessage)
             }
         }
 
-        override fun onLightsLoaded(
-                context: Context,
-                response: JSONObject?,
-                deviceId: String,
-                errorMessage: String
-        ) {
-            if (response != null) {
+        override fun onLightsLoaded(holder: RequestCallbackObject) {
+            if (holder.response != null) {
                 try {
                     val roomItem = ListViewItem(resources.getString(R.string.hue_whole_room))
                     roomItem.summary = resources.getString(R.string.hue_whole_room_summary)
@@ -176,10 +162,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     var currentObjectName: String
                     var currentObject: JSONObject
                     val listItems: ArrayList<ListViewItem> = arrayListOf(roomItem)
-                    for (i in 1 until (response.length() + 1)) {
+                    for (i in 1 until (holder.response.length() + 1)) {
                         try {
-                            currentObjectName = response.names()!!.getString(i - 1)
-                            currentObject = response.getJSONObject(currentObjectName)
+                            currentObjectName = holder.response.names()!!.getString(i - 1)
+                            currentObject = holder.response.getJSONObject(currentObjectName)
                             val listItem = ListViewItem(currentObject.getString("name"))
                             listItem.summary = resources.getString(R.string.hue_tap)
                             listItem.hidden = currentObjectName
@@ -194,29 +180,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     updateList(listItems)
                     setLevelThreeHue(currentView!!.findViewById<TextView>(R.id.title).text)
                 } catch (e: Exception) {
-                    setLevelTwo(hueCurrentIcon, devices!!.getDeviceById(deviceId).name)
+                    setLevelTwo(hueCurrentIcon, devices!!.getDeviceById(holder.deviceId).name)
                     currentView!!.findViewById<TextView>(R.id.summary).text = resources.getString(R.string.err_wrong_format_summary)
                     Log.e(Global.LOG_TAG, e.toString())
                 }
             } else {
-                setLevelTwoHue(deviceId, hueCurrentIcon, devices!!.getDeviceById(deviceId).name)
-                currentView!!.findViewById<TextView>(R.id.summary).text = errorMessage
+                setLevelTwoHue(holder.deviceId, hueCurrentIcon, devices!!.getDeviceById(holder.deviceId).name)
+                currentView!!.findViewById<TextView>(R.id.summary).text = holder.errorMessage
             }
         }
     }
     private val hueRequestUpdaterCallBack = object : HueAPI.RequestCallBack {
 
-        override fun onGroupsLoaded(
-                context: Context,
-                response: JSONObject?,
-                deviceId: String,
-                errorMessage: String
-        ) {
-            if (response != null) {
+        override fun onGroupsLoaded(holder: RequestCallbackObject) {
+            if (holder.response != null) {
                 try {
-                    for (i in 0 until response.length()) {
-                        listView!!.getChildAt(i).findViewById<Switch>(R.id.state).isChecked = response
-                                .getJSONObject(response.names()!!.getString(i))
+                    for (i in 0 until holder.response.length()) {
+                        listView!!.getChildAt(i).findViewById<Switch>(R.id.state).isChecked = holder.response
+                                .getJSONObject(holder.response.names()!!.getString(i))
                                 .getJSONObject("action")
                                 .getBoolean("on")
                     }
@@ -226,17 +207,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
 
-        override fun onLightsLoaded(
-                context: Context,
-                response: JSONObject?,
-                deviceId: String,
-                errorMessage: String
-        ) {
-            if (response != null) {
+        override fun onLightsLoaded(holder: RequestCallbackObject) {
+            if (holder.response != null) {
                 try {
-                    for (i in 1 until (response.length() + 1)) {
-                        listView!!.getChildAt(i).findViewById<Switch>(R.id.state).isChecked = response
-                                .getJSONObject(response.names()!!.getString(i - 1))
+                    for (i in 1 until (holder.response.length() + 1)) {
+                        listView!!.getChildAt(i).findViewById<Switch>(R.id.state).isChecked = holder.response
+                                .getJSONObject(holder.response.names()!!.getString(i - 1))
                                 .getJSONObject("state")
                                 .getBoolean("on")
                     }
