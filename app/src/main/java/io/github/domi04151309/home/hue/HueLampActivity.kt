@@ -13,7 +13,7 @@ import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import io.github.domi04151309.home.Global.volleyError
+import io.github.domi04151309.home.objects.Global.volleyError
 import io.github.domi04151309.home.data.ScenesGridItem
 import java.lang.Exception
 import android.view.animation.DecelerateInterpolator
@@ -26,6 +26,10 @@ import android.widget.AdapterView
 import android.widget.SeekBar
 import androidx.appcompat.app.AlertDialog
 import io.github.domi04151309.home.*
+import io.github.domi04151309.home.helpers.CustomJsonArrayRequest
+import io.github.domi04151309.home.helpers.Devices
+import io.github.domi04151309.home.objects.Global
+import io.github.domi04151309.home.objects.Theme
 import org.json.JSONObject
 
 
@@ -343,7 +347,7 @@ class HueLampActivity : AppCompatActivity() {
                         val requestObject = "{\"name\":\"" + input.text.toString() + "\"}"
                         val renameSceneRequest = CustomJsonArrayRequest(Request.Method.PUT, address + "api/" + hueAPI!!.getUsername() + "/scenes/$selectedScene", JSONObject(requestObject),
                                 Response.Listener { queue!!.add(scenesRequest) },
-                                Response.ErrorListener { e -> Log.e(Global.LOG_TAG, e.toString())}
+                                Response.ErrorListener { e -> Log.e(Global.LOG_TAG, e.toString()) }
                         )
                         queue!!.add(renameSceneRequest)
                     }
@@ -356,7 +360,7 @@ class HueLampActivity : AppCompatActivity() {
                     .setPositiveButton(R.string.str_delete) { _, _ ->
                         val deleteSceneRequest = CustomJsonArrayRequest(Request.Method.DELETE, address + "api/" + hueAPI!!.getUsername() + "/scenes/" + selectedScene, null,
                                 Response.Listener { queue!!.add(scenesRequest) },
-                                Response.ErrorListener { e -> Log.e(Global.LOG_TAG, e.toString())}
+                                Response.ErrorListener { e -> Log.e(Global.LOG_TAG, e.toString()) }
                         )
                         queue!!.add(deleteSceneRequest)
                     }

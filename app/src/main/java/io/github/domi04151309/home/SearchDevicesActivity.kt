@@ -15,6 +15,9 @@ import android.widget.AdapterView
 import android.widget.TextView
 import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.data.ListViewItem
+import io.github.domi04151309.home.helpers.Devices
+import io.github.domi04151309.home.helpers.ListViewAdapter
+import io.github.domi04151309.home.objects.Theme
 
 class SearchDevicesActivity : AppCompatActivity() {
 

@@ -1,4 +1,4 @@
-package io.github.domi04151309.home
+package io.github.domi04151309.home.objects
 
 import android.content.Context
 import android.util.Log
@@ -6,6 +6,7 @@ import com.android.volley.ClientError
 import com.android.volley.NoConnectionError
 import com.android.volley.ParseError
 import com.android.volley.TimeoutError
+import io.github.domi04151309.home.R
 
 object Global {
 

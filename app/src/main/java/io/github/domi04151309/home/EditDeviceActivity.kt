@@ -17,6 +17,9 @@ import android.text.Editable
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import io.github.domi04151309.home.helpers.Devices
+import io.github.domi04151309.home.objects.Global
+import io.github.domi04151309.home.objects.Theme
 
 class EditDeviceActivity : AppCompatActivity() {
 

@@ -5,9 +5,10 @@ import android.util.Log
 import com.android.volley.*
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import io.github.domi04151309.home.*
-import io.github.domi04151309.home.Global.volleyError
+import io.github.domi04151309.home.objects.Global.volleyError
 import io.github.domi04151309.home.R
+import io.github.domi04151309.home.helpers.Devices
+import io.github.domi04151309.home.objects.Global
 import org.json.JSONObject
 
 class SimpleHomeAPI(context: Context) {

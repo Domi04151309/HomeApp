@@ -9,6 +9,10 @@ import androidx.appcompat.app.AlertDialog
 import android.view.View
 import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.data.ListViewItem
+import io.github.domi04151309.home.helpers.Devices
+import io.github.domi04151309.home.helpers.ListViewAdapter
+import io.github.domi04151309.home.objects.Global
+import io.github.domi04151309.home.objects.Theme
 
 class DevicesActivity : AppCompatActivity() {
 

@@ -1,8 +1,9 @@
-package io.github.domi04151309.home
+package io.github.domi04151309.home.helpers
 
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
+import io.github.domi04151309.home.objects.Global
 import io.github.domi04151309.home.data.DeviceItem
 import org.json.JSONObject
 import java.util.*

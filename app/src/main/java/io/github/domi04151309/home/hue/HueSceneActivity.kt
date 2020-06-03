@@ -19,8 +19,12 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import io.github.domi04151309.home.*
-import io.github.domi04151309.home.ListViewAdapter
+import io.github.domi04151309.home.helpers.ListViewAdapter
 import io.github.domi04151309.home.data.ListViewItem
+import io.github.domi04151309.home.helpers.CustomJsonArrayRequest
+import io.github.domi04151309.home.helpers.Devices
+import io.github.domi04151309.home.objects.Global
+import io.github.domi04151309.home.objects.Theme
 import org.json.JSONObject
 
 

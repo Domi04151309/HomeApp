@@ -1,4 +1,4 @@
-package io.github.domi04151309.home
+package io.github.domi04151309.home.objects
 
 import android.app.Activity
 import android.app.ActivityManager
@@ -6,6 +6,7 @@ import android.content.Context
 import android.graphics.BitmapFactory
 import androidx.preference.PreferenceManager
 import androidx.core.content.ContextCompat
+import io.github.domi04151309.home.R
 
 object Theme {
 

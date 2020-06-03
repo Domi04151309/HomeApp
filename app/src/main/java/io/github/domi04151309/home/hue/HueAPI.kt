@@ -7,12 +7,14 @@ import androidx.preference.PreferenceManager
 import com.android.volley.*
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import io.github.domi04151309.home.*
 import io.github.domi04151309.home.R
-import io.github.domi04151309.home.Global.volleyError
+import io.github.domi04151309.home.objects.Global.volleyError
 import org.json.JSONArray
 import org.json.JSONObject
 import android.os.Handler
+import io.github.domi04151309.home.helpers.CustomJsonArrayRequest
+import io.github.domi04151309.home.helpers.Devices
+import io.github.domi04151309.home.objects.Global
 
 
 class HueAPI(context: Context, deviceId: String) {
@@ -125,7 +127,7 @@ class HueAPI(context: Context, deviceId: String) {
     private fun putObject(address: String, requestObject: String) {
         val request = CustomJsonArrayRequest(Request.Method.PUT, url + "api/" + getUsername() + address, JSONObject(requestObject),
                 Response.Listener { },
-                Response.ErrorListener { e -> Log.e(Global.LOG_TAG, e.toString())}
+                Response.ErrorListener { e -> Log.e(Global.LOG_TAG, e.toString()) }
         )
         if (readyForRequest) {
             queue.add(request)

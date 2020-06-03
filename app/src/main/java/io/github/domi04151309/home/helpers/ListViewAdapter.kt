@@ -1,4 +1,4 @@
-package io.github.domi04151309.home
+package io.github.domi04151309.home.helpers
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -12,6 +12,7 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.Switch
 import android.widget.TextView
+import io.github.domi04151309.home.R
 import io.github.domi04151309.home.data.ListViewItem
 
 internal class ListViewAdapter(context: Context, private val itemArray: ArrayList<ListViewItem>, private val animate: Boolean = true) : BaseAdapter() {

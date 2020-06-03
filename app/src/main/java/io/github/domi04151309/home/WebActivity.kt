@@ -16,6 +16,7 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AlertDialog
+import io.github.domi04151309.home.objects.Theme
 
 class WebActivity : AppCompatActivity() {
 
