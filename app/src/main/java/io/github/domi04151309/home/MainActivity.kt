@@ -27,6 +27,7 @@ import io.github.domi04151309.home.data.ListViewItem
 import io.github.domi04151309.home.helpers.Commands
 import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.helpers.ListViewAdapter
+import io.github.domi04151309.home.helpers.UpdateHandler
 import io.github.domi04151309.home.objects.Global
 import io.github.domi04151309.home.objects.Theme
 import io.github.domi04151309.home.tasmota.Tasmota
@@ -49,6 +50,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var tasmotaPosition: Int = 0
     private var level = "one"
     private var reset = false
+    private val updateHandler = UpdateHandler()
+    private var canReceiveRequest = false
 
     private val hueGroupStateListener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
         val row = compoundButton.parent as ViewGroup
@@ -173,8 +176,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     var currentObjectName: String
                     var currentObject: JSONObject
                     val listItems: ArrayList<ListViewItem> = arrayListOf(roomItem)
-                    val count = response.length() + 1
-                    for (i in 1 until count) {
+                    for (i in 1 until (response.length() + 1)) {
                         try {
                             currentObjectName = response.names()!!.getString(i - 1)
                             currentObject = response.getJSONObject(currentObjectName)
@@ -199,6 +201,48 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             } else {
                 setLevelTwoHue(deviceId, hueCurrentIcon, devices!!.getDeviceById(deviceId).name)
                 currentView!!.findViewById<TextView>(R.id.summary).text = errorMessage
+            }
+        }
+    }
+    private val hueRequestUpdaterCallBack = object : HueAPI.RequestCallBack {
+
+        override fun onGroupsLoaded(
+                context: Context,
+                response: JSONObject?,
+                deviceId: String,
+                errorMessage: String
+        ) {
+            if (response != null) {
+                try {
+                    for (i in 0 until response.length()) {
+                        listView!!.getChildAt(i).findViewById<Switch>(R.id.state).isChecked = response
+                                .getJSONObject(response.names()!!.getString(i))
+                                .getJSONObject("action")
+                                .getBoolean("on")
+                    }
+                } catch (e: Exception) {
+                    Log.e(Global.LOG_TAG, e.toString())
+                }
+            }
+        }
+
+        override fun onLightsLoaded(
+                context: Context,
+                response: JSONObject?,
+                deviceId: String,
+                errorMessage: String
+        ) {
+            if (response != null) {
+                try {
+                    for (i in 1 until (response.length() + 1)) {
+                        listView!!.getChildAt(i).findViewById<Switch>(R.id.state).isChecked = response
+                                .getJSONObject(response.names()!!.getString(i - 1))
+                                .getJSONObject("state")
+                                .getBoolean("on")
+                    }
+                } catch (e: Exception) {
+                    Log.e(Global.LOG_TAG, e.toString())
+                }
             }
         }
     }
@@ -258,7 +302,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 "two_hue" -> {
                     hueRoom = hidden.substring(hidden.lastIndexOf("@") + 1)
                     hueRoomState = view.findViewById<Switch>(R.id.state).isChecked
-                    hueAPI!!.loadLightsByIDs(JSONArray(hidden.substring(0 , hidden.indexOf("@"))), hueRequestCallBack)
+                    val localIds = JSONArray(hidden.substring(0 , hidden.indexOf("@")))
+                    hueAPI!!.loadLightsByIDs(localIds, hueRequestCallBack)
+                    updateHandler.setUpdateFunction {
+                        if (canReceiveRequest && hueAPI?.readyForRequest == true) {
+                            hueAPI!!.loadLightsByIDs(localIds, hueRequestUpdaterCallBack)
+                        }
+                    }
                 }
                 "three_hue" ->
                     startActivity(Intent(this, HueLampActivity::class.java).putExtra("ID", hidden).putExtra("Device", currentDevice))
@@ -306,7 +356,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 homeAPI.loadCommands(deviceId, homeRequestCallBack)
             "Hue API" -> {
                 hueAPI = HueAPI(this, deviceId)
-                hueAPI!!.loadGroups(hueRequestCallBack)
+                loadHueGroups()
             }
             "Tasmota" -> {
                 tasmota = Tasmota(this, deviceId)
@@ -329,6 +379,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun loadDevices() {
+        updateHandler.stop()
         val listItems: ArrayList<ListViewItem> = arrayListOf()
         try {
             if (devices!!.length() == 0) {
@@ -360,13 +411,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setLevelOne()
     }
 
+    private fun loadHueGroups() {
+        hueAPI!!.loadGroups(hueRequestCallBack)
+        updateHandler.setUpdateFunction {
+            if (canReceiveRequest && hueAPI?.readyForRequest == true) {
+                hueAPI!!.loadGroups(hueRequestUpdaterCallBack)
+            }
+        }
+    }
+
     override fun onBackPressed() {
         if (drawerLayout!!.isDrawerOpen(GravityCompat.START))
             drawerLayout!!.closeDrawer(GravityCompat.START)
         else if (level == "two" || level == "two_hue" || level == "two_tasmota")
             loadDevices()
         else if (level == "three_hue")
-            hueAPI!!.loadGroups(hueRequestCallBack)
+            loadHueGroups()
         else
             super.onBackPressed()
     }
@@ -473,6 +533,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onStart() {
         super.onStart()
+        canReceiveRequest = true
+        if(reset) {
+            navView!!.setCheckedItem(R.id.nav_devices)
+            loadDevices()
+            reset = false
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        canReceiveRequest = false
         if(reset) {
             navView!!.setCheckedItem(R.id.nav_devices)
             loadDevices()
