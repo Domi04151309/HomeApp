@@ -46,9 +46,22 @@
     <string name="hue_rename_scene">Geben Sie bitte einen neuen Namen ein</string>
     <string name="hue_delete_scene">Sind Sie sich sicher, dass Sie diese Szene löschen möchten?</string>
 
+    <string name="tasmota_empty_list">Noch keine Befehle hinzugefügt</string>
+    <string name="tasmota_empty_list_summary">Fügen Sie Befehle unten hinzu</string>
+    <string name="tasmota_add_command">Befehl hinzufügen</string>
+    <string name="tasmota_add_command_summary">Fügt einen neuen Befehl zur Liste hinzu</string>
+    <string name="tasmota_add_command_dialog_title">Titel</string>
+    <string name="tasmota_add_command_dialog_title_empty">Befehl</string>
+    <string name="tasmota_delete_command">Sind Sie sich sicher, dass Sie diesen Eintrag löschen möchten?</string>
+    <string name="tasmota_execute_once">Befehl ausführen</string>
+    <string name="tasmota_execute_once_summary">Führt einen Befehl ein Mal aus ohne ihn der Liste hinzuzufügen</string>
+
     <string name="webView">Internetansicht</string>
     <string name="webView_error">Laden der Webseite fehlgeschlagen</string>
     <string name="webView_error_summary">Bitte überprüfen Sie Ihre Verbindung oder versuchen Sie es später erneut</string>
+    <string name="webView_authentication">Authentifizierung</string>
+    <string name="webView_username">Benutzername</string>
+    <string name="webView_password">Passwort</string>
 
     <string name="pref">Einstellungen</string>
     <string name="pref_general">Generelle Einstellungen</string>
@@ -90,7 +103,9 @@
     <string name="str_cancel">Abbrechen</string>
     <string name="str_name">Name</string>
     <string name="str_rename">Umbenennen</string>
+    <string name="str_edit">Bearbeiten</string>
     <string name="str_delete">Löschen</string>
+    <string name="str_reset">Zurücksetzen</string>
 
     <string name="about">Über</string>
     <string name="about_summary">Über die App</string>
