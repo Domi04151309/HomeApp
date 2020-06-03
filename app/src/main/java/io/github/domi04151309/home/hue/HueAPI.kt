@@ -17,7 +17,6 @@ import io.github.domi04151309.home.helpers.CustomJsonArrayRequest
 import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.objects.Global
 
-
 class HueAPI(context: Context, deviceId: String) {
 
     private val c = context

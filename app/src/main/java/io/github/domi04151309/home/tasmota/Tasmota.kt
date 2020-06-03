@@ -20,7 +20,6 @@ import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.objects.Global
 import org.json.JSONException
 
-
 class Tasmota(context: Context, deviceId: String) {
 
     companion object {

@@ -13,7 +13,6 @@ import android.net.Uri
 import io.github.domi04151309.home.objects.Global
 import io.github.domi04151309.home.objects.Theme
 
-
 class Preferences : AppCompatActivity() {
 
     private val spChanged = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->

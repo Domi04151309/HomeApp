@@ -7,7 +7,6 @@ import android.util.Log
 import io.github.domi04151309.home.objects.Global
 import java.lang.Exception
 
-
 class UPnPDevice internal constructor(val hostAddress: String, header: String) {
     val location: String
     val server: String

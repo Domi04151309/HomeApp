@@ -33,7 +33,6 @@ import io.github.domi04151309.home.objects.Global
 import io.github.domi04151309.home.objects.Theme
 import io.github.domi04151309.home.tasmota.Tasmota
 
-
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private var devices: Devices? = null
@@ -107,7 +106,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
     }
-
 
     /*
      * Things related to the Hue API
@@ -223,7 +221,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-
     /*
      * Things related to Tasmota
      */
@@ -234,8 +231,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             listView!!.adapter = ListViewAdapter(context, tasmota!!.loadList(), false)
         }
     }
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Theme.setNoActionBar(this)

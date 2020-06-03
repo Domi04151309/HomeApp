@@ -31,7 +31,6 @@ import io.github.domi04151309.home.objects.Global.volleyError
 import io.github.domi04151309.home.objects.Theme
 import org.json.JSONObject
 
-
 class HueLampActivity : AppCompatActivity() {
 
     private var canReceiveRequest: Boolean = false

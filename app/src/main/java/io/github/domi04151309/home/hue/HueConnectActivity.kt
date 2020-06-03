@@ -19,7 +19,6 @@ import io.github.domi04151309.home.objects.Global
 import io.github.domi04151309.home.objects.Theme
 import org.json.JSONObject
 
-
 class HueConnectActivity : AppCompatActivity() {
 
     private var running = false

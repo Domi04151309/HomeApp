@@ -27,7 +27,6 @@ import io.github.domi04151309.home.objects.Global
 import io.github.domi04151309.home.objects.Theme
 import org.json.JSONObject
 
-
 class HueSceneActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
