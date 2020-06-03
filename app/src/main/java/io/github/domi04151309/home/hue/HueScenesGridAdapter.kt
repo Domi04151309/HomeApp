@@ -19,7 +19,7 @@ internal class HueScenesGridAdapter(context: Context, private val itemArray: Arr
         return itemArray.size
     }
 
-    override fun getItem(position: Int): Any {
+    override fun getItem(position: Int): ScenesGridItem {
         return itemArray[position]
     }
 

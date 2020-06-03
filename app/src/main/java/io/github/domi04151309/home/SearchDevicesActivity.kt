@@ -33,8 +33,7 @@ class SearchDevicesActivity : AppCompatActivity() {
         val waitItem = ListViewItem(resources.getString(R.string.pref_add_wait))
         waitItem.summary = resources.getQuantityString(R.plurals.pref_add_wait_summary, 10, 10)
         waitItem.icon = R.drawable.ic_info
-        val firstAdapter = ListViewAdapter(this, arrayOf(waitItem))
-        listView!!.adapter = firstAdapter
+        listView!!.adapter = ListViewAdapter(this, arrayOf(waitItem))
         Thread(Runnable {
             Thread.sleep(1000L)
             val firstChildSummary = listView!!.getChildAt(0).findViewById<TextView>(R.id.summary)
@@ -122,8 +121,7 @@ class SearchDevicesActivity : AppCompatActivity() {
                 listItems += routerItem
                 addresses += routerIp
             }
-            val adapter = ListViewAdapter(this, listItems)
-            listView!!.adapter = adapter
+            listView!!.adapter = ListViewAdapter(this, listItems)
         }, 10000)
 
         //Handle clicks

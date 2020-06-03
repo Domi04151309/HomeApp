@@ -22,7 +22,7 @@ internal class ListViewAdapter(context: Context, private val itemArray: Array<Li
         return itemArray.size
     }
 
-    override fun getItem(position: Int): Any {
+    override fun getItem(position: Int): ListViewItem {
         return itemArray[position]
     }
 

@@ -144,8 +144,7 @@ class HueLampActivity : AppCompatActivity() {
                             scene.hidden = "add"
                             scene.icon = R.drawable.ic_hue_scene_add
                             gridItems += scene
-                            val adapter = HueScenesGridAdapter(this, gridItems)
-                            gridView.adapter = adapter
+                            gridView.adapter = HueScenesGridAdapter(this, gridItems)
                         } catch (e: Exception){
                             Log.e(Global.LOG_TAG, e.toString())
                         }
