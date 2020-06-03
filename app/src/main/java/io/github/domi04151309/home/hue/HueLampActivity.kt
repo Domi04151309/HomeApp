@@ -1,40 +1,43 @@
 package io.github.domi04151309.home.hue
 
+import android.animation.ObjectAnimator
+import android.content.Intent
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import android.view.ContextMenu
+import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
+import android.view.animation.DecelerateInterpolator
 import android.widget.*
+import android.widget.AdapterView
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.drawable.DrawableCompat
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import io.github.domi04151309.home.objects.Global.volleyError
+import io.github.domi04151309.home.R
 import io.github.domi04151309.home.data.ScenesGridItem
-import java.lang.Exception
-import android.view.animation.DecelerateInterpolator
-import android.animation.ObjectAnimator
-import android.content.Intent
-import android.view.ContextMenu
-import android.view.MenuItem
-import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.SeekBar
-import androidx.appcompat.app.AlertDialog
-import io.github.domi04151309.home.*
 import io.github.domi04151309.home.helpers.CustomJsonArrayRequest
 import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.objects.Global
+import io.github.domi04151309.home.objects.Global.volleyError
 import io.github.domi04151309.home.objects.Theme
 import org.json.JSONObject
 
 
 class HueLampActivity : AppCompatActivity() {
 
+    companion object {
+        private const val UPDATE_DELAY = 500L
+    }
+
+    private var canReceiveRequest: Boolean = false
     private var isRoom: Boolean = false
     private var queue: RequestQueue? = null
     private var lightDataRequest: JsonObjectRequest? = null
@@ -87,9 +90,6 @@ class HueLampActivity : AppCompatActivity() {
             animation.interpolator = DecelerateInterpolator()
             animation.start()
         }
-
-        //Get scenes
-
 
         // Selected item is a whole room
         if (isRoom) {
@@ -169,9 +169,12 @@ class HueLampActivity : AppCompatActivity() {
 
             briBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {}
-                override fun onStartTrackingTouch(seekBar: SeekBar) {}
+                override fun onStartTrackingTouch(seekBar: SeekBar) {
+                    canReceiveRequest = false
+                }
                 override fun onStopTrackingTouch(seekBar: SeekBar) {
                     hueAPI!!.changeBrightnessOfGroup(id, seekBar.progress)
+                    canReceiveRequest = true
                 }
             })
 
@@ -182,9 +185,12 @@ class HueLampActivity : AppCompatActivity() {
                             HueUtils.ctToRGB(seekBar.progress + 153)
                     )
                 }
-                override fun onStartTrackingTouch(seekBar: SeekBar) {}
+                override fun onStartTrackingTouch(seekBar: SeekBar) {
+                    canReceiveRequest = false
+                }
                 override fun onStopTrackingTouch(seekBar: SeekBar) {
                     hueAPI!!.changeColorTemperatureOfGroup(id, seekBar.progress + 153)
+                    canReceiveRequest = true
                 }
             })
 
@@ -195,9 +201,12 @@ class HueLampActivity : AppCompatActivity() {
                             HueUtils.hueSatToRGB(seekBar.progress, satBar.progress)
                     )
                 }
-                override fun onStartTrackingTouch(seekBar: SeekBar) {}
+                override fun onStartTrackingTouch(seekBar: SeekBar) {
+                    canReceiveRequest = false
+                }
                 override fun onStopTrackingTouch(seekBar: SeekBar) {
                     hueAPI!!.changeHueOfGroup(id, seekBar.progress)
+                    canReceiveRequest = true
                 }
             })
 
@@ -208,9 +217,12 @@ class HueLampActivity : AppCompatActivity() {
                             HueUtils.hueSatToRGB(hueBar.progress, seekBar.progress)
                     )
                 }
-                override fun onStartTrackingTouch(seekBar: SeekBar) {}
+                override fun onStartTrackingTouch(seekBar: SeekBar) {
+                    canReceiveRequest = false
+                }
                 override fun onStopTrackingTouch(seekBar: SeekBar) {
                     hueAPI!!.changeSaturationOfGroup(id, seekBar.progress)
+                    canReceiveRequest = true
                 }
             })
 
@@ -280,8 +292,12 @@ class HueLampActivity : AppCompatActivity() {
                 override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                     if (fromUser) hueAPI!!.changeBrightness(id, seekBar.progress)
                 }
-                override fun onStartTrackingTouch(seekBar: SeekBar) {}
-                override fun onStopTrackingTouch(seekBar: SeekBar) {}
+                override fun onStartTrackingTouch(seekBar: SeekBar) {
+                    canReceiveRequest = false
+                }
+                override fun onStopTrackingTouch(seekBar: SeekBar) {
+                    canReceiveRequest = true
+                }
             })
 
             ctBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
@@ -292,8 +308,12 @@ class HueLampActivity : AppCompatActivity() {
                             HueUtils.ctToRGB(seekBar.progress + 153)
                     )
                 }
-                override fun onStartTrackingTouch(seekBar: SeekBar) {}
-                override fun onStopTrackingTouch(seekBar: SeekBar) {}
+                override fun onStartTrackingTouch(seekBar: SeekBar) {
+                    canReceiveRequest = false
+                }
+                override fun onStopTrackingTouch(seekBar: SeekBar) {
+                    canReceiveRequest = true
+                }
             })
 
             hueBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
@@ -304,8 +324,12 @@ class HueLampActivity : AppCompatActivity() {
                             HueUtils.hueSatToRGB(seekBar.progress, satBar.progress)
                     )
                 }
-                override fun onStartTrackingTouch(seekBar: SeekBar) {}
-                override fun onStopTrackingTouch(seekBar: SeekBar) {}
+                override fun onStartTrackingTouch(seekBar: SeekBar) {
+                    canReceiveRequest = false
+                }
+                override fun onStopTrackingTouch(seekBar: SeekBar) {
+                    canReceiveRequest = true
+                }
             })
 
             satBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
@@ -316,10 +340,27 @@ class HueLampActivity : AppCompatActivity() {
                             HueUtils.hueSatToRGB(hueBar.progress, seekBar.progress)
                     )
                 }
-                override fun onStartTrackingTouch(seekBar: SeekBar) {}
-                override fun onStopTrackingTouch(seekBar: SeekBar) {}
+                override fun onStartTrackingTouch(seekBar: SeekBar) {
+                    canReceiveRequest = false
+                }
+                override fun onStopTrackingTouch(seekBar: SeekBar) {
+                    canReceiveRequest = true
+                }
             })
         }
+
+        val updateHandler = Handler()
+        updateHandler.postDelayed(object : Runnable {
+            override fun run() {
+                if (canReceiveRequest && hueAPI?.readyForRequest == true) {
+                    if(isRoom) {
+                        queue!!.add(roomDataRequest)
+                        queue!!.add(scenesRequest)
+                    } else queue!!.add(lightDataRequest)
+                }
+                updateHandler.postDelayed(this, UPDATE_DELAY)
+            }
+        }, 0)
     }
 
     override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
@@ -373,9 +414,11 @@ class HueLampActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        if(isRoom) {
-            queue!!.add(roomDataRequest)
-            queue!!.add(scenesRequest)
-        } else queue!!.add(lightDataRequest)
+        canReceiveRequest = true
+    }
+
+    override fun onStop() {
+        super.onStop()
+        canReceiveRequest = false
     }
 }
