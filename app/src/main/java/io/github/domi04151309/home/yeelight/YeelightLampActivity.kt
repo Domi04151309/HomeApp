@@ -15,8 +15,6 @@ import io.github.domi04151309.home.objects.Theme
 
 class YeelightLampActivity : AppCompatActivity() {
 
-    private var address: String = ""
-
     override fun onCreate(savedInstanceState: Bundle?) {
         Theme.set(this)
         super.onCreate(savedInstanceState)
@@ -24,7 +22,7 @@ class YeelightLampActivity : AppCompatActivity() {
 
         val deviceId = intent.getStringExtra("Device") ?: ""
         val device = Devices(this).getDeviceById(deviceId)
-        address = device.address
+        val yeelightAPI = YeelightAPI(this, deviceId)
 
         title = device.name
         val lampIcon = findViewById<ImageView>(R.id.lampIcon)
@@ -51,18 +49,18 @@ class YeelightLampActivity : AppCompatActivity() {
         //TODO: Load state
 
         findViewById<Button>(R.id.onBtn).setOnClickListener {
-            //TODO: Turn on
+            yeelightAPI.turnOnLight()
         }
 
         findViewById<Button>(R.id.offBtn).setOnClickListener {
-            //TODO: Turn off
+            yeelightAPI.turnOffLight()
         }
 
         briBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {}
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
             override fun onStopTrackingTouch(seekBar: SeekBar) {
-                //TODO: change bri
+                yeelightAPI.changeBrightness(seekBar.progress)
             }
         })
 
@@ -75,7 +73,7 @@ class YeelightLampActivity : AppCompatActivity() {
             }
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
             override fun onStopTrackingTouch(seekBar: SeekBar) {
-                //TODO:Change ct
+                yeelightAPI.changeColorTemperature(seekBar.progress)
             }
         })
 
@@ -88,7 +86,7 @@ class YeelightLampActivity : AppCompatActivity() {
             }
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
             override fun onStopTrackingTouch(seekBar: SeekBar) {
-                //TODO: Change hue
+                yeelightAPI.changeHue(seekBar.progress)
             }
         })
 
@@ -101,7 +99,7 @@ class YeelightLampActivity : AppCompatActivity() {
             }
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
             override fun onStopTrackingTouch(seekBar: SeekBar) {
-                //TODO: Change sat
+                yeelightAPI.changeSaturation(seekBar.progress)
             }
         })
     }

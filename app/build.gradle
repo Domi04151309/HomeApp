@@ -36,6 +36,7 @@ dependencies {
     implementation 'androidx.preference:preference:1.1.1'
     implementation 'androidx.annotation:annotation:1.1.0'
     implementation 'com.android.volley:volley:1.1.1'
+    implementation 'com.github.murielK:TCPMessenger:1.0.0'
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test:runner:1.2.0'
 }
