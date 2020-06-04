@@ -53,6 +53,13 @@
                 android:value="io.github.domi04151309.home.MainActivity" />
         </activity>
         <activity
+            android:name=".yeelight.YeelightLampActivity"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="io.github.domi04151309.home.MainActivity" />
+        </activity>
+        <activity
             android:name=".SplashScreen"
             android:theme="@style/AppThemeSplash">
             <intent-filter>

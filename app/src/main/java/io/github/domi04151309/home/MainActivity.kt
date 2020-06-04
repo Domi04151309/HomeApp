@@ -32,6 +32,7 @@ import io.github.domi04151309.home.helpers.UpdateHandler
 import io.github.domi04151309.home.objects.Global
 import io.github.domi04151309.home.objects.Theme
 import io.github.domi04151309.home.tasmota.Tasmota
+import io.github.domi04151309.home.yeelight.YeelightLampActivity
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -325,13 +326,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                                 .putExtra("URI", deviceObj.address)
                                 .putExtra("title", deviceObj.name)
                 )
-                reset = true
             }
             "SimpleHome API" ->
                 homeAPI.loadCommands(deviceId, homeRequestCallBack)
             "Hue API" -> {
                 hueAPI = HueAPI(this, deviceId)
                 loadHueGroups()
+            }
+            "Yeelight" -> {
+                startActivity(Intent(this, YeelightLampActivity::class.java).putExtra("Device", deviceId))
             }
             "Tasmota" -> {
                 tasmota = Tasmota(this, deviceId)

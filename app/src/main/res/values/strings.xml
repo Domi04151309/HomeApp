@@ -146,6 +146,7 @@
     <string-array name="pref_add_mode_array" translatable="false">
         <item>SimpleHome API</item>
         <item>Hue API</item>
+        <item>Yeelight</item>
         <item>Tasmota</item>
         <item>Website</item>
     </string-array>

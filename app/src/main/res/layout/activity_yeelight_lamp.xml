@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            android:id="@+id/lampIcon"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/header_icon_height"
+            android:layout_marginTop="@dimen/dialog_item_margin"
+            android:contentDescription="@string/main_device_icon"
+            app:srcCompat="@drawable/ic_hue_lamp_color" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/header_icon_height"
+            android:layout_marginTop="@dimen/dialog_item_margin"
+            android:contentDescription="@string/main_device_icon"
+            app:srcCompat="@drawable/ic_hue_lamp_base" />
+
+        <TextView
+            android:id="@+id/nameTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/lampIcon"
+            android:layout_marginTop="@dimen/dialog_item_margin"
+            android:text="@string/placeholder"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/dialog_item_margin"
+        android:background="?attr/dividerColor" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dialog_item_margin"
+        android:orientation="horizontal"
+        android:paddingStart="?dialogPreferredPadding"
+        android:paddingEnd="?dialogPreferredPadding"
+        tools:ignore="ButtonStyle">
+
+        <Button
+            android:id="@+id/offBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/hue_off" />
+
+        <Button
+            android:id="@+id/onBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/hue_on" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/dialog_item_margin"
+        android:background="?attr/dividerColor" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="?dialogPreferredPadding"
+        android:paddingEnd="?dialogPreferredPadding">
+
+        <TextView
+            android:id="@+id/briTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dialog_item_margin"
+            android:text="@string/hue_brightness" />
+
+        <SeekBar
+            android:id="@+id/briBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="100" />
+
+        <TextView
+            android:id="@+id/ctTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dialog_item_margin"
+            android:text="@string/hue_color_temperature" />
+
+        <SeekBar
+            android:id="@+id/ctBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="4800" />
+
+        <TextView
+            android:id="@+id/hueTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dialog_item_margin"
+            android:text="@string/hue_hue" />
+
+        <SeekBar
+            android:id="@+id/hueBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="359" />
+
+        <TextView
+            android:id="@+id/satTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dialog_item_margin"
+            android:text="@string/hue_saturation" />
+
+        <SeekBar
+            android:id="@+id/satBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="100" />
+
+    </LinearLayout>
+</LinearLayout>
