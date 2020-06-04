@@ -1,0 +1,4 @@
+- Add Spanish translation
+- Add Tasmota support
+- Add support for web authentication
+- Update Hue data in real time
