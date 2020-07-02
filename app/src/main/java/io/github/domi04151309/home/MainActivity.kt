@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var hueCurrentIcon: Int = 0
     private var tasmotaPosition: Int = 0
     private var level = "one"
-    private var reset = false
+    private var reset : Boolean = false
     private val updateHandler = UpdateHandler()
     private var canReceiveRequest = false
 
@@ -509,6 +509,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onStart() {
         super.onStart()
         canReceiveRequest = true
+    }
+
+    override fun onResume() {
+        super.onResume()
+        canReceiveRequest = true
         if(reset) {
             navView!!.setCheckedItem(R.id.nav_devices)
             loadDevices()
@@ -519,10 +524,5 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onStop() {
         super.onStop()
         canReceiveRequest = false
-        if(reset) {
-            navView!!.setCheckedItem(R.id.nav_devices)
-            loadDevices()
-            reset = false
-        }
     }
 }
