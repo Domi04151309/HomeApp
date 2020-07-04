@@ -509,16 +509,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onStart() {
         super.onStart()
         canReceiveRequest = true
-    }
-
-    override fun onResume() {
-        super.onResume()
-        canReceiveRequest = true
         if(reset) {
             navView!!.setCheckedItem(R.id.nav_devices)
             loadDevices()
             reset = false
         }
+
     }
 
     override fun onStop() {
