@@ -20,10 +20,10 @@ import io.github.domi04151309.home.objects.Theme
 
 class WebActivity : AppCompatActivity() {
 
-    private var webView: WebView? = null
     private var errorOccurred = false
     private var c: Context = this
     private val nullParent: ViewGroup? = null
+    private lateinit var webView: WebView
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,16 +35,16 @@ class WebActivity : AppCompatActivity() {
         val uri = intent.getStringExtra("URI") ?: "about:blank"
         val title = intent.getStringExtra("title")
         webView = findViewById(R.id.webView)
-        val webSettings = webView!!.settings
+        val webSettings = webView.settings
         webSettings.javaScriptEnabled = true
-        webView!!.webViewClient = object : WebViewClient() {
+        webView.webViewClient = object : WebViewClient() {
 
             override fun onPageFinished(view: WebView, url: String) {
                 if (url == "about:blank") {
                     view.visibility = View.GONE
                     return
                 }
-                if (url.contains("github.com")) injectCSS(webView!!)
+                if (url.contains("github.com")) injectCSS(webView)
                 progress.visibility = View.GONE
                 view.visibility = View.VISIBLE
                 super.onPageFinished(view, url)
@@ -72,7 +72,7 @@ class WebActivity : AppCompatActivity() {
                 errorView.visibility = View.VISIBLE
             }
         }
-        webView!!.loadUrl(uri)
+        webView.loadUrl(uri)
         if (title != null)
             setTitle(title)
     }
@@ -98,8 +98,8 @@ class WebActivity : AppCompatActivity() {
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_BACK && webView!!.canGoBack() && !errorOccurred) {
-            webView!!.goBack()
+        if (keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack() && !errorOccurred) {
+            webView.goBack()
             return true
         }
         return super.onKeyDown(keyCode, event)

@@ -35,14 +35,14 @@ class HueLampActivity : AppCompatActivity() {
 
     private var canReceiveRequest: Boolean = false
     private var isRoom: Boolean = false
-    private var queue: RequestQueue? = null
     private var lightDataRequest: JsonObjectRequest? = null
     private var roomDataRequest: JsonObjectRequest? = null
     private var scenesRequest: JsonObjectRequest? = null
-    private var hueAPI: HueAPI? = null
     private var address: String = ""
     private var selectedScene: CharSequence = ""
     private var selectedSceneName: CharSequence = ""
+    private lateinit var hueAPI: HueAPI
+    private lateinit var queue: RequestQueue
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Theme.set(this)
@@ -89,7 +89,7 @@ class HueLampActivity : AppCompatActivity() {
 
         // Selected item is a whole room
         if (isRoom) {
-            roomDataRequest = JsonObjectRequest(Request.Method.GET, address + "api/" + hueAPI!!.getUsername() + "/groups/" + id, null,
+            roomDataRequest = JsonObjectRequest(Request.Method.GET, address + "api/" + hueAPI.getUsername() + "/groups/" + id, null,
                     Response.Listener { response ->
                         nameTxt.text = response.getString("name")
                         val action = response.getJSONObject("action")
@@ -124,14 +124,14 @@ class HueLampActivity : AppCompatActivity() {
                     }
             )
 
-            scenesRequest = JsonObjectRequest(Request.Method.GET, address + "api/" + hueAPI!!.getUsername() + "/scenes/", null,
+            scenesRequest = JsonObjectRequest(Request.Method.GET, address + "api/" + hueAPI.getUsername() + "/scenes/", null,
                     Response.Listener { response ->
                         try {
                             val gridItems: ArrayList<ScenesGridItem> = ArrayList(response.length())
                             var currentObjectName: String
                             var currentObject: JSONObject
                             for (i in 0 until response.length()) {
-                                currentObjectName = response.names()!!.getString(i)
+                                currentObjectName = response.names()?.getString(i) ?: ""
                                 currentObject = response.getJSONObject(currentObjectName)
                                 if (currentObject.getString("group") == id) {
                                     val scene = ScenesGridItem(currentObject.getString("name"))
@@ -156,11 +156,11 @@ class HueLampActivity : AppCompatActivity() {
             )
 
             findViewById<Button>(R.id.onBtn).setOnClickListener {
-                hueAPI!!.switchGroupByID(id, true)
+                hueAPI.switchGroupByID(id, true)
             }
 
             findViewById<Button>(R.id.offBtn).setOnClickListener {
-                hueAPI!!.switchGroupByID(id, false)
+                hueAPI.switchGroupByID(id, false)
             }
 
             briBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
@@ -169,7 +169,7 @@ class HueLampActivity : AppCompatActivity() {
                     canReceiveRequest = false
                 }
                 override fun onStopTrackingTouch(seekBar: SeekBar) {
-                    hueAPI!!.changeBrightnessOfGroup(id, seekBar.progress)
+                    hueAPI.changeBrightnessOfGroup(id, seekBar.progress)
                     canReceiveRequest = true
                 }
             })
@@ -185,7 +185,7 @@ class HueLampActivity : AppCompatActivity() {
                     canReceiveRequest = false
                 }
                 override fun onStopTrackingTouch(seekBar: SeekBar) {
-                    hueAPI!!.changeColorTemperatureOfGroup(id, seekBar.progress + 153)
+                    hueAPI.changeColorTemperatureOfGroup(id, seekBar.progress + 153)
                     canReceiveRequest = true
                 }
             })
@@ -201,7 +201,7 @@ class HueLampActivity : AppCompatActivity() {
                     canReceiveRequest = false
                 }
                 override fun onStopTrackingTouch(seekBar: SeekBar) {
-                    hueAPI!!.changeHueOfGroup(id, seekBar.progress)
+                    hueAPI.changeHueOfGroup(id, seekBar.progress)
                     canReceiveRequest = true
                 }
             })
@@ -217,7 +217,7 @@ class HueLampActivity : AppCompatActivity() {
                     canReceiveRequest = false
                 }
                 override fun onStopTrackingTouch(seekBar: SeekBar) {
-                    hueAPI!!.changeSaturationOfGroup(id, seekBar.progress)
+                    hueAPI.changeSaturationOfGroup(id, seekBar.progress)
                     canReceiveRequest = true
                 }
             })
@@ -227,9 +227,9 @@ class HueLampActivity : AppCompatActivity() {
                 if (hiddenText == "add") {
                     startActivity(Intent(this, HueSceneActivity::class.java).putExtra("deviceId", deviceId).putExtra("room", id))
                 } else {
-                    hueAPI!!.activateSceneOfGroup(id, hiddenText)
+                    hueAPI.activateSceneOfGroup(id, hiddenText)
                     Handler().postDelayed({
-                        queue!!.add(roomDataRequest)
+                        queue.add(roomDataRequest)
                     }, 200)
                 }
             }
@@ -239,7 +239,7 @@ class HueLampActivity : AppCompatActivity() {
 
         // Selected item is a single light
         else {
-            lightDataRequest = JsonObjectRequest(Request.Method.GET,  address + "api/" + hueAPI!!.getUsername() + "/lights/" + id, null,
+            lightDataRequest = JsonObjectRequest(Request.Method.GET,  address + "api/" + hueAPI.getUsername() + "/lights/" + id, null,
                 Response.Listener { response ->
                     nameTxt.text = response.getString("name")
                     val state = response.getJSONObject("state")
@@ -277,16 +277,16 @@ class HueLampActivity : AppCompatActivity() {
             gridView.visibility = View.GONE
 
             findViewById<Button>(R.id.onBtn).setOnClickListener {
-                hueAPI!!.switchLightByID(id, true)
+                hueAPI.switchLightByID(id, true)
             }
 
             findViewById<Button>(R.id.offBtn).setOnClickListener {
-                hueAPI!!.switchLightByID(id, false)
+                hueAPI.switchLightByID(id, false)
             }
 
             briBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                    if (fromUser) hueAPI!!.changeBrightness(id, seekBar.progress)
+                    if (fromUser) hueAPI.changeBrightness(id, seekBar.progress)
                 }
                 override fun onStartTrackingTouch(seekBar: SeekBar) {
                     canReceiveRequest = false
@@ -298,7 +298,7 @@ class HueLampActivity : AppCompatActivity() {
 
             ctBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                    if (fromUser) hueAPI!!.changeColorTemperature(id, seekBar.progress + 153)
+                    if (fromUser) hueAPI.changeColorTemperature(id, seekBar.progress + 153)
                     DrawableCompat.setTint(
                             DrawableCompat.wrap(lampIcon.drawable),
                             HueUtils.ctToRGB(seekBar.progress + 153)
@@ -314,7 +314,7 @@ class HueLampActivity : AppCompatActivity() {
 
             hueBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                    if (fromUser) hueAPI!!.changeHue(id, seekBar.progress)
+                    if (fromUser) hueAPI.changeHue(id, seekBar.progress)
                     DrawableCompat.setTint(
                             DrawableCompat.wrap(lampIcon.drawable),
                             HueUtils.hueSatToRGB(seekBar.progress, satBar.progress)
@@ -330,7 +330,7 @@ class HueLampActivity : AppCompatActivity() {
 
             satBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                    if (fromUser) hueAPI!!.changeSaturation(id, seekBar.progress)
+                    if (fromUser) hueAPI.changeSaturation(id, seekBar.progress)
                     DrawableCompat.setTint(
                             DrawableCompat.wrap(lampIcon.drawable),
                             HueUtils.hueSatToRGB(hueBar.progress, seekBar.progress)
@@ -345,12 +345,12 @@ class HueLampActivity : AppCompatActivity() {
             })
         }
 
-        if(isRoom) queue!!.add(scenesRequest)
+        if(isRoom) queue.add(scenesRequest)
         val updateHandler = UpdateHandler()
         updateHandler.setUpdateFunction {
-            if (canReceiveRequest && hueAPI?.readyForRequest == true) {
-                if(isRoom) queue!!.add(roomDataRequest)
-                else queue!!.add(lightDataRequest)
+            if (canReceiveRequest && hueAPI.readyForRequest) {
+                if(isRoom) queue.add(roomDataRequest)
+                else queue.add(lightDataRequest)
             }
         }
     }
@@ -378,11 +378,11 @@ class HueLampActivity : AppCompatActivity() {
                     .setView(view)
                     .setPositiveButton(android.R.string.ok) { _, _ ->
                         val requestObject = "{\"name\":\"" + input.text.toString() + "\"}"
-                        val renameSceneRequest = CustomJsonArrayRequest(Request.Method.PUT, address + "api/" + hueAPI!!.getUsername() + "/scenes/$selectedScene", JSONObject(requestObject),
-                                Response.Listener { queue!!.add(scenesRequest) },
+                        val renameSceneRequest = CustomJsonArrayRequest(Request.Method.PUT, address + "api/" + hueAPI.getUsername() + "/scenes/$selectedScene", JSONObject(requestObject),
+                                Response.Listener { queue.add(scenesRequest) },
                                 Response.ErrorListener { e -> Log.e(Global.LOG_TAG, e.toString()) }
                         )
-                        queue!!.add(renameSceneRequest)
+                        queue.add(renameSceneRequest)
                     }
                     .setNegativeButton(android.R.string.cancel) { _, _ -> }
                     .show()
@@ -391,11 +391,11 @@ class HueLampActivity : AppCompatActivity() {
                     .setTitle(R.string.str_delete)
                     .setMessage(R.string.hue_delete_scene)
                     .setPositiveButton(R.string.str_delete) { _, _ ->
-                        val deleteSceneRequest = CustomJsonArrayRequest(Request.Method.DELETE, address + "api/" + hueAPI!!.getUsername() + "/scenes/" + selectedScene, null,
-                                Response.Listener { queue!!.add(scenesRequest) },
+                        val deleteSceneRequest = CustomJsonArrayRequest(Request.Method.DELETE, address + "api/" + hueAPI.getUsername() + "/scenes/" + selectedScene, null,
+                                Response.Listener { queue.add(scenesRequest) },
                                 Response.ErrorListener { e -> Log.e(Global.LOG_TAG, e.toString()) }
                         )
-                        queue!!.add(deleteSceneRequest)
+                        queue.add(deleteSceneRequest)
                     }
                     .setNegativeButton(android.R.string.cancel) { _, _ -> }
                     .show()

@@ -23,8 +23,8 @@ class HueConnectActivity : AppCompatActivity() {
 
     private var running = false
     private var activityStarted = false
-    private var queue: RequestQueue? = null
-    private var requestToRegisterUser: CustomJsonArrayRequest? = null
+    private lateinit var queue: RequestQueue
+    private lateinit var requestToRegisterUser: CustomJsonArrayRequest
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Theme.setNoActionBar(this)
@@ -59,7 +59,7 @@ class HueConnectActivity : AppCompatActivity() {
                 }
         )
 
-        queue!!.add(requestToRegisterUser)
+        queue.add(requestToRegisterUser)
 
         findViewById<Button>(R.id.cancel_btn).setOnClickListener {
             finish()
@@ -82,7 +82,7 @@ class HueConnectActivity : AppCompatActivity() {
         val handlerDelay = 1000L
         permissionHandler.postDelayed(object : Runnable {
             override fun run() {
-                queue!!.add(requestToRegisterUser)
+                queue.add(requestToRegisterUser)
                 if (running) permissionHandler.postDelayed(this, handlerDelay)
             }
         }, handlerDelay)

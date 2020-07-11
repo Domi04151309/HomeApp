@@ -10,7 +10,6 @@ import com._8rine.upnpdiscovery.UPnPDevice
 import com._8rine.upnpdiscovery.UPnPDiscovery
 import android.os.Handler
 import androidx.appcompat.app.AlertDialog
-import android.view.View
 import android.widget.AdapterView
 import android.widget.TextView
 import io.github.domi04151309.home.data.DeviceItem
@@ -21,14 +20,14 @@ import io.github.domi04151309.home.objects.Theme
 
 class SearchDevicesActivity : AppCompatActivity() {
 
-    private var listView: ListView? = null
+    private lateinit var listView: ListView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Theme.set(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_devices)
 
-        listView = findViewById<View>(R.id.listView) as ListView
+        listView = findViewById(R.id.listView)
         val devices = Devices(this)
         val addresses = mutableListOf<String>()
 
@@ -36,10 +35,10 @@ class SearchDevicesActivity : AppCompatActivity() {
         val waitItem = ListViewItem(resources.getString(R.string.pref_add_wait))
         waitItem.summary = resources.getQuantityString(R.plurals.pref_add_wait_summary, 10, 10)
         waitItem.icon = R.drawable.ic_info
-        listView!!.adapter = ListViewAdapter(this, arrayListOf(waitItem))
+        listView.adapter = ListViewAdapter(this, arrayListOf(waitItem))
         Thread(Runnable {
             Thread.sleep(1000L)
-            val firstChildSummary = listView!!.getChildAt(0).findViewById<TextView>(R.id.summary)
+            val firstChildSummary = listView.getChildAt(0).findViewById<TextView>(R.id.summary)
             var count: Int
             for (i in 1 until 10) {
                 runOnUiThread {
@@ -124,11 +123,11 @@ class SearchDevicesActivity : AppCompatActivity() {
                 listItems += routerItem
                 addresses += routerIp
             }
-            listView!!.adapter = ListViewAdapter(this, listItems)
+            listView.adapter = ListViewAdapter(this, listItems)
         }, 10000)
 
         //Handle clicks
-        listView!!.onItemClickListener = AdapterView.OnItemClickListener { _, view, _, _ ->
+        listView.onItemClickListener = AdapterView.OnItemClickListener { _, view, _, _ ->
             val action =  view.findViewById<TextView>(R.id.hidden).text
             if (action != "") {
                 val hidden = view.findViewById<TextView>(R.id.hidden).text.toString()

@@ -16,9 +16,9 @@ import io.github.domi04151309.home.objects.Theme
 
 class DevicesActivity : AppCompatActivity() {
 
-    private var devices: Devices? = null
-    private var listView: ListView? = null
     private var reset = true
+    private lateinit var devices: Devices
+    private lateinit var listView: ListView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Theme.set(this)
@@ -28,11 +28,11 @@ class DevicesActivity : AppCompatActivity() {
         devices = Devices(this)
         listView = findViewById<View>(R.id.listView) as ListView
 
-        listView!!.onItemClickListener = AdapterView.OnItemClickListener { _, view, pos, _ ->
+        listView.onItemClickListener = AdapterView.OnItemClickListener { _, view, pos, _ ->
             val action =  view.findViewById<TextView>(R.id.hidden).text
             if (action == "edit") {
                 reset = true
-                val deviceId = devices!!.getDeviceByIndex(pos).id
+                val deviceId = devices.getDeviceByIndex(pos).id
                 startActivity(Intent(this, EditDeviceActivity::class.java).putExtra("deviceId", deviceId))
             } else if (action == "add") {
                 reset = true
@@ -51,16 +51,16 @@ class DevicesActivity : AppCompatActivity() {
     }
 
     private fun loadDevices(){
-        val listItems: ArrayList<ListViewItem> = ArrayList(devices!!.length())
+        val listItems: ArrayList<ListViewItem> = ArrayList(devices.length())
         try {
-            if (devices!!.length() == 0) {
+            if (devices.length() == 0) {
                 val emptyItem = ListViewItem(resources.getString(R.string.main_no_devices))
                 emptyItem.hidden = "none"
                 listItems += emptyItem
             } else {
                 var currentDevice: DeviceItem
-                for (i in 0 until devices!!.length()) { 
-                    currentDevice = devices!!.getDeviceByIndex(i)
+                for (i in 0 until devices.length()) {
+                    currentDevice = devices.getDeviceByIndex(i)
                     val deviceItem = ListViewItem(currentDevice.name)
                     deviceItem.summary = currentDevice.address
                     deviceItem.hidden = "edit"
@@ -82,7 +82,7 @@ class DevicesActivity : AppCompatActivity() {
             Log.e(Global.LOG_TAG, e.toString())
         }
 
-        listView!!.adapter = ListViewAdapter(this, listItems)
+        listView.adapter = ListViewAdapter(this, listItems)
     }
 
     override fun onStart() {

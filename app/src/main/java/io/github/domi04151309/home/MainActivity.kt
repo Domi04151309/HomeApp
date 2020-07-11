@@ -35,13 +35,6 @@ import io.github.domi04151309.home.tasmota.Tasmota
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    private var devices: Devices? = null
-    private var listView: ListView? = null
-    private var deviceIcon: ImageView? = null
-    private var deviceName: TextView? = null
-    private var fab: FloatingActionButton? = null
-    private var drawerLayout: DrawerLayout? = null
-    private var navView: NavigationView? = null
     private var currentView: View? = null
     private var currentDevice = ""
     private var hueRoom: String = ""
@@ -52,13 +45,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var reset : Boolean = false
     private val updateHandler = UpdateHandler()
     private var canReceiveRequest = false
+    private lateinit var devices: Devices
+    private lateinit var listView: ListView
+    private lateinit var deviceIcon: ImageView
+    private lateinit var deviceName: TextView
+    private lateinit var fab: FloatingActionButton
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var navView: NavigationView
 
     private val hueGroupStateListener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
         if (compoundButton.isPressed) {
             val row = compoundButton.parent as ViewGroup
             val hidden = row.findViewById<TextView>(R.id.hidden).text
             val room = hidden.substring(hidden.lastIndexOf("@") + 1)
-            hueAPI!!.switchGroupByID(room, b)
+            hueAPI?.switchGroupByID(room, b)
         }
     }
 
@@ -68,9 +68,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val hidden = row.findViewById<TextView>(R.id.hidden).text.toString()
             if (hidden.startsWith("room#")) {
                 val room = hidden.substring(hidden.lastIndexOf("#") + 1)
-                hueAPI!!.switchGroupByID(room, b)
+                hueAPI?.switchGroupByID(room, b)
             } else {
-                hueAPI!!.switchLightByID(hidden, b)
+                hueAPI?.switchLightByID(hidden, b)
             }
         }
     }
@@ -95,7 +95,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         commandsObject.selectCommand(i)
                         val commandItem = ListViewItem(commandsObject.getSelectedTitle())
                         commandItem.summary = commandsObject.getSelectedSummary()
-                        commandItem.hidden = devices!!.getDeviceById(holder.deviceId).address + commandsObject.getSelected()
+                        commandItem.hidden = devices.getDeviceById(holder.deviceId).address + commandsObject.getSelected()
                         commandItem.icon = R.drawable.ic_do
                         listItems += commandItem
                     } catch (e: JSONException) {
@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     }
                 }
                 updateList(listItems)
-                val device = devices!!.getDeviceById(holder.deviceId)
+                val device = devices.getDeviceById(holder.deviceId)
                 setLevelTwo(device.iconId, device.name)
             } else {
                 handleErrorOnLevelOne(holder.errorMessage)
@@ -126,7 +126,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     val listItems: ArrayList<ListViewItem> = ArrayList(holder.response.length())
                     for (i in 0 until holder.response.length()) {
                         try {
-                            currentObjectName = holder.response.names()!!.getString(i)
+                            currentObjectName = holder.response.names()?.getString(i) ?: ""
                             currentObject = holder.response.getJSONObject(currentObjectName)
                             val listItem = ListViewItem(currentObject.getString("name"))
                             listItem.summary = resources.getString(R.string.hue_tap)
@@ -140,7 +140,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         }
                     }
                     updateList(listItems)
-                    val device = devices!!.getDeviceById(holder.deviceId)
+                    val device = devices.getDeviceById(holder.deviceId)
                     hueCurrentIcon = device.iconId
                     setLevelTwoHue(holder.deviceId, device.iconId, device.name)
                 } catch (e: Exception) {
@@ -166,7 +166,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     val listItems: ArrayList<ListViewItem> = arrayListOf(roomItem)
                     for (i in 1 until (holder.response.length() + 1)) {
                         try {
-                            currentObjectName = holder.response.names()!!.getString(i - 1)
+                            currentObjectName = holder.response.names()?.getString(i - 1) ?: ""
                             currentObject = holder.response.getJSONObject(currentObjectName)
                             val listItem = ListViewItem(currentObject.getString("name"))
                             listItem.summary = resources.getString(R.string.hue_tap)
@@ -180,15 +180,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         }
                     }
                     updateList(listItems)
-                    setLevelThreeHue(currentView!!.findViewById<TextView>(R.id.title).text)
+                    setLevelThreeHue(currentView?.findViewById<TextView>(R.id.title)?.text ?: "")
                 } catch (e: Exception) {
-                    setLevelTwo(hueCurrentIcon, devices!!.getDeviceById(holder.deviceId).name)
-                    currentView!!.findViewById<TextView>(R.id.summary).text = resources.getString(R.string.err_wrong_format_summary)
+                    setLevelTwo(hueCurrentIcon, devices.getDeviceById(holder.deviceId).name)
+                    currentView?.findViewById<TextView>(R.id.summary)?.text = resources.getString(R.string.err_wrong_format_summary)
                     Log.e(Global.LOG_TAG, e.toString())
                 }
             } else {
-                setLevelTwoHue(holder.deviceId, hueCurrentIcon, devices!!.getDeviceById(holder.deviceId).name)
-                currentView!!.findViewById<TextView>(R.id.summary).text = holder.errorMessage
+                setLevelTwoHue(holder.deviceId, hueCurrentIcon, devices.getDeviceById(holder.deviceId).name)
+                currentView?.findViewById<TextView>(R.id.summary)?.text = holder.errorMessage
             }
         }
     }
@@ -198,8 +198,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             if (holder.response != null) {
                 try {
                     for (i in 0 until holder.response.length()) {
-                        listView!!.getChildAt(i).findViewById<Switch>(R.id.state).isChecked = holder.response
-                                .getJSONObject(holder.response.names()!!.getString(i))
+                        listView.getChildAt(i).findViewById<Switch>(R.id.state).isChecked = holder.response
+                                .getJSONObject(holder.response.names()?.getString(i) ?: "")
                                 .getJSONObject("action")
                                 .getBoolean("on")
                     }
@@ -213,8 +213,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             if (holder.response != null) {
                 try {
                     for (i in 1 until (holder.response.length() + 1)) {
-                        listView!!.getChildAt(i).findViewById<Switch>(R.id.state).isChecked = holder.response
-                                .getJSONObject(holder.response.names()!!.getString(i - 1))
+                        listView.getChildAt(i).findViewById<Switch>(R.id.state).isChecked = holder.response
+                                .getJSONObject(holder.response.names()?.getString(i - 1) ?: "")
                                 .getJSONObject("state")
                                 .getBoolean("on")
                     }
@@ -232,7 +232,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private val tasmotaRequestCallBack = object : Tasmota.RequestCallBack {
 
         override fun onItemsChanged(context: Context) {
-            listView!!.adapter = ListViewAdapter(context, tasmota!!.loadList(), false)
+            listView.adapter = ListViewAdapter(context, tasmota?.loadList() ?: arrayListOf(), false)
         }
     }
 
@@ -242,26 +242,26 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
 
         devices = Devices(this)
-        listView = findViewById<View>(R.id.listView) as ListView
+        listView = findViewById(R.id.listView)
         deviceIcon = findViewById(R.id.deviceIcon)
         deviceName = findViewById(R.id.deviceName)
         fab = findViewById(R.id.fab)
         drawerLayout = findViewById(R.id.drawer_layout)
         navView = findViewById(R.id.nav_view)
 
-        fab!!.setOnClickListener {
+        fab.setOnClickListener {
             reset = true
             startActivity(Intent(this, DevicesActivity::class.java))
         }
 
         findViewById<ImageView>(R.id.menu_icon).setOnClickListener {
-            drawerLayout!!.openDrawer(GravityCompat.START)
+            drawerLayout.openDrawer(GravityCompat.START)
         }
 
-        navView!!.setNavigationItemSelectedListener(this)
-        navView!!.setCheckedItem(R.id.nav_devices)
+        navView.setNavigationItemSelectedListener(this)
+        navView.setCheckedItem(R.id.nav_devices)
 
-        listView!!.onItemClickListener = AdapterView.OnItemClickListener { _, view, _, _ ->
+        listView.onItemClickListener = AdapterView.OnItemClickListener { _, view, _, _ ->
             currentView = view
             val title = view.findViewById<TextView>(R.id.title).text.toString()
             if (title == resources.getString(R.string.main_no_devices) || title == resources.getString(R.string.err_wrong_format))
@@ -278,10 +278,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     hueRoom = hidden.substring(hidden.lastIndexOf("@") + 1)
                     hueRoomState = view.findViewById<Switch>(R.id.state).isChecked
                     val localIds = JSONArray(hidden.substring(0 , hidden.indexOf("@")))
-                    hueAPI!!.loadLightsByIDs(localIds, hueRequestCallBack)
+                    hueAPI?.loadLightsByIDs(localIds, hueRequestCallBack)
                     updateHandler.setUpdateFunction {
                         if (canReceiveRequest && hueAPI?.readyForRequest == true) {
-                            hueAPI!!.loadLightsByIDs(localIds, hueRequestUpdaterCallBack)
+                            hueAPI?.loadLightsByIDs(localIds, hueRequestUpdaterCallBack)
                         }
                     }
                 }
@@ -289,9 +289,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     startActivity(Intent(this, HueLampActivity::class.java).putExtra("ID", hidden).putExtra("Device", currentDevice))
                 "two_tasmota" -> {
                     when (hidden) {
-                        "add" -> tasmota!!.addToList(tasmotaRequestCallBack)
-                        "execute_once" -> tasmota!!.executeOnce()
-                        else -> tasmota!!.execute(view.findViewById<TextView>(R.id.summary).text.toString())
+                        "add" -> tasmota?.addToList(tasmotaRequestCallBack)
+                        "execute_once" -> tasmota?.executeOnce()
+                        else -> tasmota?.execute(view.findViewById<TextView>(R.id.summary).text.toString())
                     }
                 }
             }
@@ -302,10 +302,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         //Handle shortcut
         if(intent.hasExtra("device")) {
             val deviceId = intent.getStringExtra("device") ?: ""
-            if (devices!!.idExists(deviceId)) {
-                val device = devices!!.getDeviceById(deviceId)
-                deviceIcon!!.setImageResource(device.iconId)
-                deviceName!!.text = device.name
+            if (devices.idExists(deviceId)) {
+                val device = devices.getDeviceById(deviceId)
+                deviceIcon.setImageResource(device.iconId)
+                deviceName.text = device.name
                 handleLevelOne(deviceId)
             } else {
                 loadDevices()
@@ -317,7 +317,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun handleLevelOne(deviceId: String) {
-        val deviceObj = devices!!.getDeviceById(deviceId)
+        val deviceObj = devices.getDeviceById(deviceId)
         when (deviceObj.mode) {
             "Website" -> {
                 startActivity(
@@ -335,7 +335,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             "Tasmota" -> {
                 tasmota = Tasmota(this, deviceId)
-                updateList(tasmota!!.loadList())
+                updateList(tasmota?.loadList() ?: arrayListOf())
                 setLevelTwoTasmota(deviceObj.iconId, deviceObj.name)
             }
             else ->
@@ -349,23 +349,23 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             Toast.makeText(this, err, Toast.LENGTH_LONG).show()
         } else {
             setLevelOne()
-            currentView!!.findViewById<TextView>(R.id.summary).text = err
+            currentView?.findViewById<TextView>(R.id.summary)?.text = err
         }
     }
 
     private fun loadDevices() {
         updateHandler.stop()
-        val listItems: ArrayList<ListViewItem> = ArrayList(devices!!.length())
+        val listItems: ArrayList<ListViewItem> = ArrayList(devices.length())
         try {
-            if (devices!!.length() == 0) {
+            if (devices.length() == 0) {
                 val emptyItem = ListViewItem(resources.getString(R.string.main_no_devices))
                 emptyItem.summary = resources.getString(R.string.main_no_devices_summary)
                 emptyItem.icon = R.drawable.ic_info
                 listItems += emptyItem
             } else {
                 var currentDevice: DeviceItem
-                for (i in 0 until devices!!.length()) {
-                    currentDevice = devices!!.getDeviceByIndex(i)
+                for (i in 0 until devices.length()) {
+                    currentDevice = devices.getDeviceByIndex(i)
                     val deviceItem = ListViewItem(currentDevice.name)
                     deviceItem.summary = resources.getString(R.string.main_tap_to_connect)
                     deviceItem.hidden = currentDevice.id
@@ -387,17 +387,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun loadHueGroups() {
-        hueAPI!!.loadGroups(hueRequestCallBack)
+        hueAPI?.loadGroups(hueRequestCallBack)
         updateHandler.setUpdateFunction {
             if (canReceiveRequest && hueAPI?.readyForRequest == true) {
-                hueAPI!!.loadGroups(hueRequestUpdaterCallBack)
+                hueAPI?.loadGroups(hueRequestUpdaterCallBack)
             }
         }
     }
 
     override fun onBackPressed() {
-        if (drawerLayout!!.isDrawerOpen(GravityCompat.START))
-            drawerLayout!!.closeDrawer(GravityCompat.START)
+        if (drawerLayout.isDrawerOpen(GravityCompat.START))
+            drawerLayout.closeDrawer(GravityCompat.START)
         else if (level == "two" || level == "two_hue" || level == "two_tasmota")
             loadDevices()
         else if (level == "three_hue")
@@ -427,14 +427,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 reset = true
             }
         }
-        drawerLayout!!.closeDrawer(GravityCompat.START)
+        drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
 
     override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
         super.onCreateContextMenu(menu, v, menuInfo)
         tasmotaPosition = (menuInfo as AdapterView.AdapterContextMenuInfo).position
-        val hidden = listView!!.getChildAt(tasmotaPosition).findViewById<TextView>(R.id.hidden).text
+        val hidden = listView.getChildAt(tasmotaPosition).findViewById<TextView>(R.id.hidden).text
         if (hidden == "tasmota_command") {
             menuInflater.inflate(R.menu.activity_main_tasmota_context, menu)
         }
@@ -443,7 +443,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onContextItemSelected(item: MenuItem): Boolean {
         when (item.title) {
             resources.getString(R.string.str_edit) -> {
-                val editing = listView!!.getChildAt(tasmotaPosition)
+                val editing = listView.getChildAt(tasmotaPosition)
                 tasmota!!.removeFromList(tasmotaRequestCallBack, tasmotaPosition)
                 tasmota!!.addToList(
                         tasmotaRequestCallBack,
@@ -456,7 +456,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         .setTitle(R.string.str_delete)
                         .setMessage(R.string.tasmota_delete_command)
                         .setPositiveButton(R.string.str_delete) { _, _ ->
-                            tasmota!!.removeFromList(tasmotaRequestCallBack, tasmotaPosition)
+                            tasmota?.removeFromList(tasmotaRequestCallBack, tasmotaPosition)
                         }
                         .setNegativeButton(android.R.string.cancel) { _, _ -> }
                         .show()
@@ -468,49 +468,49 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun setLevelOne() {
         val theme = resources.newTheme()
         theme.applyStyle(R.style.TintHouse, false)
-        deviceIcon!!.setImageDrawable(resources.getDrawable(R.drawable.ic_home, theme))
-        deviceName!!.text = resources.getString(R.string.main_device_name)
-        fab!!.show()
+        deviceIcon.setImageDrawable(resources.getDrawable(R.drawable.ic_home, theme))
+        deviceName.text = resources.getString(R.string.main_device_name)
+        fab.show()
         level = "one"
     }
 
     private fun setLevelTwo(icon: Int, title: CharSequence) {
-        fab!!.hide()
-        deviceIcon!!.setImageResource(icon)
-        deviceName!!.text = title
+        fab.hide()
+        deviceIcon.setImageResource(icon)
+        deviceName.text = title
         level = "two"
     }
 
     private fun setLevelTwoHue(deviceId: String, icon: Int, title: CharSequence) {
-        fab!!.hide()
-        deviceIcon!!.setImageResource(icon)
-        deviceName!!.text = title
+        fab.hide()
+        deviceIcon.setImageResource(icon)
+        deviceName.text = title
         currentDevice = deviceId
         level = "two_hue"
     }
 
     private fun setLevelTwoTasmota(icon: Int, title: CharSequence) {
-        fab!!.hide()
-        deviceIcon!!.setImageResource(icon)
-        deviceName!!.text = title
+        fab.hide()
+        deviceIcon.setImageResource(icon)
+        deviceName.text = title
         level = "two_tasmota"
     }
 
     private fun setLevelThreeHue(title: CharSequence) {
-        deviceIcon!!.setImageResource(R.drawable.ic_device_lamp)
-        deviceName!!.text = title
+        deviceIcon.setImageResource(R.drawable.ic_device_lamp)
+        deviceName.text = title
         level = "three_hue"
     }
 
     private fun updateList(items: ArrayList<ListViewItem>) {
-        listView!!.adapter = ListViewAdapter(this, items)
+        listView.adapter = ListViewAdapter(this, items)
     }
 
     override fun onStart() {
         super.onStart()
         canReceiveRequest = true
         if(reset) {
-            navView!!.setCheckedItem(R.id.nav_devices)
+            navView.setCheckedItem(R.id.nav_devices)
             loadDevices()
             reset = false
         }
