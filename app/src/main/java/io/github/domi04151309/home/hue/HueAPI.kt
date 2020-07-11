@@ -23,7 +23,7 @@ class HueAPI(context: Context, deviceId: String) {
     private val selectedDevice = deviceId
     private var url = Devices(c).getDeviceById(deviceId).address
     private val queue = Volley.newRequestQueue(c)
-    var readyForRequest = true
+    var readyForRequest: Boolean = true
 
     interface RequestCallBack {
         fun onGroupsLoaded(holder: RequestCallbackObject)

@@ -10,9 +10,9 @@ import io.github.domi04151309.home.R
 
 object Global {
 
-    const val LOG_TAG = "HomeApp"
+    const val LOG_TAG: String = "HomeApp"
 
-    const val DEFAULT_JSON = "{\"devices\":{}}"
+    const val DEFAULT_JSON: String = "{\"devices\":{}}"
 
     fun getIcon(icon: String): Int {
         return when (icon) {
