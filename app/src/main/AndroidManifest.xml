@@ -78,6 +78,7 @@
         <activity
             android:name=".WebActivity"
             android:label="@string/webView"
+            android:configChanges="orientation|screenSize"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
