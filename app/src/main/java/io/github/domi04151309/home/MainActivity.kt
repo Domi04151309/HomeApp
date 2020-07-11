@@ -22,6 +22,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.data.ListViewItem
 import io.github.domi04151309.home.data.RequestCallbackObject
@@ -230,6 +231,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         override fun onItemsChanged(context: Context) {
             listView.adapter = ListViewAdapter(context, tasmota?.loadList() ?: arrayListOf(), false)
         }
+
+        override fun onResponse(context: Context, response: String) {
+            Snackbar.make(listView, R.string.main_execution_completed, Snackbar.LENGTH_LONG).setAction(R.string.str_show) {
+                AlertDialog.Builder(context)
+                        .setTitle(R.string.main_execution_completed)
+                        .setMessage(response)
+                        .setPositiveButton(android.R.string.ok) { _, _ -> }
+                        .show()
+            }.show()
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -286,8 +297,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 "two_tasmota" -> {
                     when (hidden) {
                         "add" -> tasmota?.addToList(tasmotaRequestCallBack)
-                        "execute_once" -> tasmota?.executeOnce()
-                        else -> tasmota?.execute(view.findViewById<TextView>(R.id.summary).text.toString())
+                        "execute_once" -> tasmota?.executeOnce(tasmotaRequestCallBack)
+                        else -> tasmota?.execute(tasmotaRequestCallBack, view.findViewById<TextView>(R.id.summary).text.toString())
                     }
                 }
             }

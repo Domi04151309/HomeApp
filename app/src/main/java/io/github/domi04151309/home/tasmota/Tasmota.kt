@@ -35,6 +35,7 @@ class Tasmota(context: Context, deviceId: String) {
 
     interface RequestCallBack {
         fun onItemsChanged(context: Context)
+        fun onResponse(context: Context, response: String)
     }
 
     fun loadList(): ArrayList<ListViewItem> {
@@ -105,10 +106,10 @@ class Tasmota(context: Context, deviceId: String) {
         callback.onItemsChanged(c)
     }
 
-    fun execute(command: String) {
+    fun execute(callback: RequestCallBack, command: String) {
         val request = StringRequest(Request.Method.GET, url + command,
                 Response.Listener { response ->
-                    Toast.makeText(c, R.string.main_execution_completed, Toast.LENGTH_LONG).show()
+                    callback.onResponse(c, response)
                 },
                 Response.ErrorListener { error ->
                     Toast.makeText(c, Global.volleyError(c, error), Toast.LENGTH_LONG).show()
@@ -117,14 +118,14 @@ class Tasmota(context: Context, deviceId: String) {
         queue.add(request)
     }
 
-    fun executeOnce() {
+    fun executeOnce(callback: RequestCallBack) {
         val view = LayoutInflater.from(c).inflate(R.layout.dialog_tasmota_execute_once, nullParent, false)
         val command = view.findViewById<EditText>(R.id.command)
         AlertDialog.Builder(c)
                 .setTitle(R.string.tasmota_execute_once)
                 .setView(LayoutInflater.from(c).inflate(R.layout.dialog_tasmota_execute_once, nullParent, false))
                 .setPositiveButton(android.R.string.ok) { _, _ ->
-                    execute(command.text.toString())
+                    execute(callback, command.text.toString())
                 }
                 .setNegativeButton(android.R.string.cancel) { _, _ -> }
                 .show()

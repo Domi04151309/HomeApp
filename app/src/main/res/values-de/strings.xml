@@ -106,6 +106,7 @@
     <string name="str_edit">Bearbeiten</string>
     <string name="str_delete">Löschen</string>
     <string name="str_reset">Zurücksetzen</string>
+    <string name="str_show">Anzeigen</string>
 
     <string name="about">Über</string>
     <string name="about_summary">Über die App</string>

@@ -108,6 +108,7 @@
     <string name="str_edit">Edit</string>
     <string name="str_delete">Delete</string>
     <string name="str_reset">Reset</string>
+    <string name="str_show">Show</string>
 
     <string name="about">About</string>
     <string name="about_summary">About the app</string>
