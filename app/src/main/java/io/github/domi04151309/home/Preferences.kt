@@ -37,11 +37,11 @@ class Preferences : AppCompatActivity() {
     class GeneralPreferenceFragment : PreferenceFragmentCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             addPreferencesFromResource(R.xml.pref_general)
-            findPreference<Preference>("devices")?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+            findPreference<Preference>("devices")?.setOnPreferenceClickListener {
                 startActivity(Intent(context, DevicesActivity::class.java))
                 true
             }
-            findPreference<Preference>("reset_json")?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+            findPreference<Preference>("reset_json")?.setOnPreferenceClickListener {
                 AlertDialog.Builder(requireContext())
                         .setTitle(R.string.pref_reset)
                         .setMessage(R.string.pref_reset_question)
@@ -53,11 +53,11 @@ class Preferences : AppCompatActivity() {
                         .show()
                 true
             }
-            findPreference<Preference>("about")?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+            findPreference<Preference>("about")?.setOnPreferenceClickListener {
                 startActivity(Intent(context, AboutActivity::class.java))
                 true
             }
-            findPreference<Preference>("header")?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+            findPreference<Preference>("header")?.setOnPreferenceClickListener {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://unsplash.com/photos/mx4mSkK9zeo")))
                 true
             }
