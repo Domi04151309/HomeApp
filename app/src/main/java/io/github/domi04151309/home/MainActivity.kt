@@ -55,20 +55,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private val hueGroupStateListener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
         if (compoundButton.isPressed) {
-            val row = compoundButton.parent as ViewGroup
-            val hidden = row.findViewById<TextView>(R.id.hidden).text
-            val room = hidden.substring(hidden.lastIndexOf("@") + 1)
-            hueAPI?.switchGroupByID(room, b)
+            val hidden = (compoundButton.parent as ViewGroup).findViewById<TextView>(R.id.hidden).text
+            hueAPI?.switchGroupByID(hidden.substring(hidden.lastIndexOf("@") + 1), b)
         }
     }
 
     private val hueLampStateListener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
         if (compoundButton.isPressed) {
-            val row = compoundButton.parent as ViewGroup
-            val hidden = row.findViewById<TextView>(R.id.hidden).text.toString()
+            val hidden = (compoundButton.parent as ViewGroup).findViewById<TextView>(R.id.hidden).text.toString()
             if (hidden.startsWith("room#")) {
-                val room = hidden.substring(hidden.lastIndexOf("#") + 1)
-                hueAPI?.switchGroupByID(room, b)
+                hueAPI?.switchGroupByID(hidden.substring(hidden.lastIndexOf("#") + 1), b)
             } else {
                 hueAPI?.switchLightByID(hidden, b)
             }
@@ -434,8 +430,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
         super.onCreateContextMenu(menu, v, menuInfo)
         tasmotaPosition = (menuInfo as AdapterView.AdapterContextMenuInfo).position
-        val hidden = listView.getChildAt(tasmotaPosition).findViewById<TextView>(R.id.hidden).text
-        if (hidden == "tasmota_command") {
+        if (listView.getChildAt(tasmotaPosition).findViewById<TextView>(R.id.hidden).text == "tasmota_command") {
             menuInflater.inflate(R.menu.activity_main_tasmota_context, menu)
         }
     }

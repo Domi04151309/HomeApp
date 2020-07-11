@@ -33,10 +33,8 @@ class HueConnectActivity : AppCompatActivity() {
 
         queue = Volley.newRequestQueue(this)
         val deviceId = intent.getStringExtra("deviceId") ?: ""
-        val url = Devices(this).getDeviceById(deviceId).address + "api"
-        val product = android.os.Build.PRODUCT
-        val jsonRequestObject = JSONObject("{\"devicetype\":\"HomeApp#$product\"}")
-        requestToRegisterUser = CustomJsonArrayRequest(Request.Method.POST, url, jsonRequestObject,
+        val jsonRequestObject = JSONObject("{\"devicetype\":\"HomeApp#${android.os.Build.PRODUCT}\"}")
+        requestToRegisterUser = CustomJsonArrayRequest(Request.Method.POST, Devices(this).getDeviceById(deviceId).address + "api", jsonRequestObject,
                 Response.Listener { response ->
                     val responseObject = response.getJSONObject(0)
                     if (responseObject.has("success")) {

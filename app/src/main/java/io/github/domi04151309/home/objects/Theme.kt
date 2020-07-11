@@ -8,7 +8,7 @@ import androidx.preference.PreferenceManager
 import androidx.core.content.ContextCompat
 import io.github.domi04151309.home.R
 
-object Theme {
+internal object Theme {
 
     fun set(context: Context) {
         when (PreferenceManager.getDefaultSharedPreferences(context).getString("theme", "light")) {

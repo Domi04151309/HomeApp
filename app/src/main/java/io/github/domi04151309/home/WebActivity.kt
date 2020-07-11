@@ -32,11 +32,8 @@ class WebActivity : AppCompatActivity() {
         setContentView(R.layout.activity_web)
         val progress = findViewById<ProgressBar>(R.id.progressBar)
         val errorView = findViewById<RelativeLayout>(R.id.error)
-        val uri = intent.getStringExtra("URI") ?: "about:blank"
-        val title = intent.getStringExtra("title")
         webView = findViewById(R.id.webView)
-        val webSettings = webView.settings
-        webSettings.javaScriptEnabled = true
+        webView.settings.javaScriptEnabled = true
         webView.webViewClient = object : WebViewClient() {
 
             override fun onPageFinished(view: WebView, url: String) {
@@ -72,9 +69,8 @@ class WebActivity : AppCompatActivity() {
                 errorView.visibility = View.VISIBLE
             }
         }
-        webView.loadUrl(uri)
-        if (title != null)
-            setTitle(title)
+        webView.loadUrl(intent.getStringExtra("URI") ?: "about:blank")
+        title = intent.getStringExtra("title")
     }
 
     private fun injectCSS(webView: WebView) {
@@ -83,13 +79,12 @@ class WebActivity : AppCompatActivity() {
             val buffer = ByteArray(inputStream.available())
             inputStream.read(buffer)
             inputStream.close()
-            val encoded = Base64.encodeToString(buffer, Base64.NO_WRAP)
             webView.loadUrl("javascript:(function() {" +
                     "var parent = document.getElementsByTagName('head').item(0);" +
                     "var style = document.createElement('style');" +
                     "style.type = 'text/css';" +
                     // Tell the browser to BASE64-decode the string into your script !!!
-                    "style.innerHTML = window.atob('" + encoded + "');" +
+                    "style.innerHTML = window.atob('" + Base64.encodeToString(buffer, Base64.NO_WRAP) + "');" +
                     "parent.appendChild(style)" +
                     "})()")
         } catch (e: Exception) {

@@ -30,7 +30,6 @@ class Preferences : AppCompatActivity() {
                 .beginTransaction()
                 .replace(R.id.settings, GeneralPreferenceFragment())
                 .commit()
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(spChanged)
     }
 

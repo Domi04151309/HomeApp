@@ -35,13 +35,10 @@ internal class ListViewAdapter(context: Context, private val itemArray: ArrayLis
         val vi: View = convertView ?: inflater.inflate(R.layout.list_item, parent, false)
         if (animate) playAnimation(vi)
         val drawableView = vi.findViewById<ImageView>(R.id.drawable)
-        val titleTxt = vi.findViewById<TextView>(R.id.title)
-        val summaryTxt = vi.findViewById<TextView>(R.id.summary)
-        val hiddenTxt = vi.findViewById<TextView>(R.id.hidden)
         val stateSwitch = vi.findViewById<Switch>(R.id.state)
-        titleTxt.text = itemArray[position].title
-        summaryTxt.text = itemArray[position].summary
-        hiddenTxt.text = itemArray[position].hidden
+        vi.findViewById<TextView>(R.id.title).text = itemArray[position].title
+        vi.findViewById<TextView>(R.id.summary).text = itemArray[position].summary
+        vi.findViewById<TextView>(R.id.hidden).text = itemArray[position].hidden
         try {
             drawableView.setImageResource(itemArray[position].icon)
         } catch (e: Exception) {

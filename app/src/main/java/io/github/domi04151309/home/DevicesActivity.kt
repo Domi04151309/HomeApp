@@ -32,8 +32,7 @@ class DevicesActivity : AppCompatActivity() {
             val action =  view.findViewById<TextView>(R.id.hidden).text
             if (action == "edit") {
                 reset = true
-                val deviceId = devices.getDeviceByIndex(pos).id
-                startActivity(Intent(this, EditDeviceActivity::class.java).putExtra("deviceId", deviceId))
+                startActivity(Intent(this, EditDeviceActivity::class.java).putExtra("deviceId", devices.getDeviceByIndex(pos).id))
             } else if (action == "add") {
                 reset = true
                 AlertDialog.Builder(this)

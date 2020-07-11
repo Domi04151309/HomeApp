@@ -8,7 +8,7 @@ import com.android.volley.ParseError
 import com.android.volley.TimeoutError
 import io.github.domi04151309.home.R
 
-object Global {
+internal object Global {
 
     const val LOG_TAG: String = "HomeApp"
 

@@ -29,12 +29,9 @@ internal class HueScenesGridAdapter(context: Context, private val itemArray: Arr
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val vi: View = convertView ?: inflater.inflate(R.layout.grid_item, parent, false)
-        val drawableView = vi.findViewById<ImageView>(R.id.drawable)
-        val nameTxt = vi.findViewById<TextView>(R.id.name)
-        val hiddenTxt = vi.findViewById<TextView>(R.id.hidden)
-        drawableView.setImageResource(itemArray[position].icon)
-        nameTxt.text = itemArray[position].name
-        hiddenTxt.text = itemArray[position].hidden
+        vi.findViewById<ImageView>(R.id.drawable).setImageResource(itemArray[position].icon)
+        vi.findViewById<TextView>(R.id.name).text = itemArray[position].name
+        vi.findViewById<TextView>(R.id.hidden).text = itemArray[position].hidden
         return vi
     }
 }

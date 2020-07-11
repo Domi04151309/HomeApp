@@ -44,7 +44,6 @@ class HueSceneActivity : AppCompatActivity() {
         val listView = findViewById<ListView>(R.id.listView)
         val nameTxt = findViewById<TextView>(R.id.nameTxt)
         val nameBox = findViewById<EditText>(R.id.nameBox)
-        val fab = findViewById<FloatingActionButton>(R.id.fab)
 
         val roomDataRequest = JsonObjectRequest(Request.Method.GET, address + "api/" + hueAPI.getUsername() + "/groups/" + roomId, null,
                 Response.Listener { response ->
@@ -100,7 +99,7 @@ class HueSceneActivity : AppCompatActivity() {
             }
         })
 
-        fab.setOnClickListener {
+        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
             val name = nameBox.text.toString()
             if (name == "") {
                 AlertDialog.Builder(this)

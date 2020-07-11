@@ -13,7 +13,7 @@ class Commands(source: JSONObject) {
     }
 
     fun selectCommand(index: Int) {
-        selectedCommandName = _source.names().getString(index)
+        selectedCommandName = _source.names()?.getString(index) ?: ""
         selectedCommand = _source.getJSONObject(selectedCommandName)
     }
 

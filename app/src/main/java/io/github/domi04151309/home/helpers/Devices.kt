@@ -13,8 +13,8 @@ class Devices constructor(context: Context) {
     private val _prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
     private fun getDevicesObject(): JSONObject {
-        val devicesJSON = _prefs.getString("devices_json", Global.DEFAULT_JSON) ?: Global.DEFAULT_JSON
-        return JSONObject(devicesJSON).getJSONObject("devices")
+        return JSONObject(_prefs.getString("devices_json", Global.DEFAULT_JSON)
+                ?: Global.DEFAULT_JSON).getJSONObject("devices")
     }
 
     private fun convertToDeviceItem(id: String, jsonObj: JSONObject): DeviceItem {
@@ -27,15 +27,12 @@ class Devices constructor(context: Context) {
     }
 
     fun getDeviceById(id: String): DeviceItem {
-        val deviceObj = getDevicesObject().getJSONObject(id)
-        return convertToDeviceItem(id, deviceObj)
+        return convertToDeviceItem(id, getDevicesObject().getJSONObject(id))
     }
 
     fun getDeviceByIndex(index: Int): DeviceItem {
-        val devicesObject = getDevicesObject().names()
-        val id = devicesObject!!.getString(index)
-        val deviceObj = getDevicesObject().getJSONObject(id)
-        return convertToDeviceItem(id, deviceObj)
+        val id = getDevicesObject().names()!!.getString(index)
+        return convertToDeviceItem(id, getDevicesObject().getJSONObject(id))
     }
 
     fun length(): Int {
