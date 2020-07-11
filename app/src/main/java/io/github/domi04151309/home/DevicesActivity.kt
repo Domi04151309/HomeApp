@@ -51,7 +51,7 @@ class DevicesActivity : AppCompatActivity() {
     }
 
     private fun loadDevices(){
-        val listItems: ArrayList<ListViewItem> = arrayListOf()
+        val listItems: ArrayList<ListViewItem> = ArrayList(devices!!.length())
         try {
             if (devices!!.length() == 0) {
                 val emptyItem = ListViewItem(resources.getString(R.string.main_no_devices))

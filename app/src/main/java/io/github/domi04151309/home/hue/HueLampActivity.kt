@@ -127,7 +127,7 @@ class HueLampActivity : AppCompatActivity() {
             scenesRequest = JsonObjectRequest(Request.Method.GET, address + "api/" + hueAPI!!.getUsername() + "/scenes/", null,
                     Response.Listener { response ->
                         try {
-                            val gridItems: ArrayList<ScenesGridItem> = arrayListOf()
+                            val gridItems: ArrayList<ScenesGridItem> = ArrayList(response.length())
                             var currentObjectName: String
                             var currentObject: JSONObject
                             for (i in 0 until response.length()) {

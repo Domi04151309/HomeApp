@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         override fun onCommandsLoaded(holder: RequestCallbackObject) {
             if (holder.response != null) {
                 val commandsObject = Commands(holder.response.getJSONObject("commands"))
-                val listItems: ArrayList<ListViewItem> = arrayListOf()
+                val listItems: ArrayList<ListViewItem> = ArrayList(commandsObject.length())
                 for (i in 0 until commandsObject.length()) {
                     try {
                         commandsObject.selectCommand(i)
@@ -123,7 +123,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 try {
                     var currentObjectName: String
                     var currentObject: JSONObject
-                    val listItems: ArrayList<ListViewItem> = arrayListOf()
+                    val listItems: ArrayList<ListViewItem> = ArrayList(holder.response.length())
                     for (i in 0 until holder.response.length()) {
                         try {
                             currentObjectName = holder.response.names()!!.getString(i)
@@ -355,7 +355,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun loadDevices() {
         updateHandler.stop()
-        val listItems: ArrayList<ListViewItem> = arrayListOf()
+        val listItems: ArrayList<ListViewItem> = ArrayList(devices!!.length())
         try {
             if (devices!!.length() == 0) {
                 val emptyItem = ListViewItem(resources.getString(R.string.main_no_devices))
