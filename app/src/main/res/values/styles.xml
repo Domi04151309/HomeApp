@@ -31,6 +31,7 @@
         <item name="android:windowBackground">@color/colorPrimaryDark</item>
         <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
         <item name="dividerColor">@color/dividerDark</item>
+        <item name="elevationOverlayEnabled">false</item>
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
     </style>

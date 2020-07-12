@@ -1,0 +1,5 @@
+- Fixed bug related to the device list
+- Improved performance
+- Websites won't reload on orientation change
+- More detailed Tasmota response
+- Switched to Material Components
