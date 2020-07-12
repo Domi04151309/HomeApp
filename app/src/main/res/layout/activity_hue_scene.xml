@@ -40,34 +40,23 @@
             android:layout_marginTop="@dimen/dialog_item_margin"
             android:background="?attr/dividerColor" />
 
-        <LinearLayout
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/nameBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingStart="?dialogPreferredPadding"
-            android:paddingEnd="?dialogPreferredPadding">
+            android:layout_margin="@dimen/dialog_item_margin"
+            android:hint="@string/pref_add_name">
 
-            <TextView
+            <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dialog_item_margin"
-                android:text="@string/pref_add_name" />
+                android:inputType="textCapSentences" />
 
-            <EditText
-                android:id="@+id/nameBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:hint="@string/hue_add_scene_example"
-                android:inputType="textCapSentences"
-                android:importantForAutofill="no"
-                tools:targetApi="o" />
-        </LinearLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="@dimen/dialog_item_margin"
             android:background="?attr/dividerColor" />
 
         <ListView

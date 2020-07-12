@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.widget.EditText
 import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
@@ -18,6 +17,7 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.textfield.TextInputLayout
 import io.github.domi04151309.home.*
 import io.github.domi04151309.home.helpers.ListViewAdapter
 import io.github.domi04151309.home.data.ListViewItem
@@ -43,7 +43,7 @@ class HueSceneActivity : AppCompatActivity() {
         val colorArray: ArrayList<Int> = arrayListOf()
         val listView = findViewById<ListView>(R.id.listView)
         val nameTxt = findViewById<TextView>(R.id.nameTxt)
-        val nameBox = findViewById<EditText>(R.id.nameBox)
+        val nameBox = findViewById<TextInputLayout>(R.id.nameBox)
 
         val roomDataRequest = JsonObjectRequest(Request.Method.GET, address + "api/" + hueAPI.getUsername() + "/groups/" + roomId, null,
                 Response.Listener { response ->
@@ -89,7 +89,7 @@ class HueSceneActivity : AppCompatActivity() {
                 ImageViewCompat.setImageTintList(listView.getChildAt(i).findViewById(R.id.drawable), ColorStateList.valueOf(colorArray[i]))
         }
 
-        nameBox.addTextChangedListener(object : TextWatcher {
+        nameBox.editText?.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {}
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -100,7 +100,7 @@ class HueSceneActivity : AppCompatActivity() {
         })
 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
-            val name = nameBox.text.toString()
+            val name = nameBox.editText?.text.toString()
             if (name == "") {
                 AlertDialog.Builder(this)
                         .setTitle(R.string.err_missing_name)

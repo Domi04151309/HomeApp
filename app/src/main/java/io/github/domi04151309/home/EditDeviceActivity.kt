@@ -17,6 +17,7 @@ import android.text.Editable
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.textfield.TextInputLayout
 import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.objects.Global
 import io.github.domi04151309.home.objects.Theme
@@ -38,8 +39,8 @@ class EditDeviceActivity : AppCompatActivity() {
 
         val deviceIcn = findViewById<ImageView>(R.id.deviceIcn)
         val nameTxt = findViewById<TextView>(R.id.nameTxt)
-        val nameBox = findViewById<EditText>(R.id.nameBox)
-        val addressBox = findViewById<EditText>(R.id.addressBox)
+        val nameBox = findViewById<TextInputLayout>(R.id.nameBox)
+        val addressBox = findViewById<TextInputLayout>(R.id.addressBox)
         val iconSpinner = findViewById<Spinner>(R.id.iconSpinner)
         val modeSpinner = findViewById<Spinner>(R.id.modeSpinner)
 
@@ -56,7 +57,7 @@ class EditDeviceActivity : AppCompatActivity() {
                 deviceIcn.setImageResource(R.drawable.ic_device_lamp)
             }
         }
-        nameBox.addTextChangedListener(object : TextWatcher {
+        nameBox.editText?.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {}
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -69,8 +70,8 @@ class EditDeviceActivity : AppCompatActivity() {
         if (editing){
             title = resources.getString(R.string.pref_edit_device)
             val deviceObj = devices.getDeviceById(deviceId)
-            nameBox.setText(deviceObj.name)
-            addressBox.setText(deviceObj.address)
+            nameBox.editText?.setText(deviceObj.name)
+            addressBox.editText?.setText(deviceObj.address)
             iconSpinner.setSelection(iconSpinnerArrayAdapter.getPosition(deviceObj.iconName))
             modeSpinner.setSelection(modeSpinnerArrayAdapter.getPosition(deviceObj.mode))
 
@@ -115,7 +116,7 @@ class EditDeviceActivity : AppCompatActivity() {
         }
 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
-            val name = nameBox.text.toString()
+            val name = nameBox.editText?.text.toString()
             if (name == "") {
                 AlertDialog.Builder(this)
                         .setTitle(R.string.err_missing_name)
@@ -123,7 +124,7 @@ class EditDeviceActivity : AppCompatActivity() {
                         .setPositiveButton(android.R.string.ok) { _, _ -> }
                         .show()
                 return@setOnClickListener
-            } else if (addressBox.text.toString() == "") {
+            } else if (addressBox.editText?.text.toString() == "") {
                 AlertDialog.Builder(this)
                         .setTitle(R.string.err_missing_address)
                         .setMessage(R.string.err_missing_address_summary)
@@ -134,7 +135,7 @@ class EditDeviceActivity : AppCompatActivity() {
             if (editing) devices.deleteDevice(deviceId)
             val newItem = DeviceItem(deviceId)
             newItem.name = name
-            newItem.address = addressBox.text.toString()
+            newItem.address = addressBox.editText?.text.toString()
             newItem.mode = modeSpinner.selectedItem.toString()
             newItem.iconName = iconSpinner.selectedItem.toString()
             devices.addDevice(newItem)

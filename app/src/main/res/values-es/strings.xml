@@ -42,7 +42,6 @@
     <string name="hue_saturation">Saturación</string>
     <string name="hue_add_scene">Añadir escenario</string>
     <string name="hue_new_scene">Nuevo escenario</string>
-    <string name="hue_add_scene_example">Escenario</string>
     <string name="hue_rename_scene">Por favor, introduzca un nuevo nombre</string>
     <string name="hue_delete_scene">¿Estás seguro de que quieres borrar esta escena?</string>
     

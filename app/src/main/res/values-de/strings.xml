@@ -42,7 +42,6 @@
     <string name="hue_saturation">Sättigung</string>
     <string name="hue_add_scene">Szene hinzufügen</string>
     <string name="hue_new_scene">Neue Szene</string>
-    <string name="hue_add_scene_example">Szene</string>
     <string name="hue_rename_scene">Geben Sie bitte einen neuen Namen ein</string>
     <string name="hue_delete_scene">Sind Sie sich sicher, dass Sie diese Szene löschen möchten?</string>
 
@@ -80,9 +79,9 @@
     <string name="pref_add_new_device">Neues Gerät</string>
     <string name="pref_add_id">Interne ID: %1$s</string>
     <string name="pref_add_name">Name</string>
-    <string name="pref_add_name_example">Gerät</string>
+    <string name="pref_add_name_example">z.B. Gerät</string>
     <string name="pref_add_address">Adresse</string>
-    <string name="pref_add_address_example">http://127.0.0.1/</string>
+    <string name="pref_add_address_example">z.B. http://127.0.0.1/</string>
     <string name="pref_add_icon">Symbol</string>
     <string name="pref_add_mode">Modus</string>
     <string name="pref_add_wait">Suche nach kompatiblen Geräten</string>

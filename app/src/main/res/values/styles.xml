@@ -63,6 +63,7 @@
         <item name="actionBarStyle">@style/AppThemeActionBarStyle</item>
         <item name="materialButtonStyle">@style/AppThemeButton</item>
         <item name="android:switchStyle">@style/AppThemeSwitch</item>
+        <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox</item>
         <item name="dialogCornerRadius">8dp</item>
         <item name="android:listDivider">@null</item>
     </style>

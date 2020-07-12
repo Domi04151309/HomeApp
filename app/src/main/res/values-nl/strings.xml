@@ -42,7 +42,6 @@
     <string name="hue_saturation">Verzadiging</string>
     <string name="hue_add_scene">Scène toevoegen</string>
     <string name="hue_new_scene">Nieuwe scène</string>
-    <string name="hue_add_scene_example">Scène</string>
     <string name="hue_rename_scene">Geef de scène een naam</string>
     <string name="hue_delete_scene">Weet je zeker dat je deze scène wilt verwijderen?</string>
 
