@@ -44,9 +44,6 @@ class EditDeviceActivity : AppCompatActivity() {
         val iconSpinner = findViewById<TextInputLayout>(R.id.iconSpinner).editText as AutoCompleteTextView
         val modeSpinner = findViewById<TextInputLayout>(R.id.modeSpinner).editText as AutoCompleteTextView
 
-        val iconSpinnerArrayAdapter = ArrayAdapter(this, R.layout.dropdown_item, resources.getStringArray(R.array.pref_icons))
-        val modeSpinnerArrayAdapter = ArrayAdapter(this, R.layout.dropdown_item, resources.getStringArray(R.array.pref_add_mode_array))
-
         findViewById<TextView>(R.id.idTxt).text = (resources.getString(R.string.pref_add_id, deviceId))
 
         iconSpinner.onItemSelectedListener = object : OnItemSelectedListener {
@@ -124,8 +121,8 @@ class EditDeviceActivity : AppCompatActivity() {
             findViewById<LinearLayout>(R.id.editSection).visibility = View.GONE
         }
 
-        iconSpinner.setAdapter(iconSpinnerArrayAdapter)
-        modeSpinner.setAdapter(modeSpinnerArrayAdapter)
+        iconSpinner.setAdapter(ArrayAdapter(this, R.layout.dropdown_item, resources.getStringArray(R.array.pref_icons)))
+        modeSpinner.setAdapter(ArrayAdapter(this, R.layout.dropdown_item, resources.getStringArray(R.array.pref_add_mode_array)))
 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
             val name = nameBox.editText?.text.toString()
