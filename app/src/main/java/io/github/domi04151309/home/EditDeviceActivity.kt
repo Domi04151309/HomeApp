@@ -41,11 +41,11 @@ class EditDeviceActivity : AppCompatActivity() {
         val nameTxt = findViewById<TextView>(R.id.nameTxt)
         val nameBox = findViewById<TextInputLayout>(R.id.nameBox)
         val addressBox = findViewById<TextInputLayout>(R.id.addressBox)
-        val iconSpinner = findViewById<Spinner>(R.id.iconSpinner)
-        val modeSpinner = findViewById<Spinner>(R.id.modeSpinner)
+        val iconSpinner = findViewById<TextInputLayout>(R.id.iconSpinner).editText as AutoCompleteTextView
+        val modeSpinner = findViewById<TextInputLayout>(R.id.modeSpinner).editText as AutoCompleteTextView
 
-        val iconSpinnerArrayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, resources.getStringArray(R.array.pref_icons))
-        val modeSpinnerArrayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, resources.getStringArray(R.array.pref_add_mode_array))
+        val iconSpinnerArrayAdapter = ArrayAdapter(this, R.layout.dropdown_item, resources.getStringArray(R.array.pref_icons))
+        val modeSpinnerArrayAdapter = ArrayAdapter(this, R.layout.dropdown_item, resources.getStringArray(R.array.pref_add_mode_array))
 
         findViewById<TextView>(R.id.idTxt).text = (resources.getString(R.string.pref_add_id, deviceId))
 
@@ -57,12 +57,19 @@ class EditDeviceActivity : AppCompatActivity() {
                 deviceIcn.setImageResource(R.drawable.ic_device_lamp)
             }
         }
+        iconSpinner.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {}
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                deviceIcn.setImageResource(Global.getIcon(s.toString()))
+            }
+        })
         nameBox.editText?.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {}
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 val string = s.toString()
-                if (string == "") nameTxt.text = resources.getString(R.string.pref_add_name_example)
+                if (string == "") nameTxt.text = resources.getString(R.string.pref_add_name_empty)
                 else nameTxt.text = string
             }
         })
@@ -72,8 +79,8 @@ class EditDeviceActivity : AppCompatActivity() {
             val deviceObj = devices.getDeviceById(deviceId)
             nameBox.editText?.setText(deviceObj.name)
             addressBox.editText?.setText(deviceObj.address)
-            iconSpinner.setSelection(iconSpinnerArrayAdapter.getPosition(deviceObj.iconName))
-            modeSpinner.setSelection(modeSpinnerArrayAdapter.getPosition(deviceObj.mode))
+            iconSpinner.setText(deviceObj.iconName)
+            modeSpinner.setText(deviceObj.mode)
 
             findViewById<Button>(R.id.shortcutBtn).setOnClickListener {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -111,9 +118,14 @@ class EditDeviceActivity : AppCompatActivity() {
                         .show()
             }
         } else {
+            iconSpinner.setText(resources.getStringArray(R.array.pref_icons)[0])
+            modeSpinner.setText(resources.getStringArray(R.array.pref_add_mode_array)[0])
             findViewById<View>(R.id.editDivider).visibility = View.GONE
             findViewById<LinearLayout>(R.id.editSection).visibility = View.GONE
         }
+
+        iconSpinner.setAdapter(iconSpinnerArrayAdapter)
+        modeSpinner.setAdapter(modeSpinnerArrayAdapter)
 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
             val name = nameBox.editText?.text.toString()
@@ -136,8 +148,8 @@ class EditDeviceActivity : AppCompatActivity() {
             val newItem = DeviceItem(deviceId)
             newItem.name = name
             newItem.address = addressBox.editText?.text.toString()
-            newItem.mode = modeSpinner.selectedItem.toString()
-            newItem.iconName = iconSpinner.selectedItem.toString()
+            newItem.mode = modeSpinner.text.toString()
+            newItem.iconName = iconSpinner.text.toString()
             devices.addDevice(newItem)
             finish()
         }
