@@ -139,19 +139,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dialog_item_margin"
-                android:drawableStart="@drawable/ic_add"
                 android:text="@string/pref_add_shortcut"
                 android:textAlignment="textStart"
-                android:textColor="?android:attr/textColorPrimary"/>
+                android:textColor="?android:attr/textColorPrimary"
+                app:icon="@drawable/ic_add"/>
 
             <Button
                 android:id="@+id/deleteBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_delete"
                 android:text="@string/str_delete"
                 android:textAlignment="textStart"
-                android:textColor="?android:attr/textColorPrimary"/>
+                android:textColor="?android:attr/textColorPrimary"
+                app:icon="@drawable/ic_delete"/>
         </LinearLayout>
 
     </LinearLayout>
