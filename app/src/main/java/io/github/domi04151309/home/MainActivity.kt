@@ -271,8 +271,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         listView.onItemClickListener = AdapterView.OnItemClickListener { _, view, _, _ ->
             currentView = view
             val title = view.findViewById<TextView>(R.id.title).text.toString()
-            if (title == resources.getString(R.string.main_no_devices) || title == resources.getString(R.string.err_wrong_format))
+            if (title == resources.getString(R.string.main_no_devices) || title == resources.getString(R.string.err_wrong_format)) {
+                reset = true
+                startActivity(Intent(this, DevicesActivity::class.java))
                 return@OnItemClickListener
+            }
             val hidden = view.findViewById<TextView>(R.id.hidden).text.toString()
             when (level) {
                 "one" -> {
