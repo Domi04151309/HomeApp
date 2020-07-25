@@ -104,6 +104,7 @@
         <item>Licht thema</item>
         <item>Donker thema</item>
         <item>Zwart thema</item>
+        <item>Systeem thema</item>
     </string-array>
     <string-array name="pref_add_method_array">
         <item>Apparaat toevoegen middels adres</item>
