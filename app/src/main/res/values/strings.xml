@@ -122,11 +122,13 @@
         <item>Light theme</item>
         <item>Dark theme</item>
         <item>Black theme</item>
+        <item>Folow system theme</item>
     </string-array>
     <string-array name="pref_theme_array_values" translatable="false">
         <item>light</item>
         <item>dark</item>
         <item>black</item>
+        <item>auto</item>
     </string-array>
     <string-array name="pref_add_method_array">
         <item>Add device by address</item>
