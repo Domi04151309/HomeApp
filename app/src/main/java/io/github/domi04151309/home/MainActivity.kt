@@ -36,32 +36,32 @@ import io.github.domi04151309.home.tasmota.Tasmota
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    private var currentView: View? = null
     private var currentDevice = ""
-    private var hueRoom: String = ""
-    private var hueRoomState: Boolean = false
-    private var hueCurrentIcon: Int = 0
     private var tasmotaPosition: Int = 0
     private var level = "one"
     private var reset : Boolean = false
     private val updateHandler = UpdateHandler()
     private var canReceiveRequest = false
-    private lateinit var devices: Devices
-    private lateinit var listView: ListView
+    internal var currentView: View? = null
+    internal var hueRoom: String = ""
+    internal var hueRoomState: Boolean = false
+    internal var hueCurrentIcon: Int = 0
+    internal lateinit var devices: Devices
+    internal lateinit var listView: ListView
     private lateinit var deviceIcon: ImageView
     private lateinit var deviceName: TextView
     private lateinit var fab: FloatingActionButton
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navView: NavigationView
 
-    private val hueGroupStateListener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
+    internal val hueGroupStateListener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
         if (compoundButton.isPressed) {
             val hidden = (compoundButton.parent as ViewGroup).findViewById<TextView>(R.id.hidden).text
             hueAPI?.switchGroupByID(hidden.substring(hidden.lastIndexOf("@") + 1), b)
         }
     }
 
-    private val hueLampStateListener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
+    internal val hueLampStateListener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
         if (compoundButton.isPressed) {
             val hidden = (compoundButton.parent as ViewGroup).findViewById<TextView>(R.id.hidden).text.toString()
             if (hidden.startsWith("room#")) {
@@ -225,7 +225,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     /*
      * Things related to Tasmota
      */
-    private var tasmota: Tasmota? = null
+    internal var tasmota: Tasmota? = null
     private val tasmotaRequestCallBack = object : Tasmota.RequestCallBack {
 
         override fun onItemsChanged(context: Context) {
@@ -353,7 +353,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    private fun handleErrorOnLevelOne(err: String) {
+    internal fun handleErrorOnLevelOne(err: String) {
         if (currentView == null) {
             loadDevices()
             Toast.makeText(this, err, Toast.LENGTH_LONG).show()
@@ -483,14 +483,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         level = "one"
     }
 
-    private fun setLevelTwo(icon: Int, title: CharSequence) {
+    internal fun setLevelTwo(icon: Int, title: CharSequence) {
         fab.hide()
         deviceIcon.setImageResource(icon)
         deviceName.text = title
         level = "two"
     }
 
-    private fun setLevelTwoHue(deviceId: String, icon: Int, title: CharSequence) {
+    internal fun setLevelTwoHue(deviceId: String, icon: Int, title: CharSequence) {
         fab.hide()
         deviceIcon.setImageResource(icon)
         deviceName.text = title
@@ -505,13 +505,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         level = "two_tasmota"
     }
 
-    private fun setLevelThreeHue(title: CharSequence) {
+    internal fun setLevelThreeHue(title: CharSequence) {
         deviceIcon.setImageResource(R.drawable.ic_device_lamp)
         deviceName.text = title
         level = "three_hue"
     }
 
-    private fun updateList(items: ArrayList<ListViewItem>) {
+    internal fun updateList(items: ArrayList<ListViewItem>) {
         listView.adapter = ListViewAdapter(this, items)
     }
 

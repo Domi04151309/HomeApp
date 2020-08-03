@@ -33,7 +33,7 @@ import org.json.JSONObject
 
 class HueLampActivity : AppCompatActivity() {
 
-    private var canReceiveRequest: Boolean = false
+    internal var canReceiveRequest: Boolean = false
     private var isRoom: Boolean = false
     private var lightDataRequest: JsonObjectRequest? = null
     private var roomDataRequest: JsonObjectRequest? = null
@@ -41,7 +41,7 @@ class HueLampActivity : AppCompatActivity() {
     private var address: String = ""
     private var selectedScene: CharSequence = ""
     private var selectedSceneName: CharSequence = ""
-    private lateinit var hueAPI: HueAPI
+    internal lateinit var hueAPI: HueAPI
     private lateinit var queue: RequestQueue
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -20,10 +20,10 @@ import io.github.domi04151309.home.objects.Theme
 
 class WebActivity : AppCompatActivity() {
 
-    private var errorOccurred = false
-    private var c: Context = this
-    private val nullParent: ViewGroup? = null
-    private lateinit var webView: WebView
+    internal var errorOccurred = false
+    internal var c: Context = this
+    internal val nullParent: ViewGroup? = null
+    internal lateinit var webView: WebView
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,7 +73,7 @@ class WebActivity : AppCompatActivity() {
         title = intent.getStringExtra("title")
     }
 
-    private fun injectCSS(webView: WebView) {
+    internal fun injectCSS(webView: WebView) {
         try {
             val inputStream = assets.open("github_style.css")
             val buffer = ByteArray(inputStream.available())

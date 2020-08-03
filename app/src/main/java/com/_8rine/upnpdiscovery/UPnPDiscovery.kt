@@ -111,7 +111,7 @@ class UPnPDiscovery : AsyncTask<Activity, UPnPDiscovery.OnDiscoveryListener, Voi
                     }
                 }, Response.ErrorListener {
             mThreadsCount--
-            Log.d(TAG, "URL: $url get content error!")
+            Log.e(TAG, "URL: $url get content error!")
         })
         stringRequest.tag = TAG + "SSDP description request"
         Volley.newRequestQueue(mContext).add(stringRequest)

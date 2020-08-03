@@ -67,7 +67,6 @@ class SearchDevicesActivity : AppCompatActivity() {
             UPnPDiscovery.discoveryDevices(this, object : UPnPDiscovery.OnDiscoveryListener {
                 override fun onStart() {}
                 override fun onFoundNewDevice(device: UPnPDevice) {
-                    Log.d("UPnPDiscovery01", "Found new device: " + device.friendlyName)
                     if (device.server.contains("IpBridge") && !addresses.contains(device.hostAddress)) {
                         val deviceItem = ListViewItem(device.friendlyName)
                         deviceItem.summary = device.hostAddress
@@ -88,7 +87,6 @@ class SearchDevicesActivity : AppCompatActivity() {
                 override fun onStart() {}
                 override fun onFoundNewDevice(device: UPnPDevice) {
                     val friendlyName = device.friendlyName
-                    Log.d("UPnPDiscovery02", "Found new device: " + device.friendlyName)
                     if (friendlyName.startsWith("FRITZ!") && !addresses.contains(device.hostAddress)) {
                         val deviceItem = ListViewItem(device.friendlyName)
                         deviceItem.summary = device.hostAddress

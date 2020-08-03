@@ -21,10 +21,10 @@ import org.json.JSONObject
 
 class HueConnectActivity : AppCompatActivity() {
 
-    private var running = false
     private var activityStarted = false
-    private lateinit var queue: RequestQueue
-    private lateinit var requestToRegisterUser: CustomJsonArrayRequest
+    internal var running = false
+    internal lateinit var queue: RequestQueue
+    internal lateinit var requestToRegisterUser: CustomJsonArrayRequest
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Theme.setNoActionBar(this)
