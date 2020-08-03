@@ -122,7 +122,7 @@
         <item>Light theme</item>
         <item>Dark theme</item>
         <item>Black theme</item>
-        <item>Folow system theme</item>
+        <item>Follow system theme</item>
     </string-array>
     <string-array name="pref_theme_array_values" translatable="false">
         <item>light</item>

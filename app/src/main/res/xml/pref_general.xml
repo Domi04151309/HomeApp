@@ -4,7 +4,7 @@
         app:iconSpaceReserved="false">
 
         <ListPreference
-            app:defaultValue="light"
+            app:defaultValue="auto"
             app:entries="@array/pref_theme_array"
             app:entryValues="@array/pref_theme_array_values"
             app:key="theme"

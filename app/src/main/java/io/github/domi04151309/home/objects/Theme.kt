@@ -9,8 +9,6 @@ import androidx.preference.PreferenceManager
 import androidx.core.content.ContextCompat
 import io.github.domi04151309.home.R
 
-
-
 internal object Theme {
 
     fun set(context: Context) {
@@ -28,7 +26,7 @@ internal object Theme {
                 recent(context, R.color.colorPrimaryBlack)
             }
             "auto" -> {
-                when (context?.resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)) {
+                when (context.resources.configuration.uiMode.and(Configuration.UI_MODE_NIGHT_MASK)) {
                     Configuration.UI_MODE_NIGHT_YES -> {
                         context.setTheme(R.style.AppThemeDark)
                         recent(context, R.color.colorPrimaryDark)
@@ -62,7 +60,7 @@ internal object Theme {
                 recent(context, R.color.colorPrimaryBlack)
             }
             "auto" -> {
-                when (context?.resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)) {
+                when (context.resources.configuration.uiMode.and(Configuration.UI_MODE_NIGHT_MASK)) {
                     Configuration.UI_MODE_NIGHT_YES -> {
                         context.setTheme(R.style.AppThemeDark_NoActionBar)
                         recent(context, R.color.colorPrimaryDark)
