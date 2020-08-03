@@ -104,6 +104,7 @@
         <item>Tema claro</item>
         <item>Tema oscuro</item>
         <item>Tema negro</item>
+        <item>Tema del sistema</item>
     </string-array>
     <string-array name="pref_add_method_array">
       <item>Añadir dispositivo por dirección</item>
