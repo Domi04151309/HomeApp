@@ -530,4 +530,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onStop()
         canReceiveRequest = false
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        updateHandler.stop()
+    }
 }
