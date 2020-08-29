@@ -34,6 +34,8 @@
     <string name="hue_tap">Tap to select</string>
     <string name="hue_whole_room">Control whole room</string>
     <string name="hue_whole_room_summary">Control all lights in the room at once</string>
+    <string name="hue_whole_zone">Control whole zone</string>
+    <string name="hue_whole_zone_summary">Control all lights in the zone at once</string>
     <string name="hue_on">On</string>
     <string name="hue_off">Off</string>
     <string name="hue_brightness">Brightness</string>

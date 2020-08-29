@@ -7,5 +7,6 @@ data class RequestCallbackObject(
         val context: Context,
         val response: JSONObject?,
         val deviceId: String,
-        val errorMessage: String = ""
+        val errorMessage: String = "",
+        val forZone: Boolean = false
 )

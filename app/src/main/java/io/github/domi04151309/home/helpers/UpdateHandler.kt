@@ -5,7 +5,7 @@ import android.os.Handler
 class UpdateHandler: Handler() {
 
     companion object {
-        private const val UPDATE_DELAY = 500L
+        private const val UPDATE_DELAY = 1000L
     }
 
     fun setUpdateFunction(function: () -> Unit) {

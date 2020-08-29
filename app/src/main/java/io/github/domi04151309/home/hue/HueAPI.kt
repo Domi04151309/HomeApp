@@ -47,7 +47,7 @@ class HueAPI(context: Context, deviceId: String) {
         queue.add(jsonObjectRequest)
     }
 
-    fun loadLightsByIDs(lightIDs: JSONArray, callback: RequestCallBack) {
+    fun loadLightsByIDs(lightIDs: JSONArray, callback: RequestCallBack, forZone: Boolean = false) {
         val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url + "api/" + getUsername() + "/lights", null,
                 Response.Listener { response ->
                     try {
@@ -57,7 +57,7 @@ class HueAPI(context: Context, deviceId: String) {
                             lightID = lightIDs.getString(i)
                             returnObject.put(lightID, response.getJSONObject(lightID))
                         }
-                        callback.onLightsLoaded(RequestCallbackObject(c, returnObject, selectedDevice))
+                        callback.onLightsLoaded(RequestCallbackObject(c, returnObject, selectedDevice, forZone = forZone))
                     } catch (e: Exception) {
                         callback.onLightsLoaded(RequestCallbackObject(c, null, selectedDevice, c.resources.getString(R.string.err_wrong_format_summary)))
                         Log.e(Global.LOG_TAG, e.toString())

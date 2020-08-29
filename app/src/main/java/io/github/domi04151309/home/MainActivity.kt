@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     internal val hueGroupStateListener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
         if (compoundButton.isPressed) {
             val hidden = (compoundButton.parent as ViewGroup).findViewById<TextView>(R.id.hidden).text
-            hueAPI?.switchGroupByID(hidden.substring(hidden.lastIndexOf("@") + 1), b)
+            hueAPI?.switchGroupByID(hidden.substring(hidden.lastIndexOf("#") + 1), b)
         }
     }
 
@@ -120,15 +120,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 try {
                     var currentObjectName: String
                     var currentObject: JSONObject
+                    var type: String
                     val listItems: ArrayList<ListViewItem> = ArrayList(holder.response.length())
                     for (i in 0 until holder.response.length()) {
                         try {
                             currentObjectName = holder.response.names()?.getString(i) ?: ""
                             currentObject = holder.response.getJSONObject(currentObjectName)
+                            type = currentObject.getString("type")
                             val listItem = ListViewItem(currentObject.getString("name"))
                             listItem.summary = resources.getString(R.string.hue_tap)
-                            listItem.hidden = currentObject.getJSONArray("lights").toString() + "@" + currentObjectName
-                            listItem.icon = R.drawable.ic_room
+                            listItem.hidden = "${currentObject.getJSONArray("lights")}@${if (type == "Room") "room" else "zone"}#$currentObjectName"
+                            listItem.icon = if (type == "Room") R.drawable.ic_room else R.drawable.ic_zone
                             listItem.state = currentObject.getJSONObject("action").getBoolean("on")
                             listItem.stateListener = hueGroupStateListener
                             listItems += listItem
@@ -152,10 +154,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         override fun onLightsLoaded(holder: RequestCallbackObject) {
             if (holder.response != null) {
                 try {
-                    val roomItem = ListViewItem(resources.getString(R.string.hue_whole_room))
-                    roomItem.summary = resources.getString(R.string.hue_whole_room_summary)
+                    val roomItem = ListViewItem(if (holder.forZone) resources.getString(R.string.hue_whole_zone) else resources.getString(R.string.hue_whole_room))
+                    roomItem.summary = if (holder.forZone) resources.getString(R.string.hue_whole_zone_summary) else resources.getString(R.string.hue_whole_room_summary)
                     roomItem.hidden = "room#$hueRoom"
-                    roomItem.icon = R.drawable.ic_room
+                    roomItem.icon = if (holder.forZone) R.drawable.ic_zone else R.drawable.ic_room
                     roomItem.state = hueRoomState
                     roomItem.stateListener = hueLampStateListener
                     var currentObjectName: String
@@ -285,10 +287,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 "two" ->
                     homeAPI.executeCommand(hidden, homeRequestCallBack)
                 "two_hue" -> {
-                    hueRoom = hidden.substring(hidden.lastIndexOf("@") + 1)
+                    hueRoom = hidden.substring(hidden.lastIndexOf("#") + 1)
                     hueRoomState = view.findViewById<Switch>(R.id.state).isChecked
                     val localIds = JSONArray(hidden.substring(0 , hidden.indexOf("@")))
-                    hueAPI?.loadLightsByIDs(localIds, hueRequestCallBack)
+                    hueAPI?.loadLightsByIDs(localIds, hueRequestCallBack, hidden.contains("zone"))
                     updateHandler.setUpdateFunction {
                         if (canReceiveRequest && hueAPI?.readyForRequest == true) {
                             hueAPI?.loadLightsByIDs(localIds, hueRequestUpdaterCallBack)
