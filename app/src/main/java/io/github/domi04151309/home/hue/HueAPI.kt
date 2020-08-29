@@ -37,7 +37,32 @@ class HueAPI(context: Context, deviceId: String) {
     fun loadGroups(callback: RequestCallBack) {
         val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url + "api/" + getUsername() + "/groups", null,
                 { response ->
-                    callback.onGroupsLoaded(RequestCallbackObject(c, response, selectedDevice))
+                    val processed = JSONObject()
+                    try {
+                        val rooms = JSONObject()
+                        val zones = JSONObject()
+                        var currentObjectName: String
+                        var currentObject: JSONObject
+                        for (i in 0 until response.length()) {
+                            currentObjectName = response.names()?.getString(i) ?: ""
+                            currentObject = response.getJSONObject(currentObjectName)
+                            if (currentObject.getString("type") == "Room") rooms.put(currentObjectName, currentObject)
+                            else zones.put(currentObjectName, currentObject)
+                        }
+                        for (i in 0 until rooms.length()) {
+                            currentObjectName = rooms.names()?.getString(i) ?: ""
+                            currentObject = rooms.getJSONObject(currentObjectName)
+                            processed.put(currentObjectName, currentObject)
+                        }
+                        for (i in 0 until zones.length()) {
+                            currentObjectName = zones.names()?.getString(i) ?: ""
+                            currentObject = zones.getJSONObject(currentObjectName)
+                            processed.put(currentObjectName, currentObject)
+                        }
+                    } catch (e: Exception) {
+                        callback.onGroupsLoaded(RequestCallbackObject(c, null, selectedDevice, volleyError(c, e)))
+                    }
+                    callback.onGroupsLoaded(RequestCallbackObject(c, processed, selectedDevice))
                 },
                 { error ->
                     callback.onGroupsLoaded(RequestCallbackObject(c, null, selectedDevice, volleyError(c, error)))
