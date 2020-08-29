@@ -6,12 +6,9 @@ import android.content.Context
 import android.net.wifi.WifiManager
 import android.os.AsyncTask
 import android.util.Log
-
 import com.android.volley.Request
-import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-
 import java.io.IOException
 import java.net.DatagramPacket
 import java.net.DatagramSocket
@@ -101,7 +98,7 @@ class UPnPDiscovery : AsyncTask<Activity, UPnPDiscovery.OnDiscoveryListener, Voi
 
     private fun getData(url: String, device: UPnPDevice) {
         val stringRequest = StringRequest(Request.Method.GET, url,
-                Response.Listener { response ->
+                { response ->
                     device.update(response)
                     mListener.onFoundNewDevice(device)
                     devices.add(device)
@@ -109,7 +106,7 @@ class UPnPDiscovery : AsyncTask<Activity, UPnPDiscovery.OnDiscoveryListener, Voi
                     if (mThreadsCount == 0) {
                         mListener.onFinish(devices)
                     }
-                }, Response.ErrorListener {
+                }, {
             mThreadsCount--
             Log.e(TAG, "URL: $url get content error!")
         })

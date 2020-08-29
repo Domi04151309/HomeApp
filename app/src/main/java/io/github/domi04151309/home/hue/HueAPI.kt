@@ -36,10 +36,10 @@ class HueAPI(context: Context, deviceId: String) {
 
     fun loadGroups(callback: RequestCallBack) {
         val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url + "api/" + getUsername() + "/groups", null,
-                Response.Listener { response ->
+                { response ->
                     callback.onGroupsLoaded(RequestCallbackObject(c, response, selectedDevice))
                 },
-                Response.ErrorListener { error ->
+                { error ->
                     callback.onGroupsLoaded(RequestCallbackObject(c, null, selectedDevice, volleyError(c, error)))
                     if (error is ParseError) c.startActivity(Intent(c, HueConnectActivity::class.java).putExtra("deviceId", selectedDevice))
                 }
@@ -49,7 +49,7 @@ class HueAPI(context: Context, deviceId: String) {
 
     fun loadLightsByIDs(lightIDs: JSONArray, callback: RequestCallBack, forZone: Boolean = false) {
         val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url + "api/" + getUsername() + "/lights", null,
-                Response.Listener { response ->
+                { response ->
                     try {
                         val returnObject = JSONObject()
                         var lightID: String
@@ -63,7 +63,7 @@ class HueAPI(context: Context, deviceId: String) {
                         Log.e(Global.LOG_TAG, e.toString())
                     }
                 },
-                Response.ErrorListener { error ->
+                { error ->
                     callback.onLightsLoaded(RequestCallbackObject(c, null, selectedDevice, volleyError(c, error)))
                 }
         )
@@ -116,8 +116,8 @@ class HueAPI(context: Context, deviceId: String) {
 
     private fun putObject(address: String, requestObject: String) {
         val request = CustomJsonArrayRequest(Request.Method.PUT, url + "api/" + getUsername() + address, JSONObject(requestObject),
-                Response.Listener { },
-                Response.ErrorListener { e -> Log.e(Global.LOG_TAG, e.toString()) }
+                { },
+                { e -> Log.e(Global.LOG_TAG, e.toString()) }
         )
         if (readyForRequest) {
             queue.add(request)

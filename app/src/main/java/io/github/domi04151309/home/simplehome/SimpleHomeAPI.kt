@@ -24,10 +24,10 @@ class SimpleHomeAPI(context: Context) {
         val url = Devices(c).getDeviceById(deviceId).address
         val queue = Volley.newRequestQueue(c)
         val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url + "commands", null,
-                Response.Listener { response ->
+                { response ->
                     callback.onCommandsLoaded(RequestCallbackObject(c, response, deviceId))
                 },
-                Response.ErrorListener { error ->
+                { error ->
                     callback.onCommandsLoaded(RequestCallbackObject(c, null, deviceId, volleyError(c, error)))
                 }
         )
@@ -37,7 +37,7 @@ class SimpleHomeAPI(context: Context) {
     fun executeCommand(url: String, callback: RequestCallBack) {
         val queue = Volley.newRequestQueue(c)
         val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null,
-                Response.Listener { response ->
+                { response ->
                     try {
                         callback.onExecutionFinished(c, response.getString("toast"))
                     } catch (e: Exception) {
@@ -45,7 +45,7 @@ class SimpleHomeAPI(context: Context) {
                         Log.w(Global.LOG_TAG, e.toString())
                     }
                 },
-                Response.ErrorListener { error ->
+                { error ->
                     callback.onExecutionFinished(c, volleyError(c, error))
                 }
         )

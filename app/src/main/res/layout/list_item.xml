@@ -31,14 +31,16 @@
                     android:fadingEdge="horizontal"
                     android:singleLine="true"
                     android:textAppearance="@android:style/TextAppearance.Material.Medium"
-                    android:textColor="?android:attr/textColorPrimary" />
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textIsSelectable="false" />
 
                 <TextView
                     android:id="@+id/summary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:maxLines="4"
-                    android:textAppearance="@android:style/TextAppearance.Material.Small" />
+                    android:textAppearance="@android:style/TextAppearance.Material.Small"
+                    android:textIsSelectable="false" />
 
                 <TextView
                     android:id="@+id/hidden"

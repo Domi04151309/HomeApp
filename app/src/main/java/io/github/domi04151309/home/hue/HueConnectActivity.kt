@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.preference.PreferenceManager
 import com.android.volley.Request
 import com.android.volley.RequestQueue
-import com.android.volley.Response
 import com.android.volley.toolbox.Volley
 import io.github.domi04151309.home.*
 import io.github.domi04151309.home.helpers.CustomJsonArrayRequest
@@ -35,7 +34,7 @@ class HueConnectActivity : AppCompatActivity() {
         val deviceId = intent.getStringExtra("deviceId") ?: ""
         val jsonRequestObject = JSONObject("{\"devicetype\":\"HomeApp#${android.os.Build.PRODUCT}\"}")
         requestToRegisterUser = CustomJsonArrayRequest(Request.Method.POST, Devices(this).getDeviceById(deviceId).address + "api", jsonRequestObject,
-                Response.Listener { response ->
+                { response ->
                     val responseObject = response.getJSONObject(0)
                     if (responseObject.has("success")) {
                         running = false
@@ -51,7 +50,7 @@ class HueConnectActivity : AppCompatActivity() {
                         }
                     }
                 },
-                Response.ErrorListener { error ->
+                { error ->
                     Toast.makeText(this, R.string.err, Toast.LENGTH_LONG).show()
                     Log.e(Global.LOG_TAG, error.toString())
                 }

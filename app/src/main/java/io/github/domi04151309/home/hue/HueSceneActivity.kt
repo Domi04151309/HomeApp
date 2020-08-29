@@ -13,7 +13,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.ImageViewCompat
 import com.android.volley.Request
-import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -46,10 +45,10 @@ class HueSceneActivity : AppCompatActivity() {
         val nameBox = findViewById<TextInputLayout>(R.id.nameBox)
 
         val roomDataRequest = JsonObjectRequest(Request.Method.GET, address + "api/" + hueAPI.getUsername() + "/groups/" + roomId, null,
-                Response.Listener { response ->
+                { response ->
                     val lights = response.getJSONArray("lights")
                     val lightsDataRequest = JsonObjectRequest(Request.Method.GET,  address + "api/" + hueAPI.getUsername() + "/lights", null,
-                            Response.Listener { secondResponse ->
+                            { secondResponse ->
                                 var lightObj: JSONObject
                                 for (i in 0 until lights.length()) {
                                     lightObj = secondResponse.getJSONObject(lights.get(i).toString())
@@ -72,13 +71,13 @@ class HueSceneActivity : AppCompatActivity() {
                                 }
                                 listView.adapter = ListViewAdapter(this, listItems, false)
                             },
-                            Response.ErrorListener { error ->
+                            { error ->
                                 Toast.makeText(this, Global.volleyError(this, error), Toast.LENGTH_LONG).show()
                             }
                     )
                     queue.add(lightsDataRequest)
                 },
-                Response.ErrorListener { error ->
+                { error ->
                     Toast.makeText(this, Global.volleyError(this, error), Toast.LENGTH_LONG).show()
                 }
         )
@@ -111,8 +110,8 @@ class HueSceneActivity : AppCompatActivity() {
             }
             val jsonRequestObject = JSONObject("{\"name\":\"$name\",\"recycle\":false,\"group\":\"$roomId\",\"type\":\"GroupScene\"}")
             val addSceneRequest = CustomJsonArrayRequest(Request.Method.POST, address + "api/" + hueAPI.getUsername() + "/scenes", jsonRequestObject,
-                    Response.Listener { finish() },
-                    Response.ErrorListener { error ->
+                    { finish() },
+                    { error ->
                         Toast.makeText(this, R.string.err, Toast.LENGTH_LONG).show()
                         Log.e(Global.LOG_TAG, error.toString())
                     }

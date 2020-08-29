@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.preference.PreferenceManager
 import com.android.volley.Request
-import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import io.github.domi04151309.home.R
@@ -108,10 +107,10 @@ class Tasmota(context: Context, deviceId: String) {
 
     fun execute(callback: RequestCallBack, command: String) {
         val request = StringRequest(Request.Method.GET, url + command,
-                Response.Listener { response ->
+                { response ->
                     callback.onResponse(c, response)
                 },
-                Response.ErrorListener { error ->
+                { error ->
                     Toast.makeText(c, Global.volleyError(c, error), Toast.LENGTH_LONG).show()
                 }
         )

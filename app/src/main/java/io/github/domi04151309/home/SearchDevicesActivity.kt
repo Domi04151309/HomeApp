@@ -36,7 +36,7 @@ class SearchDevicesActivity : AppCompatActivity() {
         waitItem.summary = resources.getQuantityString(R.plurals.pref_add_wait_summary, 10, 10)
         waitItem.icon = R.drawable.ic_info
         listView.adapter = ListViewAdapter(this, arrayListOf(waitItem))
-        Thread(Runnable {
+        Thread {
             Thread.sleep(1000L)
             val firstChildSummary = listView.getChildAt(0).findViewById<TextView>(R.id.summary)
             var count: Int
@@ -47,7 +47,7 @@ class SearchDevicesActivity : AppCompatActivity() {
                 }
                 Thread.sleep(1000L)
             }
-        }).start()
+        }.start()
 
         //Device variables
         val listItems: ArrayList<ListViewItem> = arrayListOf()
@@ -62,7 +62,7 @@ class SearchDevicesActivity : AppCompatActivity() {
         val customPort = 1900
         val customAddress = "239.255.255.250"
 
-        Thread(Runnable {
+        Thread {
             //Get Hue Bridges
             UPnPDiscovery.discoveryDevices(this, object : UPnPDiscovery.OnDiscoveryListener {
                 override fun onStart() {}
@@ -76,6 +76,7 @@ class SearchDevicesActivity : AppCompatActivity() {
                         addresses += device.hostAddress
                     }
                 }
+
                 override fun onFinish(devices: HashSet<UPnPDevice>) {}
                 override fun onError(e: Exception) {
                     Log.e("UPnPDiscovery", "Error: " + e.localizedMessage)
@@ -104,12 +105,13 @@ class SearchDevicesActivity : AppCompatActivity() {
                         addresses += device.hostAddress
                     }
                 }
+
                 override fun onFinish(devices: HashSet<UPnPDevice>) {}
                 override fun onError(e: Exception) {
                     Log.e("UPnPDiscovery", "Error: " + e.localizedMessage)
                 }
             })
-        }).start()
+        }.start()
 
         //Display found devices
         Handler().postDelayed({
@@ -126,9 +128,8 @@ class SearchDevicesActivity : AppCompatActivity() {
 
         //Handle clicks
         listView.onItemClickListener = AdapterView.OnItemClickListener { _, view, _, _ ->
-            val action =  view.findViewById<TextView>(R.id.hidden).text
-            if (action != "") {
-                val hidden = view.findViewById<TextView>(R.id.hidden).text.toString()
+            val hidden =  view.findViewById<TextView>(R.id.hidden).text.toString()
+            if (hidden != "") {
                 val newItem = DeviceItem(devices.generateNewId())
                 newItem.name = view.findViewById<TextView>(R.id.title).text.toString()
                 newItem.address = view.findViewById<TextView>(R.id.summary).text.toString()

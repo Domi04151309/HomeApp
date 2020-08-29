@@ -18,7 +18,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.drawable.DrawableCompat
 import com.android.volley.Request
 import com.android.volley.RequestQueue
-import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import io.github.domi04151309.home.R
@@ -90,7 +89,7 @@ class HueLampActivity : AppCompatActivity() {
         // Selected item is a whole room
         if (isRoom) {
             roomDataRequest = JsonObjectRequest(Request.Method.GET, address + "api/" + hueAPI.getUsername() + "/groups/" + id, null,
-                    Response.Listener { response ->
+                    { response ->
                         nameTxt.text = response.getString("name")
                         val action = response.getJSONObject("action")
                         if (action.has("bri")) {
@@ -118,14 +117,14 @@ class HueLampActivity : AppCompatActivity() {
                             satBar.visibility = View.GONE
                         }
                     },
-                    Response.ErrorListener { error ->
+                    { error ->
                         finish()
                         Toast.makeText(this, volleyError(this, error), Toast.LENGTH_LONG).show()
                     }
             )
 
             scenesRequest = JsonObjectRequest(Request.Method.GET, address + "api/" + hueAPI.getUsername() + "/scenes/", null,
-                    Response.Listener { response ->
+                    { response ->
                         try {
                             val gridItems: ArrayList<ScenesGridItem> = ArrayList(response.length())
                             var currentObjectName: String
@@ -149,7 +148,7 @@ class HueLampActivity : AppCompatActivity() {
                             Log.e(Global.LOG_TAG, e.toString())
                         }
                     },
-                    Response.ErrorListener { error ->
+                    { error ->
                         finish()
                         Toast.makeText(this, volleyError(this, error), Toast.LENGTH_LONG).show()
                     }
@@ -240,38 +239,38 @@ class HueLampActivity : AppCompatActivity() {
         // Selected item is a single light
         else {
             lightDataRequest = JsonObjectRequest(Request.Method.GET,  address + "api/" + hueAPI.getUsername() + "/lights/" + id, null,
-                Response.Listener { response ->
-                    nameTxt.text = response.getString("name")
-                    val state = response.getJSONObject("state")
-                    if (state.has("bri")) {
-                        setProgress(briBar, state.getInt("bri"))
-                    } else {
-                        findViewById<TextView>(R.id.briTxt).visibility = View.GONE
-                        briBar.visibility = View.GONE
+                    { response ->
+                        nameTxt.text = response.getString("name")
+                        val state = response.getJSONObject("state")
+                        if (state.has("bri")) {
+                            setProgress(briBar, state.getInt("bri"))
+                        } else {
+                            findViewById<TextView>(R.id.briTxt).visibility = View.GONE
+                            briBar.visibility = View.GONE
+                        }
+                        if (state.has("ct")) {
+                            setProgress(ctBar, state.getInt("ct") - 153)
+                        } else {
+                            findViewById<TextView>(R.id.ctTxt).visibility = View.GONE
+                            ctBar.visibility = View.GONE
+                        }
+                        if (state.has("hue")) {
+                            setProgress(hueBar, state.getInt("hue"))
+                        } else {
+                            findViewById<TextView>(R.id.hueTxt).visibility = View.GONE
+                            hueBar.visibility = View.GONE
+                        }
+                        if (state.has("sat")) {
+                            setProgress(satBar, state.getInt("sat"))
+                        } else {
+                            findViewById<TextView>(R.id.satTxt).visibility = View.GONE
+                            satBar.visibility = View.GONE
+                        }
+                    },
+                    { error ->
+                        finish()
+                        Toast.makeText(this, volleyError(this, error), Toast.LENGTH_LONG).show()
                     }
-                    if (state.has("ct")) {
-                        setProgress(ctBar, state.getInt("ct") - 153)
-                    } else {
-                        findViewById<TextView>(R.id.ctTxt).visibility = View.GONE
-                        ctBar.visibility = View.GONE
-                    }
-                    if (state.has("hue")) {
-                        setProgress(hueBar, state.getInt("hue"))
-                    } else {
-                        findViewById<TextView>(R.id.hueTxt).visibility = View.GONE
-                        hueBar.visibility = View.GONE
-                    }
-                    if (state.has("sat")) {
-                        setProgress(satBar, state.getInt("sat"))
-                    } else {
-                        findViewById<TextView>(R.id.satTxt).visibility = View.GONE
-                        satBar.visibility = View.GONE
-                    }
-                },
-                Response.ErrorListener { error ->
-                    finish()
-                    Toast.makeText(this, volleyError(this, error), Toast.LENGTH_LONG).show()
-                }
             )
 
             gridView.visibility = View.GONE
@@ -379,8 +378,8 @@ class HueLampActivity : AppCompatActivity() {
                     .setPositiveButton(android.R.string.ok) { _, _ ->
                         val requestObject = "{\"name\":\"" + input.text.toString() + "\"}"
                         val renameSceneRequest = CustomJsonArrayRequest(Request.Method.PUT, address + "api/" + hueAPI.getUsername() + "/scenes/$selectedScene", JSONObject(requestObject),
-                                Response.Listener { queue.add(scenesRequest) },
-                                Response.ErrorListener { e -> Log.e(Global.LOG_TAG, e.toString()) }
+                                { queue.add(scenesRequest) },
+                                { e -> Log.e(Global.LOG_TAG, e.toString()) }
                         )
                         queue.add(renameSceneRequest)
                     }
@@ -392,8 +391,8 @@ class HueLampActivity : AppCompatActivity() {
                     .setMessage(R.string.hue_delete_scene)
                     .setPositiveButton(R.string.str_delete) { _, _ ->
                         val deleteSceneRequest = CustomJsonArrayRequest(Request.Method.DELETE, address + "api/" + hueAPI.getUsername() + "/scenes/" + selectedScene, null,
-                                Response.Listener { queue.add(scenesRequest) },
-                                Response.ErrorListener { e -> Log.e(Global.LOG_TAG, e.toString()) }
+                                { queue.add(scenesRequest) },
+                                { e -> Log.e(Global.LOG_TAG, e.toString()) }
                         )
                         queue.add(deleteSceneRequest)
                     }
