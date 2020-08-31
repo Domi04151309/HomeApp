@@ -41,37 +41,41 @@ class Tasmota(context: Context, deviceId: String) {
         val list = JSONArray(prefs.getString(selectedDevice, EMPTY_ARRAY))
         val listItems: ArrayList<ListViewItem> = ArrayList(list.length())
         if (list.length() == 0) {
-            val listItem = ListViewItem(c.resources.getString(R.string.tasmota_empty_list))
-            listItem.summary = c.resources.getString(R.string.tasmota_empty_list_summary)
-            listItem.icon = R.drawable.ic_warning
-            listItems += listItem
+            listItems += ListViewItem(
+                    title = c.resources.getString(R.string.tasmota_empty_list),
+                    summary = c.resources.getString(R.string.tasmota_empty_list_summary),
+                    icon = R.drawable.ic_warning
+            )
         } else {
             var currentItem: JSONObject
             for (i in 0 until list.length()) {
                 try {
                     currentItem = list.getJSONObject(i)
-                    val listItem = ListViewItem(currentItem.getString("title"))
-                    listItem.summary = currentItem.getString("command")
-                    listItem.hidden = "tasmota_command"
-                    listItem.icon = R.drawable.ic_do
-                    listItems += listItem
+                    listItems += ListViewItem(
+                            title = currentItem.getString("title"),
+                            summary = currentItem.getString("command"),
+                            hidden = "tasmota_command",
+                            icon = R.drawable.ic_do
+                    )
                 } catch (e: JSONException) {
                     Log.e(Global.LOG_TAG, e.toString())
                 }
             }
         }
 
-        val addItem = ListViewItem(c.resources.getString(R.string.tasmota_add_command))
-        addItem.summary = c.resources.getString(R.string.tasmota_add_command_summary)
-        addItem.icon = R.drawable.ic_add
-        addItem.hidden = "add"
-        listItems += addItem
+        listItems += ListViewItem(
+                title = c.resources.getString(R.string.tasmota_add_command),
+                summary = c.resources.getString(R.string.tasmota_add_command_summary),
+                icon = R.drawable.ic_add,
+                hidden = "add"
+        )
 
-        val executeItem = ListViewItem(c.resources.getString(R.string.tasmota_execute_once))
-        executeItem.summary = c.resources.getString(R.string.tasmota_execute_once_summary)
-        executeItem.icon = R.drawable.ic_edit
-        executeItem.hidden = "execute_once"
-        listItems += executeItem
+        listItems += ListViewItem(
+                title = c.resources.getString(R.string.tasmota_execute_once),
+                summary = c.resources.getString(R.string.tasmota_execute_once_summary),
+                icon = R.drawable.ic_edit,
+                hidden = "execute_once"
+        )
         return listItems
     }
 

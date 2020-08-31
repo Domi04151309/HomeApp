@@ -53,31 +53,35 @@ class DevicesActivity : AppCompatActivity() {
         val listItems: ArrayList<ListViewItem> = ArrayList(devices.length())
         try {
             if (devices.length() == 0) {
-                val emptyItem = ListViewItem(resources.getString(R.string.main_no_devices))
-                emptyItem.hidden = "none"
-                listItems += emptyItem
+                listItems += ListViewItem(
+                        title = resources.getString(R.string.main_no_devices),
+                        hidden = "none"
+                )
             } else {
                 var currentDevice: DeviceItem
                 for (i in 0 until devices.length()) {
                     currentDevice = devices.getDeviceByIndex(i)
-                    val deviceItem = ListViewItem(currentDevice.name)
-                    deviceItem.summary = currentDevice.address
-                    deviceItem.hidden = "edit"
-                    deviceItem.icon = currentDevice.iconId
-                    listItems += deviceItem
+                    listItems += ListViewItem(
+                            title = currentDevice.name,
+                            summary = currentDevice.address,
+                            hidden = "edit",
+                            icon = currentDevice.iconId
+                    )
                 }
             }
-            val addItem = ListViewItem(resources.getString(R.string.pref_add))
-            addItem.summary = resources.getString(R.string.pref_add_summary)
-            addItem.hidden = "add"
-            addItem.icon = R.drawable.ic_add
-            listItems += addItem
+            listItems += ListViewItem(
+                    title = resources.getString(R.string.pref_add),
+                    summary = resources.getString(R.string.pref_add_summary),
+                    hidden = "add",
+                    icon = R.drawable.ic_add
+            )
         } catch (e: Exception) {
-            val errorItem = ListViewItem(resources.getString(R.string.err_wrong_format))
-            errorItem.summary = resources.getString(R.string.err_wrong_format_summary)
-            errorItem.hidden = "none"
-            errorItem.icon = R.drawable.ic_warning
-            listItems += errorItem
+            listItems += ListViewItem(
+                    title = resources.getString(R.string.err_wrong_format),
+                    summary = resources.getString(R.string.err_wrong_format_summary),
+                    hidden = "none",
+                    icon = R.drawable.ic_warning
+            )
             Log.e(Global.LOG_TAG, e.toString())
         }
 

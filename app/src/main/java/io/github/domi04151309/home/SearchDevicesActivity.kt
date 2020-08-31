@@ -32,9 +32,11 @@ class SearchDevicesActivity : AppCompatActivity() {
         val addresses = mutableListOf<String>()
 
         //Countdown
-        val waitItem = ListViewItem(resources.getString(R.string.pref_add_wait))
-        waitItem.summary = resources.getQuantityString(R.plurals.pref_add_wait_summary, 10, 10)
-        waitItem.icon = R.drawable.ic_info
+        val waitItem = ListViewItem(
+                title = resources.getString(R.string.pref_add_wait),
+                summary = resources.getQuantityString(R.plurals.pref_add_wait_summary, 10, 10),
+                icon = R.drawable.ic_info
+        )
         listView.adapter = ListViewAdapter(this, arrayListOf(waitItem))
         Thread {
             Thread.sleep(1000L)
@@ -68,11 +70,12 @@ class SearchDevicesActivity : AppCompatActivity() {
                 override fun onStart() {}
                 override fun onFoundNewDevice(device: UPnPDevice) {
                     if (device.server.contains("IpBridge") && !addresses.contains(device.hostAddress)) {
-                        val deviceItem = ListViewItem(device.friendlyName)
-                        deviceItem.summary = device.hostAddress
-                        deviceItem.hidden = "Hue API#Lamp"
-                        deviceItem.icon = R.drawable.ic_device_lamp
-                        listItems += deviceItem
+                        listItems += ListViewItem(
+                                title = device.friendlyName,
+                                summary = device.hostAddress,
+                                hidden = "Hue API#Lamp",
+                                icon = R.drawable.ic_device_lamp
+                        )
                         addresses += device.hostAddress
                     }
                 }
@@ -89,19 +92,21 @@ class SearchDevicesActivity : AppCompatActivity() {
                 override fun onFoundNewDevice(device: UPnPDevice) {
                     val friendlyName = device.friendlyName
                     if (friendlyName.startsWith("FRITZ!") && !addresses.contains(device.hostAddress)) {
-                        val deviceItem = ListViewItem(device.friendlyName)
-                        deviceItem.summary = device.hostAddress
-                        deviceItem.hidden = "Website#Router"
-                        deviceItem.icon = R.drawable.ic_device_router
-                        listItems += deviceItem
+                        listItems += ListViewItem(
+                                title = device.friendlyName,
+                                summary = device.hostAddress,
+                                hidden = "Website#Router",
+                                icon = R.drawable.ic_device_router
+                        )
                         addresses += device.hostAddress
                     }
                     if (device.server.contains("SimpleHome") && !addresses.contains(device.hostAddress)) {
-                        val deviceItem = ListViewItem(device.friendlyName)
-                        deviceItem.summary = device.hostAddress
-                        deviceItem.hidden = "SimpleHome API#Raspberry Pi"
-                        deviceItem.icon = R.drawable.ic_device_raspberry_pi
-                        listItems += deviceItem
+                        listItems += ListViewItem(
+                                title = device.friendlyName,
+                                summary = device.hostAddress,
+                                hidden = "SimpleHome API#Raspberry Pi",
+                                icon = R.drawable.ic_device_raspberry_pi
+                        )
                         addresses += device.hostAddress
                     }
                 }
@@ -116,11 +121,12 @@ class SearchDevicesActivity : AppCompatActivity() {
         //Display found devices
         Handler().postDelayed({
             if (!addresses.contains(routerIp)) {
-                val routerItem = ListViewItem(resources.getString(R.string.pref_device_router))
-                routerItem.summary = routerIp
-                routerItem.hidden = "Website#Router"
-                routerItem.icon = R.drawable.ic_device_router
-                listItems += routerItem
+                listItems += ListViewItem(
+                        title = resources.getString(R.string.pref_device_router),
+                        summary = routerIp,
+                        hidden = "Website#Router",
+                        icon = R.drawable.ic_device_router
+                )
                 addresses += routerIp
             }
             listView.adapter = ListViewAdapter(this, listItems)
