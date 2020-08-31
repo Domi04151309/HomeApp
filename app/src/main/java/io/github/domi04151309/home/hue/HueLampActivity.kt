@@ -133,16 +133,18 @@ class HueLampActivity : AppCompatActivity() {
                                 currentObjectName = response.names()?.getString(i) ?: ""
                                 currentObject = response.getJSONObject(currentObjectName)
                                 if (currentObject.getString("group") == id) {
-                                    val scene = ScenesGridItem(currentObject.getString("name"))
-                                    scene.hidden = currentObjectName
-                                    scene.icon = R.drawable.ic_hue_scene
-                                    gridItems += scene
+                                    gridItems += ScenesGridItem(
+                                            name = currentObject.getString("name"),
+                                            hidden = currentObjectName,
+                                            icon = R.drawable.ic_hue_scene
+                                    )
                                 }
                             }
-                            val scene = ScenesGridItem(resources.getString(R.string.hue_add_scene))
-                            scene.hidden = "add"
-                            scene.icon = R.drawable.ic_hue_scene_add
-                            gridItems += scene
+                            gridItems += ScenesGridItem(
+                                    name = resources.getString(R.string.hue_add_scene),
+                                    hidden = "add",
+                                    icon = R.drawable.ic_hue_scene_add
+                            )
                             gridView.adapter = HueScenesGridAdapter(this, gridItems)
                         } catch (e: Exception){
                             Log.e(Global.LOG_TAG, e.toString())
