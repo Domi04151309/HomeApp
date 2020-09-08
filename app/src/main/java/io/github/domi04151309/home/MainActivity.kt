@@ -116,6 +116,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private val hueRequestCallBack = object : HueAPI.RequestCallBack {
 
+        override fun onGroupLoaded(holder: RequestCallbackObject) {}
+
         override fun onGroupsLoaded(holder: RequestCallbackObject) {
             if (holder.response != null) {
                 try {
@@ -198,14 +200,28 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
     private val hueRequestUpdaterCallBack = object : HueAPI.RequestCallBack {
 
+        override fun onGroupLoaded(holder: RequestCallbackObject) {
+            if (holder.response != null) {
+                try {
+                    (listView.adapter as ListViewAdapter).updateSwitch(0, holder.response
+                            .getJSONObject("state")
+                            .getBoolean("any_on")
+                    )
+                } catch (e: Exception) {
+                    Log.e(Global.LOG_TAG, e.toString())
+                }
+            }
+        }
+
         override fun onGroupsLoaded(holder: RequestCallbackObject) {
             if (holder.response != null) {
                 try {
                     for (i in 0 until holder.response.length()) {
-                        listView.getChildAt(i).findViewById<Switch>(R.id.state).isChecked = holder.response
+                        (listView.adapter as ListViewAdapter).updateSwitch(i, holder.response
                                 .getJSONObject(holder.response.names()?.getString(i) ?: "")
-                                .getJSONObject("action")
-                                .getBoolean("on")
+                                .getJSONObject("state")
+                                .getBoolean("any_on")
+                        )
                     }
                 } catch (e: Exception) {
                     Log.e(Global.LOG_TAG, e.toString())
@@ -217,10 +233,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             if (holder.response != null) {
                 try {
                     for (i in 1 until (holder.response.length() + 1)) {
-                        listView.getChildAt(i).findViewById<Switch>(R.id.state).isChecked = holder.response
+                        (listView.adapter as ListViewAdapter).updateSwitch(i, holder.response
                                 .getJSONObject(holder.response.names()?.getString(i - 1) ?: "")
                                 .getJSONObject("state")
                                 .getBoolean("on")
+                        )
                     }
                 } catch (e: Exception) {
                     Log.e(Global.LOG_TAG, e.toString())
@@ -298,6 +315,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     hueAPI?.loadLightsByIDs(localIds, hueRequestCallBack, hidden.contains("zone"))
                     updateHandler.setUpdateFunction {
                         if (canReceiveRequest && hueAPI?.readyForRequest == true) {
+                            hueAPI?.loadGroupByID(hueRoom, hueRequestUpdaterCallBack)
                             hueAPI?.loadLightsByIDs(localIds, hueRequestUpdaterCallBack)
                         }
                     }
@@ -533,7 +551,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             loadDevices()
             reset = false
         }
-
     }
 
     override fun onStop() {

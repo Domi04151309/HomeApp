@@ -26,6 +26,7 @@ class HueAPI(context: Context, deviceId: String) {
     var readyForRequest: Boolean = true
 
     interface RequestCallBack {
+        fun onGroupLoaded(holder: RequestCallbackObject)
         fun onGroupsLoaded(holder: RequestCallbackObject)
         fun onLightsLoaded(holder: RequestCallbackObject)
     }
@@ -35,7 +36,7 @@ class HueAPI(context: Context, deviceId: String) {
     }
 
     fun loadGroups(callback: RequestCallBack) {
-        val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url + "api/" + getUsername() + "/groups", null,
+        val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url + "api/${getUsername()}/groups", null,
                 { response ->
                     val processed = JSONObject()
                     try {
@@ -70,8 +71,20 @@ class HueAPI(context: Context, deviceId: String) {
         queue.add(jsonObjectRequest)
     }
 
+    fun loadGroupByID(groupID: String, callback: RequestCallBack) {
+        val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url + "api/${getUsername()}/groups/$groupID", null,
+                { response ->
+                    callback.onGroupLoaded(RequestCallbackObject(c, response, selectedDevice))
+                },
+                { error ->
+                    callback.onGroupLoaded(RequestCallbackObject(c, null, selectedDevice, volleyError(c, error)))
+                }
+        )
+        queue.add(jsonObjectRequest)
+    }
+
     fun loadLightsByIDs(lightIDs: JSONArray, callback: RequestCallBack, forZone: Boolean = false) {
-        val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url + "api/" + getUsername() + "/lights", null,
+        val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url + "api/${getUsername()}/lights", null,
                 { response ->
                     try {
                         val returnObject = JSONObject()
@@ -138,7 +151,7 @@ class HueAPI(context: Context, deviceId: String) {
     }
 
     private fun putObject(address: String, requestObject: String) {
-        val request = CustomJsonArrayRequest(Request.Method.PUT, url + "api/" + getUsername() + address, JSONObject(requestObject),
+        val request = CustomJsonArrayRequest(Request.Method.PUT, url + "api/${getUsername()}$address", JSONObject(requestObject),
                 { },
                 { e -> Log.e(Global.LOG_TAG, e.toString()) }
         )

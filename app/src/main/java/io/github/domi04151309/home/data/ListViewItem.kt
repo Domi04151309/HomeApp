@@ -8,4 +8,5 @@ data class ListViewItem(
         var hidden: String = "",
         var icon: Int = 0,
         var state: Boolean? = null,
-        var stateListener: CompoundButton.OnCheckedChangeListener? = null)
+        var stateListener: CompoundButton.OnCheckedChangeListener? = null
+)

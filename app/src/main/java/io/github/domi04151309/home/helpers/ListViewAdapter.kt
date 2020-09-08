@@ -15,7 +15,11 @@ import android.widget.TextView
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.data.ListViewItem
 
-internal class ListViewAdapter(context: Context, private val itemArray: ArrayList<ListViewItem>, private val animate: Boolean = true) : BaseAdapter() {
+internal class ListViewAdapter(
+        context: Context,
+        private val itemArray: ArrayList<ListViewItem>,
+        private var animate: Boolean = true
+) : BaseAdapter() {
 
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
@@ -29,6 +33,12 @@ internal class ListViewAdapter(context: Context, private val itemArray: ArrayLis
 
     override fun getItemId(position: Int): Long {
         return position.toLong()
+    }
+
+    fun updateSwitch(position: Int, state: Boolean) {
+        animate = false
+        itemArray[position].state = state
+        notifyDataSetChanged()
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
