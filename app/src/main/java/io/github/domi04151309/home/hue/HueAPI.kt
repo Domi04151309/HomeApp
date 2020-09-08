@@ -39,25 +39,23 @@ class HueAPI(context: Context, deviceId: String) {
                 { response ->
                     val processed = JSONObject()
                     try {
-                        val rooms = JSONObject()
-                        val zones = JSONObject()
+                        val rooms: ArrayList<Group> = ArrayList(response.length() / 2)
+                        val zones: ArrayList<Group> = ArrayList(response.length() / 2)
                         var currentObjectName: String
                         var currentObject: JSONObject
                         for (i in 0 until response.length()) {
                             currentObjectName = response.names()?.getString(i) ?: ""
                             currentObject = response.getJSONObject(currentObjectName)
-                            if (currentObject.getString("type") == "Room") rooms.put(currentObjectName, currentObject)
-                            else zones.put(currentObjectName, currentObject)
+                            if (currentObject.getString("type") == "Room") rooms.add(Group(currentObjectName, currentObject))
+                            else zones.add(Group(currentObjectName, currentObject))
                         }
-                        for (i in 0 until rooms.length()) {
-                            currentObjectName = rooms.names()?.getString(i) ?: ""
-                            currentObject = rooms.getJSONObject(currentObjectName)
-                            processed.put(currentObjectName, currentObject)
+                        val sortedRooms = rooms.sortedWith(compareBy{ it.value.getString("name") })
+                        for (i in sortedRooms.indices) {
+                            processed.put(sortedRooms[i].key, sortedRooms[i].value)
                         }
-                        for (i in 0 until zones.length()) {
-                            currentObjectName = zones.names()?.getString(i) ?: ""
-                            currentObject = zones.getJSONObject(currentObjectName)
-                            processed.put(currentObjectName, currentObject)
+                        val sortedZones = zones.sortedWith(compareBy{ it.value.getString("name") })
+                        for (i in sortedZones.indices) {
+                            processed.put(sortedZones[i].key, sortedZones[i].value)
                         }
                     } catch (e: Exception) {
                         callback.onGroupsLoaded(RequestCallbackObject(c, null, selectedDevice, volleyError(c, e)))
@@ -150,4 +148,9 @@ class HueAPI(context: Context, deviceId: String) {
             Handler().postDelayed({ readyForRequest = true }, 100)
         }
     }
+
+    private data class Group(
+            val key: String = "",
+            val value: JSONObject = JSONObject()
+    )
 }
