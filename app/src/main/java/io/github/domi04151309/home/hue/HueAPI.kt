@@ -156,8 +156,8 @@ class HueAPI(context: Context, deviceId: String) {
                 { e -> Log.e(Global.LOG_TAG, e.toString()) }
         )
         if (readyForRequest) {
-            queue.add(request)
             readyForRequest = false
+            queue.add(request)
             Handler().postDelayed({ readyForRequest = true }, 100)
         }
     }
