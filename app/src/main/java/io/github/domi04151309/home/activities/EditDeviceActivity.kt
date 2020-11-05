@@ -1,4 +1,4 @@
-package io.github.domi04151309.home
+package io.github.domi04151309.home.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -18,9 +18,10 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputLayout
+import io.github.domi04151309.home.R
 import io.github.domi04151309.home.helpers.Devices
-import io.github.domi04151309.home.objects.Global
-import io.github.domi04151309.home.objects.Theme
+import io.github.domi04151309.home.helpers.Global
+import io.github.domi04151309.home.helpers.Theme
 
 class EditDeviceActivity : AppCompatActivity() {
 

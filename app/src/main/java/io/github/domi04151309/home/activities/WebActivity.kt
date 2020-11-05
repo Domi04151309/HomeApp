@@ -1,4 +1,4 @@
-package io.github.domi04151309.home
+package io.github.domi04151309.home.activities
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -16,7 +16,8 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AlertDialog
-import io.github.domi04151309.home.objects.Theme
+import io.github.domi04151309.home.R
+import io.github.domi04151309.home.helpers.Theme
 
 class WebActivity : AppCompatActivity() {
 

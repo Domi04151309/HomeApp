@@ -1,4 +1,4 @@
-package io.github.domi04151309.home.objects
+package io.github.domi04151309.home.helpers
 
 import android.app.Activity
 import android.app.ActivityManager

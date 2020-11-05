@@ -1,6 +1,6 @@
 package io.github.domi04151309.home.data
 
-import io.github.domi04151309.home.objects.Global
+import io.github.domi04151309.home.helpers.Global
 
 data class DeviceItem(val id: String) {
     var name: String = "Device"

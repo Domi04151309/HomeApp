@@ -4,7 +4,7 @@ import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserFactory
 import java.io.ByteArrayInputStream
 import android.util.Log
-import io.github.domi04151309.home.objects.Global
+import io.github.domi04151309.home.helpers.Global
 import java.lang.Exception
 
 class UPnPDevice internal constructor(val hostAddress: String, header: String) {

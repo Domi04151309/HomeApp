@@ -1,4 +1,4 @@
-package io.github.domi04151309.home.hue
+package io.github.domi04151309.home.activities
 
 import android.animation.ObjectAnimator
 import android.content.Intent
@@ -22,12 +22,15 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.data.ScenesGridItem
-import io.github.domi04151309.home.helpers.CustomJsonArrayRequest
+import io.github.domi04151309.home.custom.CustomJsonArrayRequest
 import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.helpers.UpdateHandler
-import io.github.domi04151309.home.objects.Global
-import io.github.domi04151309.home.objects.Global.volleyError
-import io.github.domi04151309.home.objects.Theme
+import io.github.domi04151309.home.helpers.HueAPI
+import io.github.domi04151309.home.adapters.HueScenesGridAdapter
+import io.github.domi04151309.home.helpers.HueUtils
+import io.github.domi04151309.home.helpers.Global
+import io.github.domi04151309.home.helpers.Global.volleyError
+import io.github.domi04151309.home.helpers.Theme
 import org.json.JSONObject
 
 class HueLampActivity : AppCompatActivity() {

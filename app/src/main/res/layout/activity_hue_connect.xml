@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="?dialogPreferredPadding"
-    tools:context=".hue.HueConnectActivity">
+    tools:context=".activities.HueConnectActivity">
 
     <TextView
         android:layout_width="match_parent"

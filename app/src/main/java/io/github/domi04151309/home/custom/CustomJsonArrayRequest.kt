@@ -1,4 +1,4 @@
-package io.github.domi04151309.home.helpers
+package io.github.domi04151309.home.custom
 
 import com.android.volley.NetworkResponse
 import com.android.volley.ParseError

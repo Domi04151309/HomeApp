@@ -1,4 +1,4 @@
-package io.github.domi04151309.home.tasmota
+package io.github.domi04151309.home.helpers
 
 import android.content.Context
 import android.util.Log
@@ -15,8 +15,6 @@ import io.github.domi04151309.home.R
 import org.json.JSONArray
 import org.json.JSONObject
 import io.github.domi04151309.home.data.ListViewItem
-import io.github.domi04151309.home.helpers.Devices
-import io.github.domi04151309.home.objects.Global
 import org.json.JSONException
 
 class Tasmota(context: Context, deviceId: String) {

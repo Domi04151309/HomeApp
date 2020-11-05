@@ -1,4 +1,4 @@
-package io.github.domi04151309.home
+package io.github.domi04151309.home.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,12 +7,13 @@ import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import android.view.View
+import io.github.domi04151309.home.R
 import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.data.ListViewItem
 import io.github.domi04151309.home.helpers.Devices
-import io.github.domi04151309.home.helpers.ListViewAdapter
-import io.github.domi04151309.home.objects.Global
-import io.github.domi04151309.home.objects.Theme
+import io.github.domi04151309.home.adapters.ListViewAdapter
+import io.github.domi04151309.home.helpers.Global
+import io.github.domi04151309.home.helpers.Theme
 
 class DevicesActivity : AppCompatActivity() {
 

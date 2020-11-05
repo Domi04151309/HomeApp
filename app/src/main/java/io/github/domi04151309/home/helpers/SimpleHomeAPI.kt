@@ -1,15 +1,13 @@
-package io.github.domi04151309.home.simplehome
+package io.github.domi04151309.home.helpers
 
 import android.content.Context
 import android.util.Log
 import com.android.volley.*
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import io.github.domi04151309.home.objects.Global.volleyError
+import io.github.domi04151309.home.helpers.Global.volleyError
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.data.RequestCallbackObject
-import io.github.domi04151309.home.helpers.Devices
-import io.github.domi04151309.home.objects.Global
 
 class SimpleHomeAPI(context: Context) {
 

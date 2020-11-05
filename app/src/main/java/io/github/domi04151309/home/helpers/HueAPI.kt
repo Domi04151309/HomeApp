@@ -1,4 +1,4 @@
-package io.github.domi04151309.home.hue
+package io.github.domi04151309.home.helpers
 
 import android.content.Context
 import android.content.Intent
@@ -8,14 +8,13 @@ import com.android.volley.*
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import io.github.domi04151309.home.R
-import io.github.domi04151309.home.objects.Global.volleyError
+import io.github.domi04151309.home.helpers.Global.volleyError
 import org.json.JSONArray
 import org.json.JSONObject
 import android.os.Handler
+import io.github.domi04151309.home.activities.HueConnectActivity
 import io.github.domi04151309.home.data.RequestCallbackObject
-import io.github.domi04151309.home.helpers.CustomJsonArrayRequest
-import io.github.domi04151309.home.helpers.Devices
-import io.github.domi04151309.home.objects.Global
+import io.github.domi04151309.home.custom.CustomJsonArrayRequest
 
 class HueAPI(context: Context, deviceId: String) {
 

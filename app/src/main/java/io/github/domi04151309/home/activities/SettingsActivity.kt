@@ -1,4 +1,4 @@
-package io.github.domi04151309.home
+package io.github.domi04151309.home.activities
 
 import android.os.Bundle
 import android.widget.Toast
@@ -10,11 +10,12 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import android.net.Uri
+import io.github.domi04151309.home.R
 import io.github.domi04151309.home.helpers.P
-import io.github.domi04151309.home.objects.Global
-import io.github.domi04151309.home.objects.Theme
+import io.github.domi04151309.home.helpers.Global
+import io.github.domi04151309.home.helpers.Theme
 
-class Preferences : AppCompatActivity() {
+class SettingsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Theme.set(this)

@@ -1,4 +1,4 @@
-package io.github.domi04151309.home.hue
+package io.github.domi04151309.home.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -12,10 +12,10 @@ import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.Volley
 import io.github.domi04151309.home.*
-import io.github.domi04151309.home.helpers.CustomJsonArrayRequest
+import io.github.domi04151309.home.custom.CustomJsonArrayRequest
 import io.github.domi04151309.home.helpers.Devices
-import io.github.domi04151309.home.objects.Global
-import io.github.domi04151309.home.objects.Theme
+import io.github.domi04151309.home.helpers.Global
+import io.github.domi04151309.home.helpers.Theme
 import org.json.JSONObject
 
 class HueConnectActivity : AppCompatActivity() {

@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="io.github.domi04151309.home.MainActivity">
+    tools:context="io.github.domi04151309.home.activities.MainActivity">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-package io.github.domi04151309.home.helpers
+package io.github.domi04151309.home.adapters
 
 import android.content.Context
 import android.view.LayoutInflater

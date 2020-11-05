@@ -19,41 +19,41 @@
         android:theme="@style/AppTheme27"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".hue.HueSceneActivity"
+        <activity android:name=".activities.HueSceneActivity"
             android:label="@string/hue_add_scene"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="io.github.domi04151309.home.MainActivity" />
+                android:value="io.github.domi04151309.home.activities.MainActivity" />
         </activity>
         <activity
-            android:name=".AboutActivity"
+            android:name=".activities.AboutActivity"
             android:label="@string/about"
-            android:parentActivityName=".Preferences">
+            android:parentActivityName=".activities.SettingsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="io.github.domi04151309.home.Preferences" />
+                android:value="io.github.domi04151309.home.activities.SettingsActivity" />
         </activity>
         <activity
-            android:name=".SearchDevicesActivity"
+            android:name=".activities.SearchDevicesActivity"
             android:label="@string/pref_add"
-            android:parentActivityName=".DevicesActivity">
+            android:parentActivityName=".activities.DevicesActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="io.github.domi04151309.home.DevicesActivity" />
+                android:value="io.github.domi04151309.home.activities.DevicesActivity" />
         </activity>
         <activity
-            android:name=".hue.HueConnectActivity"
+            android:name=".activities.HueConnectActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".hue.HueLampActivity"
-            android:parentActivityName=".MainActivity">
+            android:name=".activities.HueLampActivity"
+            android:parentActivityName=".activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="io.github.domi04151309.home.MainActivity" />
+                android:value="io.github.domi04151309.home.activities.MainActivity" />
         </activity>
         <activity
-            android:name=".SplashScreen"
+            android:name=".activities.SplashActivity"
             android:theme="@style/AppThemeSplash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -62,44 +62,44 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Preferences"
+            android:name=".activities.SettingsActivity"
             android:label="@string/pref"
             android:launchMode="singleTop"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="io.github.domi04151309.home.MainActivity" />
+                android:value="io.github.domi04151309.home.activities.MainActivity" />
         </activity>
         <activity
-            android:name=".WebActivity"
+            android:name=".activities.WebActivity"
             android:label="@string/webView"
             android:configChanges="orientation|screenSize"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="io.github.domi04151309.home.MainActivity" />
+                android:value="io.github.domi04151309.home.activities.MainActivity" />
         </activity>
         <activity
-            android:name=".DevicesActivity"
+            android:name=".activities.DevicesActivity"
             android:label="@string/pref"
             android:launchMode="singleTop"
-            android:parentActivityName=".Preferences">
+            android:parentActivityName=".activities.SettingsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="io.github.domi04151309.home.Preferences" />
+                android:value="io.github.domi04151309.home.activities.SettingsActivity" />
         </activity>
         <activity
-            android:name=".EditDeviceActivity"
+            android:name=".activities.EditDeviceActivity"
             android:label="@string/pref_add"
-            android:parentActivityName=".DevicesActivity">
+            android:parentActivityName=".activities.DevicesActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="io.github.domi04151309.home.DevicesActivity" />
+                android:value="io.github.domi04151309.home.activities.DevicesActivity" />
         </activity>
     </application>
 

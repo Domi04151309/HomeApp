@@ -1,4 +1,4 @@
-package io.github.domi04151309.home
+package io.github.domi04151309.home.activities
 
 import android.content.Context
 import android.content.Intent
@@ -11,9 +11,8 @@ import android.view.ContextMenu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
-import io.github.domi04151309.home.simplehome.SimpleHomeAPI
-import io.github.domi04151309.home.hue.HueAPI
-import io.github.domi04151309.home.hue.HueLampActivity
+import io.github.domi04151309.home.helpers.SimpleHomeAPI
+import io.github.domi04151309.home.helpers.HueAPI
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -24,15 +23,16 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.preference.PreferenceManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import io.github.domi04151309.home.R
 import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.data.ListViewItem
 import io.github.domi04151309.home.data.RequestCallbackObject
 import io.github.domi04151309.home.helpers.*
-import io.github.domi04151309.home.helpers.ListViewAdapter
+import io.github.domi04151309.home.adapters.ListViewAdapter
 import io.github.domi04151309.home.helpers.P
-import io.github.domi04151309.home.objects.Global
-import io.github.domi04151309.home.objects.Theme
-import io.github.domi04151309.home.tasmota.Tasmota
+import io.github.domi04151309.home.helpers.Global
+import io.github.domi04151309.home.helpers.Theme
+import io.github.domi04151309.home.helpers.Tasmota
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -463,7 +463,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 reset = true
             }
             R.id.nav_settings -> {
-                startActivity(Intent(this, Preferences::class.java))
+                startActivity(Intent(this, SettingsActivity::class.java))
                 reset = true
             }
             R.id.nav_source -> {
