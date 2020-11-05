@@ -10,17 +10,11 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import android.net.Uri
+import io.github.domi04151309.home.helpers.P
 import io.github.domi04151309.home.objects.Global
 import io.github.domi04151309.home.objects.Theme
 
 class Preferences : AppCompatActivity() {
-
-    private val spChanged = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-        if (key == "theme") {
-            startActivity(Intent(this@Preferences, MainActivity::class.java))
-            finish()
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Theme.set(this)
@@ -30,10 +24,28 @@ class Preferences : AppCompatActivity() {
                 .beginTransaction()
                 .replace(R.id.settings, GeneralPreferenceFragment())
                 .commit()
-        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(spChanged)
     }
 
     class GeneralPreferenceFragment : PreferenceFragmentCompat() {
+        private val prefsChangedListener =
+                SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+                    if (key == P.PREF_THEME) requireActivity().recreate()
+                }
+
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener(
+                    prefsChangedListener
+            )
+        }
+
+        override fun onDestroy() {
+            super.onDestroy()
+            preferenceManager.sharedPreferences.unregisterOnSharedPreferenceChangeListener(
+                    prefsChangedListener
+            )
+        }
+
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             addPreferencesFromResource(R.xml.pref_general)
             findPreference<Preference>("devices")?.setOnPreferenceClickListener {

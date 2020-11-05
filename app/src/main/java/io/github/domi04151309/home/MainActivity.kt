@@ -21,15 +21,15 @@ import android.widget.TextView
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.preference.PreferenceManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.data.ListViewItem
 import io.github.domi04151309.home.data.RequestCallbackObject
-import io.github.domi04151309.home.helpers.Commands
-import io.github.domi04151309.home.helpers.Devices
+import io.github.domi04151309.home.helpers.*
 import io.github.domi04151309.home.helpers.ListViewAdapter
-import io.github.domi04151309.home.helpers.UpdateHandler
+import io.github.domi04151309.home.helpers.P
 import io.github.domi04151309.home.objects.Global
 import io.github.domi04151309.home.objects.Theme
 import io.github.domi04151309.home.tasmota.Tasmota
@@ -53,6 +53,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var fab: FloatingActionButton
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navView: NavigationView
+
+    private var themeId = ""
+    private fun getThemeId(): String =
+            PreferenceManager.getDefaultSharedPreferences(this)
+                    .getString(P.PREF_THEME, P.PREF_THEME_DEFAULT) ?: P.PREF_THEME_DEFAULT
+
 
     internal val hueGroupStateListener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
         if (compoundButton.isPressed) {
@@ -279,6 +285,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         fab = findViewById(R.id.fab)
         drawerLayout = findViewById(R.id.drawer_layout)
         navView = findViewById(R.id.nav_view)
+        themeId = getThemeId()
 
         fab.setOnClickListener {
             reset = true
@@ -545,6 +552,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onStart() {
         super.onStart()
+        if (getThemeId() != themeId) {
+            themeId = getThemeId()
+            recreate()
+        }
+
         canReceiveRequest = true
         if(reset) {
             navView.setCheckedItem(R.id.nav_devices)
