@@ -3,9 +3,9 @@
     <color name="colorPrimary">#fff</color>
     <color name="colorPrimaryDark">#212121</color>
     <color name="colorPrimaryBlack">#000</color>
-    <color name="colorAccent">#4285f4</color>
-    <color name="colorAccent32">#204285F4</color>
-    <color name="colorAccent16">#104285F4</color>
+    <color name="colorAccent">#2962FF</color>
+    <color name="colorAccent32">#202962FF</color>
+    <color name="colorAccent16">#102962FF</color>
     <color name="dividerLight">#14000000</color>
     <color name="dividerDark">#14ffffff</color>
     <color name="navigationBarColor">#000001</color>
