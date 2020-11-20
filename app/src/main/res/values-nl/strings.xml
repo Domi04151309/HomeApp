@@ -23,7 +23,7 @@
 
     <string name="err">Er is iets misgegaan</string>
     <string name="err_wrong_format">Onbekend formaat</string>
-    <string name="err_wrong_format_summary">De JSON-string voldoet niet aan de vereisten</string>
+    <string name="err_wrong_format_summary">De json-tekenreeks voldoet niet aan de vereisten</string>
     <string name="err_missing_name">Voer een naam in</string>
     <string name="err_missing_name_summary">Voer een naam in om het apparaat makkelijk te herkennen</string>
     <string name="err_missing_address">Voer een adres in</string>
@@ -76,9 +76,9 @@
     <string name="pref_add_success">Apparaat toevoegen</string>
     <string name="pref_add_success_message">Het apparaat is toegevoegd aan je lijst</string>
     <string name="pref_edit_text">Expertmodus</string>
-    <string name="pref_edit_text_summary">Pas de JSON-string handmatig aan</string>
-    <string name="pref_reset">Standaardwaarden van JSON-string</string>
-    <string name="pref_reset_summary">Herstel de standaardwaarden van de JSON-string en verwijder alle apparaten</string>
+    <string name="pref_edit_text_summary">Pas de json-tekenreeks handmatig aan</string>
+    <string name="pref_reset">Standaardwaarden van json-tekenreeks</string>
+    <string name="pref_reset_summary">Herstel de standaardwaarden van de json-tekenreeks en verwijder alle apparaten</string>
     <string name="pref_reset_question">Weet je zeker dat je wilt doorgaan?</string>
     <string name="pref_reset_toast">Standaardwaarden teruggezet</string>
     <string name="pref_info">Informatie</string>
@@ -104,7 +104,7 @@
         <item>Licht thema</item>
         <item>Donker thema</item>
         <item>Zwart thema</item>
-        <item>Systeem thema</item>
+        <item>Systeemthema</item>
     </string-array>
     <string-array name="pref_add_method_array">
         <item>Apparaat toevoegen middels adres</item>
