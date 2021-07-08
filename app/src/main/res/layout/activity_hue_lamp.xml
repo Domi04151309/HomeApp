@@ -26,55 +26,49 @@
             android:layout_marginTop="@dimen/dialog_item_margin"
             android:contentDescription="@string/main_device_icon"
             app:srcCompat="@drawable/ic_hue_lamp_base" />
-
-        <TextView
-            android:id="@+id/nameTxt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/lampIcon"
-            android:layout_marginTop="@dimen/dialog_item_margin"
-            android:text="@string/placeholder"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-
     </RelativeLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="@dimen/dialog_item_margin"
-        android:background="?attr/dividerColor" />
-
-    <LinearLayout
+    <TextView
+        android:id="@+id/nameTxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dialog_item_margin"
-        android:orientation="horizontal"
-        android:paddingStart="?dialogPreferredPadding"
-        android:paddingEnd="?dialogPreferredPadding"
-        tools:ignore="ButtonStyle">
+        android:text="@string/placeholder"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
-        <Button
-            android:id="@+id/offBtn"
-            android:layout_width="0dp"
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="?dialogPreferredPadding"
+        android:clipToPadding="false"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/hue_off" />
+            android:orientation="horizontal"
+            android:paddingStart="?dialogPreferredPadding"
+            android:paddingEnd="?dialogPreferredPadding"
+            android:background="@null">
 
-        <Button
-            android:id="@+id/onBtn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/hue_on" />
+            <Button
+                android:id="@+id/offBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/hue_off" />
 
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="@dimen/dialog_item_margin"
-        android:background="?attr/dividerColor" />
+            <Button
+                android:id="@+id/onBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/hue_on" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -87,7 +81,6 @@
             android:id="@+id/briTxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dialog_item_margin"
             android:text="@string/hue_brightness" />
 
         <SeekBar
@@ -152,7 +145,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|bottom"
@@ -167,6 +160,6 @@
                 android:layout_width="wrap_content"
                 app:tabIndicatorHeight="0dp">
             </com.google.android.material.tabs.TabLayout>
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
     </FrameLayout>
 </LinearLayout>
