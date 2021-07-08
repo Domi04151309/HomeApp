@@ -1,48 +1,43 @@
 package io.github.domi04151309.home.activities
 
 import android.animation.ObjectAnimator
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Handler
-import android.util.Log
-import android.view.ContextMenu
-import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
 import android.widget.*
-import android.widget.AdapterView
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.viewpager2.widget.ViewPager2
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import io.github.domi04151309.home.R
-import io.github.domi04151309.home.data.ScenesGridItem
-import io.github.domi04151309.home.custom.CustomJsonArrayRequest
+import io.github.domi04151309.home.adapters.HueDetailsTabAdapter
 import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.helpers.UpdateHandler
 import io.github.domi04151309.home.helpers.HueAPI
-import io.github.domi04151309.home.adapters.HueScenesGridAdapter
 import io.github.domi04151309.home.helpers.HueUtils
-import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.Global.volleyError
 import io.github.domi04151309.home.helpers.Theme
-import org.json.JSONObject
+import org.json.JSONArray
 
 class HueLampActivity : AppCompatActivity() {
+
+    companion object {
+        var address: String = ""
+        var deviceId: String = ""
+        var id: String = ""
+        var lights: JSONArray? = null
+    }
 
     internal var canReceiveRequest: Boolean = false
     private var isRoom: Boolean = false
     private var lightDataRequest: JsonObjectRequest? = null
     private var roomDataRequest: JsonObjectRequest? = null
-    private var scenesRequest: JsonObjectRequest? = null
-    private var address: String = ""
-    private var selectedScene: CharSequence = ""
-    private var selectedSceneName: CharSequence = ""
     internal lateinit var hueAPI: HueAPI
     private lateinit var queue: RequestQueue
 
@@ -52,7 +47,6 @@ class HueLampActivity : AppCompatActivity() {
         setContentView(R.layout.activity_hue_lamp)
 
         val internId = intent.getStringExtra("ID") ?: "0"
-        val id: String
         if (internId.startsWith("room#")) {
             id = internId.substring(internId.lastIndexOf("#") + 1)
             isRoom = true
@@ -60,7 +54,7 @@ class HueLampActivity : AppCompatActivity() {
             id = internId
             isRoom = false
         }
-        val deviceId = intent.getStringExtra("Device") ?: ""
+        deviceId = intent.getStringExtra("Device") ?: ""
         val device = Devices(this).getDeviceById(deviceId)
         address = device.address
         hueAPI = HueAPI(this, deviceId)
@@ -73,7 +67,8 @@ class HueLampActivity : AppCompatActivity() {
         val ctBar = findViewById<SeekBar>(R.id.ctBar)
         val hueBar = findViewById<SeekBar>(R.id.hueBar)
         val satBar = findViewById<SeekBar>(R.id.satBar)
-        val gridView = findViewById<View>(R.id.scenes) as GridView
+        val tabBar = findViewById<TabLayout>(R.id.tabBar)
+        val viewPager = findViewById<ViewPager2>(R.id.viewPager)
 
         //Reset tint
         DrawableCompat.setTint(
@@ -93,6 +88,7 @@ class HueLampActivity : AppCompatActivity() {
         if (isRoom) {
             roomDataRequest = JsonObjectRequest(Request.Method.GET, address + "api/" + hueAPI.getUsername() + "/groups/" + id, null,
                     { response ->
+                        lights = response.getJSONArray("lights")
                         nameTxt.text = response.getString("name")
                         val action = response.getJSONObject("action")
                         if (action.has("bri")) {
@@ -118,39 +114,6 @@ class HueLampActivity : AppCompatActivity() {
                         } else {
                             findViewById<TextView>(R.id.satTxt).visibility = View.GONE
                             satBar.visibility = View.GONE
-                        }
-                    },
-                    { error ->
-                        finish()
-                        Toast.makeText(this, volleyError(this, error), Toast.LENGTH_LONG).show()
-                    }
-            )
-
-            scenesRequest = JsonObjectRequest(Request.Method.GET, address + "api/" + hueAPI.getUsername() + "/scenes/", null,
-                    { response ->
-                        try {
-                            val gridItems: ArrayList<ScenesGridItem> = ArrayList(response.length())
-                            var currentObjectName: String
-                            var currentObject: JSONObject
-                            for (i in 0 until response.length()) {
-                                currentObjectName = response.names()?.getString(i) ?: ""
-                                currentObject = response.getJSONObject(currentObjectName)
-                                if (currentObject.getString("group") == id) {
-                                    gridItems += ScenesGridItem(
-                                            name = currentObject.getString("name"),
-                                            hidden = currentObjectName,
-                                            icon = R.drawable.ic_hue_scene
-                                    )
-                                }
-                            }
-                            gridItems += ScenesGridItem(
-                                    name = resources.getString(R.string.hue_add_scene),
-                                    hidden = "add",
-                                    icon = R.drawable.ic_hue_scene_add
-                            )
-                            gridView.adapter = HueScenesGridAdapter(this, gridItems)
-                        } catch (e: Exception){
-                            Log.e(Global.LOG_TAG, e.toString())
                         }
                     },
                     { error ->
@@ -226,19 +189,12 @@ class HueLampActivity : AppCompatActivity() {
                 }
             })
 
-            gridView.onItemClickListener = AdapterView.OnItemClickListener { _, view, _, _ ->
-                val hiddenText = view.findViewById<TextView>(R.id.hidden).text.toString()
-                if (hiddenText == "add") {
-                    startActivity(Intent(this, HueSceneActivity::class.java).putExtra("deviceId", deviceId).putExtra("room", id))
-                } else {
-                    hueAPI.activateSceneOfGroup(id, hiddenText)
-                    Handler().postDelayed({
-                        queue.add(roomDataRequest)
-                    }, 200)
-                }
-            }
+            viewPager.adapter = HueDetailsTabAdapter(this)
 
-            registerForContextMenu(gridView)
+            val tabTitles = arrayOf(resources.getString(R.string.hue_scenes), resources.getString(R.string.hue_lamps))
+            TabLayoutMediator(tabBar, viewPager) { tab, position ->
+                tab.text = tabTitles[position]
+            }.attach()
         }
 
         // Selected item is a single light
@@ -278,7 +234,8 @@ class HueLampActivity : AppCompatActivity() {
                     }
             )
 
-            gridView.visibility = View.GONE
+            tabBar.visibility = View.GONE
+            viewPager.visibility = View.GONE
 
             findViewById<Button>(R.id.onBtn).setOnClickListener {
                 hueAPI.switchLightByID(id, true)
@@ -349,7 +306,6 @@ class HueLampActivity : AppCompatActivity() {
             })
         }
 
-        if(isRoom) queue.add(scenesRequest)
         val updateHandler = UpdateHandler()
         updateHandler.setUpdateFunction {
             if (canReceiveRequest && hueAPI.readyForRequest) {
@@ -357,55 +313,6 @@ class HueLampActivity : AppCompatActivity() {
                 else queue.add(lightDataRequest)
             }
         }
-    }
-
-    override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
-        super.onCreateContextMenu(menu, v, menuInfo)
-        val info = menuInfo as AdapterView.AdapterContextMenuInfo
-        val view = v as GridView
-        selectedScene = view.getChildAt(info.position).findViewById<TextView>(R.id.hidden).text
-        selectedSceneName = view.getChildAt(info.position).findViewById<TextView>(R.id.name).text
-        if (selectedScene != "add") {
-            menuInflater.inflate(R.menu.activity_hue_lamp_context, menu)
-        }
-    }
-
-    override fun onContextItemSelected(item: MenuItem): Boolean {
-        if (item.title == resources.getString(R.string.str_rename)) {
-            val nullParent: ViewGroup? = null
-            val view = layoutInflater.inflate(R.layout.dialog_input, nullParent, false)
-            val input = view.findViewById<EditText>(R.id.input)
-            input.setText(selectedSceneName)
-            AlertDialog.Builder(this)
-                    .setTitle(R.string.str_rename)
-                    .setMessage(R.string.hue_rename_scene)
-                    .setView(view)
-                    .setPositiveButton(android.R.string.ok) { _, _ ->
-                        val requestObject = "{\"name\":\"" + input.text.toString() + "\"}"
-                        val renameSceneRequest = CustomJsonArrayRequest(Request.Method.PUT, address + "api/" + hueAPI.getUsername() + "/scenes/$selectedScene", JSONObject(requestObject),
-                                { queue.add(scenesRequest) },
-                                { e -> Log.e(Global.LOG_TAG, e.toString()) }
-                        )
-                        queue.add(renameSceneRequest)
-                    }
-                    .setNegativeButton(android.R.string.cancel) { _, _ -> }
-                    .show()
-        } else if (item.title == resources.getString(R.string.str_delete)) {
-            AlertDialog.Builder(this)
-                    .setTitle(R.string.str_delete)
-                    .setMessage(R.string.hue_delete_scene)
-                    .setPositiveButton(R.string.str_delete) { _, _ ->
-                        val deleteSceneRequest = CustomJsonArrayRequest(Request.Method.DELETE, address + "api/" + hueAPI.getUsername() + "/scenes/" + selectedScene, null,
-                                { queue.add(scenesRequest) },
-                                { e -> Log.e(Global.LOG_TAG, e.toString()) }
-                        )
-                        queue.add(deleteSceneRequest)
-                    }
-                    .setNegativeButton(android.R.string.cancel) { _, _ -> }
-                    .show()
-        }
-        return super.onContextItemSelected(item)
-
     }
 
     override fun onStart() {

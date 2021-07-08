@@ -42,6 +42,8 @@
     <string name="hue_color_temperature">Color temperature</string>
     <string name="hue_hue">Hue</string>
     <string name="hue_saturation">Saturation</string>
+    <string name="hue_scenes">Scenes</string>
+    <string name="hue_lamps">Lamps</string>
     <string name="hue_add_scene">Add Scene</string>
     <string name="hue_new_scene">New Scene</string>
     <string name="hue_rename_scene">Please enter a new name</string>

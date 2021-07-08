@@ -156,12 +156,20 @@
         android:layout_height="match_parent"
         android:background="?attr/dividerColor" />
 
-    <GridView
-        android:id="@+id/scenes"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:columnWidth="0dp"
-        android:numColumns="3"
-        android:stretchMode="columnWidth" />
+        android:layout_weight="1">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabBar"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+        </com.google.android.material.tabs.TabLayout>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </FrameLayout>
 </LinearLayout>

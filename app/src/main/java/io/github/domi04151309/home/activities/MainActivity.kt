@@ -13,7 +13,6 @@ import android.view.View
 import android.widget.*
 import io.github.domi04151309.home.helpers.SimpleHomeAPI
 import io.github.domi04151309.home.helpers.HueAPI
-import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import android.widget.TextView
@@ -42,9 +41,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var reset : Boolean = false
     private val updateHandler = UpdateHandler()
     private var canReceiveRequest = false
-    internal var currentView: View? = null
-    internal var hueRoom: String = ""
-    internal var hueRoomState: Boolean = false
+    private var currentView: View? = null
     internal var hueCurrentIcon: Int = 0
     internal lateinit var devices: Devices
     internal lateinit var listView: ListView
@@ -64,17 +61,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (compoundButton.isPressed) {
             val hidden = (compoundButton.parent as ViewGroup).findViewById<TextView>(R.id.hidden).text
             hueAPI?.switchGroupByID(hidden.substring(hidden.lastIndexOf("#") + 1), b)
-        }
-    }
-
-    internal val hueLampStateListener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
-        if (compoundButton.isPressed) {
-            val hidden = (compoundButton.parent as ViewGroup).findViewById<TextView>(R.id.hidden).text.toString()
-            if (hidden.startsWith("room#")) {
-                hueAPI?.switchGroupByID(hidden.substring(hidden.lastIndexOf("#") + 1), b)
-            } else {
-                hueAPI?.switchLightByID(hidden, b)
-            }
         }
     }
 
@@ -161,48 +147,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
 
-        override fun onLightsLoaded(holder: RequestCallbackObject) {
-            if (holder.response != null) {
-                try {
-                    val roomItem = ListViewItem(
-                            title = if (holder.forZone) resources.getString(R.string.hue_whole_zone) else resources.getString(R.string.hue_whole_room),
-                            summary = if (holder.forZone) resources.getString(R.string.hue_whole_zone_summary) else resources.getString(R.string.hue_whole_room_summary),
-                            hidden = "room#$hueRoom",
-                            icon = if (holder.forZone) R.drawable.ic_zone else R.drawable.ic_room,
-                            state = hueRoomState,
-                            stateListener = hueLampStateListener
-                    )
-                    var currentObjectName: String
-                    var currentObject: JSONObject
-                    val listItems: ArrayList<ListViewItem> = arrayListOf(roomItem)
-                    for (i in 1 until (holder.response.length() + 1)) {
-                        try {
-                            currentObjectName = holder.response.names()?.getString(i - 1) ?: ""
-                            currentObject = holder.response.getJSONObject(currentObjectName)
-                            listItems += ListViewItem(
-                                    title = currentObject.getString("name"),
-                                    summary = resources.getString(R.string.hue_tap),
-                                    hidden = currentObjectName,
-                                    icon = R.drawable.ic_device_lamp,
-                                    state = currentObject.getJSONObject("state").getBoolean("on"),
-                                    stateListener = hueLampStateListener
-                            )
-                        } catch (e: JSONException) {
-                            Log.e(Global.LOG_TAG, e.toString())
-                        }
-                    }
-                    updateList(listItems)
-                    setLevelThreeHue(currentView?.findViewById<TextView>(R.id.title)?.text ?: "")
-                } catch (e: Exception) {
-                    setLevelTwo(hueCurrentIcon, devices.getDeviceById(holder.deviceId).name)
-                    currentView?.findViewById<TextView>(R.id.summary)?.text = resources.getString(R.string.err_wrong_format_summary)
-                    Log.e(Global.LOG_TAG, e.toString())
-                }
-            } else {
-                setLevelTwoHue(holder.deviceId, hueCurrentIcon, devices.getDeviceById(holder.deviceId).name)
-                currentView?.findViewById<TextView>(R.id.summary)?.text = holder.errorMessage
-            }
-        }
+        override fun onLightsLoaded(holder: RequestCallbackObject) {}
     }
     private val hueRequestUpdaterCallBack = object : HueAPI.RequestCallBack {
 
@@ -315,20 +260,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
                 "two" ->
                     homeAPI.executeCommand(hidden, homeRequestCallBack)
-                "two_hue" -> {
-                    hueRoom = hidden.substring(hidden.lastIndexOf("#") + 1)
-                    hueRoomState = view.findViewById<Switch>(R.id.state).isChecked
-                    val localIds = JSONArray(hidden.substring(0 , hidden.indexOf("@")))
-                    hueAPI?.loadLightsByIDs(localIds, hueRequestCallBack, hidden.contains("zone"))
-                    updateHandler.setUpdateFunction {
-                        if (canReceiveRequest && hueAPI?.readyForRequest == true) {
-                            hueAPI?.loadGroupByID(hueRoom, hueRequestUpdaterCallBack)
-                            hueAPI?.loadLightsByIDs(localIds, hueRequestUpdaterCallBack)
-                        }
-                    }
-                }
-                "three_hue" ->
-                    startActivity(Intent(this, HueLampActivity::class.java).putExtra("ID", hidden).putExtra("Device", currentDevice))
+                "two_hue" ->
+                    startActivity(
+                            Intent(this, HueLampActivity::class.java)
+                                    .putExtra("ID", hidden.substring(hidden.lastIndexOf("@") + 1))
+                                    .putExtra("Device", currentDevice)
+                    )
                 "two_tasmota" -> {
                     when (hidden) {
                         "add" -> tasmota?.addToList(tasmotaRequestCallBack)
@@ -445,8 +382,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             drawerLayout.closeDrawer(GravityCompat.START)
         else if (level == "two" || level == "two_hue" || level == "two_tasmota")
             loadDevices()
-        else if (level == "three_hue")
-            loadHueGroups()
         else
             super.onBackPressed()
     }
@@ -538,12 +473,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         deviceIcon.setImageResource(icon)
         deviceName.text = title
         level = "two_tasmota"
-    }
-
-    internal fun setLevelThreeHue(title: CharSequence) {
-        deviceIcon.setImageResource(R.drawable.ic_device_lamp)
-        deviceName.text = title
-        level = "three_hue"
     }
 
     internal fun updateList(items: ArrayList<ListViewItem>) {
