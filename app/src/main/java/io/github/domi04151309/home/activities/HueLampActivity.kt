@@ -48,7 +48,7 @@ class HueLampActivity : AppCompatActivity() {
         setContentView(R.layout.activity_hue_lamp)
 
         val internId = intent.getStringExtra("ID") ?: "0"
-        if (internId.startsWith("room#")) {
+        if (internId.startsWith("room#") || internId.startsWith("zone#")) {
             id = internId.substring(internId.lastIndexOf("#") + 1)
             isRoom = true
         } else {

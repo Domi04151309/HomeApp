@@ -6,5 +6,6 @@
     android:columnWidth="0dp"
     android:numColumns="3"
     android:stretchMode="columnWidth"
-    android:paddingVertical="?dialogPreferredPadding"
+    android:paddingTop="12dp"
+    android:paddingBottom="64dp"
     android:clipToPadding="false"/>

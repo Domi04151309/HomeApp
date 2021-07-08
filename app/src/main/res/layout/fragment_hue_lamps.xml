@@ -3,5 +3,6 @@
     android:id="@+id/listView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingVertical="?dialogPreferredPadding"
+    android:paddingTop="12dp"
+    android:paddingBottom="64dp"
     android:clipToPadding="false" />
