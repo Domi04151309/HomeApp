@@ -143,14 +143,30 @@
         android:layout_marginTop="@dimen/dialog_item_margin"
         android:background="?attr/dividerColor" />
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabBar"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent">
-    </com.google.android.material.tabs.TabLayout>
-
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPager"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|bottom"
+            android:layout_marginBottom="?dialogPreferredPadding"
+            android:clipToPadding="false"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp">
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabBar"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                app:tabIndicatorHeight="0dp">
+            </com.google.android.material.tabs.TabLayout>
+        </androidx.cardview.widget.CardView>
+    </FrameLayout>
 </LinearLayout>

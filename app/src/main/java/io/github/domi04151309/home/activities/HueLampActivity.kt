@@ -7,6 +7,7 @@ import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.android.volley.Request
@@ -191,9 +192,12 @@ class HueLampActivity : AppCompatActivity() {
 
             viewPager.adapter = HueDetailsTabAdapter(this)
 
-            val tabTitles = arrayOf(resources.getString(R.string.hue_scenes), resources.getString(R.string.hue_lamps))
+            val tabIcons = arrayOf(
+                    ResourcesCompat.getDrawable(resources, R.drawable.ic_hue_scene_add, theme),
+                    ResourcesCompat.getDrawable(resources, R.drawable.ic_device_lamp, theme)
+            )
             TabLayoutMediator(tabBar, viewPager) { tab, position ->
-                tab.text = tabTitles[position]
+                tab.icon = tabIcons[position]
             }.attach()
         }
 
