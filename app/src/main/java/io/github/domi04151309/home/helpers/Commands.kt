@@ -17,15 +17,15 @@ class Commands(source: JSONObject) {
         selectedCommand = _source.getJSONObject(selectedCommandName)
     }
 
-    fun getSelected(): String?{
+    fun getSelected(): String {
         return selectedCommandName
     }
 
-    fun getSelectedTitle(): String{
+    fun getSelectedTitle(): String {
         return selectedCommand.getString("title")
     }
 
-    fun getSelectedSummary(): String{
+    fun getSelectedSummary(): String {
         return selectedCommand.getString("summary")
     }
 }
