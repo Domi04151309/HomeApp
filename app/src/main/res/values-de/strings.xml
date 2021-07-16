@@ -100,7 +100,7 @@
     <string name="pref_info_header">Hintergrund des Kopfbereiches</string>
     <string name="pref_info_header_summary">Hintergrund des Kopfbereiches von Alberto Castillo Q. auf Unsplash</string>
     <string name="pref_device_router">Router</string>
-    <string name="placeholder">Platzhalter</string>
+    <string name="placeholder">Lädt</string>
 
     <string name="str_cancel">Abbrechen</string>
     <string name="str_name">Name</string>

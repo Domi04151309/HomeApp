@@ -85,7 +85,7 @@
     <string name="pref_info_header">Kopachtergrond</string>
     <string name="pref_info_header_summary">De kopachtergrond is gemaakt door Alberto Castillo Q. van Unsplash</string>
     <string name="pref_device_router">Router</string>
-    <string name="placeholder">Plaatshouder</string>
+    <string name="placeholder">Bezig met laden</string>
 
     <string name="str_cancel">Annuleren</string>
     <string name="str_name">Naam</string>

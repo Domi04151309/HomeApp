@@ -16,7 +16,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme27"
+        android:theme="@style/AppThemeDark"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".activities.HueSceneActivity"
@@ -44,7 +44,7 @@
         </activity>
         <activity
             android:name=".activities.HueConnectActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppThemeDark.NoActionBar" />
         <activity
             android:name=".activities.HueLampActivity"
             android:parentActivityName=".activities.MainActivity">
@@ -65,7 +65,7 @@
             android:name=".activities.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppThemeDark.NoActionBar" />
         <activity
             android:name=".activities.SettingsActivity"
             android:label="@string/pref"

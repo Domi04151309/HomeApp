@@ -85,7 +85,7 @@
     <string name="pref_info_header">Fondo de cabecera</string>
     <string name="pref_info_header_summary">Fondo de cabecera por Alberto Castillo Q. en Unsplash</string>
     <string name="pref_device_router">Router</string>
-    <string name="placeholder">Marcador</string>
+    <string name="placeholder">Cargando</string>
 
     <string name="str_cancel">Cancelar</string>
     <string name="str_name">Nombre</string>

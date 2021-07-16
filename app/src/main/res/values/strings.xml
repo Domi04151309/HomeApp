@@ -104,7 +104,7 @@
     <string name="pref_info_header">Header background</string>
     <string name="pref_info_header_summary">Header background by Alberto Castillo Q. on Unsplash</string>
     <string name="pref_device_router">Router</string>
-    <string name="placeholder">Placeholder</string>
+    <string name="placeholder">Loading</string>
 
     <string name="str_cancel">Cancel</string>
     <string name="str_name">Name</string>
