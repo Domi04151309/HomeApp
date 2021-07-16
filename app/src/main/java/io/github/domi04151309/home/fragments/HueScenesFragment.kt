@@ -31,7 +31,7 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
     private lateinit var queue: RequestQueue
     private lateinit var c: Context
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         c = context ?: throw IllegalStateException()
         hueAPI = HueAPI(c, HueLampActivity.deviceId)
         queue = Volley.newRequestQueue(context)

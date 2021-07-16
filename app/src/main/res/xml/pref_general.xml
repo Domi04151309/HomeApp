@@ -44,6 +44,11 @@
             app:summary="@string/about_summary"
             app:iconSpaceReserved="false" />
         <Preference
+            app:key="wiki"
+            app:title="@string/pref_info_wiki"
+            app:summary="@string/pref_info_wiki_summary"
+            app:iconSpaceReserved="false" />
+        <Preference
             app:key="header"
             app:title="@string/pref_info_header"
             app:summary="@string/pref_info_header_summary"

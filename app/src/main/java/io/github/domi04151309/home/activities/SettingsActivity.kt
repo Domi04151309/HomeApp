@@ -69,6 +69,11 @@ class SettingsActivity : AppCompatActivity() {
                 startActivity(Intent(context, AboutActivity::class.java))
                 true
             }
+            findPreference<Preference>("wiki")?.setOnPreferenceClickListener {
+                val uri = "https://github.com/Domi04151309/HomeApp/wiki"
+                startActivity(Intent(context, WebActivity::class.java).putExtra("URI", uri).putExtra("title", resources.getString(R.string.pref_info_wiki)))
+                true
+            }
             findPreference<Preference>("header")?.setOnPreferenceClickListener {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://unsplash.com/photos/mx4mSkK9zeo")))
                 true

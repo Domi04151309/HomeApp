@@ -26,9 +26,9 @@ class HueLampsFragment : Fragment(R.layout.fragment_hue_lamps) {
 
     private lateinit var hueAPI: HueAPI
     private lateinit var queue: RequestQueue
-    private lateinit var c: Context
+    internal lateinit var c: Context
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         c = context ?: throw IllegalStateException()
         hueAPI = HueAPI(c, HueLampActivity.deviceId)
         queue = Volley.newRequestQueue(context)
@@ -39,7 +39,7 @@ class HueLampsFragment : Fragment(R.layout.fragment_hue_lamps) {
         val hueLampStateListener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
             if (compoundButton.isPressed) {
                 val hidden = (compoundButton.parent as ViewGroup).findViewById<TextView>(R.id.hidden).text.toString()
-                hueAPI?.switchLightByID(hidden, b)
+                hueAPI.switchLightByID(hidden, b)
             }
         }
 

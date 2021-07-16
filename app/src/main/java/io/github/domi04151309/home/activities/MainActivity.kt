@@ -392,18 +392,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 loadDevices()
                 reset = false
             }
-            R.id.nav_wiki -> {
-                val uri = "https://github.com/Domi04151309/HomeApp/wiki"
-                startActivity(Intent(this, WebActivity::class.java).putExtra("URI", uri).putExtra("title", resources.getString(R.string.nav_wiki)))
-                reset = true
-            }
             R.id.nav_settings -> {
                 startActivity(Intent(this, SettingsActivity::class.java))
-                reset = true
-            }
-            R.id.nav_source -> {
-                val uri = "https://github.com/Domi04151309/HomeApp"
-                startActivity(Intent(this, WebActivity::class.java).putExtra("URI", uri).putExtra("title", resources.getString(R.string.nav_source)))
                 reset = true
             }
         }

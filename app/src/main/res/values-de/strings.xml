@@ -3,9 +3,7 @@
     <string name="app_by">Home App von Domi04151309</string>
 
     <string name="nav_devices">Geräte</string>
-    <string name="nav_wiki">Wiki</string>
     <string name="nav_settings">Einstellungen</string>
-    <string name="nav_source">Quelltext</string>
 
     <string name="main_no_devices">Keine Geräte gefunden</string>
     <string name="main_no_devices_summary">Füge ein Gerät in den Einstellungen hinzu</string>
@@ -32,10 +30,6 @@
     <string name="hue_connect">Verbinde dich mit deiner Bridge</string>
     <string name="hue_press_button">Bitte drücke den Knopf auf deiner Bridge um fortzufahren.</string>
     <string name="hue_tap">Tippe um Auszuwählen</string>
-    <string name="hue_whole_room">Ganzen Raum steuern</string>
-    <string name="hue_whole_room_summary">Alle Lampen im Raum gleichzeitig steuern</string>
-    <string name="hue_whole_zone">Ganze Zone steuern</string>
-    <string name="hue_whole_zone_summary">Alle Lampen in der Zone gleichzeitig steuern</string>
     <string name="hue_on">An</string>
     <string name="hue_off">Aus</string>
     <string name="hue_brightness">Helligkeit</string>
@@ -97,6 +91,8 @@
     <string name="pref_reset_question">Sind Sie sich sicher, dass Sie die JSON-Zeichenfolge zurücksetzen und alle Geräte löschen möchten?</string>
     <string name="pref_reset_toast">JSON-Zeichenfolge zurückgesetzt</string>
     <string name="pref_info">Informationen</string>
+    <string name="pref_info_wiki">Wiki</string>
+    <string name="pref_info_wiki_summary">Dokumentation und Hilfe</string>
     <string name="pref_info_header">Hintergrund des Kopfbereiches</string>
     <string name="pref_info_header_summary">Hintergrund des Kopfbereiches von Alberto Castillo Q. auf Unsplash</string>
     <string name="pref_device_router">Router</string>

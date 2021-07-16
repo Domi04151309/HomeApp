@@ -3,9 +3,7 @@
     <string name="app_by">Home App by Domi04151309</string>
 
     <string name="nav_devices">Devices</string>
-    <string name="nav_wiki">Wiki</string>
     <string name="nav_settings">Settings</string>
-    <string name="nav_source">Source code</string>
 
     <string name="main_no_devices">No devices found</string>
     <string name="main_no_devices_summary">Add a new device in the settings</string>
@@ -32,18 +30,12 @@
     <string name="hue_connect">Connect to your Bridge</string>
     <string name="hue_press_button">Please press the button on your bridge to continue.</string>
     <string name="hue_tap">Tap to select</string>
-    <string name="hue_whole_room">Control whole room</string>
-    <string name="hue_whole_room_summary">Control all lights in the room at once</string>
-    <string name="hue_whole_zone">Control whole zone</string>
-    <string name="hue_whole_zone_summary">Control all lights in the zone at once</string>
     <string name="hue_on">On</string>
     <string name="hue_off">Off</string>
     <string name="hue_brightness">Brightness</string>
     <string name="hue_color_temperature">Color temperature</string>
     <string name="hue_hue">Hue</string>
     <string name="hue_saturation">Saturation</string>
-    <string name="hue_scenes">Scenes</string>
-    <string name="hue_lamps">Lamps</string>
     <string name="hue_add_scene">Add Scene</string>
     <string name="hue_new_scene">New Scene</string>
     <string name="hue_rename_scene">Please enter a new name</string>
@@ -101,6 +93,8 @@
     <string name="pref_reset_question">Are you sure you want to reset the JSON string and delete all devices?</string>
     <string name="pref_reset_toast">Reset the JSON string</string>
     <string name="pref_info">Information</string>
+    <string name="pref_info_wiki">Wiki</string>
+    <string name="pref_info_wiki_summary">Documentation and help</string>
     <string name="pref_info_header">Header background</string>
     <string name="pref_info_header_summary">Header background by Alberto Castillo Q. on Unsplash</string>
     <string name="pref_device_router">Router</string>

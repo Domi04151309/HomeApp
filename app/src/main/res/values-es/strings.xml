@@ -3,9 +3,7 @@
     <string name="app_by">Home App de Domi04151309</string>
 
     <string name="nav_devices">Dispositivos</string>
-    <string name="nav_wiki">Wiki</string>
     <string name="nav_settings">Ajustes</string>
-    <string name="nav_source">Código fuente</string>
 
     <string name="main_no_devices">Sin dispositivos encontrados</string>
     <string name="main_no_devices_summary">Añade un nuevo dispositivo en los ajustes</string>
@@ -32,8 +30,6 @@
     <string name="hue_connect">Conecta tu puente</string>
     <string name="hue_press_button">Por favor, pulse el botón de su puente para continuar.</string>
     <string name="hue_tap">Toque para seleccionar</string>
-    <string name="hue_whole_room">Controlar toda la habitación</string>
-    <string name="hue_whole_room_summary">Controla todas las luces de la habitación a la vez</string>
     <string name="hue_on">Encendido</string>
     <string name="hue_off">Apagado</string>
     <string name="hue_brightness">Brillo</string>
@@ -82,6 +78,7 @@
     <string name="pref_reset_question">¿Estás seguro de que quieres reestablecer la cadena JSON y borrar todos los dispositivos?</string>
     <string name="pref_reset_toast">Reiniciar la cadena de JSON</string>
     <string name="pref_info">Información</string>
+    <string name="pref_info_wiki">Wiki</string>
     <string name="pref_info_header">Fondo de cabecera</string>
     <string name="pref_info_header_summary">Fondo de cabecera por Alberto Castillo Q. en Unsplash</string>
     <string name="pref_device_router">Router</string>
