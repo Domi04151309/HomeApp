@@ -35,14 +35,17 @@ import io.github.domi04151309.home.helpers.Tasmota
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
+    enum class Flavors {
+        ONE, TWO_SIMPLE_HOME, TWO_HUE, TWO_TASMOTA
+    }
+
     private var currentDevice = ""
     private var tasmotaPosition: Int = 0
-    private var level = "one"
+    private var level = Flavors.ONE
     private var reset : Boolean = false
     private val updateHandler = UpdateHandler()
     private var canReceiveRequest = false
     private var currentView: View? = null
-    internal var hueCurrentIcon: Int = 0
     internal lateinit var devices: Devices
     internal lateinit var listView: ListView
     private lateinit var deviceIcon: ImageView
@@ -94,8 +97,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     }
                 }
                 updateList(listItems)
-                val device = devices.getDeviceById(holder.deviceId)
-                setLevelTwo(device.id, device.iconId, device.name)
+                setLevelTwo(devices.getDeviceById(holder.deviceId), Flavors.TWO_SIMPLE_HOME)
             } else {
                 handleErrorOnLevelOne(holder.errorMessage)
             }
@@ -136,9 +138,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         }
                     }
                     updateList(listItems)
-                    val device = devices.getDeviceById(holder.deviceId)
-                    hueCurrentIcon = device.iconId
-                    setLevelTwoHue(holder.deviceId, device.iconId, device.name)
+                    setLevelTwo(devices.getDeviceById(holder.deviceId), Flavors.TWO_HUE)
                 } catch (e: Exception) {
                     handleErrorOnLevelOne(resources.getString(R.string.err_wrong_format_summary))
                     Log.e(Global.LOG_TAG, e.toString())
@@ -255,19 +255,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             val hidden = view.findViewById<TextView>(R.id.hidden).text.toString()
             when (level) {
-                "one" -> {
+                Flavors.ONE -> {
                     view.findViewById<TextView>(R.id.summary).text = resources.getString(R.string.main_connecting)
                     handleLevelOne(hidden)
                 }
-                "twoSimpleHome" ->
+                Flavors.TWO_SIMPLE_HOME ->
                     homeAPI.executeCommand(currentDevice, hidden, homeRequestCallBack)
-                "two_hue" ->
+                Flavors.TWO_HUE ->
                     startActivity(
                             Intent(this, HueLampActivity::class.java)
                                     .putExtra("ID", hidden.substring(hidden.lastIndexOf("@") + 1))
                                     .putExtra("Device", currentDevice)
                     )
-                "two_tasmota" -> {
+                Flavors.TWO_TASMOTA -> {
                     when (hidden) {
                         "add" -> tasmota?.addToList(tasmotaRequestCallBack)
                         "execute_once" -> tasmota?.executeOnce(tasmotaRequestCallBack)
@@ -324,7 +324,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             "Tasmota" -> {
                 tasmota = Tasmota(this, deviceId)
                 updateList(tasmota?.loadList() ?: arrayListOf())
-                setLevelTwoTasmota(deviceObj.iconId, deviceObj.name)
+                setLevelTwo(deviceObj, Flavors.TWO_TASMOTA)
             }
             else ->
                 Toast.makeText(this, R.string.main_unknown_mode, Toast.LENGTH_LONG).show()
@@ -389,7 +389,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START))
             drawerLayout.closeDrawer(GravityCompat.START)
-        else if (level == "twoSimpleHome" || level == "two_hue" || level == "two_tasmota")
+        else if (level == Flavors.TWO_SIMPLE_HOME || level == Flavors.TWO_HUE || level == Flavors.TWO_SIMPLE_HOME)
             loadDevices()
         else
             super.onBackPressed()
@@ -449,30 +449,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         deviceIcon.setImageDrawable(resources.getDrawable(R.drawable.ic_home, theme))
         deviceName.text = resources.getString(R.string.main_device_name)
         fab.show()
-        level = "one"
+        level = Flavors.ONE
     }
 
-    internal fun setLevelTwo(deviceId: String, icon: Int, title: CharSequence) {
+    internal fun setLevelTwo(device: DeviceItem, flavor: Flavors) {
         fab.hide()
-        deviceIcon.setImageResource(icon)
-        deviceName.text = title
-        currentDevice = deviceId
-        level = "twoSimpleHome"
-    }
-
-    internal fun setLevelTwoHue(deviceId: String, icon: Int, title: CharSequence) {
-        fab.hide()
-        deviceIcon.setImageResource(icon)
-        deviceName.text = title
-        currentDevice = deviceId
-        level = "two_hue"
-    }
-
-    private fun setLevelTwoTasmota(icon: Int, title: CharSequence) {
-        fab.hide()
-        deviceIcon.setImageResource(icon)
-        deviceName.text = title
-        level = "two_tasmota"
+        deviceIcon.setImageResource(device.iconId)
+        deviceName.text = device.name
+        currentDevice = device.id
+        level = flavor
     }
 
     internal fun updateList(items: ArrayList<ListViewItem>) {
