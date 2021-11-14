@@ -32,7 +32,7 @@ class HueLampActivity : AppCompatActivity() {
     var deviceId: String = ""
     var id: String = ""
     var lights: JSONArray? = null
-    internal var canReceiveRequest: Boolean = false
+    var canReceiveRequest: Boolean = false
     private var isRoom: Boolean = false
     private var lightDataRequest: JsonObjectRequest? = null
     private var roomDataRequest: JsonObjectRequest? = null

@@ -22,6 +22,7 @@ import io.github.domi04151309.home.data.RequestCallbackObject
 import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.HueAPI
 import io.github.domi04151309.home.helpers.HueUtils
+import io.github.domi04151309.home.helpers.UpdateHandler
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -50,7 +51,7 @@ class HueLampsFragment : Fragment(R.layout.fragment_hue_lamps) {
             }
         }
 
-        hueAPI.loadLightsByIDs(lampData.lights ?: JSONArray(), object : HueAPI.RequestCallBack {
+        val requestCallBack = object : HueAPI.RequestCallBack {
             override fun onGroupLoaded(holder: RequestCallbackObject) {}
             override fun onGroupsLoaded(holder: RequestCallbackObject) {}
             override fun onLightsLoaded(holder: RequestCallbackObject) {
@@ -75,11 +76,11 @@ class HueLampsFragment : Fragment(R.layout.fragment_hue_lamps) {
                                 }
 
                                 listItems += ListViewItem(
-                                        title = currentObject.getString("name"),
-                                        summary = resources.getString(R.string.hue_tap),
-                                        hidden = currentObjectName,
-                                        state = currentState.getBoolean("on"),
-                                        stateListener = hueLampStateListener
+                                    title = currentObject.getString("name"),
+                                    summary = resources.getString(R.string.hue_tap),
+                                    hidden = currentObjectName,
+                                    state = currentState.getBoolean("on"),
+                                    stateListener = hueLampStateListener
                                 )
                             } catch (e: JSONException) {
                                 Log.e(Global.LOG_TAG, e.toString())
@@ -91,7 +92,7 @@ class HueLampsFragment : Fragment(R.layout.fragment_hue_lamps) {
                     }
                 }
             }
-        })
+        }
 
         listView.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
             for (i in 0 until listView.count)
@@ -105,6 +106,14 @@ class HueLampsFragment : Fragment(R.layout.fragment_hue_lamps) {
                             .putExtra("Device", lampData.deviceId)
             )
         }
+
+        val updateHandler = UpdateHandler()
+        updateHandler.setUpdateFunction {
+            if (lampData.canReceiveRequest && hueAPI.readyForRequest) {
+                hueAPI.loadLightsByIDs(lampData.lights ?: JSONArray(), requestCallBack)
+            }
+        }
+
         return view
     }
 }
