@@ -24,13 +24,15 @@ import org.json.JSONObject
 
 class HueLampsFragment : Fragment(R.layout.fragment_hue_lamps) {
 
+    private lateinit var c: Context
+    private lateinit var lampData: HueLampActivity
     private lateinit var hueAPI: HueAPI
     private lateinit var queue: RequestQueue
-    internal lateinit var c: Context
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         c = context ?: throw IllegalStateException()
-        hueAPI = HueAPI(c, HueLampActivity.deviceId)
+        lampData = context as HueLampActivity
+        hueAPI = HueAPI(c, lampData.deviceId)
         queue = Volley.newRequestQueue(context)
 
         val view = super.onCreateView(inflater, container, savedInstanceState) ?: throw IllegalStateException()
@@ -43,7 +45,7 @@ class HueLampsFragment : Fragment(R.layout.fragment_hue_lamps) {
             }
         }
 
-        hueAPI.loadLightsByIDs(HueLampActivity.lights ?: JSONArray(), object : HueAPI.RequestCallBack {
+        hueAPI.loadLightsByIDs(lampData.lights ?: JSONArray(), object : HueAPI.RequestCallBack {
             override fun onGroupLoaded(holder: RequestCallbackObject) {}
             override fun onGroupsLoaded(holder: RequestCallbackObject) {}
             override fun onLightsLoaded(holder: RequestCallbackObject) {
@@ -80,7 +82,7 @@ class HueLampsFragment : Fragment(R.layout.fragment_hue_lamps) {
             startActivity(
                     Intent(c, HueLampActivity::class.java)
                             .putExtra("ID", view.findViewById<TextView>(R.id.hidden).text.toString())
-                            .putExtra("Device", HueLampActivity.deviceId)
+                            .putExtra("Device", lampData.deviceId)
             )
         }
         return view

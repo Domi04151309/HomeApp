@@ -28,13 +28,10 @@ import org.json.JSONArray
 
 class HueLampActivity : AppCompatActivity() {
 
-    companion object {
-        var address: String = ""
-        var deviceId: String = ""
-        var id: String = ""
-        var lights: JSONArray? = null
-    }
-
+    var address: String = ""
+    var deviceId: String = ""
+    var id: String = ""
+    var lights: JSONArray? = null
     internal var canReceiveRequest: Boolean = false
     private var isRoom: Boolean = false
     private var lightDataRequest: JsonObjectRequest? = null

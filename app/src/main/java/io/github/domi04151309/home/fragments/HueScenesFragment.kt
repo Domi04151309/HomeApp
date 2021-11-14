@@ -27,19 +27,21 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
     private var scenesRequest: JsonObjectRequest? = null
     private var selectedScene: CharSequence = ""
     private var selectedSceneName: CharSequence = ""
+    private lateinit var c: Context
+    private lateinit var lampData: HueLampActivity
     private lateinit var hueAPI: HueAPI
     private lateinit var queue: RequestQueue
-    private lateinit var c: Context
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         c = context ?: throw IllegalStateException()
-        hueAPI = HueAPI(c, HueLampActivity.deviceId)
+        lampData = context as HueLampActivity
+        hueAPI = HueAPI(c, lampData.deviceId)
         queue = Volley.newRequestQueue(context)
 
         val view = super.onCreateView(inflater, container, savedInstanceState)
         val gridView = view?.findViewById<GridView>(R.id.scenes) ?: throw IllegalStateException()
 
-        scenesRequest = JsonObjectRequest(Request.Method.GET, HueLampActivity.address + "api/" + hueAPI.getUsername() + "/scenes/", null,
+        scenesRequest = JsonObjectRequest(Request.Method.GET, lampData.address + "api/" + hueAPI.getUsername() + "/scenes/", null,
                 { response ->
                     try {
                         val gridItems: ArrayList<ScenesGridItem> = ArrayList(response.length())
@@ -48,7 +50,7 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
                         for (i in 0 until response.length()) {
                             currentObjectName = response.names()?.getString(i) ?: ""
                             currentObject = response.getJSONObject(currentObjectName)
-                            if (currentObject.getString("group") == HueLampActivity.id) {
+                            if (currentObject.getString("group") == lampData.id) {
                                 gridItems += ScenesGridItem(
                                         name = currentObject.getString("name"),
                                         hidden = currentObjectName,
@@ -75,9 +77,9 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
         gridView.onItemClickListener = AdapterView.OnItemClickListener { _, view, _, _ ->
             val hiddenText = view.findViewById<TextView>(R.id.hidden).text.toString()
             if (hiddenText == "add") {
-                startActivity(Intent(c, HueSceneActivity::class.java).putExtra("deviceId", HueLampActivity.deviceId).putExtra("room", HueLampActivity.id))
+                startActivity(Intent(c, HueSceneActivity::class.java).putExtra("deviceId", lampData.deviceId).putExtra("room", lampData.id))
             } else {
-                hueAPI.activateSceneOfGroup(HueLampActivity.id, hiddenText)
+                hueAPI.activateSceneOfGroup(lampData.id, hiddenText)
             }
         }
         registerForContextMenu(gridView)
@@ -107,7 +109,7 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
                     .setView(view)
                     .setPositiveButton(android.R.string.ok) { _, _ ->
                         val requestObject = "{\"name\":\"" + input.text.toString() + "\"}"
-                        val renameSceneRequest = CustomJsonArrayRequest(Request.Method.PUT, HueLampActivity.address + "api/" + hueAPI.getUsername() + "/scenes/$selectedScene", JSONObject(requestObject),
+                        val renameSceneRequest = CustomJsonArrayRequest(Request.Method.PUT, lampData.address + "api/" + hueAPI.getUsername() + "/scenes/$selectedScene", JSONObject(requestObject),
                                 { queue.add(scenesRequest) },
                                 { e -> Log.e(Global.LOG_TAG, e.toString()) }
                         )
@@ -120,7 +122,7 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
                     .setTitle(R.string.str_delete)
                     .setMessage(R.string.hue_delete_scene)
                     .setPositiveButton(R.string.str_delete) { _, _ ->
-                        val deleteSceneRequest = CustomJsonArrayRequest(Request.Method.DELETE, HueLampActivity.address + "api/" + hueAPI.getUsername() + "/scenes/" + selectedScene, null,
+                        val deleteSceneRequest = CustomJsonArrayRequest(Request.Method.DELETE, lampData.address + "api/" + hueAPI.getUsername() + "/scenes/" + selectedScene, null,
                                 { queue.add(scenesRequest) },
                                 { e -> Log.e(Global.LOG_TAG, e.toString()) }
                         )
