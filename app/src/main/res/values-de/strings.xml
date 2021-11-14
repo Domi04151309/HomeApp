@@ -2,7 +2,6 @@
     <string name="app_name">Home</string>
     <string name="app_by">Home App von Domi04151309</string>
 
-    <string name="nav_devices">Geräte</string>
     <string name="nav_settings">Einstellungen</string>
 
     <string name="main_no_devices">Keine Geräte gefunden</string>

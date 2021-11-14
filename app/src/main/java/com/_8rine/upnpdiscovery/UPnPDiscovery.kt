@@ -78,7 +78,7 @@ class UPnPDiscovery : AsyncTask<Activity, UPnPDiscovery.OnDiscoveryListener, Voi
                 val datagramPacket = DatagramPacket(ByteArray(1024), 1024)
                 socket.receive(datagramPacket)
                 val response = String(datagramPacket.data, 0, datagramPacket.length)
-                if (response.substring(0, 12).toUpperCase(Locale.ROOT) == "HTTP/1.1 200") {
+                if (response.substring(0, 12).uppercase() == "HTTP/1.1 200") {
                     val device = UPnPDevice(datagramPacket.address.hostAddress, response)
                     mThreadsCount++
                     getData(device.location, device)

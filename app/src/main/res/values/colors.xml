@@ -4,8 +4,6 @@
     <color name="colorPrimaryDark">#121212</color>
     <color name="colorPrimaryBlack">#000</color>
     <color name="colorAccent">#2962FF</color>
-    <color name="colorAccent32">#202962FF</color>
-    <color name="colorAccent16">#102962FF</color>
     <color name="dividerLight">#14000000</color>
     <color name="dividerDark">#14ffffff</color>
     <color name="navigationBarColor">#000001</color>

@@ -2,7 +2,6 @@
     <string name="app_name">Home</string>
     <string name="app_by">Home App by Domi04151309</string>
 
-    <string name="nav_devices">Devices</string>
     <string name="nav_settings">Settings</string>
 
     <string name="main_no_devices">No devices found</string>

@@ -3,8 +3,6 @@ package io.github.domi04151309.home.activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.navigation.NavigationView
-import androidx.core.view.GravityCompat
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.view.ContextMenu
@@ -18,7 +16,6 @@ import org.json.JSONObject
 import android.widget.TextView
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.preference.PreferenceManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -33,7 +30,7 @@ import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.Theme
 import io.github.domi04151309.home.helpers.Tasmota
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity() {
 
     enum class Flavors {
         ONE, TWO_SIMPLE_HOME, TWO_HUE, TWO_TASMOTA
@@ -51,8 +48,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var deviceIcon: ImageView
     private lateinit var deviceName: TextView
     private lateinit var fab: FloatingActionButton
-    private lateinit var drawerLayout: DrawerLayout
-    private lateinit var navView: NavigationView
 
     private var themeId = ""
     private fun getThemeId(): String =
@@ -229,8 +224,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         deviceIcon = findViewById(R.id.deviceIcon)
         deviceName = findViewById(R.id.deviceName)
         fab = findViewById(R.id.fab)
-        drawerLayout = findViewById(R.id.drawer_layout)
-        navView = findViewById(R.id.nav_view)
         themeId = getThemeId()
 
         fab.setOnClickListener {
@@ -239,11 +232,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         findViewById<ImageView>(R.id.menu_icon).setOnClickListener {
-            drawerLayout.openDrawer(GravityCompat.START)
-        }
 
-        navView.setNavigationItemSelectedListener(this)
-        navView.setCheckedItem(R.id.nav_devices)
+            startActivity(Intent(this, SettingsActivity::class.java))
+        }
 
         listView.onItemClickListener = AdapterView.OnItemClickListener { _, view, _, _ ->
             currentView = view
@@ -387,27 +378,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START))
-            drawerLayout.closeDrawer(GravityCompat.START)
-        else if (level == Flavors.TWO_SIMPLE_HOME || level == Flavors.TWO_HUE || level == Flavors.TWO_SIMPLE_HOME)
+        if (level == Flavors.TWO_SIMPLE_HOME || level == Flavors.TWO_HUE || level == Flavors.TWO_SIMPLE_HOME)
             loadDevices()
         else
             super.onBackPressed()
-    }
-
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.nav_devices -> {
-                loadDevices()
-                reset = false
-            }
-            R.id.nav_settings -> {
-                startActivity(Intent(this, SettingsActivity::class.java))
-                reset = true
-            }
-        }
-        drawerLayout.closeDrawer(GravityCompat.START)
-        return true
     }
 
     override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
@@ -473,7 +447,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         canReceiveRequest = true
         if(reset) {
-            navView.setCheckedItem(R.id.nav_devices)
             loadDevices()
             reset = false
         }
