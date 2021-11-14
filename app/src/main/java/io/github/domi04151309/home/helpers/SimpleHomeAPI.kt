@@ -15,7 +15,7 @@ class SimpleHomeAPI(context: Context) {
 
     interface RequestCallBack {
         fun onCommandsLoaded(holder: RequestCallbackObject)
-        fun onExecutionFinished(context: Context, result: CharSequence)
+        fun onExecutionFinished(context: Context, result: CharSequence, refresh: Boolean = false, deviceId: String = "")
     }
 
     fun loadCommands(deviceId: String, callback: RequestCallBack) {
@@ -32,12 +32,20 @@ class SimpleHomeAPI(context: Context) {
         queue.add(jsonObjectRequest)
     }
 
-    fun executeCommand(url: String, callback: RequestCallBack) {
+    fun executeCommand(deviceId: String, url: String, callback: RequestCallBack) {
         val queue = Volley.newRequestQueue(c)
         val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null,
                 { response ->
                     try {
-                        callback.onExecutionFinished(c, response.getString("toast"))
+                        callback.onExecutionFinished(
+                            c,
+                            if (response.has("toast")) response.getString("toast")
+                            else c.resources.getString(R.string.main_execution_completed),
+                            if (response.has("refresh")) response.getBoolean("refresh")
+                            else false,
+                            deviceId
+                        )
+
                     } catch (e: Exception) {
                         callback.onExecutionFinished(c, c.resources.getString(R.string.main_execution_completed))
                         Log.w(Global.LOG_TAG, e.toString())

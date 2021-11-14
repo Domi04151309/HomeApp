@@ -71,8 +71,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private val homeRequestCallBack = object : SimpleHomeAPI.RequestCallBack {
 
-        override fun onExecutionFinished(context: Context, result: CharSequence) {
+        override fun onExecutionFinished(context: Context, result: CharSequence, refresh: Boolean, deviceId: String) {
             Toast.makeText(context, result, Toast.LENGTH_LONG).show()
+            if (refresh) homeAPI.loadCommands(devices.getDeviceById(deviceId).address, this)
         }
 
         override fun onCommandsLoaded(holder: RequestCallbackObject) {
@@ -94,7 +95,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
                 updateList(listItems)
                 val device = devices.getDeviceById(holder.deviceId)
-                setLevelTwo(device.iconId, device.name)
+                setLevelTwo(device.id, device.iconId, device.name)
             } else {
                 handleErrorOnLevelOne(holder.errorMessage)
             }
@@ -258,8 +259,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     view.findViewById<TextView>(R.id.summary).text = resources.getString(R.string.main_connecting)
                     handleLevelOne(hidden)
                 }
-                "two" ->
-                    homeAPI.executeCommand(hidden, homeRequestCallBack)
+                "twoSimpleHome" ->
+                    homeAPI.executeCommand(currentDevice, hidden, homeRequestCallBack)
                 "two_hue" ->
                     startActivity(
                             Intent(this, HueLampActivity::class.java)
@@ -388,7 +389,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START))
             drawerLayout.closeDrawer(GravityCompat.START)
-        else if (level == "two" || level == "two_hue" || level == "two_tasmota")
+        else if (level == "twoSimpleHome" || level == "two_hue" || level == "two_tasmota")
             loadDevices()
         else
             super.onBackPressed()
@@ -451,11 +452,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         level = "one"
     }
 
-    internal fun setLevelTwo(icon: Int, title: CharSequence) {
+    internal fun setLevelTwo(deviceId: String, icon: Int, title: CharSequence) {
         fab.hide()
         deviceIcon.setImageResource(icon)
         deviceName.text = title
-        level = "two"
+        currentDevice = deviceId
+        level = "twoSimpleHome"
     }
 
     internal fun setLevelTwoHue(deviceId: String, icon: Int, title: CharSequence) {
