@@ -49,6 +49,8 @@
                 android:gravity="center_vertical"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:text="@string/main_device_name"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:textColor="@android:color/white" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
