@@ -148,6 +148,7 @@
         <item>SimpleHome API</item>
         <item>Hue API</item>
         <item>Tasmota</item>
+        <item>Node-RED</item>
         <item>Website</item>
     </string-array>
 </resources>

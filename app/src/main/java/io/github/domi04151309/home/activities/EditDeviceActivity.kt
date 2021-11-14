@@ -142,10 +142,20 @@ class EditDeviceActivity : AppCompatActivity() {
                         .show()
                 return@setOnClickListener
             }
+
+            var tempAddress = addressBox.editText?.text.toString()
+            if (
+                modeSpinner.text.toString() == "Node-RED"
+                && !tempAddress.contains(":1880")
+            ) {
+                if (tempAddress.endsWith('/')) tempAddress = tempAddress.dropLast(1)
+                tempAddress += ":1880/"
+            }
+
             if (editing) devices.deleteDevice(deviceId)
             val newItem = DeviceItem(deviceId)
             newItem.name = name
-            newItem.address = addressBox.editText?.text.toString()
+            newItem.address = tempAddress
             newItem.mode = modeSpinner.text.toString()
             newItem.iconName = iconSpinner.text.toString()
             devices.addDevice(newItem)

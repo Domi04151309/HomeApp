@@ -300,9 +300,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (deviceObj.mode) {
             "Website" -> {
                 startActivity(
-                        Intent(this, WebActivity::class.java)
-                                .putExtra("URI", deviceObj.address)
-                                .putExtra("title", deviceObj.name)
+                    Intent(this, WebActivity::class.java)
+                        .putExtra("URI", deviceObj.address)
+                        .putExtra("title", deviceObj.name)
+                )
+                reset = true
+            }
+            "Node-RED" -> {
+                startActivity(
+                    Intent(this, WebActivity::class.java)
+                        .putExtra("URI", deviceObj.address + "ui/")
+                        .putExtra("title", deviceObj.name)
                 )
                 reset = true
             }
