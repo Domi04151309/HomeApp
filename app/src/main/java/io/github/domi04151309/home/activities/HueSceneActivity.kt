@@ -57,14 +57,14 @@ class HueSceneActivity : AppCompatActivity() {
                                     val item = ListViewItem(lightObj.getString("name"))
                                     val state = lightObj.getJSONObject("state")
                                     if (state.has("bri")) {
-                                        item.summary = resources.getString(R.string.hue_brightness) + ": " + HueUtils.briToPercent(state.getString("bri").toInt())
+                                        item.summary = resources.getString(R.string.hue_brightness) + ": " + HueUtils.briToPercent(state.getInt("bri"))
                                     } else {
                                         item.summary = resources.getString(R.string.hue_brightness) + ": 100%"
                                     }
                                     colorArray += if (state.has("hue") && state.has("sat")) {
-                                        HueUtils.hueSatToRGB(state.getString("hue").toInt(), state.getString("sat").toInt())
+                                        HueUtils.hueSatToRGB(state.getInt("hue"), state.getInt("sat"))
                                     } else if (state.has("ct")) {
-                                        HueUtils.ctToRGB(state.getString("ct").toInt())
+                                        HueUtils.ctToRGB(state.getInt("ct"))
                                     } else {
                                         Color.parseColor("#FFFFFF")
                                     }

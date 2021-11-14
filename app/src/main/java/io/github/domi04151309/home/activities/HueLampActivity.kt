@@ -70,8 +70,8 @@ class HueLampActivity : AppCompatActivity() {
 
         //Reset tint
         DrawableCompat.setTint(
-                DrawableCompat.wrap(lampIcon.drawable),
-                Color.parseColor("#FBC02D")
+            DrawableCompat.wrap(lampIcon.drawable),
+            Color.WHITE
         )
 
         //Smooth seekBars
