@@ -42,7 +42,11 @@ class UPnPDevice internal constructor(val hostAddress: String, header: String) {
 
     internal fun update(xml: String) {
         descriptionXML = xml
-        xmlParse(xml)
+        try {
+            xmlParse(xml)
+        } catch (e: Exception) {
+            Log.e(Global.LOG_TAG, e.toString())
+        }
     }
 
     override fun toString(): String {
