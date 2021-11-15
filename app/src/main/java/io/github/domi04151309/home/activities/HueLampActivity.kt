@@ -1,6 +1,7 @@
 package io.github.domi04151309.home.activities
 
 import android.animation.ObjectAnimator
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
@@ -8,7 +9,7 @@ import android.view.animation.DecelerateInterpolator
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.widget.ImageViewCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.android.volley.Request
 import com.android.volley.RequestQueue
@@ -68,6 +69,7 @@ class HueLampActivity : AppCompatActivity() {
         val satBar = findViewById<Slider>(R.id.satBar)
         val tabBar = findViewById<TabLayout>(R.id.tabBar)
         val viewPager = findViewById<ViewPager2>(R.id.viewPager)
+        val availableSliders = arrayOf(briBar, ctBar, hueBar, satBar)
 
         //Slider labels
         briBar.setLabelFormatter { value: Float ->
@@ -83,10 +85,10 @@ class HueLampActivity : AppCompatActivity() {
             HueUtils.satToPercent(value.toInt())
         }
 
-        //Reset tint
-        DrawableCompat.setTint(
-            DrawableCompat.wrap(lampIcon.drawable),
-            Color.WHITE
+        //Default tint
+        ImageViewCompat.setImageTintList(
+            lampIcon,
+            ColorStateList.valueOf(Color.WHITE)
         )
 
         //Smooth seekBars
@@ -104,6 +106,7 @@ class HueLampActivity : AppCompatActivity() {
                         lights = response.getJSONArray("lights")
                         nameTxt.text = response.getString("name")
                         val action = response.getJSONObject("action")
+
                         if (action.has("bri")) {
                             setProgress(briBar, action.getInt("bri"))
                         } else {
@@ -127,6 +130,11 @@ class HueLampActivity : AppCompatActivity() {
                         } else {
                             findViewById<TextView>(R.id.satTxt).visibility = View.GONE
                             satBar.visibility = View.GONE
+                        }
+
+                        val isOn = action.getBoolean("on")
+                        availableSliders.forEach {
+                            it.isEnabled = isOn
                         }
                     },
                     { error ->
@@ -154,9 +162,9 @@ class HueLampActivity : AppCompatActivity() {
             })
 
             ctBar.addOnChangeListener { _, value, _ ->
-                DrawableCompat.setTint(
-                    DrawableCompat.wrap(lampIcon.drawable),
-                    HueUtils.ctToRGB(value.toInt() + 153)
+                ImageViewCompat.setImageTintList(
+                    lampIcon,
+                    ColorStateList.valueOf(HueUtils.ctToRGB(value.toInt() + 153))
                 )
             }
             ctBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
@@ -170,9 +178,9 @@ class HueLampActivity : AppCompatActivity() {
             })
 
             hueBar.addOnChangeListener { _, value, _ ->
-                DrawableCompat.setTint(
-                    DrawableCompat.wrap(lampIcon.drawable),
-                    HueUtils.hueSatToRGB(value.toInt(), satBar.value.toInt())
+                ImageViewCompat.setImageTintList(
+                    lampIcon,
+                    ColorStateList.valueOf(HueUtils.hueSatToRGB(value.toInt(), satBar.value.toInt()))
                 )
             }
             hueBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
@@ -186,9 +194,9 @@ class HueLampActivity : AppCompatActivity() {
             })
 
             satBar.addOnChangeListener { _, value, _ ->
-                DrawableCompat.setTint(
-                    DrawableCompat.wrap(lampIcon.drawable),
-                    HueUtils.hueSatToRGB(hueBar.value.toInt(), value.toInt())
+                ImageViewCompat.setImageTintList(
+                    lampIcon,
+                    ColorStateList.valueOf(HueUtils.hueSatToRGB(hueBar.value.toInt(), value.toInt()))
                 )
             }
             satBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
@@ -218,6 +226,7 @@ class HueLampActivity : AppCompatActivity() {
                     { response ->
                         nameTxt.text = response.getString("name")
                         val state = response.getJSONObject("state")
+
                         if (state.has("bri")) {
                             setProgress(briBar, state.getInt("bri"))
                         } else {
@@ -241,6 +250,11 @@ class HueLampActivity : AppCompatActivity() {
                         } else {
                             findViewById<TextView>(R.id.satTxt).visibility = View.GONE
                             satBar.visibility = View.GONE
+                        }
+
+                        val isOn = state.getBoolean("on")
+                        availableSliders.forEach {
+                            it.isEnabled = isOn
                         }
                     },
                     { error ->
@@ -274,9 +288,9 @@ class HueLampActivity : AppCompatActivity() {
 
             ctBar.addOnChangeListener { _, value, fromUser ->
                 if (fromUser) hueAPI.changeColorTemperature(id, value.toInt() + 153)
-                DrawableCompat.setTint(
-                    DrawableCompat.wrap(lampIcon.drawable),
-                    HueUtils.ctToRGB(value.toInt() + 153)
+                ImageViewCompat.setImageTintList(
+                    lampIcon,
+                    ColorStateList.valueOf(HueUtils.ctToRGB(value.toInt() + 153))
                 )
             }
             ctBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
@@ -290,9 +304,9 @@ class HueLampActivity : AppCompatActivity() {
 
             hueBar.addOnChangeListener { _, value, fromUser ->
                 if (fromUser) hueAPI.changeHue(id, value.toInt())
-                DrawableCompat.setTint(
-                    DrawableCompat.wrap(lampIcon.drawable),
-                    HueUtils.hueSatToRGB(value.toInt(), satBar.value.toInt())
+                ImageViewCompat.setImageTintList(
+                    lampIcon,
+                    ColorStateList.valueOf(HueUtils.hueSatToRGB(value.toInt(), satBar.value.toInt()))
                 )
             }
             hueBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
@@ -306,9 +320,9 @@ class HueLampActivity : AppCompatActivity() {
 
             satBar.addOnChangeListener { _, value, fromUser ->
                 if (fromUser) hueAPI.changeSaturation(id, value.toInt())
-                DrawableCompat.setTint(
-                    DrawableCompat.wrap(lampIcon.drawable),
-                    HueUtils.hueSatToRGB(hueBar.value.toInt(), value.toInt())
+                ImageViewCompat.setImageTintList(
+                    lampIcon,
+                    ColorStateList.valueOf(HueUtils.hueSatToRGB(hueBar.value.toInt(), value.toInt()))
                 )
             }
             satBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {

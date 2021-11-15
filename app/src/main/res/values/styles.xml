@@ -67,6 +67,11 @@
         <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox</item>
         <item name="dialogCornerRadius">8dp</item>
         <item name="android:listDivider">@null</item>
+        <item name="sliderStyle">@style/AppThemeSliderStyle</item>
+    </style>
+
+    <style name="AppThemeSliderStyle" parent="@style/Widget.MaterialComponents.Slider">
+        <item name="thumbRadius">6dp</item>
     </style>
 
     <style name="AppThemeActionBarTheme" parent="@style/ThemeOverlay.MaterialComponents.ActionBar">
