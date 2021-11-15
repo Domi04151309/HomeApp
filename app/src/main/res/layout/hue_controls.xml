@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="?dialogPreferredPadding"
+    android:paddingEnd="?dialogPreferredPadding">
+
+    <TextView
+        android:id="@+id/briTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/hue_brightness" />
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/briBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:valueFrom="1.0"
+        android:valueTo="254.0" />
+
+    <TextView
+        android:id="@+id/ctTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/hue_color_temperature" />
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/ctBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:valueFrom="0.0"
+        android:valueTo="347" />
+
+    <TextView
+        android:id="@+id/hueTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/hue_hue" />
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/hueBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:valueFrom="0.0"
+        android:valueTo="65535" />
+
+    <TextView
+        android:id="@+id/satTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/hue_saturation" />
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/satBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:valueFrom="0.0"
+        android:valueTo="254" />
+</LinearLayout>

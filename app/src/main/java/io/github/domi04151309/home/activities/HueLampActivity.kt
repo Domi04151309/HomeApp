@@ -14,6 +14,7 @@ import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.material.slider.Slider
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import io.github.domi04151309.home.R
@@ -61,12 +62,26 @@ class HueLampActivity : AppCompatActivity() {
         title = device.name
         val lampIcon = findViewById<ImageView>(R.id.lampIcon)
         val nameTxt = findViewById<TextView>(R.id.nameTxt)
-        val briBar = findViewById<SeekBar>(R.id.briBar)
-        val ctBar = findViewById<SeekBar>(R.id.ctBar)
-        val hueBar = findViewById<SeekBar>(R.id.hueBar)
-        val satBar = findViewById<SeekBar>(R.id.satBar)
+        val briBar = findViewById<Slider>(R.id.briBar)
+        val ctBar = findViewById<Slider>(R.id.ctBar)
+        val hueBar = findViewById<Slider>(R.id.hueBar)
+        val satBar = findViewById<Slider>(R.id.satBar)
         val tabBar = findViewById<TabLayout>(R.id.tabBar)
         val viewPager = findViewById<ViewPager2>(R.id.viewPager)
+
+        //Slider labels
+        briBar.setLabelFormatter { value: Float ->
+            HueUtils.briToPercent(value.toInt())
+        }
+        ctBar.setLabelFormatter { value: Float ->
+            HueUtils.ctToKelvin(value.toInt() + 153)
+        }
+        hueBar.setLabelFormatter { value: Float ->
+            HueUtils.hueToDegree(value.toInt())
+        }
+        satBar.setLabelFormatter { value: Float ->
+            HueUtils.satToPercent(value.toInt())
+        }
 
         //Reset tint
         DrawableCompat.setTint(
@@ -75,8 +90,8 @@ class HueLampActivity : AppCompatActivity() {
         )
 
         //Smooth seekBars
-        fun setProgress(seekBar: SeekBar, value: Int) {
-            val animation = ObjectAnimator.ofInt(seekBar, "progress", value)
+        fun setProgress(slider: Slider, value: Int) {
+            val animation = ObjectAnimator.ofFloat(slider, "value", value.toFloat())
             animation.duration = 300
             animation.interpolator = DecelerateInterpolator()
             animation.start()
@@ -128,61 +143,60 @@ class HueLampActivity : AppCompatActivity() {
                 hueAPI.switchGroupByID(id, false)
             }
 
-            briBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {}
-                override fun onStartTrackingTouch(seekBar: SeekBar) {
+            briBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
+                override fun onStartTrackingTouch(slider: Slider) {
                     canReceiveRequest = false
                 }
-                override fun onStopTrackingTouch(seekBar: SeekBar) {
-                    hueAPI.changeBrightnessOfGroup(id, seekBar.progress)
+                override fun onStopTrackingTouch(slider: Slider) {
+                    hueAPI.changeBrightnessOfGroup(id, slider.value.toInt())
                     canReceiveRequest = true
                 }
             })
 
-            ctBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                    DrawableCompat.setTint(
-                            DrawableCompat.wrap(lampIcon.drawable),
-                            HueUtils.ctToRGB(seekBar.progress + 153)
-                    )
-                }
-                override fun onStartTrackingTouch(seekBar: SeekBar) {
+            ctBar.addOnChangeListener { _, value, _ ->
+                DrawableCompat.setTint(
+                    DrawableCompat.wrap(lampIcon.drawable),
+                    HueUtils.ctToRGB(value.toInt() + 153)
+                )
+            }
+            ctBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
+                override fun onStartTrackingTouch(slider: Slider) {
                     canReceiveRequest = false
                 }
-                override fun onStopTrackingTouch(seekBar: SeekBar) {
-                    hueAPI.changeColorTemperatureOfGroup(id, seekBar.progress + 153)
+                override fun onStopTrackingTouch(slider: Slider) {
+                    hueAPI.changeColorTemperatureOfGroup(id, slider.value.toInt() + 153)
                     canReceiveRequest = true
                 }
             })
 
-            hueBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                    DrawableCompat.setTint(
-                            DrawableCompat.wrap(lampIcon.drawable),
-                            HueUtils.hueSatToRGB(seekBar.progress, satBar.progress)
-                    )
-                }
-                override fun onStartTrackingTouch(seekBar: SeekBar) {
+            hueBar.addOnChangeListener { _, value, _ ->
+                DrawableCompat.setTint(
+                    DrawableCompat.wrap(lampIcon.drawable),
+                    HueUtils.hueSatToRGB(value.toInt(), satBar.value.toInt())
+                )
+            }
+            hueBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
+                override fun onStartTrackingTouch(slider: Slider) {
                     canReceiveRequest = false
                 }
-                override fun onStopTrackingTouch(seekBar: SeekBar) {
-                    hueAPI.changeHueOfGroup(id, seekBar.progress)
+                override fun onStopTrackingTouch(slider: Slider) {
+                    hueAPI.changeHueOfGroup(id, slider.value.toInt())
                     canReceiveRequest = true
                 }
             })
 
-            satBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                    DrawableCompat.setTint(
-                            DrawableCompat.wrap(lampIcon.drawable),
-                            HueUtils.hueSatToRGB(hueBar.progress, seekBar.progress)
-                    )
-                }
-                override fun onStartTrackingTouch(seekBar: SeekBar) {
+            satBar.addOnChangeListener { _, value, _ ->
+                DrawableCompat.setTint(
+                    DrawableCompat.wrap(lampIcon.drawable),
+                    HueUtils.hueSatToRGB(hueBar.value.toInt(), value.toInt())
+                )
+            }
+            satBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
+                override fun onStartTrackingTouch(slider: Slider) {
                     canReceiveRequest = false
                 }
-                override fun onStopTrackingTouch(seekBar: SeekBar) {
-                    hueAPI.changeSaturationOfGroup(id, seekBar.progress)
+                override fun onStopTrackingTouch(slider: Slider) {
+                    hueAPI.changeSaturationOfGroup(id, slider.value.toInt())
                     canReceiveRequest = true
                 }
             })
@@ -246,62 +260,62 @@ class HueLampActivity : AppCompatActivity() {
                 hueAPI.switchLightByID(id, false)
             }
 
-            briBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                    if (fromUser) hueAPI.changeBrightness(id, seekBar.progress)
-                }
-                override fun onStartTrackingTouch(seekBar: SeekBar) {
+            briBar.addOnChangeListener { _, value, fromUser ->
+                if (fromUser) hueAPI.changeBrightness(id, value.toInt())
+            }
+            briBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
+                override fun onStartTrackingTouch(slider: Slider) {
                     canReceiveRequest = false
                 }
-                override fun onStopTrackingTouch(seekBar: SeekBar) {
+                override fun onStopTrackingTouch(slider: Slider) {
                     canReceiveRequest = true
                 }
             })
 
-            ctBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                    if (fromUser) hueAPI.changeColorTemperature(id, seekBar.progress + 153)
-                    DrawableCompat.setTint(
-                            DrawableCompat.wrap(lampIcon.drawable),
-                            HueUtils.ctToRGB(seekBar.progress + 153)
-                    )
-                }
-                override fun onStartTrackingTouch(seekBar: SeekBar) {
+            ctBar.addOnChangeListener { _, value, fromUser ->
+                if (fromUser) hueAPI.changeColorTemperature(id, value.toInt() + 153)
+                DrawableCompat.setTint(
+                    DrawableCompat.wrap(lampIcon.drawable),
+                    HueUtils.ctToRGB(value.toInt() + 153)
+                )
+            }
+            ctBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
+                override fun onStartTrackingTouch(slider: Slider) {
                     canReceiveRequest = false
                 }
-                override fun onStopTrackingTouch(seekBar: SeekBar) {
+                override fun onStopTrackingTouch(slider: Slider) {
                     canReceiveRequest = true
                 }
             })
 
-            hueBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                    if (fromUser) hueAPI.changeHue(id, seekBar.progress)
-                    DrawableCompat.setTint(
-                            DrawableCompat.wrap(lampIcon.drawable),
-                            HueUtils.hueSatToRGB(seekBar.progress, satBar.progress)
-                    )
-                }
-                override fun onStartTrackingTouch(seekBar: SeekBar) {
+            hueBar.addOnChangeListener { _, value, fromUser ->
+                if (fromUser) hueAPI.changeHue(id, value.toInt())
+                DrawableCompat.setTint(
+                    DrawableCompat.wrap(lampIcon.drawable),
+                    HueUtils.hueSatToRGB(value.toInt(), satBar.value.toInt())
+                )
+            }
+            hueBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
+                override fun onStartTrackingTouch(slider: Slider) {
                     canReceiveRequest = false
                 }
-                override fun onStopTrackingTouch(seekBar: SeekBar) {
+                override fun onStopTrackingTouch(slider: Slider) {
                     canReceiveRequest = true
                 }
             })
 
-            satBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                    if (fromUser) hueAPI.changeSaturation(id, seekBar.progress)
-                    DrawableCompat.setTint(
-                            DrawableCompat.wrap(lampIcon.drawable),
-                            HueUtils.hueSatToRGB(hueBar.progress, seekBar.progress)
-                    )
-                }
-                override fun onStartTrackingTouch(seekBar: SeekBar) {
+            satBar.addOnChangeListener { _, value, fromUser ->
+                if (fromUser) hueAPI.changeSaturation(id, value.toInt())
+                DrawableCompat.setTint(
+                    DrawableCompat.wrap(lampIcon.drawable),
+                    HueUtils.hueSatToRGB(hueBar.value.toInt(), value.toInt())
+                )
+            }
+            satBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
+                override fun onStartTrackingTouch(slider: Slider) {
                     canReceiveRequest = false
                 }
-                override fun onStopTrackingTouch(seekBar: SeekBar) {
+                override fun onStopTrackingTouch(slider: Slider) {
                     canReceiveRequest = true
                 }
             })

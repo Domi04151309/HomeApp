@@ -68,70 +68,11 @@
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingStart="?dialogPreferredPadding"
-        android:paddingEnd="?dialogPreferredPadding">
-
-        <TextView
-            android:id="@+id/briTxt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/hue_brightness" />
-
-        <SeekBar
-            android:id="@+id/briBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:max="254" />
-
-        <TextView
-            android:id="@+id/ctTxt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dialog_item_margin"
-            android:text="@string/hue_color_temperature" />
-
-        <SeekBar
-            android:id="@+id/ctBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:max="347" />
-
-        <TextView
-            android:id="@+id/hueTxt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dialog_item_margin"
-            android:text="@string/hue_hue" />
-
-        <SeekBar
-            android:id="@+id/hueBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:max="65535" />
-
-        <TextView
-            android:id="@+id/satTxt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dialog_item_margin"
-            android:text="@string/hue_saturation" />
-
-        <SeekBar
-            android:id="@+id/satBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:max="254" />
-
-    </LinearLayout>
+    <include layout="@layout/hue_controls" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="@dimen/dialog_item_margin"
         android:background="?attr/dividerColor" />
 
     <FrameLayout
