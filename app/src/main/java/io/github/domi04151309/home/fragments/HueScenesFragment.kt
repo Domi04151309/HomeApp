@@ -74,8 +74,8 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
         )
         queue.add(scenesRequest)
 
-        gridView.onItemClickListener = AdapterView.OnItemClickListener { _, view, _, _ ->
-            val hiddenText = view.findViewById<TextView>(R.id.hidden).text.toString()
+        gridView.onItemClickListener = AdapterView.OnItemClickListener { _, element, _, _ ->
+            val hiddenText = element.findViewById<TextView>(R.id.hidden).text.toString()
             if (hiddenText == "add") {
                 startActivity(Intent(c, HueSceneActivity::class.java).putExtra("deviceId", lampData.deviceId).putExtra("room", lampData.id))
             } else {

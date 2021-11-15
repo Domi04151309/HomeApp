@@ -12,6 +12,7 @@ import io.github.domi04151309.home.helpers.Global.volleyError
 import org.json.JSONArray
 import org.json.JSONObject
 import android.os.Handler
+import android.os.Looper
 import io.github.domi04151309.home.activities.HueConnectActivity
 import io.github.domi04151309.home.data.RequestCallbackObject
 import io.github.domi04151309.home.custom.CustomJsonArrayRequest
@@ -157,7 +158,7 @@ class HueAPI(context: Context, deviceId: String) {
         if (readyForRequest) {
             readyForRequest = false
             queue.add(request)
-            Handler().postDelayed({ readyForRequest = true }, 100)
+            Handler(Looper.getMainLooper()).postDelayed({ readyForRequest = true }, 100)
         }
     }
 

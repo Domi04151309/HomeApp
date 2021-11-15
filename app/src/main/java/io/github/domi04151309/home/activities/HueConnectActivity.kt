@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
@@ -75,7 +76,7 @@ class HueConnectActivity : AppCompatActivity() {
     }
 
     private fun startHandler() {
-        val permissionHandler = Handler()
+        val permissionHandler = Handler(Looper.getMainLooper())
         val handlerDelay = 1000L
         permissionHandler.postDelayed(object : Runnable {
             override fun run() {

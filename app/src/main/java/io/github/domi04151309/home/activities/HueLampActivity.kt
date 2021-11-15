@@ -132,7 +132,7 @@ class HueLampActivity : AppCompatActivity() {
                             satBar.visibility = View.GONE
                         }
 
-                        val isOn = action.getBoolean("on")
+                        val isOn = response.getJSONObject("state").getBoolean("any_on")
                         availableSliders.forEach {
                             it.isEnabled = isOn
                         }

@@ -33,6 +33,8 @@ class HueLampsFragment : Fragment(R.layout.fragment_hue_lamps) {
     private lateinit var lampData: HueLampActivity
     private lateinit var hueAPI: HueAPI
     private lateinit var queue: RequestQueue
+    private lateinit var requestCallBack: HueAPI.RequestCallBack
+    private val updateHandler: UpdateHandler = UpdateHandler()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         c = context ?: throw IllegalStateException()
@@ -51,7 +53,7 @@ class HueLampsFragment : Fragment(R.layout.fragment_hue_lamps) {
             }
         }
 
-        val requestCallBack = object : HueAPI.RequestCallBack {
+        requestCallBack = object : HueAPI.RequestCallBack {
             override fun onGroupLoaded(holder: RequestCallbackObject) {}
             override fun onGroupsLoaded(holder: RequestCallbackObject) {}
             override fun onLightsLoaded(holder: RequestCallbackObject) {
@@ -99,21 +101,27 @@ class HueLampsFragment : Fragment(R.layout.fragment_hue_lamps) {
                 ImageViewCompat.setImageTintList(listView.getChildAt(i).findViewById(R.id.drawable), ColorStateList.valueOf(colorArray[i]))
         }
 
-        listView.onItemClickListener = AdapterView.OnItemClickListener { _, view, _, _ ->
+        listView.onItemClickListener = AdapterView.OnItemClickListener { _, element, _, _ ->
             startActivity(
                     Intent(c, HueLampActivity::class.java)
-                            .putExtra("ID", view.findViewById<TextView>(R.id.hidden).text.toString())
+                            .putExtra("ID", element.findViewById<TextView>(R.id.hidden).text.toString())
                             .putExtra("Device", lampData.deviceId)
             )
         }
+        return view
+    }
 
-        val updateHandler = UpdateHandler()
+    override fun onStart() {
+        super.onStart()
         updateHandler.setUpdateFunction {
             if (lampData.canReceiveRequest && hueAPI.readyForRequest) {
                 hueAPI.loadLightsByIDs(lampData.lights ?: JSONArray(), requestCallBack)
             }
         }
+    }
 
-        return view
+    override fun onStop() {
+        super.onStop()
+        updateHandler.stop()
     }
 }

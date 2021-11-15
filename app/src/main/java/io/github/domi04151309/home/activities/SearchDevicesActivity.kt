@@ -9,6 +9,7 @@ import android.util.Log
 import com._8rine.upnpdiscovery.UPnPDevice
 import com._8rine.upnpdiscovery.UPnPDiscovery
 import android.os.Handler
+import android.os.Looper
 import androidx.appcompat.app.AlertDialog
 import android.widget.AdapterView
 import android.widget.TextView
@@ -120,7 +121,7 @@ class SearchDevicesActivity : AppCompatActivity() {
         }.start()
 
         //Display found devices
-        Handler().postDelayed({
+        Handler(Looper.getMainLooper()).postDelayed({
             if (!addresses.contains(routerIp)) {
                 listItems += ListViewItem(
                         title = resources.getString(R.string.pref_device_router),
