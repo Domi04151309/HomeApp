@@ -2,7 +2,6 @@ package io.github.domi04151309.home.fragments
 
 import android.content.Context
 import android.content.Intent
-import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -10,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.Fragment
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.Volley
@@ -44,7 +42,6 @@ class HueLampsFragment : Fragment(R.layout.fragment_hue_lamps) {
 
         val view = super.onCreateView(inflater, container, savedInstanceState) ?: throw IllegalStateException()
         val listView = view.findViewById<ListView>(R.id.listView)
-        val colorArray: ArrayList<Int> = arrayListOf()
 
         val hueLampStateListener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
             if (compoundButton.isPressed) {
@@ -63,6 +60,7 @@ class HueLampsFragment : Fragment(R.layout.fragment_hue_lamps) {
                         var currentObject: JSONObject
                         var currentState: JSONObject
                         val listItems: ArrayList<ListViewItem> = arrayListOf()
+                        val colorArray: ArrayList<Int> = arrayListOf()
                         for (i in 1 until (holder.response.length() + 1)) {
                             try {
                                 currentObjectName = holder.response.names()?.getString(i - 1) ?: ""
@@ -88,17 +86,12 @@ class HueLampsFragment : Fragment(R.layout.fragment_hue_lamps) {
                                 Log.e(Global.LOG_TAG, e.toString())
                             }
                         }
-                        listView.adapter = ListViewAdapterHue(c, listItems)
+                        listView.adapter = ListViewAdapterHue(c, listItems, colorArray)
                     } catch (e: Exception) {
                         Log.e(Global.LOG_TAG, e.toString())
                     }
                 }
             }
-        }
-
-        listView.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
-            for (i in 0 until listView.count)
-                ImageViewCompat.setImageTintList(listView.getChildAt(i).findViewById(R.id.drawable), ColorStateList.valueOf(colorArray[i]))
         }
 
         listView.onItemClickListener = AdapterView.OnItemClickListener { _, element, _, _ ->
