@@ -16,7 +16,7 @@ object HueUtils {
 
     fun hueSatToRGB(hue: Int, sat: Int): Int {
         require(!(hue > 65535 || sat > 254)) { "Argument out of range" }
-        val hsl: Array<Float> = arrayOf(hue * 0.0054932478F, sat / 254F, 0.5F)
+        val hsl: Array<Float> = arrayOf(hue * 0.0054932478F, 1F, 1F - sat / 254F * .5F)
         return ColorUtils.HSLToColor(hsl.toFloatArray())
     }
 
