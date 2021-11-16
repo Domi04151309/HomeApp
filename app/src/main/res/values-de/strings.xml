@@ -9,6 +9,7 @@
     <string name="main_device_nonexistent">Diese Gerät existiert nicht</string>
     <string name="main_tap_to_connect">Tippe zum Verbinden</string>
     <string name="main_connecting">Verbinde</string>
+    <string name="main_network_not_secure">Nicht mit lokalem Netzwerk verbunden</string>
     <string name="main_unknown_mode">Das Gerät benutzt einen unbekannten Modus</string>
     <string name="main_device_unavailable">Das Gerät ist momentan nicht verfügbar</string>
     <string name="main_parse_error">Die Antwort erfüllt nicht die Voraussetzungen</string>

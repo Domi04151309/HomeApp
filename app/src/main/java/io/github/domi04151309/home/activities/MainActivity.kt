@@ -29,6 +29,8 @@ import io.github.domi04151309.home.helpers.P
 import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.Theme
 import io.github.domi04151309.home.helpers.Tasmota
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 
 class MainActivity : AppCompatActivity() {
 
@@ -247,8 +249,12 @@ class MainActivity : AppCompatActivity() {
             val hidden = view.findViewById<TextView>(R.id.hidden).text.toString()
             when (level) {
                 Flavors.ONE -> {
-                    view.findViewById<TextView>(R.id.summary).text = resources.getString(R.string.main_connecting)
-                    handleLevelOne(hidden)
+                    if (checkNetwork()) {
+                        view.findViewById<TextView>(R.id.summary).text = resources.getString(R.string.main_connecting)
+                        handleLevelOne(hidden)
+                    } else {
+                        view.findViewById<TextView>(R.id.summary).text = resources.getString(R.string.main_network_not_secure)
+                    }
                 }
                 Flavors.TWO_SIMPLE_HOME ->
                     homeAPI.executeCommand(currentDevice, hidden, homeRequestCallBack)
@@ -274,10 +280,15 @@ class MainActivity : AppCompatActivity() {
         if(intent.hasExtra("device")) {
             val deviceId = intent.getStringExtra("device") ?: ""
             if (devices.idExists(deviceId)) {
-                val device = devices.getDeviceById(deviceId)
-                deviceIcon.setImageResource(device.iconId)
-                deviceName.text = device.name
-                handleLevelOne(deviceId)
+                if (checkNetwork()) {
+                    val device = devices.getDeviceById(deviceId)
+                    deviceIcon.setImageResource(device.iconId)
+                    deviceName.text = device.name
+                    handleLevelOne(deviceId)
+                } else {
+                    loadDevices()
+                    Toast.makeText(this, R.string.main_network_not_secure, Toast.LENGTH_LONG).show()
+                }
             } else {
                 loadDevices()
                 Toast.makeText(this, R.string.main_device_nonexistent, Toast.LENGTH_LONG).show()
@@ -285,6 +296,18 @@ class MainActivity : AppCompatActivity() {
         } else {
             loadDevices()
         }
+    }
+
+    private fun checkNetwork() : Boolean {
+        var localNetwork = true
+        val connectivityManager = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+        val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+        if (capabilities != null) {
+            localNetwork = capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+                    || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
+                    || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN)
+        }
+        return localNetwork
     }
 
     private fun handleLevelOne(deviceId: String) {
