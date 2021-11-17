@@ -1,0 +1,62 @@
+package io.github.domi04151309.home.adapters
+
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.*
+import io.github.domi04151309.home.R
+import io.github.domi04151309.home.helpers.Global
+
+internal class IconSpinnerAdapter(
+        context: Context,
+        private var itemArray: Array<String>
+) : BaseAdapter(), Filterable {
+
+    private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
+    override fun getCount(): Int {
+        return itemArray.size
+    }
+
+    override fun getItem(position: Int): String {
+        return itemArray[position]
+    }
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun getFilter(): Filter {
+        return ItemFilter()
+    }
+
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+        val vi: View = convertView ?: inflater.inflate(R.layout.icon_dropdown_item, parent, false)
+        vi.findViewById<TextView>(R.id.title).text = itemArray[position]
+        vi.findViewById<ImageView>(R.id.drawable).setImageResource(Global.getIcon(itemArray[position]))
+        return vi
+    }
+
+    inner class ItemFilter : Filter() {
+        override fun performFiltering(constraint: CharSequence): FilterResults {
+            val results = FilterResults()
+            val search = constraint.toString().lowercase()
+
+            val items: ArrayList<String> = ArrayList(itemArray.size)
+
+            for (i in itemArray.indices) {
+                if (itemArray[i].lowercase().contains(search)) items.add(itemArray[i])
+            }
+
+            results.values = items.toArray()
+            results.count = items.size
+            return results
+        }
+
+        override fun publishResults(constraint: CharSequence, results: FilterResults) {
+            itemArray = (results.values as Array<*>).filterIsInstance<String>().toTypedArray()
+            notifyDataSetChanged()
+        }
+    }
+}

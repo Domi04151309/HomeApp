@@ -19,6 +19,7 @@ import android.widget.AdapterView.OnItemSelectedListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputLayout
 import io.github.domi04151309.home.R
+import io.github.domi04151309.home.adapters.IconSpinnerAdapter
 import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.Theme
@@ -122,7 +123,7 @@ class EditDeviceActivity : AppCompatActivity() {
             findViewById<LinearLayout>(R.id.editSection).visibility = View.GONE
         }
 
-        iconSpinner.setAdapter(ArrayAdapter(this, R.layout.dropdown_item, resources.getStringArray(R.array.pref_icons)))
+        iconSpinner.setAdapter(IconSpinnerAdapter(this, resources.getStringArray(R.array.pref_icons)))
         modeSpinner.setAdapter(ArrayAdapter(this, R.layout.dropdown_item, resources.getStringArray(R.array.pref_add_mode_array)))
 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
