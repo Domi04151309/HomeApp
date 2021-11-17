@@ -20,13 +20,15 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.adapters.HueDetailsTabAdapter
-import io.github.domi04151309.home.helpers.Devices
-import io.github.domi04151309.home.helpers.UpdateHandler
-import io.github.domi04151309.home.helpers.HueAPI
-import io.github.domi04151309.home.helpers.HueUtils
+import io.github.domi04151309.home.helpers.*
 import io.github.domi04151309.home.helpers.Global.volleyError
 import io.github.domi04151309.home.helpers.Theme
 import org.json.JSONArray
+import android.graphics.Shader.TileMode
+import android.graphics.LinearGradient
+import android.graphics.drawable.LayerDrawable
+import android.graphics.drawable.PaintDrawable
+import android.view.ViewTreeObserver.OnGlobalLayoutListener
 
 class HueLampActivity : AppCompatActivity() {
 
@@ -40,6 +42,10 @@ class HueLampActivity : AppCompatActivity() {
     private var roomDataRequest: JsonObjectRequest? = null
     internal lateinit var hueAPI: HueAPI
     private lateinit var queue: RequestQueue
+
+    internal fun dpToPx(dp: Int): Int {
+        return (dp * resources.displayMetrics.density).toInt()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Theme.set(this)
@@ -84,6 +90,39 @@ class HueLampActivity : AppCompatActivity() {
         satBar.setLabelFormatter { value: Float ->
             HueUtils.satToPercent(value.toInt())
         }
+
+        //Slider tints
+        hueBar.viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                hueBar.viewTreeObserver.removeOnGlobalLayoutListener(this)
+
+                val gradient = PaintDrawable()
+                gradient.setCornerRadius(dpToPx(16).toFloat())
+                gradient.paint.shader = LinearGradient(
+                    0f, 0f, hueBar.width.toFloat(), 0f, intArrayOf(
+                        Color.HSVToColor(floatArrayOf(0f, 1f, 1f)),
+                        Color.HSVToColor(floatArrayOf(60f, 1f, 1f)),
+                        Color.HSVToColor(floatArrayOf(120f, 1f, 1f)),
+                        Color.HSVToColor(floatArrayOf(180f, 1f, 1f)),
+                        Color.HSVToColor(floatArrayOf(240f, 1f, 1f)),
+                        Color.HSVToColor(floatArrayOf(300f, 1f, 1f)),
+                        Color.HSVToColor(floatArrayOf(360f, 1f, 1f))
+                    ),
+                    null,
+                    TileMode.CLAMP
+                )
+
+                val layers = LayerDrawable(arrayOf(gradient))
+                layers.setLayerInset(
+                    0,
+                    dpToPx(14),
+                    dpToPx(22),
+                    dpToPx(14),
+                    dpToPx(22)
+                )
+                hueBar.background = layers
+            }
+        })
 
         //Default tint
         ImageViewCompat.setImageTintList(
