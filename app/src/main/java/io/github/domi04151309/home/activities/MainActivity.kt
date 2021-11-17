@@ -349,8 +349,7 @@ class MainActivity : AppCompatActivity() {
         if (currentView == null) {
             loadDevices()
             Toast.makeText(this, err, Toast.LENGTH_LONG).show()
-        } else {
-            setLevelOne()
+        } else if (level == Flavors.ONE) {
             currentView?.findViewById<TextView>(R.id.summary)?.text = err
         }
     }
