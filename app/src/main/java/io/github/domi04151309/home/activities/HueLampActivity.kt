@@ -175,15 +175,12 @@ class HueLampActivity : AppCompatActivity() {
                             findViewById<TextView>(R.id.ctTxt).visibility = View.GONE
                             ctBar.visibility = View.GONE
                         }
-                        if (action.has("hue")) {
+                        if (action.has("hue") && action.has("sat")) {
                             setProgress(hueBar, action.getInt("hue"))
+                            setProgress(satBar, action.getInt("sat"))
                         } else {
                             findViewById<TextView>(R.id.hueTxt).visibility = View.GONE
                             hueBar.visibility = View.GONE
-                        }
-                        if (action.has("sat")) {
-                            setProgress(satBar, action.getInt("sat"))
-                        } else {
                             findViewById<TextView>(R.id.satTxt).visibility = View.GONE
                             satBar.visibility = View.GONE
                         }
@@ -272,7 +269,7 @@ class HueLampActivity : AppCompatActivity() {
             viewPager.adapter = HueDetailsTabAdapter(this)
 
             val tabIcons = arrayOf(
-                    ResourcesCompat.getDrawable(resources, R.drawable.ic_hue_scene_add, theme),
+                    ResourcesCompat.getDrawable(resources, R.drawable.ic_scene, theme),
                     ResourcesCompat.getDrawable(resources, R.drawable.ic_device_lamp, theme)
             )
             TabLayoutMediator(tabBar, viewPager) { tab, position ->
