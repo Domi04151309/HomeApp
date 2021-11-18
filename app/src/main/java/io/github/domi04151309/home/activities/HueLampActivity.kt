@@ -43,8 +43,39 @@ class HueLampActivity : AppCompatActivity() {
     internal lateinit var hueAPI: HueAPI
     private lateinit var queue: RequestQueue
 
-    internal fun dpToPx(dp: Int): Int {
+    private fun dpToPx(dp: Int): Int {
         return (dp * resources.displayMetrics.density).toInt()
+    }
+
+    internal fun setSliderGradientNow(view: View, colors: IntArray) {
+        val gradient = PaintDrawable()
+        gradient.setCornerRadius(dpToPx(16).toFloat())
+        gradient.paint.shader = LinearGradient(
+            0f, 0f,
+            view.width.toFloat(), 0f,
+            colors,
+            null,
+            TileMode.CLAMP
+        )
+
+        val layers = LayerDrawable(arrayOf(gradient))
+        layers.setLayerInset(
+            0,
+            dpToPx(14),
+            dpToPx(22),
+            dpToPx(14),
+            dpToPx(22)
+        )
+        view.background = layers
+    }
+
+    private fun setSliderGradient(view: View, colors: IntArray) {
+        view.viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                view.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                setSliderGradientNow(view, colors)
+            }
+        })
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,37 +123,23 @@ class HueLampActivity : AppCompatActivity() {
         }
 
         //Slider tints
-        hueBar.viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                hueBar.viewTreeObserver.removeOnGlobalLayoutListener(this)
-
-                val gradient = PaintDrawable()
-                gradient.setCornerRadius(dpToPx(16).toFloat())
-                gradient.paint.shader = LinearGradient(
-                    0f, 0f, hueBar.width.toFloat(), 0f, intArrayOf(
-                        Color.HSVToColor(floatArrayOf(0f, 1f, 1f)),
-                        Color.HSVToColor(floatArrayOf(60f, 1f, 1f)),
-                        Color.HSVToColor(floatArrayOf(120f, 1f, 1f)),
-                        Color.HSVToColor(floatArrayOf(180f, 1f, 1f)),
-                        Color.HSVToColor(floatArrayOf(240f, 1f, 1f)),
-                        Color.HSVToColor(floatArrayOf(300f, 1f, 1f)),
-                        Color.HSVToColor(floatArrayOf(360f, 1f, 1f))
-                    ),
-                    null,
-                    TileMode.CLAMP
-                )
-
-                val layers = LayerDrawable(arrayOf(gradient))
-                layers.setLayerInset(
-                    0,
-                    dpToPx(14),
-                    dpToPx(22),
-                    dpToPx(14),
-                    dpToPx(22)
-                )
-                hueBar.background = layers
-            }
-        })
+        setSliderGradient(ctBar, intArrayOf(
+            Color.WHITE,
+            Color.parseColor("#FF8B16")
+        ))
+        setSliderGradient(hueBar, intArrayOf(
+            Color.HSVToColor(floatArrayOf(0f, 1f, 1f)),
+            Color.HSVToColor(floatArrayOf(60f, 1f, 1f)),
+            Color.HSVToColor(floatArrayOf(120f, 1f, 1f)),
+            Color.HSVToColor(floatArrayOf(180f, 1f, 1f)),
+            Color.HSVToColor(floatArrayOf(240f, 1f, 1f)),
+            Color.HSVToColor(floatArrayOf(300f, 1f, 1f)),
+            Color.HSVToColor(floatArrayOf(360f, 1f, 1f))
+        ))
+        setSliderGradient(satBar, intArrayOf(
+            Color.WHITE,
+            Color.RED
+        ))
 
         //Default tint
         ImageViewCompat.setImageTintList(
@@ -221,6 +238,10 @@ class HueLampActivity : AppCompatActivity() {
                     lampIcon,
                     ColorStateList.valueOf(HueUtils.hueSatToRGB(value.toInt(), satBar.value.toInt()))
                 )
+                setSliderGradientNow(satBar, intArrayOf(
+                    Color.WHITE,
+                    HueUtils.hueToRGB(value.toInt())
+                ))
             }
             hueBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
                 override fun onStartTrackingTouch(slider: Slider) {
@@ -347,6 +368,10 @@ class HueLampActivity : AppCompatActivity() {
                     lampIcon,
                     ColorStateList.valueOf(HueUtils.hueSatToRGB(value.toInt(), satBar.value.toInt()))
                 )
+                setSliderGradientNow(satBar, intArrayOf(
+                    Color.WHITE,
+                    HueUtils.hueToRGB(value.toInt())
+                ))
             }
             hueBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
                 override fun onStartTrackingTouch(slider: Slider) {

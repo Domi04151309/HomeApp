@@ -1,6 +1,6 @@
 package io.github.domi04151309.home.helpers
 
-import androidx.core.graphics.ColorUtils
+import android.graphics.Color
 
 object HueUtils {
 
@@ -16,8 +16,12 @@ object HueUtils {
 
     fun hueSatToRGB(hue: Int, sat: Int): Int {
         require(!(hue > 65535 || sat > 254)) { "Argument out of range" }
-        val hsl: Array<Float> = arrayOf(hue * 0.0054932478F, 1F, 1F - sat / 254F * .5F)
-        return ColorUtils.HSLToColor(hsl.toFloatArray())
+        return Color.HSVToColor(floatArrayOf(hue * 0.0054932478F, sat / 254F, 1F))
+    }
+
+    fun hueToRGB(hue: Int): Int {
+        require(hue <= 65535) { "Argument out of range" }
+        return Color.HSVToColor(floatArrayOf(hue * 0.0054932478F, 1F, 1F))
     }
 
     fun hueToDegree(hue: Int): String {

@@ -30,7 +30,6 @@
         android:id="@+id/ctBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/gradient_ct"
         android:valueFrom="0.0"
         android:valueTo="347"
         app:trackColor="@android:color/transparent" />
@@ -60,5 +59,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:valueFrom="0.0"
-        android:valueTo="254" />
+        android:valueTo="254"
+        app:trackColor="@android:color/transparent" />
 </LinearLayout>
