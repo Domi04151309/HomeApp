@@ -30,6 +30,7 @@
     <string name="hue_connect">Connect to your Bridge</string>
     <string name="hue_press_button">Please press the button on your bridge to continue.</string>
     <string name="hue_tap">Tap to select</string>
+    <string name="hue_unreachable">Unreachable</string>
     <string name="hue_on">On</string>
     <string name="hue_off">Off</string>
     <string name="hue_brightness">Brightness</string>

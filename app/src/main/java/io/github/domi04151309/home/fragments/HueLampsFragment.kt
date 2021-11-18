@@ -61,9 +61,9 @@ class HueLampsFragment : Fragment(R.layout.fragment_hue_lamps) {
                         var currentState: JSONObject
                         val listItems: ArrayList<ListViewItem> = arrayListOf()
                         val colorArray: ArrayList<Int> = arrayListOf()
-                        for (i in 1 until (holder.response.length() + 1)) {
+                        for (i in 0 until (holder.response.length())) {
                             try {
-                                currentObjectName = holder.response.names()?.getString(i - 1) ?: ""
+                                currentObjectName = holder.response.names()?.getString(i) ?: ""
                                 currentObject = holder.response.getJSONObject(currentObjectName)
 
                                 currentState = currentObject.getJSONObject("state")
@@ -77,7 +77,9 @@ class HueLampsFragment : Fragment(R.layout.fragment_hue_lamps) {
 
                                 listItems += ListViewItem(
                                     title = currentObject.getString("name"),
-                                    summary = resources.getString(R.string.hue_tap),
+                                    summary =
+                                        if (currentState.getBoolean("reachable")) resources.getString(R.string.hue_tap)
+                                        else resources.getString(R.string.hue_unreachable),
                                     hidden = currentObjectName,
                                     state = currentState.getBoolean("on"),
                                     stateListener = hueLampStateListener
