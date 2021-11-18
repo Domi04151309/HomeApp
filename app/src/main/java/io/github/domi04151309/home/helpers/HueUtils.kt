@@ -6,7 +6,7 @@ object HueUtils {
 
     fun ctToRGB(ct: Int): Int {
         require(!(ct < 153 || ct > 500)) { "Argument out of range" }
-        return cyanogenmod.util.ColorUtils.temperatureToRGB((6500 - 12.968299711 * (ct - 153)).toInt())
+        return ColorUtils.temperatureToRGB((6500 - 12.968299711 * (ct - 153)).toInt())
     }
 
     fun ctToKelvin(ct: Int): String {
