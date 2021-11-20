@@ -46,4 +46,12 @@
                     android:layout_height="wrap_content"
                     android:visibility="gone"/>
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/handle"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="?dialogPreferredPadding"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_drag_handle"/>
 </LinearLayout>

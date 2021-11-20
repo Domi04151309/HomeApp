@@ -2,18 +2,39 @@ package io.github.domi04151309.home.helpers
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.preference.PreferenceManager
 import io.github.domi04151309.home.data.DeviceItem
+import org.json.JSONArray
 import org.json.JSONObject
 import java.util.*
 
-class Devices constructor(context: Context) {
+class Devices(context: Context) {
+
+    companion object {
+        private const val ALLOWED_CHARACTERS = "0123456789abcdefghijklmnobqrstuvw"
+        private var storedData: JSONObject? = null
+    }
 
     private val _prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+    init {
+        if (storedData == null) {
+            storedData = JSONObject(
+                _prefs.getString("devices_json", Global.DEFAULT_JSON)
+                    ?: Global.DEFAULT_JSON
+            )
+        }
+    }
 
     private fun getDevicesObject(): JSONObject {
-        return JSONObject(_prefs.getString("devices_json", Global.DEFAULT_JSON)
-                ?: Global.DEFAULT_JSON).getJSONObject("devices")
+        return storedData?.getJSONObject("devices")!!
+    }
+
+    private fun getDeviceOrder(): JSONArray {
+        if (storedData?.has("order") != true) {
+            storedData?.put("order", getDevicesObject().names())
+        }
+        return storedData?.getJSONArray("order")!!
     }
 
     private fun convertToDeviceItem(id: String, jsonObj: JSONObject): DeviceItem {
@@ -30,7 +51,7 @@ class Devices constructor(context: Context) {
     }
 
     fun getDeviceByIndex(index: Int): DeviceItem {
-        val id = getDevicesObject().names()!!.getString(index)
+        val id = getDeviceOrder()!!.getString(index)
         return convertToDeviceItem(id, getDevicesObject().getJSONObject(id))
     }
 
@@ -40,10 +61,6 @@ class Devices constructor(context: Context) {
 
     fun idExists(id: String): Boolean {
         return getDevicesObject().has(id)
-    }
-
-    companion object {
-        private const val ALLOWED_CHARACTERS = "0123456789abcdefghijklmnobqrstuvw"
     }
 
     private fun generateRandomId(): String {
@@ -62,19 +79,37 @@ class Devices constructor(context: Context) {
     }
 
     fun addDevice(device: DeviceItem) {
-        val newObject = getDevicesObject()
+        if (!idExists(device.id)) getDeviceOrder().put(device.id)
         val deviceObject = JSONObject()
                 .put("name", device.name)
                 .put("address", device.address)
                 .put("mode", device.mode)
                 .put("icon", device.iconName)
-        newObject.put(device.id, deviceObject)
-        _prefs.edit().putString("devices_json", JSONObject().put("devices", newObject).toString()).apply()
+        getDevicesObject().put(device.id, deviceObject)
+        saveChanges()
     }
 
     fun deleteDevice(id: String) {
-        val newObject = getDevicesObject()
-        newObject.remove(id)
-        _prefs.edit().putString("devices_json", JSONObject().put("devices", newObject).toString()).apply()
+        for (i in 0 until getDeviceOrder().length()) {
+            if (getDeviceOrder()[i] == id) {
+                getDeviceOrder().remove(i)
+                break
+            }
+        }
+        getDevicesObject().remove(id)
+        saveChanges()
+    }
+
+    fun moveDevice(from: Int, to: Int) {
+        val list = MutableList(getDeviceOrder().length()) {
+            getDeviceOrder().getString(it)
+        }
+        list.add(to, list.removeAt(from))
+        storedData?.put("order", JSONArray(list))
+        Log.e(Global.LOG_TAG, list.toString())
+    }
+
+    fun saveChanges() {
+        _prefs.edit().putString("devices_json", storedData.toString()).apply()
     }
 }

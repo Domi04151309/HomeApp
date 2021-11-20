@@ -31,7 +31,8 @@ class DeviceListAdapter(
         holder.title.text = items[position].title
         holder.summary.text = items[position].summary
         holder.hidden.text = items[position].hidden
-        holder.root.setOnClickListener { helperInterface.onItemClicked(holder.root, position) }
+        holder.itemView.setOnClickListener { helperInterface.onItemClicked(holder.itemView, position) }
+        if (position == itemCount - 1) holder.handle.visibility = View.GONE
     }
 
     override fun getItemCount(): Int {
@@ -39,10 +40,10 @@ class DeviceListAdapter(
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var root: View = view
         var drawable: ImageView = view.findViewById(R.id.drawable)
         var title: TextView = view.findViewById(R.id.title)
         var summary: TextView = view.findViewById(R.id.summary)
         var hidden: TextView = view.findViewById(R.id.hidden)
+        var handle: ImageView = view.findViewById(R.id.handle)
     }
 }

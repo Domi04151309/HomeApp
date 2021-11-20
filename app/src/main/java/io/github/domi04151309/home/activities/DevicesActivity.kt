@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.github.domi04151309.home.R
@@ -24,6 +25,43 @@ class DevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
     private lateinit var devices: Devices
     private lateinit var recyclerView: RecyclerView
 
+    private val itemTouchHelperCallback = object: ItemTouchHelper.Callback() {
+        override fun getMovementFlags(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder
+        ): Int {
+            return if (viewHolder.adapterPosition == (recyclerView.adapter?.itemCount ?: -1) - 1) makeMovementFlags( 0, 0)
+            else makeMovementFlags(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0)
+        }
+
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ): Boolean {
+            val adapter = recyclerView.adapter ?: return false
+            return if (target.adapterPosition == adapter.itemCount - 1) {
+                false
+            } else {
+                recyclerView.adapter?.notifyItemMoved(viewHolder.adapterPosition, target.adapterPosition)
+                devices.moveDevice(viewHolder.adapterPosition, target.adapterPosition)
+                true
+            }
+        }
+
+        override fun isLongPressDragEnabled(): Boolean {
+            return true
+        }
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+        }
+
+        override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
+            super.clearView(recyclerView, viewHolder)
+            devices.saveChanges()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         Theme.set(this)
         super.onCreate(savedInstanceState)
@@ -31,6 +69,7 @@ class DevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
 
         devices = Devices(this)
         recyclerView = findViewById(R.id.recyclerView)
+        ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView)
     }
 
     private fun loadDevices(){
@@ -96,8 +135,8 @@ class DevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
     override fun onStart() {
         super.onStart()
         if (reset){
-            loadDevices()
             reset = false
+            loadDevices()
         }
     }
 }

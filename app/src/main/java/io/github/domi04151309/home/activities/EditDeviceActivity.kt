@@ -153,7 +153,6 @@ class EditDeviceActivity : AppCompatActivity() {
                 tempAddress += ":1880/"
             }
 
-            if (editing) devices.deleteDevice(deviceId)
             val newItem = DeviceItem(deviceId)
             newItem.name = name
             newItem.address = tempAddress
