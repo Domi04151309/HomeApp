@@ -18,8 +18,10 @@ import io.github.domi04151309.home.activities.HueSceneActivity
 import io.github.domi04151309.home.adapters.HueScenesGridAdapter
 import io.github.domi04151309.home.custom.CustomJsonArrayRequest
 import io.github.domi04151309.home.data.ScenesGridItem
+import io.github.domi04151309.home.helpers.ColorUtils
 import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.HueAPI
+import io.github.domi04151309.home.helpers.HueUtils
 import org.json.JSONObject
 
 class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
@@ -45,25 +47,78 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
                 { response ->
                     try {
                         val gridItems: ArrayList<ScenesGridItem> = ArrayList(response.length())
+                        val sceneIds: ArrayList<String> = ArrayList(response.length() / 2)
+                        val sceneNames: ArrayList<String> = ArrayList(response.length() / 2)
                         var currentObjectName: String
                         var currentObject: JSONObject
                         for (i in 0 until response.length()) {
                             currentObjectName = response.names()?.getString(i) ?: ""
                             currentObject = response.getJSONObject(currentObjectName)
                             if (currentObject.getString("group") == lampData.id) {
-                                gridItems += ScenesGridItem(
-                                        name = currentObject.getString("name"),
-                                        hidden = currentObjectName,
-                                        icon = R.drawable.ic_hue_scene
-                                )
+                                sceneIds.add(currentObjectName)
+                                sceneNames.add(currentObject.getString("name"))
                             }
                         }
-                        gridItems += ScenesGridItem(
-                                name = resources.getString(R.string.hue_add_scene),
-                                hidden = "add",
-                                icon = R.drawable.ic_hue_scene_add
-                        )
-                        gridView.adapter = HueScenesGridAdapter(c, gridItems)
+                        var completedRequests = 0
+                        for (i in 0 until sceneIds.size) {
+                            queue.add(JsonObjectRequest(
+                                Request.Method.GET,
+                                lampData.address + "api/" + hueAPI.getUsername() + "/scenes/" + sceneIds[i],
+                                null,
+                                { sceneResponse ->
+                                    val states = sceneResponse.getJSONObject("lightstates")
+                                    val currentSceneValues = ArrayList<Int>(states.length())
+                                    var lampObject: JSONObject
+                                    for (j in 0 until states.length()) {
+                                        lampObject = states.getJSONObject(
+                                            states.names()?.getString(j) ?: break
+                                        )
+                                        if (lampObject.getBoolean("on")) {
+                                            if (lampObject.has("hue") && lampObject.has("sat")) {
+                                                currentSceneValues.clear()
+                                                currentSceneValues.add(
+                                                    HueUtils.hueSatToRGB(
+                                                        lampObject.getInt("hue"),
+                                                        lampObject.getInt("sat")
+                                                    )
+                                                )
+                                            } else if (lampObject.has("xy")) {
+                                                val xyArray = lampObject.getJSONArray("xy")
+                                                currentSceneValues.clear()
+                                                currentSceneValues.add(
+                                                    ColorUtils.xyToRGB(
+                                                        xyArray.getDouble(0),
+                                                        xyArray.getDouble(1)
+                                                    )
+                                                )
+                                            } else if (lampObject.has("ct")) {
+                                                currentSceneValues.add(
+                                                    HueUtils.ctToRGB(lampObject.getInt("ct"))
+                                                )
+                                            }
+                                        }
+                                    }
+                                    gridItems += ScenesGridItem(
+                                        name = sceneNames[i],
+                                        hidden = sceneIds[i],
+                                        icon = R.drawable.ic_hue_scene_base,
+                                        color = currentSceneValues[0]
+                                    )
+                                    completedRequests++
+                                    if (completedRequests == sceneIds.size) {
+                                        gridItems += ScenesGridItem(
+                                            name = resources.getString(R.string.hue_add_scene),
+                                            hidden = "add",
+                                            icon = R.drawable.ic_hue_scene_add
+                                        )
+                                        gridView.adapter = HueScenesGridAdapter(c, gridItems)
+                                    }
+                                },
+                                { error ->
+                                    Log.e(Global.LOG_TAG, error.toString())
+                                }
+                            ))
+                        }
                     } catch (e: Exception){
                         Log.e(Global.LOG_TAG, e.toString())
                     }

@@ -21,7 +21,7 @@
                 android:layout_height="@dimen/header_icon_height"
                 android:layout_marginTop="@dimen/dialog_item_margin"
                 android:contentDescription="@string/hue_new_scene"
-                app:srcCompat="@drawable/ic_hue_scene" />
+                app:srcCompat="@drawable/ic_hue_scene_add" />
 
             <TextView
                 android:id="@+id/nameTxt"

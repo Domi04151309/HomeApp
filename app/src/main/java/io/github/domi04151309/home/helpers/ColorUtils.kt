@@ -30,6 +30,22 @@ object ColorUtils {
         return Color.rgb(clamp(red), clamp(green), clamp(blue))
     }
 
+    fun xyToRGB(x: Double, y: Double): Int {
+        val cieY = 1.0
+        val cieX = (cieY * x) / y
+        val cieZ = ((1 - x - y) * cieY) / y
+
+        val r = +3.2404542 * cieX -1.5371385 * cieY -0.4985314 * cieZ
+        val g = -0.9692660 * cieX +1.8760108 * cieY +0.0415560 * cieZ
+        val b = +0.0556434 * cieX -0.2040259 * cieY +1.0572252 * cieZ
+
+        return Color.rgb(formatXyzValue(r), formatXyzValue(g), formatXyzValue(b))
+    }
+
+    private fun formatXyzValue(v: Double): Int {
+        return clamp((if (v <= 0.0031308) 12.92 * v else 1.055 * v.pow(1.0 / 2.4) - 0.055) * MAX)
+    }
+
     private fun clamp(value: Double): Int {
         return when {
             value < MIN -> MIN.toInt()
