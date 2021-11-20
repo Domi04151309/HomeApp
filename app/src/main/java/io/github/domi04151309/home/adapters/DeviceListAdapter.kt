@@ -10,10 +10,10 @@ import android.view.LayoutInflater
 import io.github.domi04151309.home.data.SimpleListItem
 import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
 
-class DevicesListAdapter(
+class DeviceListAdapter(
     private val items: ArrayList<SimpleListItem>,
     private val helperInterface: RecyclerViewHelperInterface
-    ) : RecyclerView.Adapter<DevicesListAdapter.ViewHolder>() {
+    ) : RecyclerView.Adapter<DeviceListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

@@ -10,7 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.github.domi04151309.home.R
-import io.github.domi04151309.home.adapters.DevicesListAdapter
+import io.github.domi04151309.home.adapters.DeviceListAdapter
 import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.data.SimpleListItem
@@ -70,7 +70,7 @@ class DevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
         }
 
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = DevicesListAdapter(listItems, this)
+        recyclerView.adapter = DeviceListAdapter(listItems, this)
     }
 
     override fun onItemClicked(view: View, pos: Int) {

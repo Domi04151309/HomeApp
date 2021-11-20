@@ -15,9 +15,9 @@ import com.android.volley.toolbox.Volley
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.activities.HueLampActivity
 import io.github.domi04151309.home.activities.HueSceneActivity
-import io.github.domi04151309.home.adapters.HueScenesGridAdapter
+import io.github.domi04151309.home.adapters.HueSceneGridAdapter
 import io.github.domi04151309.home.custom.CustomJsonArrayRequest
-import io.github.domi04151309.home.data.ScenesGridItem
+import io.github.domi04151309.home.data.SceneGridItem
 import io.github.domi04151309.home.helpers.ColorUtils
 import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.HueAPI
@@ -46,7 +46,7 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
         scenesRequest = JsonObjectRequest(Request.Method.GET, lampData.address + "api/" + hueAPI.getUsername() + "/scenes/", null,
                 { response ->
                     try {
-                        val gridItems: ArrayList<ScenesGridItem> = ArrayList(response.length())
+                        val gridItems: ArrayList<SceneGridItem> = ArrayList(response.length())
                         val sceneIds: ArrayList<String> = ArrayList(response.length() / 2)
                         val sceneNames: ArrayList<String> = ArrayList(response.length() / 2)
                         var currentObjectName: String
@@ -99,7 +99,7 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
                                                 }
                                             }
                                         }
-                                        gridItems += ScenesGridItem(
+                                        gridItems += SceneGridItem(
                                             name = sceneNames[i],
                                             hidden = sceneIds[i],
                                             icon = R.drawable.ic_hue_scene_base,
@@ -108,12 +108,12 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
                                         completedRequests++
                                         if (completedRequests == sceneIds.size) {
                                             var sortedItems = gridItems.sortedWith(compareBy { it.color })
-                                            sortedItems += ScenesGridItem(
+                                            sortedItems += SceneGridItem(
                                                 name = resources.getString(R.string.hue_add_scene),
                                                 hidden = "add",
                                                 icon = R.drawable.ic_hue_scene_add
                                             )
-                                            gridView.adapter = HueScenesGridAdapter(sortedItems)
+                                            gridView.adapter = HueSceneGridAdapter(sortedItems)
                                         }
                                     },
                                     { error ->
@@ -122,7 +122,7 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
                                 ))
                             }
                         } else {
-                            gridView.adapter = HueScenesGridAdapter(listOf(ScenesGridItem(
+                            gridView.adapter = HueSceneGridAdapter(listOf(SceneGridItem(
                                 name = resources.getString(R.string.hue_add_scene),
                                 hidden = "add",
                                 icon = R.drawable.ic_hue_scene_add

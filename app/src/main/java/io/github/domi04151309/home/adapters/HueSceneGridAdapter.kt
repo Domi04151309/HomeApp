@@ -11,15 +11,15 @@ import android.widget.TextView
 import androidx.core.widget.ImageViewCompat
 
 import io.github.domi04151309.home.R
-import io.github.domi04151309.home.data.ScenesGridItem
+import io.github.domi04151309.home.data.SceneGridItem
 
-internal class HueScenesGridAdapter(private val itemArray: List<ScenesGridItem>) : BaseAdapter() {
+internal class HueSceneGridAdapter(private val itemArray: List<SceneGridItem>) : BaseAdapter() {
 
     override fun getCount(): Int {
         return itemArray.size
     }
 
-    override fun getItem(position: Int): ScenesGridItem {
+    override fun getItem(position: Int): SceneGridItem {
         return itemArray[position]
     }
 
