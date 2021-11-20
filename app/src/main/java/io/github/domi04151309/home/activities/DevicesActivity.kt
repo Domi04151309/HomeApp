@@ -86,7 +86,7 @@ class DevicesActivity : AppCompatActivity() {
             Log.e(Global.LOG_TAG, e.toString())
         }
 
-        listView.adapter = ListViewAdapter(this, listItems)
+        listView.adapter = ListViewAdapter(this, listItems, false)
     }
 
     override fun onStart() {
