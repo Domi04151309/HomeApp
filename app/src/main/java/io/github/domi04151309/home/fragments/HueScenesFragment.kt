@@ -59,66 +59,74 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
                                 sceneNames.add(currentObject.getString("name"))
                             }
                         }
-                        var completedRequests = 0
-                        for (i in 0 until sceneIds.size) {
-                            queue.add(JsonObjectRequest(
-                                Request.Method.GET,
-                                lampData.address + "api/" + hueAPI.getUsername() + "/scenes/" + sceneIds[i],
-                                null,
-                                { sceneResponse ->
-                                    val states = sceneResponse.getJSONObject("lightstates")
-                                    val currentSceneValues = ArrayList<Int>(states.length())
-                                    var lampObject: JSONObject
-                                    for (j in 0 until states.length()) {
-                                        lampObject = states.getJSONObject(
-                                            states.names()?.getString(j) ?: break
-                                        )
-                                        if (lampObject.getBoolean("on")) {
-                                            if (lampObject.has("hue") && lampObject.has("sat")) {
-                                                currentSceneValues.clear()
-                                                currentSceneValues.add(
-                                                    HueUtils.hueSatToRGB(
-                                                        lampObject.getInt("hue"),
-                                                        lampObject.getInt("sat")
+                        if (sceneIds.size > 0) {
+                            var completedRequests = 0
+                            for (i in 0 until sceneIds.size) {
+                                queue.add(JsonObjectRequest(
+                                    Request.Method.GET,
+                                    lampData.address + "api/" + hueAPI.getUsername() + "/scenes/" + sceneIds[i],
+                                    null,
+                                    { sceneResponse ->
+                                        val states = sceneResponse.getJSONObject("lightstates")
+                                        val currentSceneValues = ArrayList<Int>(states.length())
+                                        var lampObject: JSONObject
+                                        for (j in 0 until states.length()) {
+                                            lampObject = states.getJSONObject(
+                                                states.names()?.getString(j) ?: break
+                                            )
+                                            if (lampObject.getBoolean("on")) {
+                                                if (lampObject.has("hue") && lampObject.has("sat")) {
+                                                    currentSceneValues.clear()
+                                                    currentSceneValues.add(
+                                                        HueUtils.hueSatToRGB(
+                                                            lampObject.getInt("hue"),
+                                                            lampObject.getInt("sat")
+                                                        )
                                                     )
-                                                )
-                                            } else if (lampObject.has("xy")) {
-                                                val xyArray = lampObject.getJSONArray("xy")
-                                                currentSceneValues.clear()
-                                                currentSceneValues.add(
-                                                    ColorUtils.xyToRGB(
-                                                        xyArray.getDouble(0),
-                                                        xyArray.getDouble(1)
+                                                } else if (lampObject.has("xy")) {
+                                                    val xyArray = lampObject.getJSONArray("xy")
+                                                    currentSceneValues.clear()
+                                                    currentSceneValues.add(
+                                                        ColorUtils.xyToRGB(
+                                                            xyArray.getDouble(0),
+                                                            xyArray.getDouble(1)
+                                                        )
                                                     )
-                                                )
-                                            } else if (lampObject.has("ct")) {
-                                                currentSceneValues.add(
-                                                    HueUtils.ctToRGB(lampObject.getInt("ct"))
-                                                )
+                                                } else if (lampObject.has("ct")) {
+                                                    currentSceneValues.add(
+                                                        HueUtils.ctToRGB(lampObject.getInt("ct"))
+                                                    )
+                                                }
                                             }
                                         }
-                                    }
-                                    gridItems += ScenesGridItem(
-                                        name = sceneNames[i],
-                                        hidden = sceneIds[i],
-                                        icon = R.drawable.ic_hue_scene_base,
-                                        color = if (currentSceneValues.size > 0) currentSceneValues[0] else null
-                                    )
-                                    completedRequests++
-                                    if (completedRequests == sceneIds.size) {
-                                        var sortedItems = gridItems.sortedWith(compareBy { it.color })
-                                        sortedItems += ScenesGridItem(
-                                            name = resources.getString(R.string.hue_add_scene),
-                                            hidden = "add",
-                                            icon = R.drawable.ic_hue_scene_add
+                                        gridItems += ScenesGridItem(
+                                            name = sceneNames[i],
+                                            hidden = sceneIds[i],
+                                            icon = R.drawable.ic_hue_scene_base,
+                                            color = if (currentSceneValues.size > 0) currentSceneValues[0] else null
                                         )
-                                        gridView.adapter = HueScenesGridAdapter(c, sortedItems)
+                                        completedRequests++
+                                        if (completedRequests == sceneIds.size) {
+                                            var sortedItems = gridItems.sortedWith(compareBy { it.color })
+                                            sortedItems += ScenesGridItem(
+                                                name = resources.getString(R.string.hue_add_scene),
+                                                hidden = "add",
+                                                icon = R.drawable.ic_hue_scene_add
+                                            )
+                                            gridView.adapter = HueScenesGridAdapter(c, sortedItems)
+                                        }
+                                    },
+                                    { error ->
+                                        Log.e(Global.LOG_TAG, error.toString())
                                     }
-                                },
-                                { error ->
-                                    Log.e(Global.LOG_TAG, error.toString())
-                                }
-                            ))
+                                ))
+                            }
+                        } else {
+                            gridView.adapter = HueScenesGridAdapter(c, listOf(ScenesGridItem(
+                                name = resources.getString(R.string.hue_add_scene),
+                                hidden = "add",
+                                icon = R.drawable.ic_hue_scene_add
+                            )))
                         }
                     } catch (e: Exception){
                         Log.e(Global.LOG_TAG, e.toString())
