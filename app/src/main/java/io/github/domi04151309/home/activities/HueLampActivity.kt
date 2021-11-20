@@ -32,6 +32,10 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener
 
 class HueLampActivity : AppCompatActivity() {
 
+    companion object {
+        var configChanged: Boolean = false
+    }
+
     var address: String = ""
     var deviceId: String = ""
     var id: String = ""
@@ -320,8 +324,7 @@ class HueLampActivity : AppCompatActivity() {
                     }
             )
 
-            tabBar.visibility = View.GONE
-            viewPager.visibility = View.GONE
+            findViewById<FrameLayout>(R.id.detailsView).visibility = View.GONE
 
             findViewById<Button>(R.id.onBtn).setOnClickListener {
                 hueAPI.switchLightByID(id, true)
@@ -407,6 +410,10 @@ class HueLampActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        if (configChanged) {
+            configChanged = false
+            recreate()
+        }
         canReceiveRequest = true
     }
 

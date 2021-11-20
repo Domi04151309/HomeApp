@@ -112,7 +112,10 @@ class HueSceneActivity : AppCompatActivity() {
             }
             val jsonRequestObject = JSONObject("{\"name\":\"$name\",\"recycle\":false,\"group\":\"$roomId\",\"type\":\"GroupScene\"}")
             val addSceneRequest = CustomJsonArrayRequest(Request.Method.POST, address + "api/" + hueAPI.getUsername() + "/scenes", jsonRequestObject,
-                    { finish() },
+                    {
+                        HueLampActivity.configChanged = true
+                        finish()
+                    },
                     { error ->
                         Toast.makeText(this, R.string.err, Toast.LENGTH_LONG).show()
                         Log.e(Global.LOG_TAG, error.toString())

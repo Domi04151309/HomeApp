@@ -102,7 +102,7 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
                                         name = sceneNames[i],
                                         hidden = sceneIds[i],
                                         icon = R.drawable.ic_hue_scene_base,
-                                        color = currentSceneValues[0]
+                                        color = if (currentSceneValues.size > 0) currentSceneValues[0] else null
                                     )
                                     completedRequests++
                                     if (completedRequests == sceneIds.size) {
