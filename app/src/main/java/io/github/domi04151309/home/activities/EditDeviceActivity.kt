@@ -123,7 +123,7 @@ class EditDeviceActivity : AppCompatActivity() {
             findViewById<LinearLayout>(R.id.editSection).visibility = View.GONE
         }
 
-        iconSpinner.setAdapter(IconSpinnerAdapter(this, resources.getStringArray(R.array.pref_icons)))
+        iconSpinner.setAdapter(IconSpinnerAdapter(resources.getStringArray(R.array.pref_icons)))
         modeSpinner.setAdapter(ArrayAdapter(this, R.layout.dropdown_item, resources.getStringArray(R.array.pref_add_mode_array)))
 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {

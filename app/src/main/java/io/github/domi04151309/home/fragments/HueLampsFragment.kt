@@ -88,7 +88,7 @@ class HueLampsFragment : Fragment(R.layout.fragment_hue_lamps) {
                                 Log.e(Global.LOG_TAG, e.toString())
                             }
                         }
-                        listView.adapter = ListViewAdapterHue(c, listItems, colorArray)
+                        listView.adapter = ListViewAdapterHue(listItems, colorArray)
                     } catch (e: Exception) {
                         Log.e(Global.LOG_TAG, e.toString())
                     }

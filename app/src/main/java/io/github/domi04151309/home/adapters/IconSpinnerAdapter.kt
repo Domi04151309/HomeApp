@@ -1,6 +1,5 @@
 package io.github.domi04151309.home.adapters
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,11 +8,8 @@ import io.github.domi04151309.home.R
 import io.github.domi04151309.home.helpers.Global
 
 internal class IconSpinnerAdapter(
-        context: Context,
         private var itemArray: Array<String>
 ) : BaseAdapter(), Filterable {
-
-    private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     override fun getCount(): Int {
         return itemArray.size
@@ -32,9 +28,10 @@ internal class IconSpinnerAdapter(
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val vi: View = convertView ?: inflater.inflate(R.layout.icon_dropdown_item, parent, false)
-        vi.findViewById<TextView>(R.id.title).text = itemArray[position]
+        val vi: View = convertView
+            ?: LayoutInflater.from(parent.context).inflate(R.layout.icon_dropdown_item, parent, false)
         vi.findViewById<ImageView>(R.id.drawable).setImageResource(Global.getIcon(itemArray[position]))
+        vi.findViewById<TextView>(R.id.title).text = itemArray[position]
         return vi
     }
 

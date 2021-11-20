@@ -202,7 +202,7 @@ class MainActivity : AppCompatActivity() {
     private val tasmotaRequestCallBack = object : Tasmota.RequestCallBack {
 
         override fun onItemsChanged(context: Context) {
-            listView.adapter = ListViewAdapter(context, tasmota?.loadList() ?: arrayListOf(), false)
+            listView.adapter = ListViewAdapter(tasmota?.loadList() ?: arrayListOf(), false)
         }
 
         override fun onResponse(context: Context, response: String) {
@@ -457,7 +457,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     internal fun updateList(items: ArrayList<ListViewItem>) {
-        listView.adapter = ListViewAdapter(this, items)
+        listView.adapter = ListViewAdapter(items)
     }
 
     override fun onStart() {

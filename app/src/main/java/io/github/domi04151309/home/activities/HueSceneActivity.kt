@@ -71,7 +71,7 @@ class HueSceneActivity : AppCompatActivity() {
                                     item.icon = R.drawable.ic_circle
                                     listItems += item
                                 }
-                                listView.adapter = ListViewAdapter(this, listItems, false)
+                                listView.adapter = ListViewAdapter(listItems, false)
                             },
                             { error ->
                                 Toast.makeText(this, Global.volleyError(this, error), Toast.LENGTH_LONG).show()

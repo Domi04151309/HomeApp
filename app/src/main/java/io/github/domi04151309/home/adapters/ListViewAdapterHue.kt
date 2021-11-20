@@ -1,6 +1,5 @@
 package io.github.domi04151309.home.adapters
 
-import android.content.Context
 import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
@@ -14,12 +13,9 @@ import io.github.domi04151309.home.R
 import io.github.domi04151309.home.data.ListViewItem
 
 internal class ListViewAdapterHue(
-        context: Context,
         private val itemArray: ArrayList<ListViewItem>,
         private val colorArray: ArrayList<Int>
 ) : BaseAdapter() {
-
-    private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     override fun getCount(): Int {
         return itemArray.size
@@ -34,7 +30,8 @@ internal class ListViewAdapterHue(
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val vi: View = convertView ?: inflater.inflate(R.layout.list_item_layered, parent, false)
+        val vi: View = convertView
+            ?: LayoutInflater.from(parent.context).inflate(R.layout.list_item_layered, parent, false)
         val drawableView = vi.findViewById<ImageView>(R.id.drawable)
         drawableView.setImageResource(R.drawable.ic_hue_lamp_color)
         ImageViewCompat.setImageTintList(drawableView, ColorStateList.valueOf(colorArray[position]))

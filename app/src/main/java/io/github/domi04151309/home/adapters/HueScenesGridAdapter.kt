@@ -1,6 +1,5 @@
 package io.github.domi04151309.home.adapters
 
-import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -14,9 +13,7 @@ import androidx.core.widget.ImageViewCompat
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.data.ScenesGridItem
 
-internal class HueScenesGridAdapter(context: Context, private val itemArray: List<ScenesGridItem>) : BaseAdapter() {
-
-    private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+internal class HueScenesGridAdapter(private val itemArray: List<ScenesGridItem>) : BaseAdapter() {
 
     override fun getCount(): Int {
         return itemArray.size
@@ -31,7 +28,8 @@ internal class HueScenesGridAdapter(context: Context, private val itemArray: Lis
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val vi: View = convertView ?: inflater.inflate(R.layout.grid_item, parent, false)
+        val vi: View = convertView
+            ?: LayoutInflater.from(parent.context).inflate(R.layout.grid_item, parent, false)
         vi.findViewById<TextView>(R.id.name).text = itemArray[position].name
         vi.findViewById<TextView>(R.id.hidden).text = itemArray[position].hidden
         vi.findViewById<ImageView>(R.id.base).setImageResource(itemArray[position].icon)

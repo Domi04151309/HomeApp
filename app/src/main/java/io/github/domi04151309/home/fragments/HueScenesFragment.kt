@@ -113,7 +113,7 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
                                                 hidden = "add",
                                                 icon = R.drawable.ic_hue_scene_add
                                             )
-                                            gridView.adapter = HueScenesGridAdapter(c, sortedItems)
+                                            gridView.adapter = HueScenesGridAdapter(sortedItems)
                                         }
                                     },
                                     { error ->
@@ -122,7 +122,7 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
                                 ))
                             }
                         } else {
-                            gridView.adapter = HueScenesGridAdapter(c, listOf(ScenesGridItem(
+                            gridView.adapter = HueScenesGridAdapter(listOf(ScenesGridItem(
                                 name = resources.getString(R.string.hue_add_scene),
                                 hidden = "add",
                                 icon = R.drawable.ic_hue_scene_add
