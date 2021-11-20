@@ -14,7 +14,7 @@ import androidx.core.widget.ImageViewCompat
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.data.ScenesGridItem
 
-internal class HueScenesGridAdapter(context: Context, private val itemArray: ArrayList<ScenesGridItem>) : BaseAdapter() {
+internal class HueScenesGridAdapter(context: Context, private val itemArray: List<ScenesGridItem>) : BaseAdapter() {
 
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 

@@ -106,12 +106,13 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
                                     )
                                     completedRequests++
                                     if (completedRequests == sceneIds.size) {
-                                        gridItems += ScenesGridItem(
+                                        var sortedItems = gridItems.sortedWith(compareBy { it.color })
+                                        sortedItems += ScenesGridItem(
                                             name = resources.getString(R.string.hue_add_scene),
                                             hidden = "add",
                                             icon = R.drawable.ic_hue_scene_add
                                         )
-                                        gridView.adapter = HueScenesGridAdapter(c, gridItems)
+                                        gridView.adapter = HueScenesGridAdapter(c, sortedItems)
                                     }
                                 },
                                 { error ->
