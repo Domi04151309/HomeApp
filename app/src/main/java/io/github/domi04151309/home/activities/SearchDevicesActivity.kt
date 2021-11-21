@@ -39,7 +39,7 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
         )), this)
         devices = Devices(this)
         val addresses = mutableListOf<String>()
-        
+
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 

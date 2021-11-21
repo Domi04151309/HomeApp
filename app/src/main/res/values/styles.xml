@@ -96,9 +96,4 @@
         <item name="android:thumb">@drawable/theme_switch_thumb</item>
         <item name="android:showText">false</item>
     </style>
-
-    <style name="TintHouse">
-        <item name="android:textColorPrimary">@android:color/white</item>
-    </style>
-
 </resources>

@@ -440,9 +440,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setLevelOne() {
-        val theme = resources.newTheme()
-        theme.applyStyle(R.style.TintHouse, false)
-        deviceIcon.setImageDrawable(resources.getDrawable(R.drawable.ic_home, theme))
+        deviceIcon.setImageResource(R.drawable.ic_home_white)
         deviceName.text = resources.getString(R.string.main_device_name)
         fab.show()
         level = Flavors.ONE

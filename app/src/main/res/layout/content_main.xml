@@ -37,7 +37,7 @@
                 android:layout_height="@dimen/header_icon_height"
                 android:contentDescription="@string/main_device_icon"
                 android:gravity="center_vertical"
-                app:srcCompat="@drawable/ic_home" />
+                app:srcCompat="@drawable/ic_home_white" />
 
             <TextView
                 android:id="@+id/deviceName"
