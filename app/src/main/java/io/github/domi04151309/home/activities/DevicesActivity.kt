@@ -24,6 +24,7 @@ class DevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
     private var reset = true
     private lateinit var devices: Devices
     private lateinit var recyclerView: RecyclerView
+    private lateinit var itemTouchHelper: ItemTouchHelper
 
     private val itemTouchHelperCallback = object: ItemTouchHelper.Callback() {
         override fun getMovementFlags(
@@ -69,7 +70,10 @@ class DevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
 
         devices = Devices(this)
         recyclerView = findViewById(R.id.recyclerView)
-        ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView)
+        itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
+
+        itemTouchHelper.attachToRecyclerView(recyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(this)
     }
 
     private fun loadDevices(){
@@ -108,7 +112,6 @@ class DevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
             Log.e(Global.LOG_TAG, e.toString())
         }
 
-        recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = DeviceListAdapter(listItems, this)
     }
 
@@ -130,6 +133,10 @@ class DevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
                 }
                 .show()
         }
+    }
+
+    override fun onItemHandleTouched(viewHolder: RecyclerView.ViewHolder) {
+        itemTouchHelper.startDrag(viewHolder)
     }
 
     override fun onStart() {

@@ -1,5 +1,6 @@
 package io.github.domi04151309.home.adapters
 
+import android.annotation.SuppressLint
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import android.view.View
@@ -7,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import io.github.domi04151309.home.R
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import io.github.domi04151309.home.data.SimpleListItem
 import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
 
@@ -26,13 +28,22 @@ class DeviceListAdapter(
         )
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.drawable.setImageResource(items[position].icon)
         holder.title.text = items[position].title
         holder.summary.text = items[position].summary
         holder.hidden.text = items[position].hidden
         holder.itemView.setOnClickListener { helperInterface.onItemClicked(holder.itemView, position) }
-        if (position == itemCount - 1) holder.handle.visibility = View.GONE
+        if (position == itemCount - 1) {
+            holder.handle.visibility = View.GONE
+        } else {
+            holder.handle.setOnTouchListener { view, event ->
+                if (event.actionMasked == MotionEvent.ACTION_DOWN)
+                    helperInterface.onItemHandleTouched(holder)
+                return@setOnTouchListener view.performClick()
+            }
+        }
     }
 
     override fun getItemCount(): Int {
