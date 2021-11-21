@@ -18,9 +18,9 @@ import com.android.volley.toolbox.Volley
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputLayout
 import io.github.domi04151309.home.*
-import io.github.domi04151309.home.adapters.ListViewAdapter
-import io.github.domi04151309.home.data.ListViewItem
+import io.github.domi04151309.home.adapters.SimpleListAdapter
 import io.github.domi04151309.home.custom.CustomJsonArrayRequest
+import io.github.domi04151309.home.data.SimpleListItem
 import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.helpers.HueAPI
 import io.github.domi04151309.home.helpers.HueUtils
@@ -40,7 +40,7 @@ class HueSceneActivity : AppCompatActivity() {
         val hueAPI = HueAPI(this, deviceId)
         val address = Devices(this).getDeviceById(deviceId).address
         val queue = Volley.newRequestQueue(this)
-        val listItems: ArrayList<ListViewItem> = arrayListOf()
+        val listItems: ArrayList<SimpleListItem> = arrayListOf()
         val colorArray: ArrayList<Int> = arrayListOf()
         val listView = findViewById<ListView>(R.id.listView)
         val nameTxt = findViewById<TextView>(R.id.nameTxt)
@@ -54,7 +54,7 @@ class HueSceneActivity : AppCompatActivity() {
                                 var lightObj: JSONObject
                                 for (i in 0 until lights.length()) {
                                     lightObj = secondResponse.getJSONObject(lights.get(i).toString())
-                                    val item = ListViewItem(lightObj.getString("name"))
+                                    val item = SimpleListItem(lightObj.getString("name"))
                                     val state = lightObj.getJSONObject("state")
                                     if (state.has("bri")) {
                                         item.summary = resources.getString(R.string.hue_brightness) + ": " + HueUtils.briToPercent(state.getInt("bri"))
@@ -71,7 +71,7 @@ class HueSceneActivity : AppCompatActivity() {
                                     item.icon = R.drawable.ic_circle
                                     listItems += item
                                 }
-                                listView.adapter = ListViewAdapter(listItems, false)
+                                listView.adapter = SimpleListAdapter(listItems)
                             },
                             { error ->
                                 Toast.makeText(this, Global.volleyError(this, error), Toast.LENGTH_LONG).show()
