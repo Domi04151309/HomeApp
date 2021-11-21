@@ -1,24 +1,23 @@
 package io.github.domi04151309.home.activities
 
-import android.content.res.ColorStateList
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.core.widget.ImageViewCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputLayout
 import io.github.domi04151309.home.*
-import io.github.domi04151309.home.adapters.SimpleListAdapter
+import io.github.domi04151309.home.adapters.HueSceneLampListAdapter
 import io.github.domi04151309.home.custom.CustomJsonArrayRequest
 import io.github.domi04151309.home.data.SimpleListItem
 import io.github.domi04151309.home.helpers.Devices
@@ -42,7 +41,7 @@ class HueSceneActivity : AppCompatActivity() {
         val queue = Volley.newRequestQueue(this)
         val listItems: ArrayList<SimpleListItem> = arrayListOf()
         val colorArray: ArrayList<Int> = arrayListOf()
-        val listView = findViewById<ListView>(R.id.listView)
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         val nameTxt = findViewById<TextView>(R.id.nameTxt)
         val nameBox = findViewById<TextInputLayout>(R.id.nameBox)
 
@@ -71,7 +70,9 @@ class HueSceneActivity : AppCompatActivity() {
                                     item.icon = R.drawable.ic_circle
                                     listItems += item
                                 }
-                                listView.adapter = SimpleListAdapter(listItems)
+
+                                recyclerView.layoutManager = LinearLayoutManager(this)
+                                recyclerView.adapter = HueSceneLampListAdapter(listItems, colorArray)
                             },
                             { error ->
                                 Toast.makeText(this, Global.volleyError(this, error), Toast.LENGTH_LONG).show()
@@ -84,11 +85,6 @@ class HueSceneActivity : AppCompatActivity() {
                 }
         )
         queue.add(roomDataRequest)
-
-        listView.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
-            for (i in 0 until listView.count)
-                ImageViewCompat.setImageTintList(listView.getChildAt(i).findViewById(R.id.drawable), ColorStateList.valueOf(colorArray[i]))
-        }
 
         nameBox.editText?.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {}
