@@ -82,7 +82,8 @@
     <string name="pref_add_address_example">z.B. http://127.0.0.1/</string>
     <string name="pref_add_icon">Symbol</string>
     <string name="pref_add_mode">Modus</string>
-    <string name="pref_add_wait">Suche nach kompatiblen Geräten</string>
+    <string name="pref_add_search">Suche nach kompatiblen Geräten</string>
+    <string name="pref_add_search_summary">Dies kann einige Sekunden dauern</string>
     <string name="pref_add_success">Gerät hinzufügen</string>
     <string name="pref_add_success_message">Das Gerät wurde erfolgreich zu Ihren Geräten hinzugefügt</string>
     <string name="pref_edit_text">Erweitertes Bearbeiten</string>

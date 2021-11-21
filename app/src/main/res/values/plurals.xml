@@ -1,6 +1,0 @@
-<resources>
-    <plurals name="pref_add_wait_summary">
-        <item quantity="one">Please wait %d second while the search is running</item>
-        <item quantity="other">Please wait %d seconds while the search is running</item>
-    </plurals>
-</resources>

@@ -67,7 +67,6 @@
     <string name="pref_add_address_example">http://127.0.0.1/</string>
     <string name="pref_add_icon">Pictogram</string>
     <string name="pref_add_mode">Modus</string>
-    <string name="pref_add_wait">Bezig met zoeken naar apparaten…</string>
     <string name="pref_add_success">Apparaat toevoegen</string>
     <string name="pref_add_success_message">Het apparaat is toegevoegd aan je lijst</string>
     <string name="pref_edit_text">Expertmodus</string>
