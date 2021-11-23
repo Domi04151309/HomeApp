@@ -1,12 +1,15 @@
 package io.github.domi04151309.home.fragments
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -21,6 +24,8 @@ import io.github.domi04151309.home.activities.HueLampActivity
 import io.github.domi04151309.home.helpers.HueAPI
 import io.github.domi04151309.home.helpers.HueUtils
 import io.github.domi04151309.home.helpers.UpdateHandler
+import com.skydoves.colorpickerview.listeners.ColorListener
+import io.github.domi04151309.home.helpers.Global
 
 class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
     //TODO: fix swiping not working
@@ -47,6 +52,7 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
     private lateinit var hueSatViews: Array<View>
     private val updateHandler: UpdateHandler = UpdateHandler()
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         c = context ?: throw IllegalStateException()
         lampData = context as HueLampActivity
@@ -160,6 +166,22 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
                     resumeUpdates()
                 }
             })
+
+            colorPickerView.setColorListener(ColorListener { color, fromUser ->
+                if (fromUser) ImageViewCompat.setImageTintList(
+                    lampData.lampIcon,
+                    ColorStateList.valueOf(color)
+                )
+            })
+            colorPickerView.setOnTouchListener { _, event ->
+                if (event.action == MotionEvent.ACTION_DOWN) {
+                    pauseUpdates()
+                } else if (event.action == MotionEvent.ACTION_UP) {
+                    //TODO: Send API call
+                    resumeUpdates()
+                }
+                view.performClick()
+            }
         } else {
             ctBar.addOnChangeListener { _, value, fromUser ->
                 if (fromUser) hueAPI.changeColorTemperature(lampData.id, value.toInt() + 153)
@@ -218,8 +240,25 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
                     resumeUpdates()
                 }
             })
-        }
 
+            colorPickerView.setColorListener(ColorListener { color, fromUser ->
+                if (fromUser) {
+                    //TODO: Send API call
+                    ImageViewCompat.setImageTintList(
+                        lampData.lampIcon,
+                        ColorStateList.valueOf(color)
+                    )
+                }
+            })
+            colorPickerView.setOnTouchListener { _, event ->
+                if (event.action == MotionEvent.ACTION_DOWN) {
+                    pauseUpdates()
+                } else if (event.action == MotionEvent.ACTION_UP) {
+                    resumeUpdates()
+                }
+                view.performClick()
+            }
+        }
 
         return view
     }
