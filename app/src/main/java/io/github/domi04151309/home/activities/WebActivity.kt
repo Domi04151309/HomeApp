@@ -32,7 +32,7 @@ class WebActivity : AppCompatActivity() {
         Theme.set(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_web)
-        
+
         val progress = findViewById<ProgressBar>(R.id.progressBar)
         val errorView = findViewById<RelativeLayout>(R.id.error)
         var isFirstLoad = true

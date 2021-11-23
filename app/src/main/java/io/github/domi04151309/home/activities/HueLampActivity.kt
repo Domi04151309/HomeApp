@@ -2,6 +2,7 @@ package io.github.domi04151309.home.activities
 
 import android.animation.ObjectAnimator
 import android.content.res.ColorStateList
+import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
@@ -34,6 +35,48 @@ class HueLampActivity : AppCompatActivity() {
 
     companion object {
         var configChanged: Boolean = false
+
+        private fun dpToPx(resources: Resources, dp: Int): Int {
+            return (dp * resources.displayMetrics.density).toInt()
+        }
+
+        fun setSliderGradientNow(resources: Resources, view: View, colors: IntArray) {
+            val gradient = PaintDrawable()
+            gradient.setCornerRadius(dpToPx(resources, 16).toFloat())
+            gradient.paint.shader = LinearGradient(
+                0f, 0f,
+                view.width.toFloat(), 0f,
+                colors,
+                null,
+                TileMode.CLAMP
+            )
+
+            val layers = LayerDrawable(arrayOf(gradient))
+            layers.setLayerInset(
+                0,
+                dpToPx(resources, 14),
+                dpToPx(resources, 22),
+                dpToPx(resources, 14),
+                dpToPx(resources, 22)
+            )
+            view.background = layers
+        }
+
+        fun setSliderGradient(resources: Resources, view: View, colors: IntArray) {
+            view.viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    view.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    setSliderGradientNow(resources, view, colors)
+                }
+            })
+        }
+
+        fun setProgress(slider: Slider, value: Int) {
+            val animation = ObjectAnimator.ofFloat(slider, "value", value.toFloat())
+            animation.duration = 300
+            animation.interpolator = DecelerateInterpolator()
+            animation.start()
+        }
     }
 
     var address: String = ""
@@ -41,46 +84,16 @@ class HueLampActivity : AppCompatActivity() {
     var id: String = ""
     var lights: JSONArray? = null
     var canReceiveRequest: Boolean = false
-    private var isRoom: Boolean = false
+    var hueOn: Boolean = false
+    var hueCt: Int = -1
+    var hueHue: Int = -1
+    var hueSat: Int = -1
+    var isRoom: Boolean = false
+    lateinit var lampIcon: ImageView
     private var lightDataRequest: JsonObjectRequest? = null
     private var roomDataRequest: JsonObjectRequest? = null
     internal lateinit var hueAPI: HueAPI
     private lateinit var queue: RequestQueue
-
-    private fun dpToPx(dp: Int): Int {
-        return (dp * resources.displayMetrics.density).toInt()
-    }
-
-    internal fun setSliderGradientNow(view: View, colors: IntArray) {
-        val gradient = PaintDrawable()
-        gradient.setCornerRadius(dpToPx(16).toFloat())
-        gradient.paint.shader = LinearGradient(
-            0f, 0f,
-            view.width.toFloat(), 0f,
-            colors,
-            null,
-            TileMode.CLAMP
-        )
-
-        val layers = LayerDrawable(arrayOf(gradient))
-        layers.setLayerInset(
-            0,
-            dpToPx(14),
-            dpToPx(22),
-            dpToPx(14),
-            dpToPx(22)
-        )
-        view.background = layers
-    }
-
-    private fun setSliderGradient(view: View, colors: IntArray) {
-        view.viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                view.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                setSliderGradientNow(view, colors)
-            }
-        })
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Theme.set(this)
@@ -102,62 +115,22 @@ class HueLampActivity : AppCompatActivity() {
         queue = Volley.newRequestQueue(this)
 
         title = device.name
-        val lampIcon = findViewById<ImageView>(R.id.lampIcon)
+        lampIcon = findViewById<ImageView>(R.id.lampIcon)
         val nameTxt = findViewById<TextView>(R.id.nameTxt)
         val briBar = findViewById<Slider>(R.id.briBar)
-        val ctBar = findViewById<Slider>(R.id.ctBar)
-        val hueBar = findViewById<Slider>(R.id.hueBar)
-        val satBar = findViewById<Slider>(R.id.satBar)
         val tabBar = findViewById<TabLayout>(R.id.tabBar)
         val viewPager = findViewById<ViewPager2>(R.id.viewPager)
-        val availableSliders = arrayOf(briBar, ctBar, hueBar, satBar)
 
         //Slider labels
         briBar.setLabelFormatter { value: Float ->
             HueUtils.briToPercent(value.toInt())
         }
-        ctBar.setLabelFormatter { value: Float ->
-            HueUtils.ctToKelvin(value.toInt() + 153)
-        }
-        hueBar.setLabelFormatter { value: Float ->
-            HueUtils.hueToDegree(value.toInt())
-        }
-        satBar.setLabelFormatter { value: Float ->
-            HueUtils.satToPercent(value.toInt())
-        }
-
-        //Slider tints
-        setSliderGradient(ctBar, intArrayOf(
-            Color.WHITE,
-            Color.parseColor("#FF8B16")
-        ))
-        setSliderGradient(hueBar, intArrayOf(
-            Color.HSVToColor(floatArrayOf(0f, 1f, 1f)),
-            Color.HSVToColor(floatArrayOf(60f, 1f, 1f)),
-            Color.HSVToColor(floatArrayOf(120f, 1f, 1f)),
-            Color.HSVToColor(floatArrayOf(180f, 1f, 1f)),
-            Color.HSVToColor(floatArrayOf(240f, 1f, 1f)),
-            Color.HSVToColor(floatArrayOf(300f, 1f, 1f)),
-            Color.HSVToColor(floatArrayOf(360f, 1f, 1f))
-        ))
-        setSliderGradient(satBar, intArrayOf(
-            Color.WHITE,
-            Color.RED
-        ))
 
         //Default tint
         ImageViewCompat.setImageTintList(
             lampIcon,
             ColorStateList.valueOf(Color.WHITE)
         )
-
-        //Smooth seekBars
-        fun setProgress(slider: Slider, value: Int) {
-            val animation = ObjectAnimator.ofFloat(slider, "value", value.toFloat())
-            animation.duration = 300
-            animation.interpolator = DecelerateInterpolator()
-            animation.start()
-        }
 
         // Selected item is a whole room
         if (isRoom) {
@@ -173,26 +146,20 @@ class HueLampActivity : AppCompatActivity() {
                             findViewById<TextView>(R.id.briTxt).visibility = View.GONE
                             briBar.visibility = View.GONE
                         }
-                        if (action.has("ct")) {
-                            setProgress(ctBar, action.getInt("ct") - 153)
-                        } else {
-                            findViewById<TextView>(R.id.ctTxt).visibility = View.GONE
-                            ctBar.visibility = View.GONE
-                        }
+                        hueCt =
+                            if (action.has("ct")) action.getInt("ct") - 153
+                            else -1
+
                         if (action.has("hue") && action.has("sat")) {
-                            setProgress(hueBar, action.getInt("hue"))
-                            setProgress(satBar, action.getInt("sat"))
+                            hueHue = action.getInt("hue")
+                            hueSat = action.getInt("sat")
                         } else {
-                            findViewById<TextView>(R.id.hueTxt).visibility = View.GONE
-                            hueBar.visibility = View.GONE
-                            findViewById<TextView>(R.id.satTxt).visibility = View.GONE
-                            satBar.visibility = View.GONE
+                            hueHue = -1
+                            hueSat = -1
                         }
 
-                        val isOn = response.getJSONObject("state").getBoolean("any_on")
-                        availableSliders.forEach {
-                            it.isEnabled = isOn
-                        }
+                        hueOn = response.getJSONObject("state").getBoolean("any_on")
+                        briBar.isEnabled = hueOn
                     },
                     { error ->
                         finish()
@@ -218,62 +185,12 @@ class HueLampActivity : AppCompatActivity() {
                 }
             })
 
-            ctBar.addOnChangeListener { _, value, _ ->
-                ImageViewCompat.setImageTintList(
-                    lampIcon,
-                    ColorStateList.valueOf(HueUtils.ctToRGB(value.toInt() + 153))
-                )
-            }
-            ctBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
-                override fun onStartTrackingTouch(slider: Slider) {
-                    canReceiveRequest = false
-                }
-                override fun onStopTrackingTouch(slider: Slider) {
-                    hueAPI.changeColorTemperatureOfGroup(id, slider.value.toInt() + 153)
-                    canReceiveRequest = true
-                }
-            })
-
-            hueBar.addOnChangeListener { _, value, _ ->
-                ImageViewCompat.setImageTintList(
-                    lampIcon,
-                    ColorStateList.valueOf(HueUtils.hueSatToRGB(value.toInt(), satBar.value.toInt()))
-                )
-                setSliderGradientNow(satBar, intArrayOf(
-                    Color.WHITE,
-                    HueUtils.hueToRGB(value.toInt())
-                ))
-            }
-            hueBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
-                override fun onStartTrackingTouch(slider: Slider) {
-                    canReceiveRequest = false
-                }
-                override fun onStopTrackingTouch(slider: Slider) {
-                    hueAPI.changeHueOfGroup(id, slider.value.toInt())
-                    canReceiveRequest = true
-                }
-            })
-
-            satBar.addOnChangeListener { _, value, _ ->
-                ImageViewCompat.setImageTintList(
-                    lampIcon,
-                    ColorStateList.valueOf(HueUtils.hueSatToRGB(hueBar.value.toInt(), value.toInt()))
-                )
-            }
-            satBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
-                override fun onStartTrackingTouch(slider: Slider) {
-                    canReceiveRequest = false
-                }
-                override fun onStopTrackingTouch(slider: Slider) {
-                    hueAPI.changeSaturationOfGroup(id, slider.value.toInt())
-                    canReceiveRequest = true
-                }
-            })
-
             viewPager.adapter = HueDetailsTabAdapter(this)
+            viewPager.currentItem = 1
 
             val tabIcons = arrayOf(
-                    ResourcesCompat.getDrawable(resources, R.drawable.ic_scene, theme),
+                ResourcesCompat.getDrawable(resources, R.drawable.ic_color_palette, theme),
+                ResourcesCompat.getDrawable(resources, R.drawable.ic_scene, theme),
                     ResourcesCompat.getDrawable(resources, R.drawable.ic_device_lamp, theme)
             )
             TabLayoutMediator(tabBar, viewPager) { tab, position ->
@@ -294,29 +211,21 @@ class HueLampActivity : AppCompatActivity() {
                             findViewById<TextView>(R.id.briTxt).visibility = View.GONE
                             briBar.visibility = View.GONE
                         }
-                        if (state.has("ct")) {
-                            setProgress(ctBar, state.getInt("ct") - 153)
-                        } else {
-                            findViewById<TextView>(R.id.ctTxt).visibility = View.GONE
-                            ctBar.visibility = View.GONE
-                        }
-                        if (state.has("hue")) {
-                            setProgress(hueBar, state.getInt("hue"))
-                        } else {
-                            findViewById<TextView>(R.id.hueTxt).visibility = View.GONE
-                            hueBar.visibility = View.GONE
-                        }
-                        if (state.has("sat")) {
-                            setProgress(satBar, state.getInt("sat"))
-                        } else {
-                            findViewById<TextView>(R.id.satTxt).visibility = View.GONE
-                            satBar.visibility = View.GONE
-                        }
 
-                        val isOn = state.getBoolean("on")
-                        availableSliders.forEach {
-                            it.isEnabled = isOn
+                        hueCt =
+                            if (state.has("ct")) state.getInt("ct") - 153
+                            else -1
+
+                        if (state.has("hue") && state.has("sat")) {
+                            hueHue = state.getInt("hue")
+                            hueSat = state.getInt("sat")
+                        } else {
+                            hueHue = -1
+                            hueSat = -1
                         }
+                        
+                        hueOn = state.getBoolean("on")
+                        briBar.isEnabled = hueOn
                     },
                     { error ->
                         finish()
@@ -338,58 +247,6 @@ class HueLampActivity : AppCompatActivity() {
                 if (fromUser) hueAPI.changeBrightness(id, value.toInt())
             }
             briBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
-                override fun onStartTrackingTouch(slider: Slider) {
-                    canReceiveRequest = false
-                }
-                override fun onStopTrackingTouch(slider: Slider) {
-                    canReceiveRequest = true
-                }
-            })
-
-            ctBar.addOnChangeListener { _, value, fromUser ->
-                if (fromUser) hueAPI.changeColorTemperature(id, value.toInt() + 153)
-                ImageViewCompat.setImageTintList(
-                    lampIcon,
-                    ColorStateList.valueOf(HueUtils.ctToRGB(value.toInt() + 153))
-                )
-            }
-            ctBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
-                override fun onStartTrackingTouch(slider: Slider) {
-                    canReceiveRequest = false
-                }
-                override fun onStopTrackingTouch(slider: Slider) {
-                    canReceiveRequest = true
-                }
-            })
-
-            hueBar.addOnChangeListener { _, value, fromUser ->
-                if (fromUser) hueAPI.changeHue(id, value.toInt())
-                ImageViewCompat.setImageTintList(
-                    lampIcon,
-                    ColorStateList.valueOf(HueUtils.hueSatToRGB(value.toInt(), satBar.value.toInt()))
-                )
-                setSliderGradientNow(satBar, intArrayOf(
-                    Color.WHITE,
-                    HueUtils.hueToRGB(value.toInt())
-                ))
-            }
-            hueBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
-                override fun onStartTrackingTouch(slider: Slider) {
-                    canReceiveRequest = false
-                }
-                override fun onStopTrackingTouch(slider: Slider) {
-                    canReceiveRequest = true
-                }
-            })
-
-            satBar.addOnChangeListener { _, value, fromUser ->
-                if (fromUser) hueAPI.changeSaturation(id, value.toInt())
-                ImageViewCompat.setImageTintList(
-                    lampIcon,
-                    ColorStateList.valueOf(HueUtils.hueSatToRGB(hueBar.value.toInt(), value.toInt()))
-                )
-            }
-            satBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
                 override fun onStartTrackingTouch(slider: Slider) {
                     canReceiveRequest = false
                 }
