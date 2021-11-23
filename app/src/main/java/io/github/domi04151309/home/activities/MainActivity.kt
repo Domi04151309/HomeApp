@@ -234,7 +234,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         findViewById<ImageView>(R.id.menu_icon).setOnClickListener {
-
+            reset = true
             startActivity(Intent(this, SettingsActivity::class.java))
         }
 

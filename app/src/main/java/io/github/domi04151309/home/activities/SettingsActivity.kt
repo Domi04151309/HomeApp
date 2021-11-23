@@ -11,6 +11,7 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import android.net.Uri
 import io.github.domi04151309.home.R
+import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.helpers.P
 import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.Theme
@@ -53,16 +54,21 @@ class SettingsActivity : AppCompatActivity() {
                 startActivity(Intent(context, DevicesActivity::class.java))
                 true
             }
+            findPreference<Preference>("devices_json")?.setOnPreferenceClickListener {
+                Devices.reloadFromPreferences()
+                true
+            }
             findPreference<Preference>("reset_json")?.setOnPreferenceClickListener {
                 AlertDialog.Builder(requireContext())
-                        .setTitle(R.string.pref_reset)
-                        .setMessage(R.string.pref_reset_question)
-                        .setPositiveButton(R.string.str_reset) { _, _ ->
-                            PreferenceManager.getDefaultSharedPreferences(context).edit().putString("devices_json", Global.DEFAULT_JSON).apply()
-                            Toast.makeText(context, R.string.pref_reset_toast, Toast.LENGTH_LONG).show()
-                        }
-                        .setNegativeButton(android.R.string.cancel) { _, _ -> }
-                        .show()
+                    .setTitle(R.string.pref_reset)
+                    .setMessage(R.string.pref_reset_question)
+                    .setPositiveButton(R.string.str_reset) { _, _ ->
+                        PreferenceManager.getDefaultSharedPreferences(context).edit().putString("devices_json", Global.DEFAULT_JSON).apply()
+                        Toast.makeText(context, R.string.pref_reset_toast, Toast.LENGTH_LONG).show()
+                        Devices.reloadFromPreferences()
+                    }
+                    .setNegativeButton(android.R.string.cancel) { _, _ -> }
+                    .show()
                 true
             }
             findPreference<Preference>("about")?.setOnPreferenceClickListener {
