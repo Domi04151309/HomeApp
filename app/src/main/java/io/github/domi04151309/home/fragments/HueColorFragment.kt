@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +26,11 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
     //TODO: fix swiping not working
     //TODO: test for single light control
 
+    companion object {
+        private const val UPDATE_DELAY = 1000L
+    }
+
+    private var shouldBeUpdated = true
     private lateinit var c: Context
     private lateinit var lampData: HueLampActivity
     private lateinit var hueAPI: HueAPI
@@ -35,8 +42,9 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
     private lateinit var hueBar: Slider
     private lateinit var satText: TextView
     private lateinit var satBar: Slider
-    private lateinit var availableSliders: Array<Slider>
-    private lateinit var requestCallBack: HueAPI.RequestCallBack
+    private val availableSliders: Array<Slider> = arrayOf(ctBar, hueBar, satBar)
+    private val ctViews: Array<View> = arrayOf(ctText, ctBar)
+    private val hueSatViews: Array<View> = arrayOf(colorPickerView, hueText, hueBar, satText, satBar)
     private val updateHandler: UpdateHandler = UpdateHandler()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -53,7 +61,6 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
         hueBar = view.findViewById(R.id.hueBar)
         satText = view.findViewById(R.id.satTxt)
         satBar = view.findViewById(R.id.satBar)
-        availableSliders = arrayOf(ctBar, hueBar, satBar)
 
         //Slider labels
         ctBar.setLabelFormatter { value: Float ->
@@ -100,11 +107,11 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
             }
             ctBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
                 override fun onStartTrackingTouch(slider: Slider) {
-                    lampData.canReceiveRequest = false
+                    pauseUpdates()
                 }
                 override fun onStopTrackingTouch(slider: Slider) {
                     hueAPI.changeColorTemperatureOfGroup(lampData.id, slider.value.toInt() + 153)
-                    lampData.canReceiveRequest = true
+                    resumeUpdates()
                 }
             })
 
@@ -124,11 +131,11 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
             }
             hueBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
                 override fun onStartTrackingTouch(slider: Slider) {
-                    lampData.canReceiveRequest = false
+                    pauseUpdates()
                 }
                 override fun onStopTrackingTouch(slider: Slider) {
                     hueAPI.changeHueOfGroup(lampData.id, slider.value.toInt())
-                    lampData.canReceiveRequest = true
+                    resumeUpdates()
                 }
             })
 
@@ -142,11 +149,11 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
             }
             satBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
                 override fun onStartTrackingTouch(slider: Slider) {
-                    lampData.canReceiveRequest = false
+                    pauseUpdates()
                 }
                 override fun onStopTrackingTouch(slider: Slider) {
                     hueAPI.changeSaturationOfGroup(lampData.id, slider.value.toInt())
-                    lampData.canReceiveRequest = true
+                    resumeUpdates()
                 }
             })
         } else {
@@ -159,10 +166,10 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
             }
             ctBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
                 override fun onStartTrackingTouch(slider: Slider) {
-                    lampData.canReceiveRequest = false
+                    pauseUpdates()
                 }
                 override fun onStopTrackingTouch(slider: Slider) {
-                    lampData.canReceiveRequest = true
+                    resumeUpdates()
                 }
             })
 
@@ -183,10 +190,10 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
             }
             hueBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
                 override fun onStartTrackingTouch(slider: Slider) {
-                    lampData.canReceiveRequest = false
+                    pauseUpdates()
                 }
                 override fun onStopTrackingTouch(slider: Slider) {
-                    lampData.canReceiveRequest = true
+                    resumeUpdates()
                 }
             })
 
@@ -201,10 +208,10 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
             }
             satBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
                 override fun onStartTrackingTouch(slider: Slider) {
-                    lampData.canReceiveRequest = false
+                    pauseUpdates()
                 }
                 override fun onStopTrackingTouch(slider: Slider) {
-                    lampData.canReceiveRequest = true
+                    resumeUpdates()
                 }
             })
         }
@@ -216,30 +223,28 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
     override fun onStart() {
         super.onStart()
         updateHandler.setUpdateFunction {
-            if (lampData.canReceiveRequest) {
+            if (shouldBeUpdated) {
                 if (lampData.hueCt == -1) {
-                    ctText.visibility = View.GONE
-                    ctBar.visibility = View.GONE
+                    ctViews.forEach {
+                        it.visibility = View.GONE
+                    }
                 } else {
-                    ctText.visibility = View.VISIBLE
-                    ctBar.visibility = View.VISIBLE
+                    ctViews.forEach {
+                        it.visibility = View.VISIBLE
+                    }
                     HueLampActivity.setProgress(ctBar, lampData.hueCt)
                 }
                 if (lampData.hueHue == -1 || lampData.hueSat == -1) {
-                    colorPickerView.visibility = View.GONE
-                    hueText.visibility = View.GONE
-                    hueBar.visibility = View.GONE
-                    satText.visibility = View.GONE
-                    satBar.visibility = View.GONE
+                    hueSatViews.forEach {
+                        it.visibility = View.GONE
+                    }
                 } else {
+                    hueSatViews.forEach {
+                        it.visibility = View.VISIBLE
+                    }
                     colorPickerView.selectByHsvColor(HueUtils.hueSatToRGB(lampData.hueHue, lampData.hueSat))
                     HueLampActivity.setProgress(hueBar, lampData.hueHue)
                     HueLampActivity.setProgress(satBar, lampData.hueSat)
-                    colorPickerView.visibility = View.VISIBLE
-                    hueText.visibility = View.VISIBLE
-                    hueBar.visibility = View.VISIBLE
-                    satText.visibility = View.VISIBLE
-                    satBar.visibility = View.VISIBLE
                 }
                 availableSliders.forEach {
                     it.isEnabled = lampData.hueOn
@@ -251,5 +256,17 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
     override fun onStop() {
         super.onStop()
         updateHandler.stop()
+    }
+
+    internal fun pauseUpdates() {
+        shouldBeUpdated = false
+        lampData.canReceiveRequest = false
+    }
+
+    internal fun resumeUpdates() {
+        lampData.canReceiveRequest = true
+        Handler(Looper.getMainLooper()).postDelayed({
+            shouldBeUpdated = true
+        }, UPDATE_DELAY)
     }
 }
