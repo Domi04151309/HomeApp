@@ -121,6 +121,9 @@ class HueLampActivity : AppCompatActivity() {
         val tabBar = findViewById<TabLayout>(R.id.tabBar)
         val viewPager = findViewById<ViewPager2>(R.id.viewPager)
 
+        viewPager.isUserInputEnabled = false
+        viewPager.adapter = HueDetailsTabAdapter(this, isRoom)
+
         //Slider labels
         briBar.setLabelFormatter { value: Float ->
             HueUtils.briToPercent(value.toInt())
@@ -185,8 +188,6 @@ class HueLampActivity : AppCompatActivity() {
                 }
             })
 
-            viewPager.isUserInputEnabled = false
-            viewPager.adapter = HueDetailsTabAdapter(this)
             viewPager.currentItem = 1
 
             val tabIcons = arrayOf(
@@ -233,8 +234,6 @@ class HueLampActivity : AppCompatActivity() {
                         Toast.makeText(this, volleyError(this, error), Toast.LENGTH_LONG).show()
                     }
             )
-
-            findViewById<FrameLayout>(R.id.detailsView).visibility = View.GONE
 
             findViewById<Button>(R.id.onBtn).setOnClickListener {
                 hueAPI.switchLightByID(id, true)

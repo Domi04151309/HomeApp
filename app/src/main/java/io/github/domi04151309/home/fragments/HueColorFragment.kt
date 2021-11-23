@@ -42,9 +42,9 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
     private lateinit var hueBar: Slider
     private lateinit var satText: TextView
     private lateinit var satBar: Slider
-    private val availableSliders: Array<Slider> = arrayOf(ctBar, hueBar, satBar)
-    private val ctViews: Array<View> = arrayOf(ctText, ctBar)
-    private val hueSatViews: Array<View> = arrayOf(colorPickerView, hueText, hueBar, satText, satBar)
+    private lateinit var availableSliders: Array<Slider>
+    private lateinit var ctViews: Array<View>
+    private lateinit var hueSatViews: Array<View>
     private val updateHandler: UpdateHandler = UpdateHandler()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -61,6 +61,10 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
         hueBar = view.findViewById(R.id.hueBar)
         satText = view.findViewById(R.id.satTxt)
         satBar = view.findViewById(R.id.satBar)
+
+        availableSliders = arrayOf(ctBar, hueBar, satBar)
+        ctViews = arrayOf(ctText, ctBar)
+        hueSatViews = arrayOf(colorPickerView, hueText, hueBar, satText, satBar)
 
         //Slider labels
         ctBar.setLabelFormatter { value: Float ->
