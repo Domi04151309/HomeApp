@@ -321,6 +321,15 @@ class MainActivity : AppCompatActivity() {
                 )
                 reset = true
             }
+            "Fritz! Auto-Login" -> {
+                startActivity(
+                    Intent(this, WebActivity::class.java)
+                        .putExtra("URI", deviceObj.address)
+                        .putExtra("title", deviceObj.name)
+                        .putExtra("fritz_auto_login", deviceObj.id)
+                )
+                reset = true
+            }
             "Node-RED" -> {
                 startActivity(
                     Intent(this, WebActivity::class.java)

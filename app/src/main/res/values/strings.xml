@@ -84,6 +84,7 @@
     <string name="pref_add_address_example">e.g., http://127.0.0.1/</string>
     <string name="pref_add_icon">Icon</string>
     <string name="pref_add_mode">Mode</string>
+    <string name="pref_add_password">Password</string>
     <string name="pref_add_search">Searching for compatible devices</string>
     <string name="pref_add_search_summary">This might take a couple of seconds</string>
     <string name="pref_add_success">Add Device</string>
@@ -151,6 +152,7 @@
         <item>Hue API</item>
         <item>Tasmota</item>
         <item>Node-RED</item>
+        <item>Fritz! Auto-Login</item>
         <item>Website</item>
     </string-array>
 </resources>

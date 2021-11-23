@@ -17,6 +17,7 @@ import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AlertDialog
 import io.github.domi04151309.home.R
+import io.github.domi04151309.home.helpers.DeviceSecrets
 import io.github.domi04151309.home.helpers.Theme
 
 class WebActivity : AppCompatActivity() {
@@ -24,15 +25,17 @@ class WebActivity : AppCompatActivity() {
     internal var errorOccurred = false
     internal var c: Context = this
     internal val nullParent: ViewGroup? = null
-    internal lateinit var webView: WebView
+    private lateinit var webView: WebView
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         Theme.set(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_web)
+        
         val progress = findViewById<ProgressBar>(R.id.progressBar)
         val errorView = findViewById<RelativeLayout>(R.id.error)
+        var isFirstLoad = true
         webView = findViewById(R.id.webView)
         webView.settings.javaScriptEnabled = true
         webView.webViewClient = object : WebViewClient() {
@@ -42,7 +45,14 @@ class WebActivity : AppCompatActivity() {
                     view.visibility = View.GONE
                     return
                 }
-                if (url.contains("github.com")) injectCSS(webView)
+                if (url.contains("github.com")) injectCSS(view)
+                if (isFirstLoad && intent.hasExtra("fritz_auto_login")) {
+                    injectFritzLogin(view, DeviceSecrets(
+                        this@WebActivity,
+                        intent.getStringExtra("fritz_auto_login") ?: ""
+                    ).password)
+                    isFirstLoad = false
+                }
                 progress.visibility = View.GONE
                 view.visibility = View.VISIBLE
                 super.onPageFinished(view, url)
@@ -91,6 +101,13 @@ class WebActivity : AppCompatActivity() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    internal fun injectFritzLogin(webView: WebView, uiPass: String) {
+        webView.loadUrl("javascript:(function() {" +
+                "document.getElementById('uiPass').value = '" + uiPass + "';" +
+                "document.getElementById('submitLoginBtn').click()" +
+                "})()")
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {

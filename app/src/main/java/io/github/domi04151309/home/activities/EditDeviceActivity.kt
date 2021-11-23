@@ -20,6 +20,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputLayout
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.adapters.IconSpinnerAdapter
+import io.github.domi04151309.home.helpers.DeviceSecrets
 import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.Theme
@@ -39,28 +40,34 @@ class EditDeviceActivity : AppCompatActivity() {
                     false
                 } else true
 
+        val deviceSecrets = DeviceSecrets(this, deviceId)
+
         val deviceIcn = findViewById<ImageView>(R.id.deviceIcn)
         val nameTxt = findViewById<TextView>(R.id.nameTxt)
         val nameBox = findViewById<TextInputLayout>(R.id.nameBox)
         val addressBox = findViewById<TextInputLayout>(R.id.addressBox)
         val iconSpinner = findViewById<TextInputLayout>(R.id.iconSpinner).editText as AutoCompleteTextView
         val modeSpinner = findViewById<TextInputLayout>(R.id.modeSpinner).editText as AutoCompleteTextView
+        val specialDivider = findViewById<View>(R.id.specialDivider)
+        val specialSection = findViewById<LinearLayout>(R.id.specialSection)
+        val passwordBox = findViewById<TextInputLayout>(R.id.passwordBox)
 
         findViewById<TextView>(R.id.idTxt).text = (resources.getString(R.string.pref_add_id, deviceId))
 
-        iconSpinner.onItemSelectedListener = object : OnItemSelectedListener {
-            override fun onItemSelected(parentView: AdapterView<*>, selectedItemView: View, position: Int, id: Long) {
-                deviceIcn.setImageResource(Global.getIcon(parentView.selectedItem.toString()))
-            }
-            override fun onNothingSelected(parentView: AdapterView<*>) {
-                deviceIcn.setImageResource(R.drawable.ic_device_lamp)
-            }
-        }
         iconSpinner.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {}
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 deviceIcn.setImageResource(Global.getIcon(s.toString()))
+            }
+        })
+        modeSpinner.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {}
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                val visibility = if (s.toString() == "Fritz! Auto-Login") View.VISIBLE else View.GONE
+                specialDivider.visibility = visibility
+                specialSection.visibility = visibility
             }
         })
         nameBox.editText?.addTextChangedListener(object : TextWatcher {
@@ -80,6 +87,7 @@ class EditDeviceActivity : AppCompatActivity() {
             addressBox.editText?.setText(deviceObj.address)
             iconSpinner.setText(deviceObj.iconName)
             modeSpinner.setText(deviceObj.mode)
+            passwordBox.editText?.setText(deviceSecrets.password)
 
             findViewById<Button>(R.id.shortcutBtn).setOnClickListener {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -159,6 +167,8 @@ class EditDeviceActivity : AppCompatActivity() {
             newItem.mode = modeSpinner.text.toString()
             newItem.iconName = iconSpinner.text.toString()
             devices.addDevice(newItem)
+            deviceSecrets.password = passwordBox.editText?.text.toString()
+            deviceSecrets.updateDeviceSecrets()
             finish()
         }
     }

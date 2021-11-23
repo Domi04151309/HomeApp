@@ -9,7 +9,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.util.*
 
-class Devices(context: Context) {
+class Devices(private val context: Context) {
 
     companion object {
         private const val ALLOWED_CHARACTERS = "0123456789abcdefghijklmnobqrstuvw"
@@ -104,6 +104,7 @@ class Devices(context: Context) {
         }
         devicesObject.remove(id)
         saveChanges()
+        DeviceSecrets(context, id).deleteDeviceSecrets()
     }
 
     fun moveDevice(from: Int, to: Int) {

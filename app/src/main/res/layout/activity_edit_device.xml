@@ -123,6 +123,33 @@
             </LinearLayout>
 
             <View
+                android:id="@+id/specialDivider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?attr/dividerColor" />
+
+            <LinearLayout
+                android:id="@+id/specialSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="?dialogPreferredPadding">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/passwordBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/pref_add_password"
+                    app:endIconMode="password_toggle">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <View
                 android:id="@+id/editDivider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
