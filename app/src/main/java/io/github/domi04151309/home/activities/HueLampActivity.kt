@@ -185,6 +185,7 @@ class HueLampActivity : AppCompatActivity() {
                 }
             })
 
+            viewPager.isUserInputEnabled = false
             viewPager.adapter = HueDetailsTabAdapter(this)
             viewPager.currentItem = 1
 
@@ -223,7 +224,7 @@ class HueLampActivity : AppCompatActivity() {
                             hueHue = -1
                             hueSat = -1
                         }
-                        
+
                         hueOn = state.getBoolean("on")
                         briBar.isEnabled = hueOn
                     },

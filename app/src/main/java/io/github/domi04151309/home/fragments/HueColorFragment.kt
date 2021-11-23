@@ -109,9 +109,10 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
             })
 
             hueBar.addOnChangeListener { _, value, _ ->
+                val color = HueUtils.hueSatToRGB(value.toInt(), satBar.value.toInt())
                 ImageViewCompat.setImageTintList(
                     lampData.lampIcon,
-                    ColorStateList.valueOf(HueUtils.hueSatToRGB(value.toInt(), satBar.value.toInt()))
+                    ColorStateList.valueOf(color)
                 )
                 HueLampActivity.setSliderGradientNow(
                     resources, satBar, intArrayOf(
@@ -119,6 +120,7 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
                         HueUtils.hueToRGB(value.toInt())
                     )
                 )
+                colorPickerView.selectByHsvColor(color)
             }
             hueBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
                 override fun onStartTrackingTouch(slider: Slider) {
@@ -131,10 +133,12 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
             })
 
             satBar.addOnChangeListener { _, value, _ ->
+                val color = HueUtils.hueSatToRGB(hueBar.value.toInt(), value.toInt())
                 ImageViewCompat.setImageTintList(
                     lampData.lampIcon,
-                    ColorStateList.valueOf(HueUtils.hueSatToRGB(hueBar.value.toInt(), value.toInt()))
+                    ColorStateList.valueOf(color)
                 )
+                colorPickerView.selectByHsvColor(color)
             }
             satBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
                 override fun onStartTrackingTouch(slider: Slider) {
@@ -164,9 +168,10 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
 
             hueBar.addOnChangeListener { _, value, fromUser ->
                 if (fromUser) hueAPI.changeHue(lampData.id, value.toInt())
+                val color = HueUtils.hueSatToRGB(value.toInt(), satBar.value.toInt())
                 ImageViewCompat.setImageTintList(
                     lampData.lampIcon,
-                    ColorStateList.valueOf(HueUtils.hueSatToRGB(value.toInt(), satBar.value.toInt()))
+                    ColorStateList.valueOf(color)
                 )
                 HueLampActivity.setSliderGradientNow(
                     resources, satBar, intArrayOf(
@@ -174,6 +179,7 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
                         HueUtils.hueToRGB(value.toInt()
                     )
                 ))
+                colorPickerView.selectByHsvColor(color)
             }
             hueBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
                 override fun onStartTrackingTouch(slider: Slider) {
@@ -186,10 +192,12 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
 
             satBar.addOnChangeListener { _, value, fromUser ->
                 if (fromUser) hueAPI.changeSaturation(lampData.id, value.toInt())
+                val color = HueUtils.hueSatToRGB(hueBar.value.toInt(), value.toInt())
                 ImageViewCompat.setImageTintList(
                     lampData.lampIcon,
-                    ColorStateList.valueOf(HueUtils.hueSatToRGB(hueBar.value.toInt(), value.toInt()))
+                    ColorStateList.valueOf(color)
                 )
+                colorPickerView.selectByHsvColor(color)
             }
             satBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
                 override fun onStartTrackingTouch(slider: Slider) {
@@ -224,6 +232,7 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
                     satText.visibility = View.GONE
                     satBar.visibility = View.GONE
                 } else {
+                    colorPickerView.selectByHsvColor(HueUtils.hueSatToRGB(lampData.hueHue, lampData.hueSat))
                     HueLampActivity.setProgress(hueBar, lampData.hueHue)
                     HueLampActivity.setProgress(satBar, lampData.hueSat)
                     colorPickerView.visibility = View.VISIBLE
