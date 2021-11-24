@@ -292,8 +292,11 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
                 }
             }
         }
-        //updateFunction(lampData) This crashes the app for some reason
-        lampData.addOnDataChangedListener(::updateFunction)
+
+        view.post {
+            updateFunction(lampData)
+            lampData.addOnDataChangedListener(::updateFunction)
+        }
 
         return view
     }
@@ -302,7 +305,7 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
         return (dp * resources.displayMetrics.density).toInt()
     }
 
-    internal fun setSliderGradientNow(view: View, colors: IntArray) {
+    private fun setSliderGradientNow(view: View, colors: IntArray) {
         val gradient = PaintDrawable()
         gradient.setCornerRadius(dpToPx(resources, 16).toFloat())
         gradient.paint.shader = LinearGradient(
@@ -325,13 +328,9 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
     }
 
     private fun setSliderGradient(view: View, colors: IntArray) {
-        view.viewTreeObserver.addOnGlobalLayoutListener(object :
-            ViewTreeObserver.OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                view.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                setSliderGradientNow(view, colors)
-            }
-        })
+        view.post {
+            setSliderGradientNow(view, colors)
+        }
     }
 
     internal fun pauseUpdates() {
