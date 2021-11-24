@@ -43,11 +43,10 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
     private lateinit var colorPickerView: ColorPickerView
     private lateinit var ctText: TextView
     private lateinit var ctBar: Slider
-    private lateinit var hueText: TextView
+    private lateinit var hueSatText: TextView
     private lateinit var hueBar: Slider
-    private lateinit var satText: TextView
     private lateinit var satBar: Slider
-    private lateinit var availableSliders: Array<Slider>
+    private lateinit var availableInputs: Array<View>
     private lateinit var ctViews: Array<View>
     private lateinit var hueSatViews: Array<View>
     private val updateHandler: UpdateHandler = UpdateHandler()
@@ -63,14 +62,13 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
         colorPickerView = view.findViewById(R.id.colorPickerView)
         ctText = view.findViewById(R.id.ctTxt)
         ctBar = view.findViewById(R.id.ctBar)
-        hueText = view.findViewById(R.id.hueTxt)
+        hueSatText = view.findViewById(R.id.hueSatTxt)
         hueBar = view.findViewById(R.id.hueBar)
-        satText = view.findViewById(R.id.satTxt)
         satBar = view.findViewById(R.id.satBar)
 
-        availableSliders = arrayOf(ctBar, hueBar, satBar)
+        availableInputs = arrayOf(colorPickerView, ctBar, hueBar, satBar)
         ctViews = arrayOf(ctText, ctBar)
-        hueSatViews = arrayOf(colorPickerView, hueText, hueBar, satText, satBar)
+        hueSatViews = arrayOf(colorPickerView, hueSatText, hueBar, satBar)
 
         //Slider labels
         ctBar.setLabelFormatter { value: Float ->
@@ -291,7 +289,7 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
                     HueLampActivity.setProgress(hueBar, lampData.hueHue)
                     HueLampActivity.setProgress(satBar, lampData.hueSat)
                 }
-                availableSliders.forEach {
+                availableInputs.forEach {
                     it.isEnabled = lampData.hueOn
                 }
             }
