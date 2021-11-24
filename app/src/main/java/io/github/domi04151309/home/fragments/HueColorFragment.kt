@@ -7,7 +7,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -21,15 +20,10 @@ import com.google.android.material.slider.Slider
 import com.skydoves.colorpickerview.ColorPickerView
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.activities.HueLampActivity
-import io.github.domi04151309.home.helpers.HueAPI
-import io.github.domi04151309.home.helpers.HueUtils
-import io.github.domi04151309.home.helpers.UpdateHandler
 import com.skydoves.colorpickerview.listeners.ColorListener
-import io.github.domi04151309.home.helpers.Global
+import io.github.domi04151309.home.helpers.*
 
 class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
-    //TODO: fix swiping not working
-    //TODO: test for single light control
 
     companion object {
         private const val UPDATE_DELAY = 1000L
@@ -37,7 +31,8 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
 
     private var shouldBeUpdated = true
     private lateinit var c: Context
-    private lateinit var lampData: HueLampActivity
+    private lateinit var lampActivity: HueLampActivity
+    private lateinit var lampData: HueLampData
     private lateinit var hueAPI: HueAPI
     private lateinit var queue: RequestQueue
     private lateinit var colorPickerView: ColorPickerView
@@ -49,13 +44,13 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
     private lateinit var availableInputs: Array<View>
     private lateinit var ctViews: Array<View>
     private lateinit var hueSatViews: Array<View>
-    private val updateHandler: UpdateHandler = UpdateHandler()
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         c = context ?: throw IllegalStateException()
-        lampData = context as HueLampActivity
-        hueAPI = HueAPI(c, lampData.deviceId)
+        lampActivity = context as HueLampActivity
+        lampData = lampActivity.lampData
+        hueAPI = HueAPI(c, lampActivity.deviceId)
         queue = Volley.newRequestQueue(context)
 
         val view = super.onCreateView(inflater, container, savedInstanceState) ?: throw IllegalStateException()
@@ -106,10 +101,10 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
             )
         )
 
-        if (lampData.isRoom) {
+        if (lampActivity.isRoom) {
             ctBar.addOnChangeListener { _, value, _ ->
                 ImageViewCompat.setImageTintList(
-                    lampData.lampIcon,
+                    lampActivity.lampIcon,
                     ColorStateList.valueOf(HueUtils.ctToRGB(value.toInt() + 153))
                 )
             }
@@ -118,7 +113,7 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
                     pauseUpdates()
                 }
                 override fun onStopTrackingTouch(slider: Slider) {
-                    hueAPI.changeColorTemperatureOfGroup(lampData.id, slider.value.toInt() + 153)
+                    hueAPI.changeColorTemperatureOfGroup(lampActivity.id, slider.value.toInt() + 153)
                     resumeUpdates()
                 }
             })
@@ -126,7 +121,7 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
             hueBar.addOnChangeListener { _, value, _ ->
                 val color = HueUtils.hueSatToRGB(value.toInt(), satBar.value.toInt())
                 ImageViewCompat.setImageTintList(
-                    lampData.lampIcon,
+                    lampActivity.lampIcon,
                     ColorStateList.valueOf(color)
                 )
                 HueLampActivity.setSliderGradientNow(
@@ -142,7 +137,7 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
                     pauseUpdates()
                 }
                 override fun onStopTrackingTouch(slider: Slider) {
-                    hueAPI.changeHueOfGroup(lampData.id, slider.value.toInt())
+                    hueAPI.changeHueOfGroup(lampActivity.id, slider.value.toInt())
                     resumeUpdates()
                 }
             })
@@ -150,7 +145,7 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
             satBar.addOnChangeListener { _, value, _ ->
                 val color = HueUtils.hueSatToRGB(hueBar.value.toInt(), value.toInt())
                 ImageViewCompat.setImageTintList(
-                    lampData.lampIcon,
+                    lampActivity.lampIcon,
                     ColorStateList.valueOf(color)
                 )
                 colorPickerView.selectByHsvColor(color)
@@ -160,14 +155,14 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
                     pauseUpdates()
                 }
                 override fun onStopTrackingTouch(slider: Slider) {
-                    hueAPI.changeSaturationOfGroup(lampData.id, slider.value.toInt())
+                    hueAPI.changeSaturationOfGroup(lampActivity.id, slider.value.toInt())
                     resumeUpdates()
                 }
             })
 
             colorPickerView.setColorListener(ColorListener { color, fromUser ->
                 if (fromUser) ImageViewCompat.setImageTintList(
-                    lampData.lampIcon,
+                    lampActivity.lampIcon,
                     ColorStateList.valueOf(color)
                 )
             })
@@ -176,16 +171,16 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
                     pauseUpdates()
                 } else if (event.action == MotionEvent.ACTION_UP) {
                     val hueSat = HueUtils.rgbToHueSat(colorPickerView.color)
-                    hueAPI.changeHueSatOfGroup(lampData.id, hueSat[0], hueSat[1])
+                    hueAPI.changeHueSatOfGroup(lampActivity.id, hueSat[0], hueSat[1])
                     resumeUpdates()
                 }
                 view.performClick()
             }
         } else {
             ctBar.addOnChangeListener { _, value, fromUser ->
-                if (fromUser) hueAPI.changeColorTemperature(lampData.id, value.toInt() + 153)
+                if (fromUser) hueAPI.changeColorTemperature(lampActivity.id, value.toInt() + 153)
                 ImageViewCompat.setImageTintList(
-                    lampData.lampIcon,
+                    lampActivity.lampIcon,
                     ColorStateList.valueOf(HueUtils.ctToRGB(value.toInt() + 153))
                 )
             }
@@ -199,10 +194,10 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
             })
 
             hueBar.addOnChangeListener { _, value, fromUser ->
-                if (fromUser) hueAPI.changeHue(lampData.id, value.toInt())
+                if (fromUser) hueAPI.changeHue(lampActivity.id, value.toInt())
                 val color = HueUtils.hueSatToRGB(value.toInt(), satBar.value.toInt())
                 ImageViewCompat.setImageTintList(
-                    lampData.lampIcon,
+                    lampActivity.lampIcon,
                     ColorStateList.valueOf(color)
                 )
                 HueLampActivity.setSliderGradientNow(
@@ -223,10 +218,10 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
             })
 
             satBar.addOnChangeListener { _, value, fromUser ->
-                if (fromUser) hueAPI.changeSaturation(lampData.id, value.toInt())
+                if (fromUser) hueAPI.changeSaturation(lampActivity.id, value.toInt())
                 val color = HueUtils.hueSatToRGB(hueBar.value.toInt(), value.toInt())
                 ImageViewCompat.setImageTintList(
-                    lampData.lampIcon,
+                    lampActivity.lampIcon,
                     ColorStateList.valueOf(color)
                 )
                 colorPickerView.selectByHsvColor(color)
@@ -243,9 +238,9 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
             colorPickerView.setColorListener(ColorListener { color, fromUser ->
                 if (fromUser) {
                     val hueSat = HueUtils.rgbToHueSat(color)
-                    hueAPI.changeHueSat(lampData.id, hueSat[0], hueSat[1])
+                    hueAPI.changeHueSat(lampActivity.id, hueSat[0], hueSat[1])
                     ImageViewCompat.setImageTintList(
-                        lampData.lampIcon,
+                        lampActivity.lampIcon,
                         ColorStateList.valueOf(color)
                     )
                 }
@@ -260,14 +255,9 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
             }
         }
 
-        return view
-    }
-
-    override fun onStart() {
-        super.onStart()
-        updateHandler.setUpdateFunction {
+        lampData.addOnDataChangedListener { data ->
             if (shouldBeUpdated) {
-                if (lampData.hueCt == -1) {
+                if (data.ct == -1) {
                     ctViews.forEach {
                         it.visibility = View.GONE
                     }
@@ -275,9 +265,9 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
                     ctViews.forEach {
                         it.visibility = View.VISIBLE
                     }
-                    HueLampActivity.setProgress(ctBar, lampData.hueCt)
+                    HueLampActivity.setProgress(ctBar, data.ct)
                 }
-                if (lampData.hueHue == -1 || lampData.hueSat == -1) {
+                if (data.hue == -1 || data.sat == -1) {
                     hueSatViews.forEach {
                         it.visibility = View.GONE
                     }
@@ -285,29 +275,26 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
                     hueSatViews.forEach {
                         it.visibility = View.VISIBLE
                     }
-                    colorPickerView.selectByHsvColor(HueUtils.hueSatToRGB(lampData.hueHue, lampData.hueSat))
-                    HueLampActivity.setProgress(hueBar, lampData.hueHue)
-                    HueLampActivity.setProgress(satBar, lampData.hueSat)
+                    colorPickerView.selectByHsvColor(HueUtils.hueSatToRGB(data.hue, data.sat))
+                    HueLampActivity.setProgress(hueBar, data.hue)
+                    HueLampActivity.setProgress(satBar, data.sat)
                 }
                 availableInputs.forEach {
-                    it.isEnabled = lampData.hueOn
+                    it.isEnabled = data.on
                 }
             }
         }
-    }
 
-    override fun onStop() {
-        super.onStop()
-        updateHandler.stop()
+        return view
     }
 
     internal fun pauseUpdates() {
         shouldBeUpdated = false
-        lampData.canReceiveRequest = false
+        lampActivity.canReceiveRequest = false
     }
 
     internal fun resumeUpdates() {
-        lampData.canReceiveRequest = true
+        lampActivity.canReceiveRequest = true
         Handler(Looper.getMainLooper()).postDelayed({
             shouldBeUpdated = true
         }, UPDATE_DELAY)

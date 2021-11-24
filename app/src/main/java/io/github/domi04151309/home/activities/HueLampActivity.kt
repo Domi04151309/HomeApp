@@ -84,10 +84,7 @@ class HueLampActivity : AppCompatActivity() {
     var id: String = ""
     var lights: JSONArray? = null
     var canReceiveRequest: Boolean = false
-    var hueOn: Boolean = false
-    var hueCt: Int = -1
-    var hueHue: Int = -1
-    var hueSat: Int = -1
+    var lampData = HueLampData()
     var isRoom: Boolean = false
     lateinit var lampIcon: ImageView
     private var lightDataRequest: JsonObjectRequest? = null
@@ -149,20 +146,22 @@ class HueLampActivity : AppCompatActivity() {
                             findViewById<TextView>(R.id.briTxt).visibility = View.GONE
                             briBar.visibility = View.GONE
                         }
-                        hueCt =
+                        lampData.ct =
                             if (action.has("ct")) action.getInt("ct") - 153
                             else -1
 
                         if (action.has("hue") && action.has("sat")) {
-                            hueHue = action.getInt("hue")
-                            hueSat = action.getInt("sat")
+                            lampData.hue = action.getInt("hue")
+                            lampData.sat = action.getInt("sat")
                         } else {
-                            hueHue = -1
-                            hueSat = -1
+                            lampData.hue = -1
+                            lampData.sat = -1
                         }
 
-                        hueOn = response.getJSONObject("state").getBoolean("any_on")
-                        briBar.isEnabled = hueOn
+                        lampData.on = response.getJSONObject("state").getBoolean("any_on")
+                        briBar.isEnabled = lampData.on
+
+                        lampData.notifyDataChanged()
                     },
                     { error ->
                         finish()
@@ -214,20 +213,22 @@ class HueLampActivity : AppCompatActivity() {
                             briBar.visibility = View.GONE
                         }
 
-                        hueCt =
+                        lampData.ct =
                             if (state.has("ct")) state.getInt("ct") - 153
                             else -1
 
                         if (state.has("hue") && state.has("sat")) {
-                            hueHue = state.getInt("hue")
-                            hueSat = state.getInt("sat")
+                            lampData.hue = state.getInt("hue")
+                            lampData.sat = state.getInt("sat")
                         } else {
-                            hueHue = -1
-                            hueSat = -1
+                            lampData.hue = -1
+                            lampData.sat = -1
                         }
 
-                        hueOn = state.getBoolean("on")
-                        briBar.isEnabled = hueOn
+                        lampData.on = state.getBoolean("on")
+                        briBar.isEnabled = lampData.on
+
+                        lampData.notifyDataChanged()
                     },
                     { error ->
                         finish()
