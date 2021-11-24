@@ -173,11 +173,12 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
                     ColorStateList.valueOf(color)
                 )
             })
-            colorPickerView.setOnTouchListener { _, event ->
+            colorPickerView.setOnTouchListener { view, event ->
                 if (event.action == MotionEvent.ACTION_DOWN) {
                     pauseUpdates()
                 } else if (event.action == MotionEvent.ACTION_UP) {
-                    //TODO: Send API call
+                    val hueSat = HueUtils.rgbToHueSat(colorPickerView.color)
+                    hueAPI.changeHueSatOfGroup(lampData.id, hueSat[0], hueSat[1])
                     resumeUpdates()
                 }
                 view.performClick()
@@ -243,7 +244,8 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
 
             colorPickerView.setColorListener(ColorListener { color, fromUser ->
                 if (fromUser) {
-                    //TODO: Send API call
+                    val hueSat = HueUtils.rgbToHueSat(color)
+                    hueAPI.changeHueSat(lampData.id, hueSat[0], hueSat[1])
                     ImageViewCompat.setImageTintList(
                         lampData.lampIcon,
                         ColorStateList.valueOf(color)
