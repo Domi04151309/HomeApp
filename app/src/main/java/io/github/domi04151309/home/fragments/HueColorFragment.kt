@@ -14,8 +14,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.Fragment
-import com.android.volley.RequestQueue
-import com.android.volley.toolbox.Volley
 import com.google.android.material.slider.Slider
 import com.skydoves.colorpickerview.ColorPickerView
 import io.github.domi04151309.home.R
@@ -34,16 +32,6 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
     private lateinit var lampActivity: HueLampActivity
     private lateinit var lampData: HueLampData
     private lateinit var hueAPI: HueAPI
-    private lateinit var queue: RequestQueue
-    private lateinit var colorPickerView: ColorPickerView
-    private lateinit var ctText: TextView
-    private lateinit var ctBar: Slider
-    private lateinit var hueSatText: TextView
-    private lateinit var hueBar: Slider
-    private lateinit var satBar: Slider
-    private lateinit var availableInputs: Array<View>
-    private lateinit var ctViews: Array<View>
-    private lateinit var hueSatViews: Array<View>
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -51,19 +39,18 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
         lampActivity = context as HueLampActivity
         lampData = lampActivity.lampData
         hueAPI = HueAPI(c, lampActivity.deviceId)
-        queue = Volley.newRequestQueue(context)
 
         val view = super.onCreateView(inflater, container, savedInstanceState) ?: throw IllegalStateException()
-        colorPickerView = view.findViewById(R.id.colorPickerView)
-        ctText = view.findViewById(R.id.ctTxt)
-        ctBar = view.findViewById(R.id.ctBar)
-        hueSatText = view.findViewById(R.id.hueSatTxt)
-        hueBar = view.findViewById(R.id.hueBar)
-        satBar = view.findViewById(R.id.satBar)
+        val colorPickerView = view.findViewById<ColorPickerView>(R.id.colorPickerView)
+        val ctText = view.findViewById<TextView>(R.id.ctTxt)
+        val ctBar = view.findViewById<Slider>(R.id.ctBar)
+        val hueSatText = view.findViewById<TextView>(R.id.hueSatTxt)
+        val hueBar = view.findViewById<Slider>(R.id.hueBar)
+        val satBar = view.findViewById<Slider>(R.id.satBar)
 
-        availableInputs = arrayOf(colorPickerView, ctBar, hueBar, satBar)
-        ctViews = arrayOf(ctText, ctBar)
-        hueSatViews = arrayOf(colorPickerView, hueSatText, hueBar, satBar)
+        val availableInputs = arrayOf<View>(colorPickerView, ctBar, hueBar, satBar)
+        val ctViews = arrayOf<View>(ctText, ctBar)
+        val hueSatViews = arrayOf<View>(colorPickerView, hueSatText, hueBar, satBar)
 
         //Slider labels
         ctBar.setLabelFormatter { value: Float ->
@@ -118,8 +105,9 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
                 }
             })
 
-            hueBar.addOnChangeListener { _, value, _ ->
+            hueBar.addOnChangeListener { _, value, fromUser ->
                 val color = HueUtils.hueSatToRGB(value.toInt(), satBar.value.toInt())
+                if (fromUser) colorPickerView.selectByHsvColor(color)
                 ImageViewCompat.setImageTintList(
                     lampActivity.lampIcon,
                     ColorStateList.valueOf(color)
@@ -130,7 +118,6 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
                         HueUtils.hueToRGB(value.toInt())
                     )
                 )
-                colorPickerView.selectByHsvColor(color)
             }
             hueBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
                 override fun onStartTrackingTouch(slider: Slider) {
@@ -142,13 +129,13 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
                 }
             })
 
-            satBar.addOnChangeListener { _, value, _ ->
+            satBar.addOnChangeListener { _, value, fromUser ->
                 val color = HueUtils.hueSatToRGB(hueBar.value.toInt(), value.toInt())
+                if (fromUser) colorPickerView.selectByHsvColor(color)
                 ImageViewCompat.setImageTintList(
                     lampActivity.lampIcon,
                     ColorStateList.valueOf(color)
                 )
-                colorPickerView.selectByHsvColor(color)
             }
             satBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
                 override fun onStartTrackingTouch(slider: Slider) {
@@ -194,8 +181,11 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
             })
 
             hueBar.addOnChangeListener { _, value, fromUser ->
-                if (fromUser) hueAPI.changeHue(lampActivity.id, value.toInt())
                 val color = HueUtils.hueSatToRGB(value.toInt(), satBar.value.toInt())
+                if (fromUser) {
+                    hueAPI.changeHue(lampActivity.id, value.toInt())
+                    colorPickerView.selectByHsvColor(color)
+                }
                 ImageViewCompat.setImageTintList(
                     lampActivity.lampIcon,
                     ColorStateList.valueOf(color)
@@ -206,7 +196,6 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
                         HueUtils.hueToRGB(value.toInt()
                     )
                 ))
-                colorPickerView.selectByHsvColor(color)
             }
             hueBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
                 override fun onStartTrackingTouch(slider: Slider) {
@@ -218,13 +207,15 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
             })
 
             satBar.addOnChangeListener { _, value, fromUser ->
-                if (fromUser) hueAPI.changeSaturation(lampActivity.id, value.toInt())
                 val color = HueUtils.hueSatToRGB(hueBar.value.toInt(), value.toInt())
+                if (fromUser) {
+                    hueAPI.changeSaturation(lampActivity.id, value.toInt())
+                    colorPickerView.selectByHsvColor(color)
+                }
                 ImageViewCompat.setImageTintList(
                     lampActivity.lampIcon,
                     ColorStateList.valueOf(color)
                 )
-                colorPickerView.selectByHsvColor(color)
             }
             satBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
                 override fun onStartTrackingTouch(slider: Slider) {
