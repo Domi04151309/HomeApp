@@ -2,7 +2,6 @@ package io.github.domi04151309.home.activities
 
 import android.animation.ObjectAnimator
 import android.content.res.ColorStateList
-import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
@@ -25,51 +24,11 @@ import io.github.domi04151309.home.helpers.*
 import io.github.domi04151309.home.helpers.Global.volleyError
 import io.github.domi04151309.home.helpers.Theme
 import org.json.JSONArray
-import android.graphics.Shader.TileMode
-import android.graphics.LinearGradient
-import android.graphics.drawable.LayerDrawable
-import android.graphics.drawable.PaintDrawable
-import android.view.ViewTreeObserver.OnGlobalLayoutListener
 
 class HueLampActivity : AppCompatActivity() {
 
     companion object {
         var configChanged: Boolean = false
-
-        private fun dpToPx(resources: Resources, dp: Int): Int {
-            return (dp * resources.displayMetrics.density).toInt()
-        }
-
-        fun setSliderGradientNow(resources: Resources, view: View, colors: IntArray) {
-            val gradient = PaintDrawable()
-            gradient.setCornerRadius(dpToPx(resources, 16).toFloat())
-            gradient.paint.shader = LinearGradient(
-                0f, 0f,
-                view.width.toFloat(), 0f,
-                colors,
-                null,
-                TileMode.CLAMP
-            )
-
-            val layers = LayerDrawable(arrayOf(gradient))
-            layers.setLayerInset(
-                0,
-                dpToPx(resources, 14),
-                dpToPx(resources, 22),
-                dpToPx(resources, 14),
-                dpToPx(resources, 22)
-            )
-            view.background = layers
-        }
-
-        fun setSliderGradient(resources: Resources, view: View, colors: IntArray) {
-            view.viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
-                override fun onGlobalLayout() {
-                    view.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                    setSliderGradientNow(resources, view, colors)
-                }
-            })
-        }
 
         fun setProgress(slider: Slider, value: Int) {
             val animation = ObjectAnimator.ofFloat(slider, "value", value.toFloat())

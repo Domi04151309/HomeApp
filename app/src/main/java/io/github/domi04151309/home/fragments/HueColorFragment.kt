@@ -3,14 +3,16 @@ package io.github.domi04151309.home.fragments
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
+import android.content.res.Resources
 import android.graphics.Color
+import android.graphics.LinearGradient
+import android.graphics.Shader
+import android.graphics.drawable.LayerDrawable
+import android.graphics.drawable.PaintDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.LayoutInflater
-import android.view.MotionEvent
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
 import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.Fragment
@@ -64,14 +66,14 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
         }
 
         //Slider tints
-        HueLampActivity.setSliderGradient(
-            resources, ctBar, intArrayOf(
+        setSliderGradient(
+            ctBar, intArrayOf(
                 Color.WHITE,
                 Color.parseColor("#FF8B16")
             )
         )
-        HueLampActivity.setSliderGradient(
-            resources, hueBar, intArrayOf(
+        setSliderGradient(
+            hueBar, intArrayOf(
                 Color.HSVToColor(floatArrayOf(0f, 1f, 1f)),
                 Color.HSVToColor(floatArrayOf(60f, 1f, 1f)),
                 Color.HSVToColor(floatArrayOf(120f, 1f, 1f)),
@@ -81,8 +83,8 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
                 Color.HSVToColor(floatArrayOf(360f, 1f, 1f))
             )
         )
-        HueLampActivity.setSliderGradient(
-            resources, satBar, intArrayOf(
+        setSliderGradient(
+            satBar, intArrayOf(
                 Color.WHITE,
                 Color.RED
             )
@@ -116,8 +118,8 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
                         ColorStateList.valueOf(color)
                     )
                 }
-                HueLampActivity.setSliderGradientNow(
-                    resources, satBar, intArrayOf(
+                setSliderGradientNow(
+                    satBar, intArrayOf(
                         Color.WHITE,
                         HueUtils.hueToRGB(value.toInt())
                     )
@@ -203,8 +205,8 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
                         ColorStateList.valueOf(color)
                     )
                 }
-                HueLampActivity.setSliderGradientNow(
-                    resources, satBar, intArrayOf(
+                setSliderGradientNow(
+                    satBar, intArrayOf(
                         Color.WHITE,
                         HueUtils.hueToRGB(value.toInt()
                     )
@@ -294,6 +296,42 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
         lampData.addOnDataChangedListener(::updateFunction)
 
         return view
+    }
+
+    private fun dpToPx(resources: Resources, dp: Int): Int {
+        return (dp * resources.displayMetrics.density).toInt()
+    }
+
+    internal fun setSliderGradientNow(view: View, colors: IntArray) {
+        val gradient = PaintDrawable()
+        gradient.setCornerRadius(dpToPx(resources, 16).toFloat())
+        gradient.paint.shader = LinearGradient(
+            0f, 0f,
+            view.width.toFloat(), 0f,
+            colors,
+            null,
+            Shader.TileMode.CLAMP
+        )
+
+        val layers = LayerDrawable(arrayOf(gradient))
+        layers.setLayerInset(
+            0,
+            dpToPx(resources, 14),
+            dpToPx(resources, 22),
+            dpToPx(resources, 14),
+            dpToPx(resources, 22)
+        )
+        view.background = layers
+    }
+
+    private fun setSliderGradient(view: View, colors: IntArray) {
+        view.viewTreeObserver.addOnGlobalLayoutListener(object :
+            ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                view.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                setSliderGradientNow(view, colors)
+            }
+        })
     }
 
     internal fun pauseUpdates() {
