@@ -38,16 +38,15 @@ class HueLampActivity : AppCompatActivity() {
         }
     }
 
-    var address: String = ""
     var deviceId: String = ""
+    var addressPrefix: String = ""
     var id: String = ""
     var lights: JSONArray? = null
     var canReceiveRequest: Boolean = false
     var lampData: HueLampData = HueLampData()
     var isRoom: Boolean = false
     lateinit var lampIcon: ImageView
-    private var lightDataRequest: JsonObjectRequest? = null
-    private var roomDataRequest: JsonObjectRequest? = null
+    private var updateDataRequest: JsonObjectRequest? = null
     internal lateinit var hueAPI: HueAPI
     private lateinit var queue: RequestQueue
 
@@ -66,8 +65,8 @@ class HueLampActivity : AppCompatActivity() {
         }
         deviceId = intent.getStringExtra("Device") ?: ""
         val device = Devices(this).getDeviceById(deviceId)
-        address = device.address
         hueAPI = HueAPI(this, deviceId)
+        addressPrefix = device.address + "api/" + hueAPI.getUsername()
         queue = Volley.newRequestQueue(this)
 
         title = device.name
@@ -104,7 +103,7 @@ class HueLampActivity : AppCompatActivity() {
 
         // Selected item is a whole room
         if (isRoom) {
-            roomDataRequest = JsonObjectRequest(Request.Method.GET, address + "api/" + hueAPI.getUsername() + "/groups/" + id, null,
+            updateDataRequest = JsonObjectRequest(Request.Method.GET, "$addressPrefix/groups/$id", null,
                     { response ->
                         lights = response.getJSONArray("lights")
                         nameTxt.text = response.getString("name")
@@ -171,7 +170,7 @@ class HueLampActivity : AppCompatActivity() {
 
         // Selected item is a single light
         else {
-            lightDataRequest = JsonObjectRequest(Request.Method.GET,  address + "api/" + hueAPI.getUsername() + "/lights/" + id, null,
+            updateDataRequest = JsonObjectRequest(Request.Method.GET, "$addressPrefix/lights/$id", null,
                     { response ->
                         nameTxt.text = response.getString("name")
                         val state = response.getJSONObject("state")
@@ -230,8 +229,7 @@ class HueLampActivity : AppCompatActivity() {
         val updateHandler = UpdateHandler()
         updateHandler.setUpdateFunction {
             if (canReceiveRequest && hueAPI.readyForRequest) {
-                if(isRoom) queue.add(roomDataRequest)
-                else queue.add(lightDataRequest)
+                queue.add(updateDataRequest)
             }
         }
     }

@@ -42,7 +42,7 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
 
         val gridView = (super.onCreateView(inflater, container, savedInstanceState) ?: throw IllegalStateException()) as GridView
 
-        scenesRequest = JsonObjectRequest(Request.Method.GET, lampData.address + "api/" + hueAPI.getUsername() + "/scenes/", null,
+        scenesRequest = JsonObjectRequest(Request.Method.GET, lampData.addressPrefix + "/scenes/", null,
                 { response ->
                     try {
                         val gridItems: ArrayList<SceneGridItem> = ArrayList(response.length())
@@ -63,7 +63,7 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
                             for (i in 0 until sceneIds.size) {
                                 queue.add(JsonObjectRequest(
                                     Request.Method.GET,
-                                    lampData.address + "api/" + hueAPI.getUsername() + "/scenes/" + sceneIds[i],
+                                    lampData.addressPrefix + "/scenes/" + sceneIds[i],
                                     null,
                                     { sceneResponse ->
                                         val states = sceneResponse.getJSONObject("lightstates")
@@ -172,7 +172,7 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
                     .setView(view)
                     .setPositiveButton(android.R.string.ok) { _, _ ->
                         val requestObject = "{\"name\":\"" + input.text.toString() + "\"}"
-                        val renameSceneRequest = CustomJsonArrayRequest(Request.Method.PUT, lampData.address + "api/" + hueAPI.getUsername() + "/scenes/$selectedScene", JSONObject(requestObject),
+                        val renameSceneRequest = CustomJsonArrayRequest(Request.Method.PUT, lampData.addressPrefix + "/scenes/$selectedScene", JSONObject(requestObject),
                                 { queue.add(scenesRequest) },
                                 { e -> Log.e(Global.LOG_TAG, e.toString()) }
                         )
@@ -185,7 +185,7 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
                     .setTitle(R.string.str_delete)
                     .setMessage(R.string.hue_delete_scene)
                     .setPositiveButton(R.string.str_delete) { _, _ ->
-                        val deleteSceneRequest = CustomJsonArrayRequest(Request.Method.DELETE, lampData.address + "api/" + hueAPI.getUsername() + "/scenes/" + selectedScene, null,
+                        val deleteSceneRequest = CustomJsonArrayRequest(Request.Method.DELETE, lampData.addressPrefix + "/scenes/" + selectedScene, null,
                                 { queue.add(scenesRequest) },
                                 { e -> Log.e(Global.LOG_TAG, e.toString()) }
                         )
