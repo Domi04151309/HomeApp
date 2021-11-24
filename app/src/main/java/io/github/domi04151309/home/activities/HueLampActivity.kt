@@ -89,13 +89,12 @@ class HueLampActivity : AppCompatActivity() {
             lampIcon,
             ColorStateList.valueOf(Color.WHITE)
         )
-        //TODO: fix this for ct only rooms
         lampData.addOnDataChangedListener {
             ImageViewCompat.setImageTintList(
                 lampIcon,
                 ColorStateList.valueOf(
                     if (it.hue != -1 && it.sat != -1) HueUtils.hueSatToRGB(it.hue, it.sat)
-                    else if (it.ct != -1) HueUtils.ctToRGB(it.ct)
+                    else if (it.ct != -1) HueUtils.ctToRGB(it.ct + 153)
                     else Color.WHITE
                 )
             )
