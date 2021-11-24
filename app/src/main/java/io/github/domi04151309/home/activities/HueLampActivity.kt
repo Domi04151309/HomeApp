@@ -84,7 +84,7 @@ class HueLampActivity : AppCompatActivity() {
     var id: String = ""
     var lights: JSONArray? = null
     var canReceiveRequest: Boolean = false
-    var lampData = HueLampData()
+    var lampData: HueLampData = HueLampData()
     var isRoom: Boolean = false
     lateinit var lampIcon: ImageView
     private var lightDataRequest: JsonObjectRequest? = null
@@ -112,7 +112,7 @@ class HueLampActivity : AppCompatActivity() {
         queue = Volley.newRequestQueue(this)
 
         title = device.name
-        lampIcon = findViewById<ImageView>(R.id.lampIcon)
+        lampIcon = findViewById(R.id.lampIcon)
         val nameTxt = findViewById<TextView>(R.id.nameTxt)
         val briBar = findViewById<Slider>(R.id.briBar)
         val tabBar = findViewById<TabLayout>(R.id.tabBar)
@@ -126,11 +126,22 @@ class HueLampActivity : AppCompatActivity() {
             HueUtils.briToPercent(value.toInt())
         }
 
-        //Default tint
+        //Lamp tint
         ImageViewCompat.setImageTintList(
             lampIcon,
             ColorStateList.valueOf(Color.WHITE)
         )
+        //TODO: fix this for ct only rooms
+        lampData.addOnDataChangedListener {
+            ImageViewCompat.setImageTintList(
+                lampIcon,
+                ColorStateList.valueOf(
+                    if (it.hue != -1 && it.sat != -1) HueUtils.hueSatToRGB(it.hue, it.sat)
+                    else if (it.ct != -1) HueUtils.ctToRGB(it.ct)
+                    else Color.WHITE
+                )
+            )
+        }
 
         // Selected item is a whole room
         if (isRoom) {
@@ -187,7 +198,7 @@ class HueLampActivity : AppCompatActivity() {
                 }
             })
 
-            viewPager.currentItem = 1
+            viewPager.setCurrentItem(1, false)
 
             val tabIcons = arrayOf(
                 ResourcesCompat.getDrawable(resources, R.drawable.ic_color_palette, theme),

@@ -40,8 +40,7 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
         hueAPI = HueAPI(c, lampData.deviceId)
         queue = Volley.newRequestQueue(context)
 
-        val view = super.onCreateView(inflater, container, savedInstanceState)
-        val gridView = view?.findViewById<GridView>(R.id.scenes) ?: throw IllegalStateException()
+        val gridView = (super.onCreateView(inflater, container, savedInstanceState) ?: throw IllegalStateException()) as GridView
 
         scenesRequest = JsonObjectRequest(Request.Method.GET, lampData.address + "api/" + hueAPI.getUsername() + "/scenes/", null,
                 { response ->
@@ -147,7 +146,7 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
             }
         }
         registerForContextMenu(gridView)
-        return view
+        return gridView
     }
 
     override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
