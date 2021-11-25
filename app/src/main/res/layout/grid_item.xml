@@ -5,22 +5,11 @@
     android:paddingTop="@dimen/dialog_item_margin"
     android:gravity="center">
 
-    <RelativeLayout
+    <ImageView
+        android:id="@+id/drawable"
         android:layout_width="@dimen/scene_icon"
-        android:layout_height="@dimen/scene_icon">
-
-        <ImageView
-            android:id="@+id/base"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:contentDescription="@string/main_device_icon" />
-
-        <ImageView
-            android:id="@+id/drawable"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:contentDescription="@string/main_device_icon" />
-    </RelativeLayout>
+        android:layout_height="@dimen/scene_icon"
+        android:contentDescription="@string/main_device_icon" />
 
     <TextView
         android:id="@+id/name"

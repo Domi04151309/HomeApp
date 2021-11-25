@@ -101,7 +101,6 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
                                         gridItems += SceneGridItem(
                                             name = sceneNames[i],
                                             hidden = sceneIds[i],
-                                            icon = R.drawable.ic_hue_scene_base,
                                             color = if (currentSceneValues.size > 0) currentSceneValues[0] else null
                                         )
                                         completedRequests++
@@ -109,8 +108,7 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
                                             var sortedItems = gridItems.sortedWith(compareBy { it.color })
                                             sortedItems += SceneGridItem(
                                                 name = resources.getString(R.string.hue_add_scene),
-                                                hidden = "add",
-                                                icon = R.drawable.ic_hue_scene_add
+                                                hidden = "add"
                                             )
                                             gridView.adapter = HueSceneGridAdapter(sortedItems)
                                         }
@@ -123,8 +121,7 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
                         } else {
                             gridView.adapter = HueSceneGridAdapter(listOf(SceneGridItem(
                                 name = resources.getString(R.string.hue_add_scene),
-                                hidden = "add",
-                                icon = R.drawable.ic_hue_scene_add
+                                hidden = "add"
                             )))
                         }
                     } catch (e: Exception){
