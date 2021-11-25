@@ -44,9 +44,9 @@ class DeviceDiscoveryListAdapter(
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var drawable: ImageView = view.findViewById(R.id.drawable)
-        var title: TextView = view.findViewById(R.id.title)
-        var summary: TextView = view.findViewById(R.id.summary)
-        var hidden: TextView = view.findViewById(R.id.hidden)
+        val drawable: ImageView = view.findViewById(R.id.drawable)
+        val title: TextView = view.findViewById(R.id.title)
+        val summary: TextView = view.findViewById(R.id.summary)
+        val hidden: TextView = view.findViewById(R.id.hidden)
     }
 }

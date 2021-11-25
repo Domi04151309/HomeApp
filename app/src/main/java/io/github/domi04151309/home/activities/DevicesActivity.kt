@@ -17,9 +17,9 @@ import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.data.SimpleListItem
 import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.Theme
-import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
+import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterfaceAdvanced
 
-class DevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
+class DevicesActivity : AppCompatActivity(), RecyclerViewHelperInterfaceAdvanced {
 
     private var reset = true
     private lateinit var devices: Devices

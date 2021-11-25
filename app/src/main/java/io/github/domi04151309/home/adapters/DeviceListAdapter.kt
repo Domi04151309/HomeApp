@@ -10,11 +10,11 @@ import io.github.domi04151309.home.R
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import io.github.domi04151309.home.data.SimpleListItem
-import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
+import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterfaceAdvanced
 
 class DeviceListAdapter(
     private val items: ArrayList<SimpleListItem>,
-    private val helperInterface: RecyclerViewHelperInterface
+    private val helperInterface: RecyclerViewHelperInterfaceAdvanced
     ) : RecyclerView.Adapter<DeviceListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(
@@ -51,10 +51,10 @@ class DeviceListAdapter(
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var drawable: ImageView = view.findViewById(R.id.drawable)
-        var title: TextView = view.findViewById(R.id.title)
-        var summary: TextView = view.findViewById(R.id.summary)
-        var hidden: TextView = view.findViewById(R.id.hidden)
-        var handle: ImageView = view.findViewById(R.id.handle)
+        val drawable: ImageView = view.findViewById(R.id.drawable)
+        val title: TextView = view.findViewById(R.id.title)
+        val summary: TextView = view.findViewById(R.id.summary)
+        val hidden: TextView = view.findViewById(R.id.hidden)
+        val handle: ImageView = view.findViewById(R.id.handle)
     }
 }

@@ -139,7 +139,4 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
                 .show()
         }
     }
-
-    override fun onItemHandleTouched(viewHolder: RecyclerView.ViewHolder) {
-    }
 }
