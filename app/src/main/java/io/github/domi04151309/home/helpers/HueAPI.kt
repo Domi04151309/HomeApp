@@ -126,6 +126,10 @@ class HueAPI(context: Context, deviceId: String) {
         putObject("/lights/$lightID/state", "{\"sat\":$sat}")
     }
 
+    fun changeHueSat(lightID: String, hue: Int, sat: Int) {
+        putObject("/lights/$lightID/state", "{\"hue\":$hue, \"sat\":$sat}")
+    }
+
     fun switchGroupByID(groupID: String, on: Boolean) {
         putObject("/groups/$groupID/action", "{\"on\":$on}")
     }
@@ -144,6 +148,10 @@ class HueAPI(context: Context, deviceId: String) {
 
     fun changeSaturationOfGroup(groupID: String, sat: Int) {
         putObject("/groups/$groupID/action", "{\"sat\":$sat}")
+    }
+
+    fun changeHueSatOfGroup(groupID: String, hue: Int, sat: Int) {
+        putObject("/groups/$groupID/action", "{\"hue\":$hue, \"sat\":$sat}")
     }
 
     fun activateSceneOfGroup(groupID: String, scene: String) {

@@ -36,7 +36,15 @@ object HueUtils {
 
     fun briToPercent(bri: Int): String {
         require(!(bri < 1 || bri > 254)) { "Argument out of range" }
-        val value: Int = (bri / 254F * 100).toInt()
-        return "$value%"
+        return "${(bri / 254F * 100).toInt()}%"
+    }
+
+    fun rgbToHueSat(color: Int): IntArray {
+        val hsv = FloatArray(3)
+        Color.colorToHSV(color, hsv)
+        return intArrayOf(
+            (hsv[0] / 0.0054932478).toInt(),
+            (hsv[1] * 254).toInt()
+        )
     }
 }

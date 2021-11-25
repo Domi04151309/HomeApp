@@ -35,8 +35,7 @@
     <string name="hue_off">Aus</string>
     <string name="hue_brightness">Helligkeit</string>
     <string name="hue_color_temperature">Farbtemperatur</string>
-    <string name="hue_hue">Farbton</string>
-    <string name="hue_saturation">Sättigung</string>
+    <string name="hue_hue_sat">Farbton und Sättigung</string>
     <string name="hue_add_scene">Szene hinzufügen</string>
     <string name="hue_new_scene">Neue Szene</string>
     <string name="hue_rename_scene">Geben Sie bitte einen neuen Namen ein</string>

@@ -1,11 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingStart="?dialogPreferredPadding"
     android:paddingEnd="?dialogPreferredPadding">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            android:id="@+id/lampIcon"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/header_icon_height"
+            android:layout_marginTop="@dimen/dialog_item_margin"
+            android:contentDescription="@string/main_device_icon"
+            app:srcCompat="@drawable/ic_hue_lamp_color" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/header_icon_height"
+            android:layout_marginTop="@dimen/dialog_item_margin"
+            android:contentDescription="@string/main_device_icon"
+            app:srcCompat="@drawable/ic_hue_lamp_base" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/nameTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dialog_item_margin"
+        android:text="@string/placeholder"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="?dialogPreferredPadding"
+        android:clipToPadding="false"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="?dialogPreferredPadding"
+            android:paddingEnd="?dialogPreferredPadding"
+            android:background="@null">
+
+            <Button
+                android:id="@+id/offBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/hue_off" />
+
+            <Button
+                android:id="@+id/onBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/hue_on" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
     <TextView
         android:id="@+id/briTxt"
@@ -19,46 +84,4 @@
         android:layout_height="wrap_content"
         android:valueFrom="1.0"
         android:valueTo="254.0" />
-
-    <TextView
-        android:id="@+id/hueTxt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/hue_hue" />
-
-    <com.google.android.material.slider.Slider
-        android:id="@+id/hueBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:valueFrom="0.0"
-        android:valueTo="65535"
-        app:trackColor="@android:color/transparent" />
-
-    <TextView
-        android:id="@+id/satTxt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/hue_saturation" />
-
-    <com.google.android.material.slider.Slider
-        android:id="@+id/satBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:valueFrom="0.0"
-        android:valueTo="254"
-        app:trackColor="@android:color/transparent" />
-
-    <TextView
-        android:id="@+id/ctTxt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/hue_color_temperature" />
-
-    <com.google.android.material.slider.Slider
-        android:id="@+id/ctBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:valueFrom="0.0"
-        android:valueTo="347"
-        app:trackColor="@android:color/transparent" />
 </LinearLayout>

@@ -33,8 +33,7 @@
     <string name="hue_off">Uit</string>
     <string name="hue_brightness">Helderheid</string>
     <string name="hue_color_temperature">Kleurtemperatuur</string>
-    <string name="hue_hue">Tint</string>
-    <string name="hue_saturation">Verzadiging</string>
+    <string name="hue_hue_sat">Tint and verzadiging</string>
     <string name="hue_add_scene">Scène toevoegen</string>
     <string name="hue_new_scene">Nieuwe scène</string>
     <string name="hue_rename_scene">Geef de scène een naam</string>

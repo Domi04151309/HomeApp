@@ -33,8 +33,7 @@
     <string name="hue_off">Apagado</string>
     <string name="hue_brightness">Brillo</string>
     <string name="hue_color_temperature">Temperatura de color</string>
-    <string name="hue_hue">Tono</string>
-    <string name="hue_saturation">Saturación</string>
+    <string name="hue_hue_sat">Tono y saturación</string>
     <string name="hue_add_scene">Añadir escenario</string>
     <string name="hue_new_scene">Nuevo escenario</string>
     <string name="hue_rename_scene">Por favor, introduzca un nuevo nombre</string>
