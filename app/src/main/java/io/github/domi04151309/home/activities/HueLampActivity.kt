@@ -160,7 +160,7 @@ class HueLampActivity : AppCompatActivity() {
             val tabIcons = arrayOf(
                 ResourcesCompat.getDrawable(resources, R.drawable.ic_color_palette, theme),
                 ResourcesCompat.getDrawable(resources, R.drawable.ic_scene, theme),
-                    ResourcesCompat.getDrawable(resources, R.drawable.ic_device_lamp, theme)
+                ResourcesCompat.getDrawable(resources, R.drawable.ic_device_lamp, theme)
             )
             TabLayoutMediator(tabBar, viewPager) { tab, position ->
                 tab.icon = tabIcons[position]
