@@ -7,16 +7,14 @@ import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.view.animation.AnimationSet
 import android.view.animation.TranslateAnimation
-import android.widget.BaseAdapter
-import android.widget.ImageView
-import android.widget.Switch
-import android.widget.TextView
+import android.widget.*
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.data.ListViewItem
 
 internal class ListViewAdapter(
-        private val itemArray: ArrayList<ListViewItem>,
-        private var animate: Boolean = true
+    private val itemArray: ArrayList<ListViewItem>,
+    private val stateListener: CompoundButton.OnCheckedChangeListener? = null,
+    private var animate: Boolean = true
 ) : BaseAdapter() {
 
     override fun getCount(): Int {
@@ -41,21 +39,16 @@ internal class ListViewAdapter(
         val vi: View = convertView
             ?: LayoutInflater.from(parent.context).inflate(R.layout.list_item, parent, false)
         if (animate) playAnimation(vi)
-        val drawableView = vi.findViewById<ImageView>(R.id.drawable)
-        val stateSwitch = vi.findViewById<Switch>(R.id.state)
+        vi.findViewById<ImageView>(R.id.drawable).setImageResource(itemArray[position].icon)
         vi.findViewById<TextView>(R.id.title).text = itemArray[position].title
         vi.findViewById<TextView>(R.id.summary).text = itemArray[position].summary
         vi.findViewById<TextView>(R.id.hidden).text = itemArray[position].hidden
-        try {
-            drawableView.setImageResource(itemArray[position].icon)
-        } catch (e: Exception) {
-            drawableView.setImageResource(android.R.color.transparent)
-        }
+        val stateSwitch = vi.findViewById<Switch>(R.id.state)
         if (itemArray[position].state == null) {
             stateSwitch.visibility = View.GONE
         } else {
             stateSwitch.isChecked = itemArray[position].state ?: false
-            stateSwitch.setOnCheckedChangeListener(itemArray[position].stateListener)
+            stateSwitch.setOnCheckedChangeListener(stateListener)
         }
         return vi
     }

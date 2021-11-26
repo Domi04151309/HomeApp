@@ -11,12 +11,14 @@ import android.view.LayoutInflater
 import android.widget.Switch
 import io.github.domi04151309.home.data.ListViewItem
 import android.graphics.drawable.LayerDrawable
+import android.widget.CompoundButton
 import androidx.core.content.ContextCompat
 import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
 
 class HueLampListAdapter(
     private var items: ArrayList<ListViewItem>,
     private var colors: ArrayList<Int>,
+    private val stateListener: CompoundButton.OnCheckedChangeListener,
     private val helperInterface: RecyclerViewHelperInterface
     ) : RecyclerView.Adapter<HueLampListAdapter.ViewHolder>() {
 
@@ -43,7 +45,7 @@ class HueLampListAdapter(
         holder.summary.text = items[position].summary
         holder.hidden.text = items[position].hidden
         holder.stateSwitch.isChecked = items[position].state ?: false
-        holder.stateSwitch.setOnCheckedChangeListener(items[position].stateListener)
+        holder.stateSwitch.setOnCheckedChangeListener(stateListener)
         holder.itemView.setOnClickListener { helperInterface.onItemClicked(holder.itemView, position) }
     }
 

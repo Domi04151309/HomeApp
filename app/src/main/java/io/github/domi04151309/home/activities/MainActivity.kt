@@ -127,14 +127,13 @@ class MainActivity : AppCompatActivity() {
                                     summary = resources.getString(R.string.hue_tap),
                                     hidden = "${currentObject.getJSONArray("lights")}@${if (type == "Room") "room" else "zone"}#$currentObjectName",
                                     icon = if (type == "Room") R.drawable.ic_room else R.drawable.ic_zone,
-                                    state = currentObject.getJSONObject("action").getBoolean("on"),
-                                    stateListener = hueGroupStateListener
+                                    state = currentObject.getJSONObject("action").getBoolean("on")
                             )
                         } catch (e: JSONException) {
                             Log.e(Global.LOG_TAG, e.toString())
                         }
                     }
-                    updateList(listItems)
+                    updateList(listItems, hueGroupStateListener)
                     setLevelTwo(devices.getDeviceById(holder.deviceId), Flavors.TWO_HUE)
                 } catch (e: Exception) {
                     handleErrorOnLevelOne(resources.getString(R.string.err_wrong_format_summary))
@@ -202,7 +201,7 @@ class MainActivity : AppCompatActivity() {
     private val tasmotaRequestCallBack = object : Tasmota.RequestCallBack {
 
         override fun onItemsChanged(context: Context) {
-            listView.adapter = ListViewAdapter(tasmota?.loadList() ?: arrayListOf(), false)
+            listView.adapter = ListViewAdapter(tasmota?.loadList() ?: arrayListOf(), animate = false)
         }
 
         override fun onResponse(context: Context, response: String) {
@@ -463,8 +462,8 @@ class MainActivity : AppCompatActivity() {
         level = flavor
     }
 
-    internal fun updateList(items: ArrayList<ListViewItem>) {
-        listView.adapter = ListViewAdapter(items)
+    internal fun updateList(items: ArrayList<ListViewItem>, stateListener: CompoundButton.OnCheckedChangeListener? = null) {
+        listView.adapter = ListViewAdapter(items, stateListener)
     }
 
     override fun onStart() {

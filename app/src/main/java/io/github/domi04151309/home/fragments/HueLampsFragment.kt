@@ -52,7 +52,7 @@ class HueLampsFragment : Fragment(R.layout.fragment_hue_lamps), RecyclerViewHelp
             }
         }
 
-        val adapter = HueLampListAdapter(arrayListOf(), arrayListOf(), this@HueLampsFragment)
+        val adapter = HueLampListAdapter(arrayListOf(), arrayListOf(), hueLampStateListener, this@HueLampsFragment)
         recyclerView.layoutManager = LinearLayoutManager(c)
         recyclerView.adapter = adapter
 
@@ -87,8 +87,7 @@ class HueLampsFragment : Fragment(R.layout.fragment_hue_lamps), RecyclerViewHelp
                                         if (currentState.getBoolean("reachable")) resources.getString(R.string.hue_tap)
                                         else resources.getString(R.string.hue_unreachable),
                                     hidden = currentObjectName,
-                                    state = currentState.getBoolean("on"),
-                                    stateListener = hueLampStateListener
+                                    state = currentState.getBoolean("on")
                                 )
                             } catch (e: JSONException) {
                                 Log.e(Global.LOG_TAG, e.toString())
