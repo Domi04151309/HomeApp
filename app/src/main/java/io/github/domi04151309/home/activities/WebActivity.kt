@@ -38,6 +38,7 @@ class WebActivity : AppCompatActivity() {
         var isFirstLoad = true
         webView = findViewById(R.id.webView)
         webView.settings.javaScriptEnabled = true
+        webView.settings.domStorageEnabled = true
         webView.webViewClient = object : WebViewClient() {
 
             override fun onPageFinished(view: WebView, url: String) {
