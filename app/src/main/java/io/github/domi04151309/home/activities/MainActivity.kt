@@ -354,19 +354,19 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
     }
 
     override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
+        super.onCreateContextMenu(menu, v, menuInfo)
         val hidden = v?.findViewById<TextView>(R.id.hidden)?.text ?: return
         if (hidden.contains("tasmota_command")) {
             tasmotaPosition = hidden.substring(hidden.lastIndexOf("#") + 1).toInt()
             menuInflater.inflate(R.menu.activity_main_tasmota_context, menu)
         }
-        super.onCreateContextMenu(menu, v, menuInfo)
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
-        Log.wtf(Global.LOG_TAG, item.title.toString())
-        when (item.title) {
+        return when (item.title) {
             resources.getString(R.string.str_edit) -> {
                 tasmota?.updateItem(tasmotaRequestCallBack, tasmotaPosition)
+                true
             }
             resources.getString(R.string.str_delete) -> {
                 AlertDialog.Builder(this)
@@ -377,9 +377,10 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
                         }
                         .setNegativeButton(android.R.string.cancel) { _, _ -> }
                         .show()
+                true
             }
+            else -> super.onContextItemSelected(item)
         }
-        return super.onContextItemSelected(item)
     }
 
     private fun setLevelOne() {

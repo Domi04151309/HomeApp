@@ -165,7 +165,7 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
-        if (item.title == resources.getString(R.string.str_rename)) {
+        return if (item.title == resources.getString(R.string.str_rename)) {
             val nullParent: ViewGroup? = null
             val view = layoutInflater.inflate(R.layout.dialog_input, nullParent, false)
             val input = view.findViewById<EditText>(R.id.input)
@@ -184,6 +184,7 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
                     }
                     .setNegativeButton(android.R.string.cancel) { _, _ -> }
                     .show()
+            true
         } else if (item.title == resources.getString(R.string.str_delete)) {
             AlertDialog.Builder(c)
                     .setTitle(R.string.str_delete)
@@ -197,13 +198,14 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
                     }
                     .setNegativeButton(android.R.string.cancel) { _, _ -> }
                     .show()
+            true
+        } else {
+            super.onContextItemSelected(item)
         }
-        return super.onContextItemSelected(item)
     }
 
     override fun onStart() {
         super.onStart()
-        Log.wtf(Global.LOG_TAG, "called")
         if (scenesChanged) {
             scenesChanged = false
             queue.add(scenesRequest)
