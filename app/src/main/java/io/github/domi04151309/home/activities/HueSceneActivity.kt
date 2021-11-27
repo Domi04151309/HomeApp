@@ -20,6 +20,7 @@ import io.github.domi04151309.home.*
 import io.github.domi04151309.home.adapters.HueSceneLampListAdapter
 import io.github.domi04151309.home.custom.CustomJsonArrayRequest
 import io.github.domi04151309.home.data.SimpleListItem
+import io.github.domi04151309.home.fragments.HueScenesFragment
 import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.helpers.HueAPI
 import io.github.domi04151309.home.helpers.HueUtils
@@ -109,7 +110,7 @@ class HueSceneActivity : AppCompatActivity() {
             val jsonRequestObject = JSONObject("{\"name\":\"$name\",\"recycle\":false,\"group\":\"$roomId\",\"type\":\"GroupScene\"}")
             val addSceneRequest = CustomJsonArrayRequest(Request.Method.POST, address + "api/" + hueAPI.getUsername() + "/scenes", jsonRequestObject,
                     {
-                        HueLampActivity.configChanged = true
+                        HueScenesFragment.scenesChanged = true
                         finish()
                     },
                     { error ->

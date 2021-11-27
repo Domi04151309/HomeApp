@@ -26,6 +26,10 @@ import org.json.JSONObject
 
 class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
 
+    companion object {
+        var scenesChanged: Boolean = false
+    }
+
     private var scenesRequest: JsonObjectRequest? = null
     private var selectedScene: CharSequence = ""
     private var selectedSceneName: CharSequence = ""
@@ -41,6 +45,8 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
         queue = Volley.newRequestQueue(context)
 
         val gridView = (super.onCreateView(inflater, container, savedInstanceState) ?: throw IllegalStateException()) as GridView
+        val adapter = HueSceneGridAdapter()
+        gridView.adapter = adapter
 
         scenesRequest = JsonObjectRequest(Request.Method.GET, lampData.addressPrefix + "/scenes/", null,
                 { response ->
@@ -110,7 +116,7 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
                                                 name = resources.getString(R.string.hue_add_scene),
                                                 hidden = "add"
                                             )
-                                            gridView.adapter = HueSceneGridAdapter(sortedItems)
+                                            adapter.updateData(sortedItems)
                                         }
                                     },
                                     { error ->
@@ -119,7 +125,7 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
                                 ))
                             }
                         } else {
-                            gridView.adapter = HueSceneGridAdapter(listOf(SceneGridItem(
+                            adapter.updateData(listOf(SceneGridItem(
                                 name = resources.getString(R.string.hue_add_scene),
                                 hidden = "add"
                             )))
@@ -192,5 +198,14 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
                     .show()
         }
         return super.onContextItemSelected(item)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.wtf(Global.LOG_TAG, "called")
+        if (scenesChanged) {
+            scenesChanged = false
+            queue.add(scenesRequest)
+        }
     }
 }

@@ -28,8 +28,6 @@ import org.json.JSONArray
 class HueLampActivity : AppCompatActivity() {
 
     companion object {
-        var configChanged: Boolean = false
-
         fun setProgress(slider: Slider, value: Int) {
             val animation = ObjectAnimator.ofFloat(slider, "value", value.toFloat())
             animation.duration = 300
@@ -235,10 +233,6 @@ class HueLampActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        if (configChanged) {
-            configChanged = false
-            recreate()
-        }
         canReceiveRequest = true
     }
 
