@@ -9,8 +9,6 @@ data class DeviceItem(val id: String) {
             var url = value
             if (!(url.startsWith("https://") || url.startsWith("http://")))
                 url = "http://$url"
-            if (!url.endsWith("/"))
-                url += "/"
             field = url
         }
     var mode: String = "Default"

@@ -1,5 +1,6 @@
 package io.github.domi04151309.home.activities
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
@@ -9,9 +10,6 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.HttpAuthHandler
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
@@ -19,12 +17,21 @@ import androidx.appcompat.app.AlertDialog
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.helpers.DeviceSecrets
 import io.github.domi04151309.home.helpers.Theme
+import android.app.DownloadManager
+import android.net.Uri
+import android.os.Environment
+import androidx.core.app.ActivityCompat
+import android.content.pm.PackageManager
+import android.webkit.*
+import android.content.Intent
+import androidx.activity.result.contract.ActivityResultContracts
 
 class WebActivity : AppCompatActivity() {
 
+    internal val nullParent: ViewGroup? = null
     internal var errorOccurred = false
     internal var c: Context = this
-    internal val nullParent: ViewGroup? = null
+    internal var valueCallback: ValueCallback<Array<Uri>>? = null
     private lateinit var webView: WebView
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -81,6 +88,66 @@ class WebActivity : AppCompatActivity() {
                 errorView.visibility = View.VISIBLE
             }
         }
+
+        val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val path = result.data?.data
+                if (path == null) valueCallback?.onReceiveValue(arrayOf())
+                else valueCallback?.onReceiveValue(arrayOf(path))
+            }
+        }
+
+        webView.webChromeClient = object : WebChromeClient() {
+            override fun onShowFileChooser(
+                webView: WebView?,
+                filePathCallback: ValueCallback<Array<Uri>>?,
+                fileChooserParams: FileChooserParams?
+            ): Boolean {
+                valueCallback = filePathCallback
+
+                val contentSelectionIntent = Intent(Intent.ACTION_GET_CONTENT)
+                contentSelectionIntent.addCategory(Intent.CATEGORY_OPENABLE)
+                contentSelectionIntent.type = "*/*"
+
+                resultLauncher.launch(
+                    Intent(Intent.ACTION_CHOOSER)
+                        .putExtra(Intent.EXTRA_INTENT, contentSelectionIntent)
+                        .putExtra(Intent.EXTRA_TITLE, "Image Chooser")
+                )
+                return true
+            }
+        }
+
+        webView.setDownloadListener { url, userAgent, contentDisposition, mimetype, contentLength ->
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ),
+                    1
+                )
+            }
+
+            val uri = Uri.parse(url)
+            val request = DownloadManager.Request(uri)
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+            request.setDestinationInExternalPublicDir(
+                Environment.DIRECTORY_DOWNLOADS,
+                uri.lastPathSegment
+            )
+            (getSystemService(DOWNLOAD_SERVICE) as DownloadManager).enqueue(request)
+        }
+
         webView.loadUrl(intent.getStringExtra("URI") ?: "about:blank")
         title = intent.getStringExtra("title")
     }
