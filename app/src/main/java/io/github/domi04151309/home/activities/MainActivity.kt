@@ -24,7 +24,6 @@ import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.data.ListViewItem
 import io.github.domi04151309.home.data.RequestCallbackObject
 import io.github.domi04151309.home.helpers.*
-import io.github.domi04151309.home.adapters.ListViewAdapter
 import io.github.domi04151309.home.helpers.P
 import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.Theme
@@ -158,7 +157,7 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
             if (holder.response != null) {
                 try {
                     for (i in 0 until holder.response.length()) {
-                        adapter.updateSwitch(i, holder.response
+                        adapter.updateSwitch(recyclerView, i, holder.response
                                 .getJSONObject(holder.response.names()?.getString(i) ?: "")
                                 .getJSONObject("state")
                                 .getBoolean("any_on")

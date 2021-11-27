@@ -23,6 +23,14 @@ class MainListAdapter(private val helperInterface: RecyclerViewHelperInterface) 
     private var stateListener: CompoundButton.OnCheckedChangeListener? = null
     private var animate: Boolean = true
 
+    init {
+        setHasStableIds(true)
+    }
+
+    override fun getItemId(position: Int): Long {
+        return items[position].hidden.hashCode().toLong()
+    }
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -76,11 +84,10 @@ class MainListAdapter(private val helperInterface: RecyclerViewHelperInterface) 
         }
     }
 
-    fun updateSwitch(position: Int, state: Boolean) {
+    fun updateSwitch(recyclerView: RecyclerView, position: Int, state: Boolean) {
         if (items[position].state != state) {
-            animate = false
             items[position].state = state
-            notifyItemChanged(position)
+            (recyclerView.findViewHolderForAdapterPosition(position) as ViewHolder).stateSwitch.isChecked = state
         }
     }
 
