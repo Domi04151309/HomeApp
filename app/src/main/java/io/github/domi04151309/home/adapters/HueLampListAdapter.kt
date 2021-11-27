@@ -55,7 +55,7 @@ class HueLampListAdapter(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateData(newItems: ArrayList<ListViewItem>, newColors: ArrayList<Int>) {
+    fun updateData(recyclerView: RecyclerView, newItems: ArrayList<ListViewItem>, newColors: ArrayList<Int>) {
         if (newItems.size != items.size) {
             items = newItems
             colors = newColors
@@ -63,7 +63,23 @@ class HueLampListAdapter(
         } else {
             val changed = arrayListOf<Int>()
             for (i in 0 until items.size) {
-                if (items[i] != newItems[i] || colors[i] != newColors[i]) changed.add(i)
+                if (items[i].hidden != newItems[i].hidden) {
+                    changed.add(i)
+                } else {
+                    val holder = (recyclerView.findViewHolderForAdapterPosition(i) as ViewHolder)
+                    if (items[i].state != newItems[i].state) {
+                        holder.stateSwitch.isChecked = newItems[i].state ?: false
+                    }
+                    if (colors[i] != newColors[i]) {
+                        val context = holder.itemView.context
+                        val finalDrawable = LayerDrawable(arrayOf(
+                            ContextCompat.getDrawable(context, R.drawable.ic_hue_lamp_base),
+                            ContextCompat.getDrawable(context, R.drawable.ic_hue_lamp_color)
+                        ))
+                        finalDrawable.getDrawable(1).setTint(newColors[i])
+                        holder.drawable.setImageDrawable(finalDrawable)
+                    }
+                }
             }
             items = newItems
             colors = newColors

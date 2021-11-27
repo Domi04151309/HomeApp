@@ -2,6 +2,7 @@ package io.github.domi04151309.home.fragments
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -107,7 +108,7 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
                                         gridItems += SceneGridItem(
                                             name = sceneNames[i],
                                             hidden = sceneIds[i],
-                                            color = if (currentSceneValues.size > 0) currentSceneValues[0] else null
+                                            color = if (currentSceneValues.size > 0) currentSceneValues[0] else Color.WHITE
                                         )
                                         completedRequests++
                                         if (completedRequests == sceneIds.size) {

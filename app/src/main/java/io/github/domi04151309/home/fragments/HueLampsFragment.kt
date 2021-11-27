@@ -93,7 +93,7 @@ class HueLampsFragment : Fragment(R.layout.fragment_hue_lamps), RecyclerViewHelp
                                 Log.e(Global.LOG_TAG, e.toString())
                             }
                         }
-                        adapter.updateData(listItems, colorArray)
+                        adapter.updateData(recyclerView, listItems, colorArray)
                     } catch (e: Exception) {
                         Log.e(Global.LOG_TAG, e.toString())
                     }
