@@ -16,11 +16,12 @@ import androidx.core.content.ContextCompat
 import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
 
 class HueLampListAdapter(
-    private var items: ArrayList<ListViewItem>,
-    private var colors: ArrayList<Int>,
     private val stateListener: CompoundButton.OnCheckedChangeListener,
     private val helperInterface: RecyclerViewHelperInterface
     ) : RecyclerView.Adapter<HueLampListAdapter.ViewHolder>() {
+
+    private var items: ArrayList<ListViewItem> = arrayListOf()
+    private var colors: ArrayList<Int> = arrayListOf()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

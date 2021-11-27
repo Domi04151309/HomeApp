@@ -52,7 +52,7 @@ class HueLampsFragment : Fragment(R.layout.fragment_hue_lamps), RecyclerViewHelp
             }
         }
 
-        val adapter = HueLampListAdapter(arrayListOf(), arrayListOf(), hueLampStateListener, this@HueLampsFragment)
+        val adapter = HueLampListAdapter(hueLampStateListener, this@HueLampsFragment)
         recyclerView.layoutManager = LinearLayoutManager(c)
         recyclerView.adapter = adapter
 
