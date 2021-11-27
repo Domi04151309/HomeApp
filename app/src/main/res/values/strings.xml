@@ -54,6 +54,7 @@
     <string name="tasmota_execute_once_summary">Execute command once without adding it to the list</string>
 
     <string name="webView">Web View</string>
+    <string name="webView_open">Open in browser</string>
     <string name="webView_error">Loading the website failed</string>
     <string name="webView_error_summary">Please check your network connection or try again later</string>
     <string name="webView_authentication">Authentication</string>

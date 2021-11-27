@@ -6,10 +6,6 @@ import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Base64
-import android.view.KeyEvent
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
@@ -24,6 +20,7 @@ import androidx.core.app.ActivityCompat
 import android.content.pm.PackageManager
 import android.webkit.*
 import android.content.Intent
+import android.view.*
 import androidx.activity.result.contract.ActivityResultContracts
 
 class WebActivity : AppCompatActivity() {
@@ -176,6 +173,20 @@ class WebActivity : AppCompatActivity() {
                 "document.getElementById('uiPass').value = '" + uiPass + "';" +
                 "document.getElementById('submitLoginBtn').click()" +
                 "})()")
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.activity_web_actions, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return if (item.itemId == R.id.action_open) {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(webView.url)))
+            true
+        } else {
+            super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
