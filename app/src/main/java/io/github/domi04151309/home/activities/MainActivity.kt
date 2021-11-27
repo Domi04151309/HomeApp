@@ -24,15 +24,18 @@ import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.data.ListViewItem
 import io.github.domi04151309.home.data.RequestCallbackObject
 import io.github.domi04151309.home.helpers.*
-import io.github.domi04151309.home.adapters.ListViewAdapter
 import io.github.domi04151309.home.helpers.P
 import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.Theme
 import io.github.domi04151309.home.helpers.Tasmota
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import io.github.domi04151309.home.adapters.MainListAdapter
+import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
 
     enum class Flavors {
         ONE, TWO_SIMPLE_HOME, TWO_HUE, TWO_TASMOTA
@@ -46,7 +49,8 @@ class MainActivity : AppCompatActivity() {
     private var canReceiveRequest = false
     private var currentView: View? = null
     internal lateinit var devices: Devices
-    internal lateinit var listView: ListView
+    internal lateinit var recyclerView: RecyclerView
+    internal lateinit var adapter: MainListAdapter
     private lateinit var deviceIcon: ImageView
     private lateinit var deviceName: TextView
     private lateinit var fab: FloatingActionButton
@@ -93,7 +97,7 @@ class MainActivity : AppCompatActivity() {
                         Log.e(Global.LOG_TAG, e.toString())
                     }
                 }
-                updateList(listItems)
+                adapter.updateData(listItems)
                 setLevelTwo(devices.getDeviceById(holder.deviceId), Flavors.TWO_SIMPLE_HOME)
             } else {
                 handleErrorOnLevelOne(holder.errorMessage)
@@ -133,7 +137,7 @@ class MainActivity : AppCompatActivity() {
                             Log.e(Global.LOG_TAG, e.toString())
                         }
                     }
-                    updateList(listItems, hueGroupStateListener)
+                    adapter.updateData(listItems, hueGroupStateListener)
                     setLevelTwo(devices.getDeviceById(holder.deviceId), Flavors.TWO_HUE)
                 } catch (e: Exception) {
                     handleErrorOnLevelOne(resources.getString(R.string.err_wrong_format_summary))
@@ -147,44 +151,16 @@ class MainActivity : AppCompatActivity() {
         override fun onLightsLoaded(holder: RequestCallbackObject) {}
     }
     private val hueRequestUpdaterCallBack = object : HueAPI.RequestCallBack {
-
-        override fun onGroupLoaded(holder: RequestCallbackObject) {
-            if (holder.response != null) {
-                try {
-                    (listView.adapter as ListViewAdapter).updateSwitch(0, holder.response
-                            .getJSONObject("state")
-                            .getBoolean("any_on")
-                    )
-                } catch (e: Exception) {
-                    Log.e(Global.LOG_TAG, e.toString())
-                }
-            }
-        }
-
+        override fun onGroupLoaded(holder: RequestCallbackObject) {}
+        override fun onLightsLoaded(holder: RequestCallbackObject) {}
         override fun onGroupsLoaded(holder: RequestCallbackObject) {
             if (holder.response != null) {
                 try {
                     for (i in 0 until holder.response.length()) {
-                        (listView.adapter as ListViewAdapter).updateSwitch(i, holder.response
+                        adapter.updateSwitch(recyclerView, i, holder.response
                                 .getJSONObject(holder.response.names()?.getString(i) ?: "")
                                 .getJSONObject("state")
                                 .getBoolean("any_on")
-                        )
-                    }
-                } catch (e: Exception) {
-                    Log.e(Global.LOG_TAG, e.toString())
-                }
-            }
-        }
-
-        override fun onLightsLoaded(holder: RequestCallbackObject) {
-            if (holder.response != null) {
-                try {
-                    for (i in 1 until (holder.response.length() + 1)) {
-                        (listView.adapter as ListViewAdapter).updateSwitch(i, holder.response
-                                .getJSONObject(holder.response.names()?.getString(i - 1) ?: "")
-                                .getJSONObject("state")
-                                .getBoolean("on")
                         )
                     }
                 } catch (e: Exception) {
@@ -201,11 +177,11 @@ class MainActivity : AppCompatActivity() {
     private val tasmotaRequestCallBack = object : Tasmota.RequestCallBack {
 
         override fun onItemsChanged(context: Context) {
-            listView.adapter = ListViewAdapter(tasmota?.loadList() ?: arrayListOf(), animate = false)
+            adapter.updateData(tasmota?.loadList() ?: arrayListOf(), preferredAnimationState = false)
         }
 
         override fun onResponse(context: Context, response: String) {
-            Snackbar.make(listView, R.string.main_execution_completed, Snackbar.LENGTH_LONG).setAction(R.string.str_show) {
+            Snackbar.make(recyclerView, R.string.main_execution_completed, Snackbar.LENGTH_LONG).setAction(R.string.str_show) {
                 AlertDialog.Builder(context)
                         .setTitle(R.string.main_execution_completed)
                         .setMessage(response)
@@ -221,11 +197,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         devices = Devices(this)
-        listView = findViewById(R.id.listView)
+        recyclerView = findViewById(R.id.recyclerView)
         deviceIcon = findViewById(R.id.deviceIcon)
         deviceName = findViewById(R.id.deviceName)
         fab = findViewById(R.id.fab)
         themeId = getThemeId()
+
+        adapter = MainListAdapter(this)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = adapter
 
         fab.setOnClickListener {
             reset = true
@@ -236,44 +216,6 @@ class MainActivity : AppCompatActivity() {
             reset = true
             startActivity(Intent(this, SettingsActivity::class.java))
         }
-
-        listView.onItemClickListener = AdapterView.OnItemClickListener { _, view, _, _ ->
-            currentView = view
-            val title = view.findViewById<TextView>(R.id.title).text.toString()
-            if (title == resources.getString(R.string.main_no_devices) || title == resources.getString(R.string.err_wrong_format)) {
-                reset = true
-                startActivity(Intent(this, DevicesActivity::class.java))
-                return@OnItemClickListener
-            }
-            val hidden = view.findViewById<TextView>(R.id.hidden).text.toString()
-            when (level) {
-                Flavors.ONE -> {
-                    if (checkNetwork()) {
-                        view.findViewById<TextView>(R.id.summary).text = resources.getString(R.string.main_connecting)
-                        handleLevelOne(hidden)
-                    } else {
-                        view.findViewById<TextView>(R.id.summary).text = resources.getString(R.string.main_network_not_secure)
-                    }
-                }
-                Flavors.TWO_SIMPLE_HOME ->
-                    homeAPI.executeCommand(currentDevice, hidden, homeRequestCallBack)
-                Flavors.TWO_HUE ->
-                    startActivity(
-                            Intent(this, HueLampActivity::class.java)
-                                    .putExtra("ID", hidden.substring(hidden.lastIndexOf("@") + 1))
-                                    .putExtra("Device", currentDevice)
-                    )
-                Flavors.TWO_TASMOTA -> {
-                    when (hidden) {
-                        "add" -> tasmota?.addToList(tasmotaRequestCallBack)
-                        "execute_once" -> tasmota?.executeOnce(tasmotaRequestCallBack)
-                        else -> tasmota?.execute(tasmotaRequestCallBack, view.findViewById<TextView>(R.id.summary).text.toString())
-                    }
-                }
-            }
-        }
-
-        registerForContextMenu(listView)
 
         //Handle shortcut
         if(intent.hasExtra("device")) {
@@ -298,15 +240,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkNetwork() : Boolean {
-        var localNetwork = true
         val connectivityManager = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
         val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
-        if (capabilities != null) {
-            localNetwork = capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+        return if (capabilities != null) {
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
                     || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
                     || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN)
-        }
-        return localNetwork
+        } else true
     }
 
     private fun handleLevelOne(deviceId: String) {
@@ -345,7 +285,7 @@ class MainActivity : AppCompatActivity() {
             }
             "Tasmota" -> {
                 tasmota = Tasmota(this, deviceId)
-                updateList(tasmota?.loadList() ?: arrayListOf())
+                adapter.updateData(tasmota?.loadList() ?: arrayListOf())
                 setLevelTwo(deviceObj, Flavors.TWO_TASMOTA)
             }
             else ->
@@ -393,8 +333,7 @@ class MainActivity : AppCompatActivity() {
             )
             Log.e(Global.LOG_TAG, e.toString())
         }
-
-        updateList(listItems)
+        adapter.updateData(listItems)
         setLevelOne()
     }
 
@@ -408,30 +347,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (level == Flavors.TWO_SIMPLE_HOME || level == Flavors.TWO_HUE || level == Flavors.TWO_SIMPLE_HOME)
+        if (level != Flavors.ONE)
             loadDevices()
         else
             super.onBackPressed()
     }
 
     override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
-        super.onCreateContextMenu(menu, v, menuInfo)
-        tasmotaPosition = (menuInfo as AdapterView.AdapterContextMenuInfo).position
-        if (listView.getChildAt(tasmotaPosition).findViewById<TextView>(R.id.hidden).text == "tasmota_command") {
+        val hidden = v?.findViewById<TextView>(R.id.hidden)?.text ?: return
+        if (hidden.contains("tasmota_command")) {
+            tasmotaPosition = hidden.substring(hidden.lastIndexOf("#") + 1).toInt()
             menuInflater.inflate(R.menu.activity_main_tasmota_context, menu)
         }
+        super.onCreateContextMenu(menu, v, menuInfo)
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
+        Log.wtf(Global.LOG_TAG, item.title.toString())
         when (item.title) {
             resources.getString(R.string.str_edit) -> {
-                val editing = listView.getChildAt(tasmotaPosition)
-                tasmota!!.removeFromList(tasmotaRequestCallBack, tasmotaPosition)
-                tasmota!!.addToList(
-                        tasmotaRequestCallBack,
-                        editing.findViewById<TextView>(R.id.title).text.toString(),
-                        editing.findViewById<TextView>(R.id.summary).text.toString()
-                )
+                tasmota?.updateItem(tasmotaRequestCallBack, tasmotaPosition)
             }
             resources.getString(R.string.str_delete) -> {
                 AlertDialog.Builder(this)
@@ -462,10 +397,6 @@ class MainActivity : AppCompatActivity() {
         level = flavor
     }
 
-    internal fun updateList(items: ArrayList<ListViewItem>, stateListener: CompoundButton.OnCheckedChangeListener? = null) {
-        listView.adapter = ListViewAdapter(items, stateListener)
-    }
-
     override fun onStart() {
         super.onStart()
         if (getThemeId() != themeId) {
@@ -488,5 +419,41 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         updateHandler.stop()
+    }
+
+    override fun onItemClicked(view: View, position: Int) {
+        currentView = view
+        val title = view.findViewById<TextView>(R.id.title).text.toString()
+        if (title == resources.getString(R.string.main_no_devices) || title == resources.getString(R.string.err_wrong_format)) {
+            reset = true
+            startActivity(Intent(this, DevicesActivity::class.java))
+            return
+        }
+        val hidden = view.findViewById<TextView>(R.id.hidden).text.toString()
+        when (level) {
+            Flavors.ONE -> {
+                if (checkNetwork()) {
+                    view.findViewById<TextView>(R.id.summary).text = resources.getString(R.string.main_connecting)
+                    handleLevelOne(hidden)
+                } else {
+                    view.findViewById<TextView>(R.id.summary).text = resources.getString(R.string.main_network_not_secure)
+                }
+            }
+            Flavors.TWO_SIMPLE_HOME ->
+                homeAPI.executeCommand(currentDevice, hidden, homeRequestCallBack)
+            Flavors.TWO_HUE ->
+                startActivity(
+                    Intent(this, HueLampActivity::class.java)
+                        .putExtra("ID", hidden.substring(hidden.lastIndexOf("@") + 1))
+                        .putExtra("Device", currentDevice)
+                )
+            Flavors.TWO_TASMOTA -> {
+                when (hidden) {
+                    "add" -> tasmota?.addToList(tasmotaRequestCallBack)
+                    "execute_once" -> tasmota?.executeOnce(tasmotaRequestCallBack)
+                    else -> tasmota?.execute(tasmotaRequestCallBack, view.findViewById<TextView>(R.id.summary).text.toString())
+                }
+            }
+        }
     }
 }

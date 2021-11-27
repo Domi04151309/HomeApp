@@ -17,13 +17,12 @@ import org.json.JSONObject
 import io.github.domi04151309.home.data.ListViewItem
 import org.json.JSONException
 
-class Tasmota(context: Context, deviceId: String) {
+class Tasmota(private val c: Context, deviceId: String) {
 
     companion object {
         private const val EMPTY_ARRAY = "[]"
     }
 
-    private val c = context
     private val selectedDevice = deviceId
     private var url = Devices(c).getDeviceById(deviceId).address
     private val queue = Volley.newRequestQueue(c)
@@ -52,7 +51,7 @@ class Tasmota(context: Context, deviceId: String) {
                     listItems += ListViewItem(
                             title = currentItem.getString("title"),
                             summary = currentItem.getString("command"),
-                            hidden = "tasmota_command",
+                            hidden = "tasmota_command#$i",
                             icon = R.drawable.ic_do
                     )
                 } catch (e: JSONException) {
@@ -75,6 +74,32 @@ class Tasmota(context: Context, deviceId: String) {
                 hidden = "execute_once"
         )
         return listItems
+    }
+
+    fun updateItem(callback: RequestCallBack, index: Int) {
+        val array = JSONArray(prefs.getString(selectedDevice, EMPTY_ARRAY))
+        val arrayItem = array.getJSONObject(index)
+        val view = LayoutInflater.from(c).inflate(R.layout.dialog_tasmota_add, nullParent, false)
+        val titleTxt = view.findViewById<EditText>(R.id.title)
+        val commandTxt = view.findViewById<EditText>(R.id.command)
+        titleTxt.setText(arrayItem.getString("title"))
+        commandTxt.setText(arrayItem.getString("command"))
+        AlertDialog.Builder(c)
+            .setTitle(R.string.tasmota_add_command)
+            .setView(view)
+            .setPositiveButton(android.R.string.ok) { _, _ ->
+                val newTitle = titleTxt.text.toString()
+                val newCommand = commandTxt.text.toString()
+                array.remove(index)
+                prefs.edit().putString(selectedDevice, array.put(
+                    JSONObject()
+                        .put("title", if (newTitle == "") c.resources.getString(R.string.tasmota_add_command_dialog_title_empty) else newTitle)
+                        .put("command", if (newCommand == "") c.resources.getString(R.string.tasmota_add_command_dialog_command_empty) else newCommand)
+                ).toString()).apply()
+                callback.onItemsChanged(c)
+            }
+            .setNegativeButton(android.R.string.cancel) { _, _ -> }
+            .show()
     }
 
     fun addToList(callback: RequestCallBack, title: String = "", command: String = "") {
