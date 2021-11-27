@@ -177,7 +177,7 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
     private val tasmotaRequestCallBack = object : Tasmota.RequestCallBack {
 
         override fun onItemsChanged(context: Context) {
-            adapter.updateData(tasmota?.loadList() ?: arrayListOf())
+            adapter.updateData(tasmota?.loadList() ?: arrayListOf(), preferredAnimationState = false)
         }
 
         override fun onResponse(context: Context, response: String) {
@@ -217,8 +217,6 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
             startActivity(Intent(this, SettingsActivity::class.java))
         }
 
-        registerForContextMenu(recyclerView)
-
         //Handle shortcut
         if(intent.hasExtra("device")) {
             val deviceId = intent.getStringExtra("device") ?: ""
@@ -242,15 +240,13 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
     }
 
     private fun checkNetwork() : Boolean {
-        var localNetwork = true
         val connectivityManager = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
         val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
-        if (capabilities != null) {
-            localNetwork = capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+        return if (capabilities != null) {
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
                     || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
                     || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN)
-        }
-        return localNetwork
+        } else true
     }
 
     private fun handleLevelOne(deviceId: String) {
@@ -357,26 +353,20 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
             super.onBackPressed()
     }
 
-    //TODO: Make this work
     override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
-        super.onCreateContextMenu(menu, v, menuInfo)
-        tasmotaPosition = (menuInfo as AdapterView.AdapterContextMenuInfo).position
-        if (recyclerView.getChildAt(tasmotaPosition).findViewById<TextView>(R.id.hidden).text == "tasmota_command") {
+        val hidden = v?.findViewById<TextView>(R.id.hidden)?.text ?: return
+        if (hidden.contains("tasmota_command")) {
+            tasmotaPosition = hidden.substring(hidden.lastIndexOf("#") + 1).toInt()
             menuInflater.inflate(R.menu.activity_main_tasmota_context, menu)
         }
+        super.onCreateContextMenu(menu, v, menuInfo)
     }
 
-    //TODO: Make this work
     override fun onContextItemSelected(item: MenuItem): Boolean {
+        Log.wtf(Global.LOG_TAG, item.title.toString())
         when (item.title) {
             resources.getString(R.string.str_edit) -> {
-                val editing = recyclerView.getChildAt(tasmotaPosition)
-                tasmota!!.removeFromList(tasmotaRequestCallBack, tasmotaPosition)
-                tasmota!!.addToList(
-                        tasmotaRequestCallBack,
-                        editing.findViewById<TextView>(R.id.title).text.toString(),
-                        editing.findViewById<TextView>(R.id.summary).text.toString()
-                )
+                tasmota?.updateItem(tasmotaRequestCallBack, tasmotaPosition)
             }
             resources.getString(R.string.str_delete) -> {
                 AlertDialog.Builder(this)
@@ -432,7 +422,6 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
     }
 
     override fun onItemClicked(view: View, position: Int) {
-        Log.e(Global.LOG_TAG, position.toString())
         currentView = view
         val title = view.findViewById<TextView>(R.id.title).text.toString()
         if (title == resources.getString(R.string.main_no_devices) || title == resources.getString(R.string.err_wrong_format)) {

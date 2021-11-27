@@ -1,21 +1,17 @@
 package io.github.domi04151309.home.adapters
 
 import android.annotation.SuppressLint
-import android.view.ViewGroup
+import android.app.Activity
+import android.view.*
 import androidx.recyclerview.widget.RecyclerView
-import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
 import io.github.domi04151309.home.R
-import android.view.LayoutInflater
-import android.widget.Switch
 import io.github.domi04151309.home.data.ListViewItem
-import android.widget.CompoundButton
 import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.view.animation.AnimationSet
 import android.view.animation.TranslateAnimation
+import android.widget.*
 
 class MainListAdapter(private val helperInterface: RecyclerViewHelperInterface) : RecyclerView.Adapter<MainListAdapter.ViewHolder>() {
 
@@ -54,12 +50,13 @@ class MainListAdapter(private val helperInterface: RecyclerViewHelperInterface) 
             holder.stateSwitch.visibility = View.GONE
         }
         holder.itemView.setOnClickListener { helperInterface.onItemClicked(holder.itemView, position) }
+        holder.itemView.setOnCreateContextMenuListener(holder.itemView.context as Activity)
         if (animate) playAnimation(holder.itemView)
     }
 
     override fun onViewRecycled(holder: ViewHolder) {
-        super.onViewRecycled(holder)
         holder.stateSwitch.visibility = View.VISIBLE
+        super.onViewRecycled(holder)
     }
 
     override fun getItemCount(): Int {
@@ -67,14 +64,14 @@ class MainListAdapter(private val helperInterface: RecyclerViewHelperInterface) 
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateData(newItems: ArrayList<ListViewItem>, newStateListener: CompoundButton.OnCheckedChangeListener? = null) {
+    fun updateData(newItems: ArrayList<ListViewItem>, newStateListener: CompoundButton.OnCheckedChangeListener? = null, preferredAnimationState: Boolean? = null) {
         if (newItems.size != items.size || newStateListener != stateListener) {
-            animate = true
+            animate = preferredAnimationState ?: true
             items = newItems
             stateListener = newStateListener
             notifyDataSetChanged()
         } else {
-            animate = false
+            animate = preferredAnimationState ?: false
             val changed = arrayListOf<Int>()
             for (i in 0 until items.size) {
                 if (items[i] != newItems[i]) changed.add(i)

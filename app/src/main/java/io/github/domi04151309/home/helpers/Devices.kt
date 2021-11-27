@@ -2,7 +2,6 @@ package io.github.domi04151309.home.helpers
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
 import androidx.preference.PreferenceManager
 import io.github.domi04151309.home.data.DeviceItem
 import org.json.JSONArray
@@ -113,7 +112,6 @@ class Devices(private val context: Context) {
         }
         list.add(to, list.removeAt(from))
         data.put("order", JSONArray(list))
-        Log.e(Global.LOG_TAG, list.toString())
     }
 
     fun saveChanges() {
