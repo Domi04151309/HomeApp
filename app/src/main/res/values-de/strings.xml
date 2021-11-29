@@ -2,8 +2,6 @@
     <string name="app_name">Home</string>
     <string name="app_by">Home App von Domi04151309</string>
 
-    <string name="nav_settings">Einstellungen</string>
-
     <string name="main_no_devices">Keine Geräte gefunden</string>
     <string name="main_no_devices_summary">Füge ein Gerät in den Einstellungen hinzu</string>
     <string name="main_device_nonexistent">Diese Gerät existiert nicht</string>
@@ -108,6 +106,7 @@
     <string name="str_delete">Löschen</string>
     <string name="str_reset">Zurücksetzen</string>
     <string name="str_show">Anzeigen</string>
+    <string name="str_done">Fertig</string>
 
     <string name="about">Über</string>
     <string name="about_summary">Über die App</string>

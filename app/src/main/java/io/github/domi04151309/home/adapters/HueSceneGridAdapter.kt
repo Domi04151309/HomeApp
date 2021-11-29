@@ -1,7 +1,6 @@
 package io.github.domi04151309.home.adapters
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.graphics.Color
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -20,7 +19,7 @@ class HueSceneGridAdapter(
     private val helperInterface: RecyclerViewHelperInterface
     ) : RecyclerView.Adapter<HueSceneGridAdapter.ViewHolder>() {
 
-    private var items: List<SceneGridItem> = listOf()
+    private var items: MutableList<SceneGridItem> = mutableListOf()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -56,13 +55,13 @@ class HueSceneGridAdapter(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateData(newItems: List<SceneGridItem>) {
+    fun updateData(newItems: MutableList<SceneGridItem>) {
         if (newItems.size != items.size) {
             items = newItems
             notifyDataSetChanged()
         } else {
             val changed = arrayListOf<Int>()
-            for (i in 0 until items.size) {
+            for (i in items.indices) {
                 if (items[i] != newItems[i]) changed.add(i)
             }
             items = newItems

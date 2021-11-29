@@ -2,8 +2,6 @@
     <string name="app_name">Home</string>
     <string name="app_by">Home App by Domi04151309</string>
 
-    <string name="nav_settings">Settings</string>
-
     <string name="main_no_devices">No devices found</string>
     <string name="main_no_devices_summary">Add a new device in the settings</string>
     <string name="main_device_nonexistent">The device does not exist in your list</string>
@@ -110,6 +108,7 @@
     <string name="str_delete">Delete</string>
     <string name="str_reset">Reset</string>
     <string name="str_show">Show</string>
+    <string name="str_done">Done</string>
 
     <string name="about">About</string>
     <string name="about_summary">About the app</string>

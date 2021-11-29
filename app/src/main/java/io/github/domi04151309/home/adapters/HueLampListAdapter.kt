@@ -92,6 +92,6 @@ class HueLampListAdapter(
         val title: TextView = view.findViewById(R.id.title)
         val summary: TextView = view.findViewById(R.id.summary)
         val hidden: TextView = view.findViewById(R.id.hidden)
-        val stateSwitch: Switch = view.findViewById<Switch>(R.id.state)
+        val stateSwitch: Switch = view.findViewById(R.id.state)
     }
 }

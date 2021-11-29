@@ -2,8 +2,6 @@
     <string name="app_name">Home</string>
     <string name="app_by">Home App de Domi04151309</string>
 
-    <string name="nav_settings">Ajustes</string>
-
     <string name="main_no_devices">Sin dispositivos encontrados</string>
     <string name="main_no_devices_summary">Añade un nuevo dispositivo en los ajustes</string>
     <string name="main_device_nonexistent">El dispositivo no existe en su lista</string>

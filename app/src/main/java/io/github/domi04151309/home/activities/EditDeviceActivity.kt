@@ -14,8 +14,6 @@ import android.content.pm.ShortcutManager
 import android.graphics.drawable.Icon
 import android.text.TextWatcher
 import android.text.Editable
-import android.widget.AdapterView
-import android.widget.AdapterView.OnItemSelectedListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputLayout
 import io.github.domi04151309.home.R

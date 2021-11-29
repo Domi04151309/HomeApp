@@ -2,8 +2,6 @@
     <string name="app_name">Huis</string>
     <string name="app_by">Huis-app, gemaakt door @Domi04151309</string>
 
-    <string name="nav_settings">Instellingen</string>
-
     <string name="main_no_devices">Geen apparaten aangetroffen</string>
     <string name="main_no_devices_summary">Ga naar de instellingen en voeg een apparaat toe</string>
     <string name="main_device_nonexistent">Dit apparaat staat niet op je lijst</string>

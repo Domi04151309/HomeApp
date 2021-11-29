@@ -116,7 +116,7 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes), RecyclerViewHe
                                         )
                                         completedRequests++
                                         if (completedRequests == sceneIds.size) {
-                                            var sortedItems = gridItems.sortedWith(compareBy { it.color })
+                                            val sortedItems = gridItems.sortedWith(compareBy { it.color }).toMutableList()
                                             sortedItems += SceneGridItem(
                                                 name = resources.getString(R.string.hue_add_scene),
                                                 hidden = "add"
@@ -130,7 +130,7 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes), RecyclerViewHe
                                 ))
                             }
                         } else {
-                            adapter.updateData(listOf(SceneGridItem(
+                            adapter.updateData(mutableListOf(SceneGridItem(
                                 name = resources.getString(R.string.hue_add_scene),
                                 hidden = "add"
                             )))

@@ -25,7 +25,7 @@
                 android:alpha="0.6"
                 android:padding="13dp"
                 android:layout_centerVertical="true"
-                android:contentDescription="@string/nav_settings" />
+                android:contentDescription="@string/pref" />
 
             <TextView
                 android:layout_width="match_parent"
