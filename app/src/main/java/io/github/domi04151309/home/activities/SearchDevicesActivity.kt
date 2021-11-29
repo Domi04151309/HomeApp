@@ -1,6 +1,9 @@
 package io.github.domi04151309.home.activities
 
 import android.content.Context
+import android.icu.lang.UCharacter
+import android.net.nsd.NsdManager
+import android.net.nsd.NsdServiceInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.net.wifi.WifiManager
@@ -17,8 +20,10 @@ import io.github.domi04151309.home.adapters.DeviceDiscoveryListAdapter
 import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.data.SimpleListItem
+import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.Theme
 import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
+import java.net.InetAddress
 
 class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
 
@@ -117,6 +122,55 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
                 }
             })
         }.start()
+
+        val nsdManager = (getSystemService(NSD_SERVICE) as NsdManager)
+        class mDNSresolve : NsdManager.ResolveListener {
+            override fun onResolveFailed(serviceInfo: NsdServiceInfo, errorCode: Int) {
+                // Called when the resolve fails. Use the error code to debug.
+                Log.e(Global.LOG_TAG, "Resolve failed: $errorCode")
+            }
+
+            override fun onServiceResolved(serviceInfo: NsdServiceInfo) {
+                Log.e(Global.LOG_TAG, "Resolve Succeeded. $serviceInfo")
+                val host: String = serviceInfo.host.getHostAddress()
+                Log.e(Global.LOG_TAG, "gen" + serviceInfo.attributes.get("gen").toString())
+                runOnUiThread(java.lang.Runnable {
+                    adapter.add(SimpleListItem(
+                            title = serviceInfo.serviceName,
+                            summary = host,
+                            hidden = "Shelly Gen 2#Lamp",
+                            icon = R.drawable.ic_device_lamp
+                    ))
+                })
+            }
+        }
+
+        val discoveryListener = object : NsdManager.DiscoveryListener {
+            override fun onStartDiscoveryFailed(p0: String?, p1: Int) {
+                nsdManager.stopServiceDiscovery(this)
+            }
+
+            override fun onStopDiscoveryFailed(p0: String?, p1: Int) {
+                nsdManager.stopServiceDiscovery(this)
+            }
+
+            override fun onDiscoveryStarted(p0: String?) {
+            }
+
+            override fun onDiscoveryStopped(p0: String?) {
+            }
+
+            override fun onServiceFound(service: NsdServiceInfo) {
+                Log.d(Global.LOG_TAG, "found")
+                if (service.serviceName.lowercase().startsWith("shelly")) {
+                    nsdManager.resolveService(service, mDNSresolve())
+                }
+            }
+
+            override fun onServiceLost(p0: NsdServiceInfo?) {
+            }
+        }
+        nsdManager.discoverServices("_http._tcp", NsdManager.PROTOCOL_DNS_SD, discoveryListener)
     }
 
     private fun intToIp(address: Int): String {
