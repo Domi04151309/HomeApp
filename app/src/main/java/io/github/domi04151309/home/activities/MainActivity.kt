@@ -195,7 +195,7 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
     /*
      * Things related to Shelly
      */
-    internal var shelly: ShellyAPI? = null
+    private var shelly: ShellyAPI? = null
     private val shellyRequestCallBack = object : ShellyAPI.RequestCallBack {
         override fun onResponse(holder: RequestCallbackObject) {
             if (holder.response != null) {
@@ -212,6 +212,10 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
             } else {
                 handleErrorOnLevelOne(holder.errorMessage)
             }
+        }
+
+        override fun onSwitchesLoaded(holder: RequestCallbackObject) {
+            //TODO("Not yet implemented")
         }
     }
 
@@ -312,8 +316,12 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
                 adapter.updateData(tasmota?.loadList() ?: arrayListOf())
                 setLevelTwo(deviceObj, Flavors.TWO_TASMOTA)
             }
-            "Shelly Gen 1", "Shelly Gen 2" -> {
-                shelly = ShellyAPI(this, deviceId)
+            "Shelly Gen 1" -> {
+                shelly = ShellyAPI(this, deviceId, 1)
+                shelly?.getBasicDeviceInfo(shellyRequestCallBack)
+            }
+            "Shelly Gen 2" -> {
+                shelly = ShellyAPI(this, deviceId, 2)
                 shelly?.getBasicDeviceInfo(shellyRequestCallBack)
             }
             else ->
