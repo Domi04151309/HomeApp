@@ -7,8 +7,8 @@ android {
         applicationId "io.github.domi04151309.home"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 172
-        versionName "1.7.2"
+        versionCode 173
+        versionName "1.7.3"
     }
     buildTypes {
         debug {
