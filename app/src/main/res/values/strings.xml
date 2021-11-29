@@ -152,6 +152,8 @@
         <item>Tasmota</item>
         <item>Node-RED</item>
         <item>Fritz! Auto-Login</item>
+        <item>Shelly Gen 1</item>
+        <item>Shelly Gen 2</item>
         <item>Website</item>
     </string-array>
 </resources>

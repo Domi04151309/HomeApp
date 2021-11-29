@@ -34,11 +34,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.github.domi04151309.home.adapters.MainListAdapter
 import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
+import org.json.JSONArray
 
 class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
 
     enum class Flavors {
-        ONE, TWO_SIMPLE_HOME, TWO_HUE, TWO_TASMOTA
+        ONE, TWO_SIMPLE_HOME, TWO_HUE, TWO_TASMOTA, TWO_SHELLY
     }
 
     private var currentDevice = ""
@@ -191,6 +192,29 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
         }
     }
 
+    /*
+     * Things related to Shelly
+     */
+    internal var shelly: ShellyAPI? = null
+    private val shellyRequestCallBack = object : ShellyAPI.RequestCallBack {
+        override fun onResponse(holder: RequestCallbackObject) {
+            if (holder.response != null) {
+                val names = holder.response.names() ?: JSONArray()
+                val listItems = arrayListOf<ListViewItem>()
+                for (i in 0 until names.length()) {
+                    listItems += ListViewItem(
+                        title = names.getString(i),
+                        summary = holder.response.getString(names.getString(i))
+                    )
+                }
+                adapter.updateData(listItems)
+                setLevelTwo(devices.getDeviceById(holder.deviceId), Flavors.TWO_SHELLY)
+            } else {
+                handleErrorOnLevelOne(holder.errorMessage)
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         Theme.setNoActionBar(this)
         super.onCreate(savedInstanceState)
@@ -287,6 +311,10 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
                 tasmota = Tasmota(this, deviceId)
                 adapter.updateData(tasmota?.loadList() ?: arrayListOf())
                 setLevelTwo(deviceObj, Flavors.TWO_TASMOTA)
+            }
+            "Shelly Gen 1", "Shelly Gen 2" -> {
+                shelly = ShellyAPI(this, deviceId)
+                shelly?.getBasicDeviceInfo(shellyRequestCallBack)
             }
             else ->
                 Toast.makeText(this, R.string.main_unknown_mode, Toast.LENGTH_LONG).show()
