@@ -37,7 +37,7 @@ class Devices(private val context: Context) {
 
     private val deviceOrder: JSONArray get() {
         if (!data.has("order")) {
-            data.put("order", devicesObject.names())
+            data.put("order", devicesObject.names() ?: JSONArray())
         }
         return data.getJSONArray("order")
     }
