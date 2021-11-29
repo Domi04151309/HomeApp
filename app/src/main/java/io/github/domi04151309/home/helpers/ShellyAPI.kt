@@ -6,7 +6,6 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import io.github.domi04151309.home.data.RequestCallbackObject
 import org.json.JSONArray
-import org.json.JSONObject
 
 class ShellyAPI(private val c: Context, deviceId: String, private val version: Int) {
 
@@ -53,17 +52,35 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
                 Request.Method.GET, url + "rpc/Shelly.GetConfig", null,
                 { response ->
                     val names = response.names() ?: JSONArray()
-                    val relays = JSONObject()
+                    val relayIds = ArrayList<Int>(names.length() / 2)
                     var currentName: String
                     for (i in 0 until names.length()) {
                         currentName = names.getString(i)
-                        if (currentName.contains("switch:")) relays.put(currentName, response.getJSONObject(currentName))
+                        if (currentName.contains("switch:")) relayIds.add(currentName.substring(7).toInt())
                     }
-                    callback.onSwitchesLoaded(RequestCallbackObject(
-                        c,
-                        relays,
-                        selectedDevice
-                    ))
+
+                    val relays = JSONArray()
+                    var completedRequests = 0
+                    for (i in 0 until relayIds.size) {
+                        //TODO: authenticate
+                        queue.add(JsonObjectRequest(
+                            Request.Method.GET, url + "relay/$i", null,
+                            { secondResponse ->
+                                relays.put(secondResponse)
+                                completedRequests++
+                                if (completedRequests == relayIds.size) {
+                                    callback.onSwitchesLoaded(RequestCallbackObject(
+                                        c,
+                                        relays.toJSONObject(JSONArray(IntArray(relays.length()) { it })),
+                                        selectedDevice
+                                    ))
+                                }
+                            },
+                            { error ->
+                                callback.onResponse(RequestCallbackObject(c, null, selectedDevice, Global.volleyError(c, error)))
+                            }
+                        ))
+                    }
                 },
                 { error ->
                     callback.onSwitchesLoaded(RequestCallbackObject(c, null, selectedDevice, Global.volleyError(c, error)))
@@ -71,20 +88,6 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
             )
             else -> null
         }
-        queue.add(jsonObjectRequest)
-    }
-
-    fun loadSwitchState(id: Int, callback: RequestCallBack) {
-        //TODO: Authenticate first
-        val jsonObjectRequest = JsonObjectRequest(
-            Request.Method.GET, url + "relay/$id", null,
-            { response ->
-                callback.onResponse(RequestCallbackObject(c, response, selectedDevice))
-            },
-            { error ->
-                callback.onResponse(RequestCallbackObject(c, null, selectedDevice, Global.volleyError(c, error)))
-            }
-        )
         queue.add(jsonObjectRequest)
     }
 
