@@ -165,42 +165,46 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
-        return if (item.title == resources.getString(R.string.str_rename)) {
-            val nullParent: ViewGroup? = null
-            val view = layoutInflater.inflate(R.layout.dialog_input, nullParent, false)
-            val input = view.findViewById<EditText>(R.id.input)
-            input.setText(selectedSceneName)
-            AlertDialog.Builder(c)
+        return when (item.title) {
+            resources.getString(R.string.str_rename) -> {
+                val nullParent: ViewGroup? = null
+                val view = layoutInflater.inflate(R.layout.dialog_input, nullParent, false)
+                val input = view.findViewById<EditText>(R.id.input)
+                input.setText(selectedSceneName)
+                AlertDialog.Builder(c)
                     .setTitle(R.string.str_rename)
                     .setMessage(R.string.hue_rename_scene)
                     .setView(view)
                     .setPositiveButton(android.R.string.ok) { _, _ ->
                         val requestObject = "{\"name\":\"" + input.text.toString() + "\"}"
                         val renameSceneRequest = CustomJsonArrayRequest(Request.Method.PUT, lampData.addressPrefix + "/scenes/$selectedScene", JSONObject(requestObject),
-                                { queue.add(scenesRequest) },
-                                { e -> Log.e(Global.LOG_TAG, e.toString()) }
+                            { queue.add(scenesRequest) },
+                            { e -> Log.e(Global.LOG_TAG, e.toString()) }
                         )
                         queue.add(renameSceneRequest)
                     }
                     .setNegativeButton(android.R.string.cancel) { _, _ -> }
                     .show()
-            true
-        } else if (item.title == resources.getString(R.string.str_delete)) {
-            AlertDialog.Builder(c)
+                true
+            }
+            resources.getString(R.string.str_delete) -> {
+                AlertDialog.Builder(c)
                     .setTitle(R.string.str_delete)
                     .setMessage(R.string.hue_delete_scene)
                     .setPositiveButton(R.string.str_delete) { _, _ ->
                         val deleteSceneRequest = CustomJsonArrayRequest(Request.Method.DELETE, lampData.addressPrefix + "/scenes/" + selectedScene, null,
-                                { queue.add(scenesRequest) },
-                                { e -> Log.e(Global.LOG_TAG, e.toString()) }
+                            { queue.add(scenesRequest) },
+                            { e -> Log.e(Global.LOG_TAG, e.toString()) }
                         )
                         queue.add(deleteSceneRequest)
                     }
                     .setNegativeButton(android.R.string.cancel) { _, _ -> }
                     .show()
-            true
-        } else {
-            super.onContextItemSelected(item)
+                true
+            }
+            else -> {
+                super.onContextItemSelected(item)
+            }
         }
     }
 
