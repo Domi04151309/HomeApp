@@ -83,9 +83,7 @@ class HueLampListAdapter(
             }
             items = newItems
             colors = newColors
-            changed.forEach {
-                notifyItemChanged(it)
-            }
+            changed.forEach(::notifyItemChanged)
         }
     }
 

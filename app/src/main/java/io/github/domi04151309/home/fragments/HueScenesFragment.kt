@@ -9,6 +9,8 @@ import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
@@ -23,9 +25,10 @@ import io.github.domi04151309.home.helpers.ColorUtils
 import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.HueAPI
 import io.github.domi04151309.home.helpers.HueUtils
+import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
 import org.json.JSONObject
 
-class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
+class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes), RecyclerViewHelperInterface {
 
     companion object {
         var scenesChanged: Boolean = false
@@ -45,9 +48,10 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
         hueAPI = HueAPI(c, lampData.deviceId)
         queue = Volley.newRequestQueue(context)
 
-        val gridView = (super.onCreateView(inflater, container, savedInstanceState) ?: throw IllegalStateException()) as GridView
-        val adapter = HueSceneGridAdapter()
-        gridView.adapter = adapter
+        val recyclerView = (super.onCreateView(inflater, container, savedInstanceState) ?: throw IllegalStateException()) as RecyclerView
+        val adapter = HueSceneGridAdapter(this, this)
+        recyclerView.layoutManager = GridLayoutManager(c, 3)
+        recyclerView.adapter = adapter
 
         scenesRequest = JsonObjectRequest(Request.Method.GET, lampData.addressPrefix + "/scenes/", null,
                 { response ->
@@ -140,25 +144,22 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes) {
                 }
         )
         queue.add(scenesRequest)
+        return recyclerView
+    }
 
-        gridView.onItemClickListener = AdapterView.OnItemClickListener { _, element, _, _ ->
-            val hiddenText = element.findViewById<TextView>(R.id.hidden).text.toString()
-            if (hiddenText == "add") {
-                startActivity(Intent(c, HueSceneActivity::class.java).putExtra("deviceId", lampData.deviceId).putExtra("room", lampData.id))
-            } else {
-                hueAPI.activateSceneOfGroup(lampData.id, hiddenText)
-            }
+    override fun onItemClicked(view: View, position: Int) {
+        val hiddenText = view.findViewById<TextView>(R.id.hidden).text.toString()
+        if (hiddenText == "add") {
+            startActivity(Intent(c, HueSceneActivity::class.java).putExtra("deviceId", lampData.deviceId).putExtra("room", lampData.id))
+        } else {
+            hueAPI.activateSceneOfGroup(lampData.id, hiddenText)
         }
-        registerForContextMenu(gridView)
-        return gridView
     }
 
     override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
         super.onCreateContextMenu(menu, v, menuInfo)
-        val info = menuInfo as AdapterView.AdapterContextMenuInfo
-        val view = v as GridView
-        selectedScene = view.getChildAt(info.position).findViewById<TextView>(R.id.hidden).text
-        selectedSceneName = view.getChildAt(info.position).findViewById<TextView>(R.id.name).text
+        selectedScene = v.findViewById<TextView>(R.id.hidden).text
+        selectedSceneName = v.findViewById<TextView>(R.id.title).text
         if (selectedScene != "add") {
             MenuInflater(c).inflate(R.menu.activity_hue_lamp_context, menu)
         }

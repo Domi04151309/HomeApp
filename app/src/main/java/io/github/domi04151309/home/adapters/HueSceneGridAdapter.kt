@@ -1,54 +1,78 @@
 package io.github.domi04151309.home.adapters
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.graphics.Color
-import android.graphics.drawable.LayerDrawable
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
+import androidx.recyclerview.widget.RecyclerView
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import io.github.domi04151309.home.R
+import android.view.LayoutInflater
+import android.graphics.drawable.LayerDrawable
+import androidx.core.content.ContextCompat
 import io.github.domi04151309.home.data.SceneGridItem
+import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
 
-internal class HueSceneGridAdapter() : BaseAdapter() {
+class HueSceneGridAdapter(
+    private val contextMenuListener: View.OnCreateContextMenuListener,
+    private val helperInterface: RecyclerViewHelperInterface
+    ) : RecyclerView.Adapter<HueSceneGridAdapter.ViewHolder>() {
 
-    private var items: List<SceneGridItem> = arrayListOf()
+    private var items: List<SceneGridItem> = listOf()
 
-    override fun getCount(): Int {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): ViewHolder {
+        return ViewHolder(
+            LayoutInflater
+                .from(parent.context)
+                .inflate(R.layout.grid_item, parent, false)
+        )
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val context = holder.itemView.context
+        holder.title.text = items[position].name
+        holder.hidden.text = items[position].hidden
+        if (items[position].color == null) {
+            holder.drawable.setImageResource(R.drawable.ic_hue_scene_add)
+        } else {
+            val finalDrawable = LayerDrawable(arrayOf(
+                ContextCompat.getDrawable(context, R.drawable.ic_hue_scene_base),
+                ContextCompat.getDrawable(context, R.drawable.ic_hue_scene_color)
+            ))
+            finalDrawable.getDrawable(1).setTint(items[position].color ?: Color.WHITE)
+            holder.drawable.setImageDrawable(finalDrawable)
+        }
+        holder.itemView.setOnClickListener { helperInterface.onItemClicked(holder.itemView, position) }
+        holder.itemView.setOnCreateContextMenuListener(contextMenuListener)
+    }
+
+    override fun getItemCount(): Int {
         return items.size
     }
 
-    override fun getItem(position: Int): SceneGridItem {
-        return items[position]
-    }
-
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
-    }
-
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val vi: View = convertView
-            ?: LayoutInflater.from(parent.context).inflate(R.layout.grid_item, parent, false)
-        vi.findViewById<TextView>(R.id.name).text = items[position].name
-        vi.findViewById<TextView>(R.id.hidden).text = items[position].hidden
-        val drawableView = vi.findViewById<ImageView>(R.id.drawable)
-        if (items[position].color == null) {
-            drawableView.setImageResource(R.drawable.ic_hue_scene_add)
-        } else {
-            val finalDrawable = LayerDrawable(arrayOf(
-                ContextCompat.getDrawable(parent.context, R.drawable.ic_hue_scene_base),
-                ContextCompat.getDrawable(parent.context, R.drawable.ic_hue_scene_color)
-            ))
-            finalDrawable.getDrawable(1).setTint(items[position].color ?: Color.WHITE)
-            drawableView.setImageDrawable(finalDrawable)
-        }
-        return vi
-    }
-
+    @SuppressLint("NotifyDataSetChanged")
     fun updateData(newItems: List<SceneGridItem>) {
-        items = newItems
-        notifyDataSetChanged()
+        if (newItems.size != items.size) {
+            items = newItems
+            notifyDataSetChanged()
+        } else {
+            val changed = arrayListOf<Int>()
+            for (i in 0 until items.size) {
+                if (items[i] != newItems[i]) changed.add(i)
+            }
+            items = newItems
+            changed.forEach(::notifyItemChanged)
+        }
+    }
+
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val drawable: ImageView = view.findViewById(R.id.drawable)
+        val title: TextView = view.findViewById(R.id.title)
+        val hidden: TextView = view.findViewById(R.id.hidden)
     }
 }
