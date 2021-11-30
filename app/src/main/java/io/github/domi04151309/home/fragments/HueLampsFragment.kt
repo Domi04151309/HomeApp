@@ -57,7 +57,6 @@ class HueLampsFragment : Fragment(R.layout.fragment_hue_lamps), RecyclerViewHelp
         recyclerView.adapter = adapter
 
         requestCallBack = object : HueAPI.RequestCallBack {
-            override fun onGroupLoaded(holder: RequestCallbackObject) {}
             override fun onGroupsLoaded(holder: RequestCallbackObject) {}
             override fun onLightsLoaded(holder: RequestCallbackObject) {
                 if (holder.response != null) {
