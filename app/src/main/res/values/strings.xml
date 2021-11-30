@@ -60,8 +60,6 @@
     <string name="webView_error">Loading the website failed</string>
     <string name="webView_error_summary">Please check your network connection or try again later</string>
     <string name="webView_authentication">Authentication</string>
-    <string name="webView_username">Username</string>
-    <string name="webView_password">Password</string>
 
     <string name="pref">Settings</string>
     <string name="pref_general">General Settings</string>
@@ -86,7 +84,6 @@
     <string name="pref_add_address_example">e.g., http://127.0.0.1/</string>
     <string name="pref_add_icon">Icon</string>
     <string name="pref_add_mode">Mode</string>
-    <string name="pref_add_password">Password</string>
     <string name="pref_add_search">Searching for compatible devices</string>
     <string name="pref_add_search_summary">This might take a couple of seconds</string>
     <string name="pref_add_success">Add Device</string>
@@ -104,6 +101,9 @@
     <string name="pref_info_header_summary">Header background by Alberto Castillo Q. on Unsplash</string>
     <string name="pref_device_router">Router</string>
     <string name="placeholder">Loading</string>
+
+    <string name="security_username">Username</string>
+    <string name="security_password">Password</string>
 
     <string name="str_cancel">Cancel</string>
     <string name="str_name">Name</string>

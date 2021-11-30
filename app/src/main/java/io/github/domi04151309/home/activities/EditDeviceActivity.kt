@@ -48,6 +48,7 @@ class EditDeviceActivity : AppCompatActivity() {
         val modeSpinner = findViewById<TextInputLayout>(R.id.modeSpinner).editText as AutoCompleteTextView
         val specialDivider = findViewById<View>(R.id.specialDivider)
         val specialSection = findViewById<LinearLayout>(R.id.specialSection)
+        val usernameBox = findViewById<TextInputLayout>(R.id.usernameBox)
         val passwordBox = findViewById<TextInputLayout>(R.id.passwordBox)
 
         findViewById<TextView>(R.id.idTxt).text = (resources.getString(R.string.pref_add_id, deviceId))
@@ -63,9 +64,11 @@ class EditDeviceActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable) {}
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                val visibility = if (s.toString() == "Fritz! Auto-Login") View.VISIBLE else View.GONE
-                specialDivider.visibility = visibility
-                specialSection.visibility = visibility
+                val specialVisibility = if (s.toString() == "Fritz! Auto-Login" || s.toString() == "Shelly Gen 1" || s.toString() == "Shelly Gen 2") View.VISIBLE else View.GONE
+                val usernameVisibility = if (s.toString() == "Shelly Gen 1") View.VISIBLE else View.GONE
+                specialDivider.visibility = specialVisibility
+                specialSection.visibility = specialVisibility
+                usernameBox.visibility = usernameVisibility
             }
         })
         nameBox.editText?.addTextChangedListener(object : TextWatcher {
@@ -85,6 +88,7 @@ class EditDeviceActivity : AppCompatActivity() {
             addressBox.editText?.setText(deviceObj.address)
             iconSpinner.setText(deviceObj.iconName)
             modeSpinner.setText(deviceObj.mode)
+            usernameBox.editText?.setText(deviceSecrets.username)
             passwordBox.editText?.setText(deviceSecrets.password)
 
             findViewById<Button>(R.id.shortcutBtn).setOnClickListener {
@@ -165,6 +169,7 @@ class EditDeviceActivity : AppCompatActivity() {
             newItem.mode = modeSpinner.text.toString()
             newItem.iconName = iconSpinner.text.toString()
             devices.addDevice(newItem)
+            deviceSecrets.username = usernameBox.editText?.text.toString()
             deviceSecrets.password = passwordBox.editText?.text.toString()
             deviceSecrets.updateDeviceSecrets()
             finish()

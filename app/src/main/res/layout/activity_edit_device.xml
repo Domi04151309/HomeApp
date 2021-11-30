@@ -134,13 +134,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="?dialogPreferredPadding">
+                android:paddingStart="?dialogPreferredPadding"
+                android:paddingEnd="?dialogPreferredPadding"
+                android:paddingBottom="?dialogPreferredPadding">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/usernameBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="?dialogPreferredPadding"
+                    android:hint="@string/security_username">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text|textNoSuggestions" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/passwordBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/pref_add_password"
+                    android:paddingTop="?dialogPreferredPadding"
+                    android:hint="@string/security_password"
                     app:endIconMode="password_toggle">
 
                     <com.google.android.material.textfield.TextInputEditText

@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:singleLine="true"
-        android:hint="@string/webView_username"
+        android:hint="@string/security_username"
         android:inputType="text"
         android:importantForAutofill="no"
         tools:targetApi="o" />
@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:singleLine="true"
-        android:hint="@string/webView_password"
+        android:hint="@string/security_password"
         android:inputType="textPassword"
         android:importantForAutofill="no"
         tools:targetApi="o" />
