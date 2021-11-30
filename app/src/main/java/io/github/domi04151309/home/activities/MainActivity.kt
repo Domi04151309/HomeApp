@@ -195,8 +195,15 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
     private var shelly: ShellyAPI? = null
     internal val shellyStateListener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
         if (compoundButton.isPressed) {
-            val hidden = (compoundButton.parent as ViewGroup).findViewById<TextView>(R.id.hidden).text
-            shelly?.changeSwitchState(hidden.toString().toInt(), b)
+            val view = (compoundButton.parent as ViewGroup)
+            view.findViewById<TextView>(R.id.summary).text = resources.getString(
+                if (b) R.string.shelly_switch_summary_on
+                else R.string.shelly_switch_summary_off
+            )
+            shelly?.changeSwitchState(
+                view.findViewById<TextView>(R.id.hidden).text.toString().toInt(),
+                b
+            )
         }
     }
     private val shellyRequestCallBack = object : ShellyAPI.RequestCallBack {
@@ -227,8 +234,8 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
                     currentId = names.getString(i)
                     currentState = holder.response.getJSONObject(currentId).getBoolean("ison")
                     listItems += ListViewItem(
-                        title = currentId,
-                        summary = currentState.toString(),
+                        title = resources.getString(R.string.shelly_switch_title, currentId),
+                        summary = resources.getString(if (currentState) R.string.shelly_switch_summary_on else R.string.shelly_switch_summary_off),
                         hidden = currentId,
                         state = currentState,
                         icon = R.drawable.ic_do

@@ -51,6 +51,10 @@
     <string name="tasmota_execute_once">Execute command</string>
     <string name="tasmota_execute_once_summary">Execute command once without adding it to the list</string>
 
+    <string name="shelly_switch_title">Switch %1$s</string>
+    <string name="shelly_switch_summary_on">The switch is on</string>
+    <string name="shelly_switch_summary_off">The switch is off</string>
+
     <string name="webView">Web View</string>
     <string name="webView_open">Open in browser</string>
     <string name="webView_error">Loading the website failed</string>

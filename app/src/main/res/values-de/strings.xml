@@ -49,6 +49,10 @@
     <string name="tasmota_execute_once">Befehl ausführen</string>
     <string name="tasmota_execute_once_summary">Führt einen Befehl ein Mal aus ohne ihn der Liste hinzuzufügen</string>
 
+    <string name="shelly_switch_title">Schalter %1$s</string>
+    <string name="shelly_switch_summary_on">Der Schalter ist an</string>
+    <string name="shelly_switch_summary_off">Der Schalter ist aus</string>
+
     <string name="webView">Internetansicht</string>
     <string name="webView_open">Im Browser öffnen</string>
     <string name="webView_error">Laden der Webseite fehlgeschlagen</string>
