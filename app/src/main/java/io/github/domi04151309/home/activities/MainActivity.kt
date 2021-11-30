@@ -61,14 +61,6 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
             PreferenceManager.getDefaultSharedPreferences(this)
                     .getString(P.PREF_THEME, P.PREF_THEME_DEFAULT) ?: P.PREF_THEME_DEFAULT
 
-
-    internal val hueGroupStateListener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
-        if (compoundButton.isPressed) {
-            val hidden = (compoundButton.parent as ViewGroup).findViewById<TextView>(R.id.hidden).text
-            hueAPI?.switchGroupByID(hidden.substring(hidden.lastIndexOf("#") + 1), b)
-        }
-    }
-
     /*
      * Things related to the Home API
      */
@@ -110,7 +102,12 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
      * Things related to the Hue API
      */
     private var hueAPI: HueAPI? = null
-
+    internal val hueGroupStateListener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
+        if (compoundButton.isPressed) {
+            val hidden = (compoundButton.parent as ViewGroup).findViewById<TextView>(R.id.hidden).text
+            hueAPI?.switchGroupByID(hidden.substring(hidden.lastIndexOf("#") + 1), b)
+        }
+    }
     private val hueRequestCallBack = object : HueAPI.RequestCallBack {
 
         override fun onGroupLoaded(holder: RequestCallbackObject) {}
@@ -196,6 +193,12 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
      * Things related to Shelly
      */
     private var shelly: ShellyAPI? = null
+    internal val shellyStateListener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
+        if (compoundButton.isPressed) {
+            val hidden = (compoundButton.parent as ViewGroup).findViewById<TextView>(R.id.hidden).text
+            shelly?.changeSwitchState(hidden.toString().toInt(), b)
+        }
+    }
     private val shellyRequestCallBack = object : ShellyAPI.RequestCallBack {
         override fun onResponse(holder: RequestCallbackObject) {
             if (holder.response != null) {
@@ -215,7 +218,27 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
         }
 
         override fun onSwitchesLoaded(holder: RequestCallbackObject) {
-            //TODO("Not yet implemented")
+            if (holder.response != null) {
+                val names = holder.response.names() ?: JSONArray()
+                val listItems = arrayListOf<ListViewItem>()
+                var currentId: String
+                var currentState: Boolean
+                for (i in 0 until names.length()) {
+                    currentId = names.getString(i)
+                    currentState = holder.response.getJSONObject(currentId).getBoolean("ison")
+                    listItems += ListViewItem(
+                        title = currentId,
+                        summary = currentState.toString(),
+                        hidden = currentId,
+                        state = currentState,
+                        icon = R.drawable.ic_do
+                    )
+                }
+                adapter.updateData(listItems, shellyStateListener)
+                setLevelTwo(devices.getDeviceById(holder.deviceId), Flavors.TWO_SHELLY)
+            } else {
+                handleErrorOnLevelOne(holder.errorMessage)
+            }
         }
     }
 
@@ -318,11 +341,11 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
             }
             "Shelly Gen 1" -> {
                 shelly = ShellyAPI(this, deviceId, 1)
-                shelly?.getBasicDeviceInfo(shellyRequestCallBack)
+                shelly?.loadSwitches(shellyRequestCallBack)
             }
             "Shelly Gen 2" -> {
                 shelly = ShellyAPI(this, deviceId, 2)
-                shelly?.getBasicDeviceInfo(shellyRequestCallBack)
+                shelly?.loadSwitches(shellyRequestCallBack)
             }
             else ->
                 Toast.makeText(this, R.string.main_unknown_mode, Toast.LENGTH_LONG).show()

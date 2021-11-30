@@ -1,6 +1,7 @@
 package io.github.domi04151309.home.helpers
 
 import android.content.Context
+import android.util.Log
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
@@ -16,19 +17,6 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
     interface RequestCallBack {
         fun onResponse(holder: RequestCallbackObject)
         fun onSwitchesLoaded(holder: RequestCallbackObject)
-    }
-
-    fun getBasicDeviceInfo(callback: RequestCallBack) {
-        val jsonObjectRequest = JsonObjectRequest(
-            Request.Method.GET, url + "shelly", null,
-            { response ->
-                callback.onResponse(RequestCallbackObject(c, response, selectedDevice))
-            },
-            { error ->
-                callback.onResponse(RequestCallbackObject(c, null, selectedDevice, Global.volleyError(c, error)))
-            }
-        )
-        queue.add(jsonObjectRequest)
     }
 
     fun loadSwitches(callback: RequestCallBack) {
@@ -91,16 +79,12 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
         queue.add(jsonObjectRequest)
     }
 
-    fun changeSwitchState(id: Int, state: Boolean, callback: RequestCallBack) {
+    fun changeSwitchState(id: Int, state: Boolean) {
         //TODO: Authenticate first
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.GET, url + "relay/$id?turn=" + (if (state) "on" else "off"), null,
-            { response ->
-                callback.onResponse(RequestCallbackObject(c, response, selectedDevice))
-            },
-            { error ->
-                callback.onResponse(RequestCallbackObject(c, null, selectedDevice, Global.volleyError(c, error)))
-            }
+            { },
+            { e -> Log.e(Global.LOG_TAG, e.toString()) }
         )
         queue.add(jsonObjectRequest)
     }
