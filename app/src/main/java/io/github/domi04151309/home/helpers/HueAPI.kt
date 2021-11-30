@@ -21,12 +21,11 @@ class HueAPI(context: Context, deviceId: String) {
 
     private val c = context
     private val selectedDevice = deviceId
-    private var url = Devices(c).getDeviceById(deviceId).address
+    private val url = Devices(c).getDeviceById(deviceId).address
     private val queue = Volley.newRequestQueue(c)
     var readyForRequest: Boolean = true
 
     interface RequestCallBack {
-        fun onGroupLoaded(holder: RequestCallbackObject)
         fun onGroupsLoaded(holder: RequestCallbackObject)
         fun onLightsLoaded(holder: RequestCallbackObject)
     }
@@ -38,8 +37,8 @@ class HueAPI(context: Context, deviceId: String) {
     fun loadGroups(callback: RequestCallBack) {
         val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url + "api/${getUsername()}/groups", null,
                 { response ->
-                    val processed = JSONObject()
                     try {
+                        val processed = JSONObject()
                         val rooms: ArrayList<Group> = ArrayList(response.length() / 2)
                         val zones: ArrayList<Group> = ArrayList(response.length() / 2)
                         var currentObjectName: String
@@ -58,26 +57,14 @@ class HueAPI(context: Context, deviceId: String) {
                         for (i in sortedZones.indices) {
                             processed.put(sortedZones[i].key, sortedZones[i].value)
                         }
+                        callback.onGroupsLoaded(RequestCallbackObject(c, processed, selectedDevice))
                     } catch (e: Exception) {
                         callback.onGroupsLoaded(RequestCallbackObject(c, null, selectedDevice, volleyError(c, e)))
                     }
-                    callback.onGroupsLoaded(RequestCallbackObject(c, processed, selectedDevice))
                 },
                 { error ->
                     callback.onGroupsLoaded(RequestCallbackObject(c, null, selectedDevice, volleyError(c, error)))
                     if (error is ParseError) c.startActivity(Intent(c, HueConnectActivity::class.java).putExtra("deviceId", selectedDevice))
-                }
-        )
-        queue.add(jsonObjectRequest)
-    }
-
-    fun loadGroupByID(groupID: String, callback: RequestCallBack) {
-        val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url + "api/${getUsername()}/groups/$groupID", null,
-                { response ->
-                    callback.onGroupLoaded(RequestCallbackObject(c, response, selectedDevice))
-                },
-                { error ->
-                    callback.onGroupLoaded(RequestCallbackObject(c, null, selectedDevice, volleyError(c, error)))
                 }
         )
         queue.add(jsonObjectRequest)
