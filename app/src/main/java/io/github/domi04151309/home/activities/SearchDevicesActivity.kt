@@ -132,11 +132,11 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
 
             override fun onServiceResolved(serviceInfo: NsdServiceInfo) {
                 val gen = serviceInfo.attributes["gen"]
-                if (gen != null) runOnUiThread {
+                runOnUiThread {
                     adapter.add(SimpleListItem(
                             title = serviceInfo.serviceName,
                             summary = serviceInfo.host.hostAddress,
-                            hidden = "Shelly Gen ${gen?.decodeToString()}#Raspberry Pi",
+                            hidden = "Shelly Gen ${if (gen == null) "1" else gen?.decodeToString()}#Raspberry Pi",
                             icon = R.drawable.ic_device_lamp
                     ))
                 }
