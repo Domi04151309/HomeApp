@@ -5,25 +5,26 @@ import android.util.Log
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import io.github.domi04151309.home.custom.JsonObjectRequestAuth
 import io.github.domi04151309.home.data.RequestCallbackObject
 import org.json.JSONArray
 
 class ShellyAPI(private val c: Context, deviceId: String, private val version: Int) {
 
     private val selectedDevice = deviceId
-    private var url = Devices(c).getDeviceById(deviceId).address
+    private val url = Devices(c).getDeviceById(deviceId).address
     private val queue = Volley.newRequestQueue(c)
+    private val secrets = DeviceSecrets(c, deviceId)
 
     interface RequestCallBack {
-        fun onResponse(holder: RequestCallbackObject)
         fun onSwitchesLoaded(holder: RequestCallbackObject)
     }
 
     fun loadSwitches(callback: RequestCallBack) {
         //TODO: Authenticate first
         val jsonObjectRequest = when (version) {
-            1 -> JsonObjectRequest(
-                Request.Method.GET, url + "status", null,
+            1 -> JsonObjectRequestAuth(
+                Request.Method.GET, url + "status", secrets, null,
                 { response ->
                     val relays = response.getJSONArray("relays")
                     callback.onSwitchesLoaded(RequestCallbackObject(
@@ -65,7 +66,7 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
                                 }
                             },
                             { error ->
-                                callback.onResponse(RequestCallbackObject(c, null, selectedDevice, Global.volleyError(c, error)))
+                                callback.onSwitchesLoaded(RequestCallbackObject(c, null, selectedDevice, Global.volleyError(c, error)))
                             }
                         ))
                     }
@@ -81,11 +82,20 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
 
     fun changeSwitchState(id: Int, state: Boolean) {
         //TODO: Authenticate first
-        val jsonObjectRequest = JsonObjectRequest(
-            Request.Method.GET, url + "relay/$id?turn=" + (if (state) "on" else "off"), null,
-            { },
-            { e -> Log.e(Global.LOG_TAG, e.toString()) }
-        )
+        val requestUrl = url + "relay/$id?turn=" + (if (state) "on" else "off")
+        val jsonObjectRequest = when (version) {
+            1 -> JsonObjectRequestAuth(
+                Request.Method.GET, requestUrl, secrets, null,
+                { },
+                { e -> Log.e(Global.LOG_TAG, e.toString()) }
+            )
+            2 -> JsonObjectRequest(
+                Request.Method.GET, requestUrl, null,
+                { },
+                { e -> Log.e(Global.LOG_TAG, e.toString()) }
+            )
+            else -> null
+        }
         queue.add(jsonObjectRequest)
     }
 }

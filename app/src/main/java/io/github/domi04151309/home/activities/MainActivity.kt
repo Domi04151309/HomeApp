@@ -207,23 +207,6 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
         }
     }
     private val shellyRequestCallBack = object : ShellyAPI.RequestCallBack {
-        override fun onResponse(holder: RequestCallbackObject) {
-            if (holder.response != null) {
-                val names = holder.response.names() ?: JSONArray()
-                val listItems = arrayListOf<ListViewItem>()
-                for (i in 0 until names.length()) {
-                    listItems += ListViewItem(
-                        title = names.getString(i),
-                        summary = holder.response.getString(names.getString(i))
-                    )
-                }
-                adapter.updateData(listItems)
-                setLevelTwo(devices.getDeviceById(holder.deviceId), Flavors.TWO_SHELLY)
-            } else {
-                handleErrorOnLevelOne(holder.errorMessage)
-            }
-        }
-
         override fun onSwitchesLoaded(holder: RequestCallbackObject) {
             if (holder.response != null) {
                 val names = holder.response.names() ?: JSONArray()
