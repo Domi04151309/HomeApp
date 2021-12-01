@@ -26,7 +26,7 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
     fun loadSwitches(callback: RequestCallBack) {
         val jsonObjectRequest = when (version) {
             1 -> JsonObjectRequestAuth(
-                Request.Method.GET, url + "status", secrets, null,
+                Request.Method.GET, url + "settings", secrets, null,
                 { response ->
                     val relays = response.optJSONArray("relays") ?: JSONArray()
                     var currentItem: JSONObject
