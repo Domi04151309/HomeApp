@@ -1,6 +1,8 @@
 package io.github.domi04151309.home.activities
 
 import android.content.Context
+import android.net.nsd.NsdManager
+import android.net.nsd.NsdServiceInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.net.wifi.WifiManager
@@ -17,6 +19,7 @@ import io.github.domi04151309.home.adapters.DeviceDiscoveryListAdapter
 import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.data.SimpleListItem
+import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.Theme
 import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
 
@@ -25,6 +28,8 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: DeviceDiscoveryListAdapter
     private lateinit var devices: Devices
+    private lateinit var nsdManager: NsdManager
+    private lateinit var discoveryListener: NsdManager.DiscoveryListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Theme.set(this)
@@ -117,6 +122,47 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
                 }
             })
         }.start()
+
+        nsdManager = (getSystemService(NSD_SERVICE) as NsdManager)
+        class DnsResolve : NsdManager.ResolveListener {
+            override fun onResolveFailed(serviceInfo: NsdServiceInfo, errorCode: Int) {
+                // Called when the resolve fails. Use the error code to debug.
+                Log.e(Global.LOG_TAG, "Resolve failed: $errorCode")
+            }
+
+            override fun onServiceResolved(serviceInfo: NsdServiceInfo) {
+                val gen = serviceInfo.attributes["gen"]
+                runOnUiThread {
+                    adapter.add(SimpleListItem(
+                            title = serviceInfo.serviceName,
+                            summary = serviceInfo.host.hostAddress,
+                            hidden = "Shelly Gen ${if (gen == null) "1" else gen?.decodeToString()}#Lamp",
+                            icon = R.drawable.ic_device_lamp
+                    ))
+                }
+            }
+        }
+
+        discoveryListener = object : NsdManager.DiscoveryListener {
+            override fun onStartDiscoveryFailed(p0: String?, p1: Int) {
+                nsdManager.stopServiceDiscovery(this)
+            }
+
+            override fun onStopDiscoveryFailed(p0: String?, p1: Int) {
+                nsdManager.stopServiceDiscovery(this)
+            }
+
+            override fun onServiceFound(service: NsdServiceInfo) {
+                if (service.serviceName.lowercase().startsWith("shelly")) {
+                    nsdManager.resolveService(service, DnsResolve())
+                }
+            }
+
+            override fun onDiscoveryStarted(p0: String?) { }
+            override fun onDiscoveryStopped(p0: String?) { }
+            override fun onServiceLost(p0: NsdServiceInfo?) { }
+        }
+        nsdManager.discoverServices("_http._tcp", NsdManager.PROTOCOL_DNS_SD, discoveryListener)
     }
 
     private fun intToIp(address: Int): String {
@@ -138,5 +184,10 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
                 .setPositiveButton(android.R.string.ok) { _, _ -> }
                 .show()
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        nsdManager.stopServiceDiscovery(discoveryListener)
     }
 }

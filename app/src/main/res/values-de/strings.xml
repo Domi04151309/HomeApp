@@ -49,13 +49,15 @@
     <string name="tasmota_execute_once">Befehl ausführen</string>
     <string name="tasmota_execute_once_summary">Führt einen Befehl ein Mal aus ohne ihn der Liste hinzuzufügen</string>
 
+    <string name="shelly_switch_title">Schalter %1$d</string>
+    <string name="shelly_switch_summary_on">Der Schalter ist an</string>
+    <string name="shelly_switch_summary_off">Der Schalter ist aus</string>
+
     <string name="webView">Internetansicht</string>
     <string name="webView_open">Im Browser öffnen</string>
     <string name="webView_error">Laden der Webseite fehlgeschlagen</string>
     <string name="webView_error_summary">Bitte überprüfen Sie Ihre Verbindung oder versuchen Sie es später erneut</string>
     <string name="webView_authentication">Authentifizierung</string>
-    <string name="webView_username">Benutzername</string>
-    <string name="webView_password">Passwort</string>
 
     <string name="pref">Einstellungen</string>
     <string name="pref_general">Generelle Einstellungen</string>
@@ -80,7 +82,6 @@
     <string name="pref_add_address_example">z.B. http://127.0.0.1/</string>
     <string name="pref_add_icon">Symbol</string>
     <string name="pref_add_mode">Modus</string>
-    <string name="pref_add_password">Kennwort</string>
     <string name="pref_add_search">Suche nach kompatiblen Geräten</string>
     <string name="pref_add_search_summary">Dies kann einige Sekunden dauern</string>
     <string name="pref_add_success">Gerät hinzufügen</string>
@@ -98,6 +99,9 @@
     <string name="pref_info_header_summary">Hintergrund des Kopfbereiches von Alberto Castillo Q. auf Unsplash</string>
     <string name="pref_device_router">Router</string>
     <string name="placeholder">Lädt</string>
+
+    <string name="security_username">Benutzername</string>
+    <string name="security_password">Passwort</string>
 
     <string name="str_cancel">Abbrechen</string>
     <string name="str_name">Name</string>

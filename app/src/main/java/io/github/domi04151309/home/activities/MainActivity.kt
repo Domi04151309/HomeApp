@@ -34,11 +34,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.github.domi04151309.home.adapters.MainListAdapter
 import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
+import org.json.JSONArray
 
 class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
 
     enum class Flavors {
-        ONE, TWO_SIMPLE_HOME, TWO_HUE, TWO_TASMOTA
+        ONE, TWO_SIMPLE_HOME, TWO_HUE, TWO_TASMOTA, TWO_SHELLY
     }
 
     private var currentDevice = ""
@@ -59,14 +60,6 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
     private fun getThemeId(): String =
             PreferenceManager.getDefaultSharedPreferences(this)
                     .getString(P.PREF_THEME, P.PREF_THEME_DEFAULT) ?: P.PREF_THEME_DEFAULT
-
-
-    internal val hueGroupStateListener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
-        if (compoundButton.isPressed) {
-            val hidden = (compoundButton.parent as ViewGroup).findViewById<TextView>(R.id.hidden).text
-            hueAPI?.switchGroupByID(hidden.substring(hidden.lastIndexOf("#") + 1), b)
-        }
-    }
 
     /*
      * Things related to the Home API
@@ -109,7 +102,12 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
      * Things related to the Hue API
      */
     private var hueAPI: HueAPI? = null
-
+    internal val hueGroupStateListener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
+        if (compoundButton.isPressed) {
+            val hidden = (compoundButton.parent as ViewGroup).findViewById<TextView>(R.id.hidden).text
+            hueAPI?.switchGroupByID(hidden.substring(hidden.lastIndexOf("#") + 1), b)
+        }
+    }
     private val hueRequestCallBack = object : HueAPI.RequestCallBack {
 
         override fun onGroupsLoaded(holder: RequestCallbackObject) {
@@ -185,6 +183,54 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
                         .setPositiveButton(android.R.string.ok) { _, _ -> }
                         .show()
             }.show()
+        }
+    }
+
+    /*
+     * Things related to Shelly
+     */
+    private var shelly: ShellyAPI? = null
+    internal val shellyStateListener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
+        if (compoundButton.isPressed) {
+            val view = (compoundButton.parent as ViewGroup)
+            view.findViewById<TextView>(R.id.summary).text = resources.getString(
+                if (b) R.string.shelly_switch_summary_on
+                else R.string.shelly_switch_summary_off
+            )
+            shelly?.changeSwitchState(
+                view.findViewById<TextView>(R.id.hidden).text.toString().toInt(),
+                b
+            )
+        }
+    }
+    private val shellyRequestCallBack = object : ShellyAPI.RequestCallBack {
+        override fun onSwitchesLoaded(holder: RequestCallbackObject) {
+            if (holder.response != null) {
+                val names = holder.response.names() ?: JSONArray()
+                val listItems = arrayListOf<ListViewItem>()
+                var currentId: String
+                var currentState: Boolean
+                var currentName: String
+                for (i in 0 until names.length()) {
+                    currentId = names.getString(i)
+                    currentState = holder.response.getJSONObject(currentId).getBoolean("ison")
+                    currentName = holder.response.getJSONObject(currentId).optString("switchName", "")
+                    if (currentName.trim() == "") {
+                        currentName = resources.getString(R.string.shelly_switch_title, currentId.toInt() + 1)
+                    }
+                    listItems += ListViewItem(
+                        title = currentName,
+                        summary = resources.getString(if (currentState) R.string.shelly_switch_summary_on else R.string.shelly_switch_summary_off),
+                        hidden = currentId,
+                        state = currentState,
+                        icon = R.drawable.ic_do
+                    )
+                }
+                adapter.updateData(listItems, shellyStateListener)
+                setLevelTwo(devices.getDeviceById(holder.deviceId), Flavors.TWO_SHELLY)
+            } else {
+                handleErrorOnLevelOne(holder.errorMessage)
+            }
         }
     }
 
@@ -284,6 +330,16 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
                 tasmota = Tasmota(this, deviceId)
                 adapter.updateData(tasmota?.loadList() ?: arrayListOf())
                 setLevelTwo(deviceObj, Flavors.TWO_TASMOTA)
+            }
+            "Shelly Gen 1" -> {
+                //TODO: check if authenticated
+                shelly = ShellyAPI(this, deviceId, 1)
+                shelly?.loadSwitches(shellyRequestCallBack)
+            }
+            "Shelly Gen 2" -> {
+                //TODO: check if authenticated
+                shelly = ShellyAPI(this, deviceId, 2)
+                shelly?.loadSwitches(shellyRequestCallBack)
             }
             else ->
                 Toast.makeText(this, R.string.main_unknown_mode, Toast.LENGTH_LONG).show()

@@ -9,7 +9,7 @@ import org.json.JSONObject
 class DeviceSecrets(context: Context, private val id: String) {
 
     companion object {
-        private const val DEFAULT_JSON = "{\"password\": \"\"}"
+        private const val DEFAULT_JSON = "{\"username\": \"\", \"password\": \"\"}"
     }
 
     private val masterKeyAlias = MasterKey.Builder(context, MasterKey.DEFAULT_MASTER_KEY_ALIAS)
@@ -37,9 +37,17 @@ class DeviceSecrets(context: Context, private val id: String) {
         _prefs.edit().remove(id).apply()
     }
 
+    var username: String
+        get() {
+            return if (secrets.has("username")) secrets.getString("username") else ""
+        }
+        set(value) {
+            secrets.put("username", value)
+        }
+
     var password: String
         get() {
-            return secrets.getString("password")
+            return if (secrets.has("password")) secrets.getString("password") else ""
         }
         set(value) {
             secrets.put("password", value)
