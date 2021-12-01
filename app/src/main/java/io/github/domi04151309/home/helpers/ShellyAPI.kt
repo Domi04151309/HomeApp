@@ -41,23 +41,27 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
                 Request.Method.GET, url + "rpc/Shelly.GetConfig", null,
                 { response ->
                     val names = response.names() ?: JSONArray()
-                    val relayIds = ArrayList<Int>(names.length() / 2)
+                    val relayNames = mutableMapOf<Int, String>()
                     var currentName: String
                     for (i in 0 until names.length()) {
                         currentName = names.getString(i)
-                        if (currentName.contains("switch:")) relayIds.add(currentName.substring(7).toInt())
+                        if (currentName.contains("switch:")) {
+                            val properties = response.getJSONObject(currentName)
+                            relayNames.put(properties.getInt("id"), properties.getString("name"))
+                        }
                     }
 
                     val relays = JSONArray()
                     var completedRequests = 0
-                    for (i in 0 until relayIds.size) {
+                    for (i in relayNames.keys) {
                         //TODO: Authenticate
                         queue.add(JsonObjectRequest(
                             Request.Method.GET, url + "relay/$i", null,
                             { secondResponse ->
+                                secondResponse.put("switchName", relayNames[i])
                                 relays.put(secondResponse)
                                 completedRequests++
-                                if (completedRequests == relayIds.size) {
+                                if (completedRequests == relayNames.size) {
                                     callback.onSwitchesLoaded(RequestCallbackObject(
                                         c,
                                         relays.toJSONObject(JSONArray(IntArray(relays.length()) { it })),

@@ -136,7 +136,7 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
                     adapter.add(SimpleListItem(
                             title = serviceInfo.serviceName,
                             summary = serviceInfo.host.hostAddress,
-                            hidden = "Shelly Gen ${if (gen == null) "1" else gen?.decodeToString()}#Raspberry Pi",
+                            hidden = "Shelly Gen ${if (gen == null) "1" else gen?.decodeToString()}#Lamp",
                             icon = R.drawable.ic_device_lamp
                     ))
                 }

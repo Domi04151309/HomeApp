@@ -210,11 +210,16 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
                 val listItems = arrayListOf<ListViewItem>()
                 var currentId: String
                 var currentState: Boolean
+                var currentName: String
                 for (i in 0 until names.length()) {
                     currentId = names.getString(i)
                     currentState = holder.response.getJSONObject(currentId).getBoolean("ison")
+                    currentName = holder.response.getJSONObject(currentId).optString("switchName", "")
+                    if (currentName.trim() == "") {
+                        currentName = resources.getString(R.string.shelly_switch_title, currentId)
+                    }
                     listItems += ListViewItem(
-                        title = resources.getString(R.string.shelly_switch_title, currentId),
+                        title = currentName,
                         summary = resources.getString(if (currentState) R.string.shelly_switch_summary_on else R.string.shelly_switch_summary_off),
                         hidden = currentId,
                         state = currentState,
