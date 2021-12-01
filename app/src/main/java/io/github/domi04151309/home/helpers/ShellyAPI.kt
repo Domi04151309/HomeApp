@@ -28,7 +28,7 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
             1 -> JsonObjectRequestAuth(
                 Request.Method.GET, url + "status", secrets, null,
                 { response ->
-                    val relays = response.getJSONArray("relays")
+                    val relays = response.optJSONArray("relays") ?: JSONArray()
                     var currentItem: JSONObject
                     for (i in 0 until relays.length()) {
                         currentItem = relays.getJSONObject(i)

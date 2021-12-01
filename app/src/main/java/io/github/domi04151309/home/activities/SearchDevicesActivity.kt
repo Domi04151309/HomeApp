@@ -159,7 +159,10 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
             }
 
             override fun onServiceFound(service: NsdServiceInfo) {
-                if (service.serviceName.lowercase().startsWith("shelly")) {
+                val lowService = service.serviceName.lowercase()
+                if (lowService.startsWith("shelly")
+                        && !lowService.startsWith("shellybutton1")
+                ) {
                     if (resolveListenerBusy.compareAndSet(false, true))
                         nsdManager.resolveService(service, resolveListener)
                     else
