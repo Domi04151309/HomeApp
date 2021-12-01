@@ -47,7 +47,9 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
                         currentName = names.getString(i)
                         if (currentName.contains("switch:")) {
                             val properties = response.getJSONObject(currentName)
-                            relayNames.put(properties.getInt("id"), properties.getString("name"))
+                            relayNames[properties.getInt("id")] =
+                                if (properties.isNull("name")) ""
+                                else properties.getString("name")
                         }
                     }
 
