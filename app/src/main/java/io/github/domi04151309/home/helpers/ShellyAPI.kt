@@ -29,6 +29,12 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
                 Request.Method.GET, url + "status", secrets, null,
                 { response ->
                     val relays = response.getJSONArray("relays")
+                    var currentItem: JSONObject
+                    for (i in 0 until relays.length()) {
+                        currentItem = relays.getJSONObject(i)
+                        if (!currentItem.has("name") || currentItem.isNull("name"))
+                            currentItem.put("name", "")
+                    }
                     callback.onSwitchesLoaded(RequestCallbackObject(
                         c,
                         relays.toJSONObject(JSONArray(IntArray(relays.length()) { it })),
@@ -63,7 +69,7 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
                         queue.add(JsonObjectRequest(
                             Request.Method.GET, url + "relay/$i", null,
                             { secondResponse ->
-                                secondResponse.put("switchName", relayNames[i])
+                                secondResponse.put("name", relayNames[i])
                                 relays[i.toString()] = secondResponse
                                 completedRequests++
                                 if (completedRequests == relayNames.size) {
