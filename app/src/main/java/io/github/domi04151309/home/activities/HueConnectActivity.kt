@@ -36,17 +36,15 @@ class HueConnectActivity : AppCompatActivity() {
         requestToRegisterUser = CustomJsonArrayRequest(Request.Method.POST, Devices(this).getDeviceById(deviceId).address + "api", jsonRequestObject,
                 { response ->
                     val responseObject = response.getJSONObject(0)
-                    if (responseObject.has("success")) {
-                        if (!success) {
-                            success = true
-                            val username = responseObject.getJSONObject("success").getString("username")
-                            PreferenceManager.getDefaultSharedPreferences(this).edit().putString(deviceId, username).apply()
-                            startActivity(
-                                Intent(this, MainActivity::class.java)
-                                    .putExtra("device", deviceId)
-                                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                            )
-                        }
+                    if (responseObject.has("success") && !success) {
+                        success = true
+                        val username = responseObject.getJSONObject("success").getString("username")
+                        PreferenceManager.getDefaultSharedPreferences(this).edit().putString(deviceId, username).apply()
+                        startActivity(
+                            Intent(this, MainActivity::class.java)
+                                .putExtra("device", deviceId)
+                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        )
                     }
                 },
                 { error ->

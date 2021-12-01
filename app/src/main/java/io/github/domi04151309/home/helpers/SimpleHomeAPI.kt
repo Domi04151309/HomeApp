@@ -39,10 +39,8 @@ class SimpleHomeAPI(context: Context) {
                     try {
                         callback.onExecutionFinished(
                             c,
-                            if (response.has("toast")) response.getString("toast")
-                            else c.resources.getString(R.string.main_execution_completed),
-                            if (response.has("refresh")) response.getBoolean("refresh")
-                            else false,
+                            response.optString("toast", c.resources.getString(R.string.main_execution_completed)),
+                            response.optBoolean("refresh", false),
                             deviceId
                         )
 
