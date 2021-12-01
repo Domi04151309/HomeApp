@@ -8,6 +8,9 @@ import com.android.volley.toolbox.Volley
 import io.github.domi04151309.home.custom.JsonObjectRequestAuth
 import io.github.domi04151309.home.data.RequestCallbackObject
 import org.json.JSONArray
+import org.json.JSONObject
+import java.util.*
+import kotlin.collections.HashMap
 
 class ShellyAPI(private val c: Context, deviceId: String, private val version: Int) {
 
@@ -53,7 +56,7 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
                         }
                     }
 
-                    val relays = JSONArray()
+                    val relays = HashMap<String, JSONObject>(relayNames.size)
                     var completedRequests = 0
                     for (i in relayNames.keys) {
                         //TODO: Authenticate
@@ -61,12 +64,12 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
                             Request.Method.GET, url + "relay/$i", null,
                             { secondResponse ->
                                 secondResponse.put("switchName", relayNames[i])
-                                relays.put(secondResponse)
+                                relays[i.toString()] = secondResponse
                                 completedRequests++
                                 if (completedRequests == relayNames.size) {
                                     callback.onSwitchesLoaded(RequestCallbackObject(
                                         c,
-                                        relays.toJSONObject(JSONArray(IntArray(relays.length()) { it })),
+                                        JSONObject(TreeMap(relays).toMap()),
                                         selectedDevice
                                     ))
                                 }

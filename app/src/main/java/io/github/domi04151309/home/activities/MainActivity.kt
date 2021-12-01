@@ -214,7 +214,7 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
                 for (i in 0 until names.length()) {
                     currentId = names.getString(i)
                     currentState = holder.response.getJSONObject(currentId).getBoolean("ison")
-                    currentName = holder.response.getJSONObject(currentId).getString("switchName") ?: ""
+                    currentName = holder.response.getJSONObject(currentId).optString("switchName", "")
                     if (currentName.trim() == "") {
                         currentName = resources.getString(R.string.shelly_switch_title, currentId.toInt() + 1)
                     }
