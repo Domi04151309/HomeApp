@@ -21,7 +21,6 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
     }
 
     fun loadSwitches(callback: RequestCallBack) {
-        //TODO: Authenticate first
         val jsonObjectRequest = when (version) {
             1 -> JsonObjectRequestAuth(
                 Request.Method.GET, url + "status", secrets, null,
@@ -37,6 +36,7 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
                     callback.onSwitchesLoaded(RequestCallbackObject(c, null, selectedDevice, Global.volleyError(c, error)))
                 }
             )
+            //TODO: Authenticate
             2 -> JsonObjectRequest(
                 Request.Method.GET, url + "rpc/Shelly.GetConfig", null,
                 { response ->
@@ -51,7 +51,7 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
                     val relays = JSONArray()
                     var completedRequests = 0
                     for (i in 0 until relayIds.size) {
-                        //TODO: authenticate
+                        //TODO: Authenticate
                         queue.add(JsonObjectRequest(
                             Request.Method.GET, url + "relay/$i", null,
                             { secondResponse ->
@@ -81,7 +81,6 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
     }
 
     fun changeSwitchState(id: Int, state: Boolean) {
-        //TODO: Authenticate first
         val requestUrl = url + "relay/$id?turn=" + (if (state) "on" else "off")
         val jsonObjectRequest = when (version) {
             1 -> JsonObjectRequestAuth(
@@ -89,6 +88,7 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
                 { },
                 { e -> Log.e(Global.LOG_TAG, e.toString()) }
             )
+            //TODO: Authenticate
             2 -> JsonObjectRequest(
                 Request.Method.GET, requestUrl, null,
                 { },
