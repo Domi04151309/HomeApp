@@ -3,7 +3,6 @@ package io.github.domi04151309.home.helpers
 import android.content.Context
 import android.util.Log
 import com.android.volley.Request
-import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import io.github.domi04151309.home.custom.JsonObjectRequestAuth
 import io.github.domi04151309.home.custom.JsonObjectRequestDigestAuth
@@ -47,7 +46,7 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
                 }
             )
             2 -> JsonObjectRequestDigestAuth(
-                Request.Method.GET, url + "rpc/Shelly.GetConfig", secrets, null,
+                url + "rpc/Shelly.GetConfig", secrets, c,
                 { response ->
                     val names = response.names() ?: JSONArray()
                     val relayNames = mutableMapOf<Int, String>()
@@ -66,7 +65,7 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
                     var completedRequests = 0
                     for (i in relayNames.keys) {
                         queue.add(JsonObjectRequestDigestAuth(
-                            Request.Method.GET, url + "relay/$i", secrets, null,
+                            url + "relay/$i", secrets, c,
                             { secondResponse ->
                                 secondResponse.put("name", relayNames[i])
                                 relays[i.toString()] = secondResponse
@@ -103,7 +102,7 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
                 { e -> Log.e(Global.LOG_TAG, e.toString()) }
             )
             2 -> JsonObjectRequestDigestAuth(
-                Request.Method.GET, requestUrl, secrets, null,
+                requestUrl, secrets, c,
                 { },
                 { e -> Log.e(Global.LOG_TAG, e.toString()) }
             )
