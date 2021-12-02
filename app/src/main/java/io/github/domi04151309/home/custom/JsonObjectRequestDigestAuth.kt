@@ -30,11 +30,11 @@ class JsonObjectRequestDigestAuth(
             val authParameters = authData.split(", ")
             authParameters.forEach {
                 if (it.contains("realm")) {
-                    realm = it.substring(it.indexOf('"'), it.lastIndexOf('"'))
-                    Log.wtf(Global.LOG_TAG, it)
+                    realm = it.substring(it.indexOf('"') + 1, it.lastIndexOf('"'))
+                    Log.wtf(Global.LOG_TAG, realm)
                 } else if (it.contains("nonce")) {
-                    nonce = it.substring(it.indexOf('"'), it.lastIndexOf('"'))
-                    Log.wtf(Global.LOG_TAG, it)
+                    nonce = it.substring(it.indexOf('"') + 1, it.lastIndexOf('"'))
+                    Log.wtf(Global.LOG_TAG, nonce)
                 }
             }
 
