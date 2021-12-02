@@ -5,6 +5,7 @@ import android.util.Log
 import com.android.volley.AuthFailureError
 import com.android.volley.NetworkResponse
 import com.android.volley.Response
+import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.RequestFuture
 import com.android.volley.toolbox.Volley
@@ -23,6 +24,16 @@ class JsonObjectRequestDigestAuth(
     listener: Response.Listener<JSONObject>,
     errorListener: Response.ErrorListener
 ) : JsonObjectRequest(Method.GET, url, null, listener, errorListener) {
+
+    override fun parseNetworkError(volleyError: VolleyError): VolleyError {
+        return if (volleyError.networkResponse.statusCode == 401) {
+            Log.wtf(Global.LOG_TAG, "Try catching the error")
+            parseNetworkResponse(volleyError.networkResponse)
+            VolleyError()
+        } else {
+            super.parseNetworkError(volleyError)
+        }
+    }
 
     override fun parseNetworkResponse(response: NetworkResponse): Response<JSONObject> {
         if (response.statusCode == 401) {
