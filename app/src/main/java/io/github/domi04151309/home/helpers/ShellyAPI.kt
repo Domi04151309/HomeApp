@@ -6,6 +6,7 @@ import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import io.github.domi04151309.home.custom.JsonObjectRequestAuth
+import io.github.domi04151309.home.custom.JsonObjectRequestDigestAuth
 import io.github.domi04151309.home.data.RequestCallbackObject
 import org.json.JSONArray
 import org.json.JSONObject
@@ -45,9 +46,8 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
                     callback.onSwitchesLoaded(RequestCallbackObject(c, null, selectedDevice, Global.volleyError(c, error)))
                 }
             )
-            //TODO: Authenticate
-            2 -> JsonObjectRequest(
-                Request.Method.GET, url + "rpc/Shelly.GetConfig", null,
+            2 -> JsonObjectRequestDigestAuth(
+                Request.Method.GET, url + "rpc/Shelly.GetConfig", secrets, null,
                 { response ->
                     val names = response.names() ?: JSONArray()
                     val relayNames = mutableMapOf<Int, String>()
@@ -65,9 +65,8 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
                     val relays = HashMap<String, JSONObject>(relayNames.size)
                     var completedRequests = 0
                     for (i in relayNames.keys) {
-                        //TODO: Authenticate
-                        queue.add(JsonObjectRequest(
-                            Request.Method.GET, url + "relay/$i", null,
+                        queue.add(JsonObjectRequestDigestAuth(
+                            Request.Method.GET, url + "relay/$i", secrets, null,
                             { secondResponse ->
                                 secondResponse.put("name", relayNames[i])
                                 relays[i.toString()] = secondResponse
@@ -103,9 +102,8 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
                 { },
                 { e -> Log.e(Global.LOG_TAG, e.toString()) }
             )
-            //TODO: Authenticate
-            2 -> JsonObjectRequest(
-                Request.Method.GET, requestUrl, null,
+            2 -> JsonObjectRequestDigestAuth(
+                Request.Method.GET, requestUrl, secrets, null,
                 { },
                 { e -> Log.e(Global.LOG_TAG, e.toString()) }
             )
