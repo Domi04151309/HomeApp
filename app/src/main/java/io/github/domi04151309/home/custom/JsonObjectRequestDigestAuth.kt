@@ -2,8 +2,6 @@ package io.github.domi04151309.home.custom
 
 import android.content.Context
 import android.util.Log
-import com.android.volley.AuthFailureError
-import com.android.volley.NetworkResponse
 import com.android.volley.Response
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
@@ -20,26 +18,17 @@ class JsonObjectRequestDigestAuth(
     url: String,
     private val secrets: DeviceSecrets,
     private val context: Context,
-    listener: Response.Listener<JSONObject>,
+    private val listener: Response.Listener<JSONObject>,
     errorListener: Response.ErrorListener
 ) : JsonObjectRequest(Method.GET, url, null, listener, errorListener) {
 
     override fun parseNetworkError(volleyError: VolleyError): VolleyError? {
         return if (volleyError.networkResponse.statusCode == 401) {
-            Log.wtf(Global.LOG_TAG, "Try catching the error")
-            parseNetworkResponse(volleyError.networkResponse)
-            null
-        } else {
-            super.parseNetworkError(volleyError)
-        }
-    }
-
-    override fun parseNetworkResponse(response: NetworkResponse): Response<JSONObject> {
-        if (response.statusCode == 401) {
-            val authData = response.headers?.get("WWW-Authenticate") ?: return super.parseNetworkResponse(response)
+            val authData = volleyError.networkResponse.headers?.get("WWW-Authenticate")
+                ?: return super.parseNetworkError(volleyError)
             Log.wtf(Global.LOG_TAG, authData)
 
-            //TODO: get values from header
+            // Get values from header
             var realm = ""
             var nonce = ""
             val nc = 1
@@ -71,7 +60,7 @@ class JsonObjectRequestDigestAuth(
                     .digest(("$ha1:$nonce:$nc:$cNonce:auth:$ha2").toByteArray())
             )
 
-            //TODO: repeat request
+            // Repeat the request
             val future = RequestFuture.newFuture<JSONObject>()
             val requestBody = JSONObject().put("auth", JSONObject()
                 .put("realm", realm)
@@ -84,15 +73,16 @@ class JsonObjectRequestDigestAuth(
             Log.wtf(Global.LOG_TAG, requestBody.toString())
             Volley.newRequestQueue(context).add(JsonObjectRequest(Method.POST, url, requestBody, future, future))
             return try {
-                Response.success(future.get(), null)
+                listener.onResponse(future.get())
+                //TODO: This will likely still call the error listener
+                null
             } catch (e: InterruptedException) {
-                Response.error(AuthFailureError())
+                super.parseNetworkError(volleyError)
             } catch (e: ExecutionException) {
-                Response.error(AuthFailureError())
+                super.parseNetworkError(volleyError)
             }
         } else {
-            Log.wtf(Global.LOG_TAG, "No authentication needed")
-            return super.parseNetworkResponse(response)
+            super.parseNetworkError(volleyError)
         }
     }
 
