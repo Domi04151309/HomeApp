@@ -14,7 +14,6 @@ import io.github.domi04151309.home.helpers.Global
 import org.json.JSONObject
 import java.security.MessageDigest
 import java.util.concurrent.ExecutionException
-import javax.xml.bind.DatatypeConverter
 import kotlin.random.Random
 
 class JsonObjectRequestDigestAuth(
@@ -25,11 +24,11 @@ class JsonObjectRequestDigestAuth(
     errorListener: Response.ErrorListener
 ) : JsonObjectRequest(Method.GET, url, null, listener, errorListener) {
 
-    override fun parseNetworkError(volleyError: VolleyError): VolleyError {
+    override fun parseNetworkError(volleyError: VolleyError): VolleyError? {
         return if (volleyError.networkResponse.statusCode == 401) {
             Log.wtf(Global.LOG_TAG, "Try catching the error")
             parseNetworkResponse(volleyError.networkResponse)
-            VolleyError()
+            null
         } else {
             super.parseNetworkError(volleyError)
         }
@@ -56,17 +55,17 @@ class JsonObjectRequestDigestAuth(
             }
 
             val cNonce = Random.nextInt(1, Integer.MAX_VALUE)
-            val ha1 = DatatypeConverter.printHexBinary(
+            val ha1 = hashToString(
                 MessageDigest
                     .getInstance("SHA-256")
                     .digest(("admin:$realm:${secrets.password}").toByteArray())
             )
-            val ha2 = DatatypeConverter.printHexBinary(
+            val ha2 = hashToString(
                 MessageDigest
                     .getInstance("SHA-256")
                     .digest(("dummy_method:dummy_uri").toByteArray())
             )
-            val hash = DatatypeConverter.printHexBinary(
+            val hash = hashToString(
                 MessageDigest
                     .getInstance("SHA-256")
                     .digest(("$ha1:$nonce:$nc:$cNonce:auth:$ha2").toByteArray())
@@ -95,5 +94,9 @@ class JsonObjectRequestDigestAuth(
             Log.wtf(Global.LOG_TAG, "No authentication needed")
             return super.parseNetworkResponse(response)
         }
+    }
+
+    private fun hashToString(hash: ByteArray) : String {
+        return hash.joinToString("") { byte -> "%02x".format(byte) }
     }
 }

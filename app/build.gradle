@@ -35,6 +35,4 @@ dependencies {
     implementation 'com.android.volley:volley:1.2.1'
     implementation 'androidx.security:security-crypto-ktx:1.1.0-alpha02'
     implementation "com.github.skydoves:colorpickerview:2.2.3"
-    implementation 'javax.xml.bind:jaxb-api:2.3.1'
-    implementation group: 'xerces', name: 'xercesImpl', version: '2.12.0'
 }
