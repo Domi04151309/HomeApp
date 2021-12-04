@@ -64,7 +64,7 @@ class EditDeviceActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable) {}
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                val specialVisibility = if (s.toString() == "Fritz! Auto-Login" || s.toString() == "Shelly Gen 1" || s.toString() == "Shelly Gen 2") View.VISIBLE else View.GONE
+                val specialVisibility = if (s.toString() == "Fritz! Auto-Login" || s.toString() == "Shelly Gen 1") View.VISIBLE else View.GONE
                 val usernameVisibility = if (s.toString() == "Shelly Gen 1") View.VISIBLE else View.GONE
                 specialDivider.visibility = specialVisibility
                 specialSection.visibility = specialVisibility
