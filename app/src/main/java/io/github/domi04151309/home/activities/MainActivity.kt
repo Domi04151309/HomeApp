@@ -34,7 +34,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.github.domi04151309.home.adapters.MainListAdapter
 import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
-import org.json.JSONArray
 
 class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
 
@@ -65,7 +64,6 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
      * Things related to the Home API
      */
     private val homeAPI = SimpleHomeAPI(this)
-
     private val homeRequestCallBack = object : SimpleHomeAPI.RequestCallBack {
 
         override fun onExecutionFinished(context: Context, result: CharSequence, refresh: Boolean, deviceId: String) {
@@ -73,24 +71,9 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
             if (refresh) homeAPI.loadCommands(devices.getDeviceById(deviceId).address, this)
         }
 
-        override fun onCommandsLoaded(holder: RequestCallbackObject<JSONObject>) {
+        override fun onCommandsLoaded(holder: RequestCallbackObject<ArrayList<ListViewItem>>) {
             if (holder.response != null) {
-                val commandsObject = Commands(holder.response.getJSONObject("commands"))
-                val listItems: ArrayList<ListViewItem> = ArrayList(commandsObject.length())
-                for (i in 0 until commandsObject.length()) {
-                    try {
-                        commandsObject.selectCommand(i)
-                        listItems += ListViewItem(
-                                title = commandsObject.getSelectedTitle(),
-                                summary = commandsObject.getSelectedSummary(),
-                                hidden = devices.getDeviceById(holder.deviceId).address + commandsObject.getSelected(),
-                                icon = R.drawable.ic_do
-                        )
-                    } catch (e: JSONException) {
-                        Log.e(Global.LOG_TAG, e.toString())
-                    }
-                }
-                adapter.updateData(listItems)
+                adapter.updateData(holder.response)
                 setLevelTwo(devices.getDeviceById(holder.deviceId), Flavors.TWO_SIMPLE_HOME)
             } else {
                 handleErrorOnLevelOne(holder.errorMessage)
@@ -109,7 +92,7 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
         }
     }
     private val hueRequestCallBack = object : HueAPI.RequestCallBack {
-
+        override fun onLightsLoaded(holder: RequestCallbackObject<JSONObject>) {}
         override fun onGroupsLoaded(holder: RequestCallbackObject<JSONObject>) {
             if (holder.response != null) {
                 try {
@@ -143,8 +126,6 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
                 handleErrorOnLevelOne(holder.errorMessage)
             }
         }
-
-        override fun onLightsLoaded(holder: RequestCallbackObject<JSONObject>) {}
     }
     private val hueRequestUpdaterCallBack = object : HueAPI.RequestCallBack {
         override fun onLightsLoaded(holder: RequestCallbackObject<JSONObject>) {}
@@ -170,7 +151,6 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
      */
     internal var tasmota: Tasmota? = null
     private val tasmotaRequestCallBack = object : Tasmota.RequestCallBack {
-
         override fun onItemsChanged(context: Context) {
             adapter.updateData(tasmota?.loadList() ?: arrayListOf(), preferredAnimationState = false)
         }
@@ -304,7 +284,12 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
                 homeAPI.loadCommands(deviceId, homeRequestCallBack)
             "Hue API" -> {
                 hueAPI = HueAPI(this, deviceId)
-                loadHueGroups()
+                hueAPI?.loadGroups(hueRequestCallBack)
+                updateHandler.setUpdateFunction {
+                    if (canReceiveRequest && hueAPI?.readyForRequest == true) {
+                        hueAPI?.loadGroups(hueRequestUpdaterCallBack)
+                    }
+                }
             }
             "Tasmota" -> {
                 tasmota = Tasmota(this, deviceId)
@@ -370,15 +355,6 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
         setLevelOne()
     }
 
-    private fun loadHueGroups() {
-        hueAPI?.loadGroups(hueRequestCallBack)
-        updateHandler.setUpdateFunction {
-            if (canReceiveRequest && hueAPI?.readyForRequest == true) {
-                hueAPI?.loadGroups(hueRequestUpdaterCallBack)
-            }
-        }
-    }
-
     override fun onBackPressed() {
         if (level != Flavors.ONE)
             loadDevices()
@@ -439,7 +415,7 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
         }
 
         canReceiveRequest = true
-        if(reset) {
+        if (reset) {
             loadDevices()
             reset = false
         }
