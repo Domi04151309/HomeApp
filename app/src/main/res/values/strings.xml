@@ -152,12 +152,12 @@
     </string-array>
     <string-array name="pref_add_mode_array" translatable="false">
         <item>SimpleHome API</item>
-        <item>Hue API</item>
-        <item>Tasmota</item>
-        <item>Node-RED</item>
         <item>Fritz! Auto-Login</item>
+        <item>Hue API</item>
+        <item>Node-RED</item>
         <item>Shelly Gen 1</item>
         <item>Shelly Gen 2</item>
+        <item>Tasmota</item>
         <item>Website</item>
     </string-array>
 </resources>
