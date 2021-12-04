@@ -17,10 +17,8 @@ import io.github.domi04151309.home.activities.HueConnectActivity
 import io.github.domi04151309.home.data.RequestCallbackObject
 import io.github.domi04151309.home.custom.CustomJsonArrayRequest
 
-class HueAPI(context: Context, deviceId: String) {
+class HueAPI(private val c: Context, private val deviceId: String) {
 
-    private val c = context
-    private val selectedDevice = deviceId
     private val url = Devices(c).getDeviceById(deviceId).address
     private val queue = Volley.newRequestQueue(c)
     var readyForRequest: Boolean = true
@@ -31,7 +29,7 @@ class HueAPI(context: Context, deviceId: String) {
     }
 
     fun getUsername(): String {
-        return PreferenceManager.getDefaultSharedPreferences(c).getString(selectedDevice, "") ?: ""
+        return PreferenceManager.getDefaultSharedPreferences(c).getString(deviceId, "") ?: ""
     }
 
     fun loadGroups(callback: RequestCallBack) {
@@ -57,14 +55,14 @@ class HueAPI(context: Context, deviceId: String) {
                         for (i in sortedZones.indices) {
                             processed.put(sortedZones[i].key, sortedZones[i].value)
                         }
-                        callback.onGroupsLoaded(RequestCallbackObject(c, processed, selectedDevice))
+                        callback.onGroupsLoaded(RequestCallbackObject(c, processed, deviceId))
                     } catch (e: Exception) {
-                        callback.onGroupsLoaded(RequestCallbackObject(c, null, selectedDevice, volleyError(c, e)))
+                        callback.onGroupsLoaded(RequestCallbackObject(c, null, deviceId, volleyError(c, e)))
                     }
                 },
                 { error ->
-                    callback.onGroupsLoaded(RequestCallbackObject(c, null, selectedDevice, volleyError(c, error)))
-                    if (error is ParseError) c.startActivity(Intent(c, HueConnectActivity::class.java).putExtra("deviceId", selectedDevice))
+                    callback.onGroupsLoaded(RequestCallbackObject(c, null, deviceId, volleyError(c, error)))
+                    if (error is ParseError) c.startActivity(Intent(c, HueConnectActivity::class.java).putExtra("deviceId", deviceId))
                 }
         )
         queue.add(jsonObjectRequest)
@@ -80,14 +78,14 @@ class HueAPI(context: Context, deviceId: String) {
                             lightID = lightIDs.getString(i)
                             returnObject.put(lightID, response.getJSONObject(lightID))
                         }
-                        callback.onLightsLoaded(RequestCallbackObject(c, returnObject, selectedDevice, forZone = forZone))
+                        callback.onLightsLoaded(RequestCallbackObject(c, returnObject, deviceId, forZone = forZone))
                     } catch (e: Exception) {
-                        callback.onLightsLoaded(RequestCallbackObject(c, null, selectedDevice, c.resources.getString(R.string.err_wrong_format_summary)))
+                        callback.onLightsLoaded(RequestCallbackObject(c, null, deviceId, c.resources.getString(R.string.err_wrong_format_summary)))
                         Log.e(Global.LOG_TAG, e.toString())
                     }
                 },
                 { error ->
-                    callback.onLightsLoaded(RequestCallbackObject(c, null, selectedDevice, volleyError(c, error)))
+                    callback.onLightsLoaded(RequestCallbackObject(c, null, deviceId, volleyError(c, error)))
                 }
         )
         queue.add(jsonObjectRequest)
