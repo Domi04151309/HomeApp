@@ -8,13 +8,14 @@ import com.android.volley.toolbox.Volley
 import io.github.domi04151309.home.helpers.Global.volleyError
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.data.RequestCallbackObject
+import org.json.JSONObject
 
 class SimpleHomeAPI(context: Context) {
 
     private val c = context
 
     interface RequestCallBack {
-        fun onCommandsLoaded(holder: RequestCallbackObject)
+        fun onCommandsLoaded(holder: RequestCallbackObject<JSONObject>)
         fun onExecutionFinished(context: Context, result: CharSequence, refresh: Boolean = false, deviceId: String = "")
     }
 

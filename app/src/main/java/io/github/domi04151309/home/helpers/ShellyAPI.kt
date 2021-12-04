@@ -20,7 +20,7 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
     private val secrets = DeviceSecrets(c, deviceId)
 
     interface RequestCallBack {
-        fun onSwitchesLoaded(holder: RequestCallbackObject)
+        fun onSwitchesLoaded(holder: RequestCallbackObject<JSONObject>)
     }
 
     fun loadSwitches(callback: RequestCallBack) {
