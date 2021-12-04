@@ -79,22 +79,15 @@ class DevicesActivity : AppCompatActivity(), RecyclerViewHelperInterfaceAdvanced
     private fun loadDevices(){
         val listItems: ArrayList<SimpleListItem> = ArrayList(devices.length())
         try {
-            if (devices.length() == 0) {
+            var currentDevice: DeviceItem
+            for (i in 0 until devices.length()) {
+                currentDevice = devices.getDeviceByIndex(i)
                 listItems += SimpleListItem(
-                        title = resources.getString(R.string.main_no_devices),
-                        hidden = "none"
+                    title = currentDevice.name,
+                    summary = currentDevice.address,
+                    hidden = "edit#${currentDevice.id}",
+                    icon = currentDevice.iconId
                 )
-            } else {
-                var currentDevice: DeviceItem
-                for (i in 0 until devices.length()) {
-                    currentDevice = devices.getDeviceByIndex(i)
-                    listItems += SimpleListItem(
-                            title = currentDevice.name,
-                            summary = currentDevice.address,
-                            hidden = "edit",
-                            icon = currentDevice.iconId
-                    )
-                }
             }
             listItems += SimpleListItem(
                     title = resources.getString(R.string.pref_add),
@@ -117,9 +110,12 @@ class DevicesActivity : AppCompatActivity(), RecyclerViewHelperInterfaceAdvanced
 
     override fun onItemClicked(view: View, pos: Int) {
         val action =  view.findViewById<TextView>(R.id.hidden).text
-        if (action == "edit") {
+        if (action.contains("edit")) {
             reset = true
-            startActivity(Intent(this, EditDeviceActivity::class.java).putExtra("deviceId", devices.getDeviceByIndex(pos).id))
+            startActivity(
+                Intent(this, EditDeviceActivity::class.java)
+                    .putExtra("deviceId", action.substring(action.indexOf('#') + 1))
+            )
         } else if (action == "add") {
             reset = true
             AlertDialog.Builder(this)
