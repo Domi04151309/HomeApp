@@ -22,6 +22,8 @@ import io.github.domi04151309.home.data.SimpleListItem
 import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.Theme
 import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
+import java.util.concurrent.ConcurrentLinkedQueue
+import java.util.concurrent.atomic.AtomicBoolean
 
 class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
 
@@ -30,6 +32,9 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
     private lateinit var devices: Devices
     private lateinit var nsdManager: NsdManager
     private lateinit var discoveryListener: NsdManager.DiscoveryListener
+    private lateinit var resolveListener: NsdManager.ResolveListener
+    private var resolveListenerBusy = AtomicBoolean(false)
+    private var pendingNsdServices = ConcurrentLinkedQueue<NsdServiceInfo>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Theme.set(this)
@@ -123,23 +128,24 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
             })
         }.start()
 
-        nsdManager = (getSystemService(NSD_SERVICE) as NsdManager)
-        class DnsResolve : NsdManager.ResolveListener {
-            override fun onResolveFailed(serviceInfo: NsdServiceInfo, errorCode: Int) {
-                // Called when the resolve fails. Use the error code to debug.
-                Log.e(Global.LOG_TAG, "Resolve failed: $errorCode")
-            }
 
+        nsdManager = (getSystemService(NSD_SERVICE) as NsdManager)
+        resolveListener =  object : NsdManager.ResolveListener {
             override fun onServiceResolved(serviceInfo: NsdServiceInfo) {
                 val gen = serviceInfo.attributes["gen"]
                 runOnUiThread {
                     adapter.add(SimpleListItem(
-                            title = serviceInfo.serviceName,
-                            summary = serviceInfo.host.hostAddress,
-                            hidden = "Shelly Gen ${if (gen == null) "1" else gen?.decodeToString()}#Lamp",
-                            icon = R.drawable.ic_device_lamp
+                        title = serviceInfo.serviceName,
+                        summary = serviceInfo.host.hostAddress,
+                        hidden = "Shelly Gen ${if (gen == null) "1" else gen?.decodeToString()}#Lamp",
+                        icon = R.drawable.ic_device_lamp
                     ))
                 }
+                resolveNextInQueue()
+            }
+
+            override fun onResolveFailed(serviceInfo: NsdServiceInfo, errorCode: Int) {
+                resolveNextInQueue()
             }
         }
 
@@ -153,16 +159,37 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
             }
 
             override fun onServiceFound(service: NsdServiceInfo) {
-                if (service.serviceName.lowercase().startsWith("shelly")) {
-                    nsdManager.resolveService(service, DnsResolve())
+                val lowService = service.serviceName.lowercase()
+                if (lowService.startsWith("shelly")
+                        && !lowService.startsWith("shellybutton1")
+                ) {
+                    if (resolveListenerBusy.compareAndSet(false, true))
+                        nsdManager.resolveService(service, resolveListener)
+                    else
+                        pendingNsdServices.add(service)
+                }
+            }
+
+            override fun onServiceLost(p0: NsdServiceInfo) {
+                val iterator = pendingNsdServices.iterator()
+                while (iterator.hasNext()) {
+                    if (iterator.next().serviceName == p0.serviceName)
+                        iterator.remove()
                 }
             }
 
             override fun onDiscoveryStarted(p0: String?) { }
             override fun onDiscoveryStopped(p0: String?) { }
-            override fun onServiceLost(p0: NsdServiceInfo?) { }
         }
         nsdManager.discoverServices("_http._tcp", NsdManager.PROTOCOL_DNS_SD, discoveryListener)
+    }
+
+    private fun resolveNextInQueue() {
+        val nextNsdService = pendingNsdServices.poll()
+        if (nextNsdService != null)
+            nsdManager.resolveService(nextNsdService, resolveListener)
+        else
+            resolveListenerBusy.set(false)
     }
 
     private fun intToIp(address: Int): String {

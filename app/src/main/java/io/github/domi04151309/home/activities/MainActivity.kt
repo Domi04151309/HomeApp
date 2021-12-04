@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
             if (refresh) homeAPI.loadCommands(devices.getDeviceById(deviceId).address, this)
         }
 
-        override fun onCommandsLoaded(holder: RequestCallbackObject) {
+        override fun onCommandsLoaded(holder: RequestCallbackObject<JSONObject>) {
             if (holder.response != null) {
                 val commandsObject = Commands(holder.response.getJSONObject("commands"))
                 val listItems: ArrayList<ListViewItem> = ArrayList(commandsObject.length())
@@ -110,7 +110,7 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
     }
     private val hueRequestCallBack = object : HueAPI.RequestCallBack {
 
-        override fun onGroupsLoaded(holder: RequestCallbackObject) {
+        override fun onGroupsLoaded(holder: RequestCallbackObject<JSONObject>) {
             if (holder.response != null) {
                 try {
                     var currentObjectName: String
@@ -144,11 +144,11 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
             }
         }
 
-        override fun onLightsLoaded(holder: RequestCallbackObject) {}
+        override fun onLightsLoaded(holder: RequestCallbackObject<JSONObject>) {}
     }
     private val hueRequestUpdaterCallBack = object : HueAPI.RequestCallBack {
-        override fun onLightsLoaded(holder: RequestCallbackObject) {}
-        override fun onGroupsLoaded(holder: RequestCallbackObject) {
+        override fun onLightsLoaded(holder: RequestCallbackObject<JSONObject>) {}
+        override fun onGroupsLoaded(holder: RequestCallbackObject<JSONObject>) {
             if (holder.response != null) {
                 try {
                     for (i in 0 until holder.response.length()) {
@@ -204,29 +204,9 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
         }
     }
     private val shellyRequestCallBack = object : ShellyAPI.RequestCallBack {
-        override fun onSwitchesLoaded(holder: RequestCallbackObject) {
+        override fun onSwitchesLoaded(holder: RequestCallbackObject<ArrayList<ListViewItem>>) {
             if (holder.response != null) {
-                val names = holder.response.names() ?: JSONArray()
-                val listItems = arrayListOf<ListViewItem>()
-                var currentId: String
-                var currentState: Boolean
-                var currentName: String
-                for (i in 0 until names.length()) {
-                    currentId = names.getString(i)
-                    currentState = holder.response.getJSONObject(currentId).getBoolean("ison")
-                    currentName = holder.response.getJSONObject(currentId).optString("switchName", "")
-                    if (currentName.trim() == "") {
-                        currentName = resources.getString(R.string.shelly_switch_title, currentId.toInt() + 1)
-                    }
-                    listItems += ListViewItem(
-                        title = currentName,
-                        summary = resources.getString(if (currentState) R.string.shelly_switch_summary_on else R.string.shelly_switch_summary_off),
-                        hidden = currentId,
-                        state = currentState,
-                        icon = R.drawable.ic_do
-                    )
-                }
-                adapter.updateData(listItems, shellyStateListener)
+                adapter.updateData(holder.response, shellyStateListener)
                 setLevelTwo(devices.getDeviceById(holder.deviceId), Flavors.TWO_SHELLY)
             } else {
                 handleErrorOnLevelOne(holder.errorMessage)

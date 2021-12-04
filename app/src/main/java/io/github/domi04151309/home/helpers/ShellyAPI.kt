@@ -5,11 +5,14 @@ import android.util.Log
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import io.github.domi04151309.home.R
 import io.github.domi04151309.home.custom.JsonObjectRequestAuth
+import io.github.domi04151309.home.data.ListViewItem
 import io.github.domi04151309.home.data.RequestCallbackObject
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 class ShellyAPI(private val c: Context, deviceId: String, private val version: Int) {
@@ -20,18 +23,24 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
     private val secrets = DeviceSecrets(c, deviceId)
 
     interface RequestCallBack {
-        fun onSwitchesLoaded(holder: RequestCallbackObject)
+        fun onSwitchesLoaded(holder: RequestCallbackObject<ArrayList<ListViewItem>>)
     }
 
     fun loadSwitches(callback: RequestCallBack) {
         val jsonObjectRequest = when (version) {
             1 -> JsonObjectRequestAuth(
-                Request.Method.GET, url + "status", secrets, null,
+                Request.Method.GET, url + "settings", secrets, null,
                 { response ->
-                    val relays = response.getJSONArray("relays")
+                    val relays = response.optJSONArray("relays") ?: JSONArray()
+                    var currentItem: JSONObject
+                    for (i in 0 until relays.length()) {
+                        currentItem = relays.getJSONObject(i)
+                        if (!currentItem.has("name") || currentItem.isNull("name"))
+                            currentItem.put("name", "")
+                    }
                     callback.onSwitchesLoaded(RequestCallbackObject(
                         c,
-                        relays.toJSONObject(JSONArray(IntArray(relays.length()) { it })),
+                        parseItems(relays.toJSONObject(JSONArray(IntArray(relays.length()) { it }))),
                         selectedDevice
                     ))
                 },
@@ -39,7 +48,6 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
                     callback.onSwitchesLoaded(RequestCallbackObject(c, null, selectedDevice, Global.volleyError(c, error)))
                 }
             )
-            //TODO: Authenticate
             2 -> JsonObjectRequest(
                 Request.Method.GET, url + "rpc/Shelly.GetConfig", null,
                 { response ->
@@ -59,17 +67,16 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
                     val relays = HashMap<String, JSONObject>(relayNames.size)
                     var completedRequests = 0
                     for (i in relayNames.keys) {
-                        //TODO: Authenticate
                         queue.add(JsonObjectRequest(
                             Request.Method.GET, url + "relay/$i", null,
                             { secondResponse ->
-                                secondResponse.put("switchName", relayNames[i])
+                                secondResponse.put("name", relayNames[i])
                                 relays[i.toString()] = secondResponse
                                 completedRequests++
                                 if (completedRequests == relayNames.size) {
                                     callback.onSwitchesLoaded(RequestCallbackObject(
                                         c,
-                                        JSONObject(TreeMap(relays).toMap()),
+                                        parseItems(JSONObject(TreeMap(relays).toMap())),
                                         selectedDevice
                                     ))
                                 }
@@ -97,7 +104,6 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
                 { },
                 { e -> Log.e(Global.LOG_TAG, e.toString()) }
             )
-            //TODO: Authenticate
             2 -> JsonObjectRequest(
                 Request.Method.GET, requestUrl, null,
                 { },
@@ -106,5 +112,32 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
             else -> null
         }
         queue.add(jsonObjectRequest)
+    }
+
+    private fun parseItems(response : JSONObject): ArrayList<ListViewItem> {
+        val names = response.names() ?: JSONArray()
+        val listItems = arrayListOf<ListViewItem>()
+        var currentId: String
+        var currentState: Boolean
+        var currentName: String
+        for (i in 0 until names.length()) {
+            currentId = names.getString(i)
+            currentState = response.getJSONObject(currentId).getBoolean("ison")
+            currentName = response.getJSONObject(currentId).optString("name", "")
+            if (currentName.trim() == "") {
+                currentName = c.resources.getString(R.string.shelly_switch_title, currentId.toInt() + 1)
+            }
+            listItems += ListViewItem(
+                title = currentName,
+                summary = c.resources.getString(
+                    if (currentState) R.string.shelly_switch_summary_on
+                    else R.string.shelly_switch_summary_off
+                ),
+                hidden = currentId,
+                state = currentState,
+                icon = R.drawable.ic_do
+            )
+        }
+        return listItems
     }
 }

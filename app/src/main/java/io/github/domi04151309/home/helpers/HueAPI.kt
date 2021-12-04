@@ -26,8 +26,8 @@ class HueAPI(context: Context, deviceId: String) {
     var readyForRequest: Boolean = true
 
     interface RequestCallBack {
-        fun onGroupsLoaded(holder: RequestCallbackObject)
-        fun onLightsLoaded(holder: RequestCallbackObject)
+        fun onGroupsLoaded(holder: RequestCallbackObject<JSONObject>)
+        fun onLightsLoaded(holder: RequestCallbackObject<JSONObject>)
     }
 
     fun getUsername(): String {
