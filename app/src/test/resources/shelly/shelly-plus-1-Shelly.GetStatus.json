@@ -1,0 +1,41 @@
+{
+  "ble": {},
+  "cloud": {
+    "connected": false
+  },
+  "input:0": {
+    "id": 0,
+    "state": false
+  },
+  "mqtt": {
+    "connected": false
+  },
+  "switch:0": {
+    "id": 0,
+    "source": "HTTP",
+    "output": true,
+    "temperature": {
+      "tC": 58.6,
+      "tF": 137.6
+    }
+  },
+  "sys": {
+    "mac": "A8032ABD2342",
+    "restart_required": true,
+    "time": "21:21",
+    "unixtime": 1638822089,
+    "uptime": 179113,
+    "ram_size": 249408,
+    "ram_free": 176100,
+    "fs_size": 458752,
+    "fs_free": 241664,
+    "cfg_rev": 1,
+    "available_updates": {}
+  },
+  "wifi": {
+    "sta_ip": "192.168.3.72",
+    "status": "got ip",
+    "ssid": "home.cweiske.de",
+    "rssi": -64
+  }
+}

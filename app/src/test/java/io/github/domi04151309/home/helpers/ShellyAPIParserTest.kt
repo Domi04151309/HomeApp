@@ -27,4 +27,18 @@ class ShellyAPIParserTest {
         Assert.assertEquals(true, listItems[0].state)
         Assert.assertEquals(R.drawable.ic_do, listItems[0].icon)
     }
+
+    @Test
+    fun parseListItemsJsonV2_shellyplus1() {
+        val configJson = JSONObject(javaClass.getResource("/shelly/shelly-plus-1-Shelly.GetConfig.json").readText())
+        val statusJson = JSONObject(javaClass.getResource("/shelly/shelly-plus-1-Shelly.GetStatus.json").readText())
+
+        val sa = ShellyAPIParser("http://shelly", resources)
+        val listItems = sa.parseListItemsJsonV2(configJson, statusJson)
+        Assert.assertEquals(1, listItems.size)
+        Assert.assertEquals("Kamin", listItems[0].title)
+        Assert.assertEquals(resources.getString(R.string.shelly_switch_summary_on), listItems[0].summary)
+        Assert.assertEquals(true, listItems[0].state)
+        Assert.assertEquals(R.drawable.ic_do, listItems[0].icon)
+    }
 }

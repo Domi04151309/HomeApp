@@ -1,0 +1,108 @@
+{
+  "ble": {
+    "enable": false
+  },
+  "cloud": {
+    "enable": false,
+    "server": "iot.shelly.cloud:6012/jrpc"
+  },
+  "input:0": {
+    "id": 0,
+    "name": null,
+    "type": "switch",
+    "invert": false,
+    "factory_reset": true
+  },
+  "mqtt": {
+    "enable": false,
+    "server": null,
+    "user": null,
+    "pass": null,
+    "topic_prefix": null,
+    "rpc_ntf": true,
+    "status_ntf": false
+  },
+  "switch:0": {
+    "id": 0,
+    "name": "Kamin",
+    "in_mode": "follow",
+    "initial_state": "restore_last",
+    "auto_on": false,
+    "auto_on_delay": 60,
+    "auto_off": false,
+    "auto_off_delay": 60
+  },
+  "sys": {
+    "device": {
+      "name": "Shelly Kamin",
+      "mac": "A8032ABD2342",
+      "fw_id": "20211203-130101/0.9.1-ga939435"
+    },
+    "location": {
+      "tz": "Europe/Berlin",
+      "lat": 49.86571,
+      "lon": 8.62604
+    },
+    "debug": {
+      "mqtt": {
+        "enable": false
+      },
+      "websocket": {
+        "enable": false
+      },
+      "udp": {
+        "addr": null
+      }
+    },
+    "ui_data": {
+      "pin_locks": [
+        {
+          "value": "",
+          "enable": false
+        }
+      ],
+      "consumption_types": [
+        "lights"
+      ]
+    },
+    "rpc_udp": {
+      "dst_addr": null,
+      "listen_port": null
+    },
+    "sntp": {
+      "server": "time.google.com"
+    },
+    "cfg_rev": 1
+  },
+  "wifi": {
+    "ap": {
+      "ssid": "ShellyPlus1-A8032ABD2342",
+      "is_open": true,
+      "enable": false
+    },
+    "sta": {
+      "ssid": "home.cweiske.de",
+      "is_open": false,
+      "enable": true,
+      "ipv4mode": "static",
+      "ip": "192.168.3.72",
+      "netmask": "255.255.255.0",
+      "gw": "192.168.3.3",
+      "nameserver": "192.168.3.3"
+    },
+    "sta1": {
+      "ssid": null,
+      "is_open": true,
+      "enable": false,
+      "ipv4mode": "dhcp",
+      "ip": null,
+      "netmask": null,
+      "gw": null,
+      "nameserver": null
+    },
+    "roam": {
+      "rssi_thr": -80,
+      "interval": 60
+    }
+  }
+}

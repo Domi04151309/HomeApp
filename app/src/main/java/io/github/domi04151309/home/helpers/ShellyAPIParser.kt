@@ -8,26 +8,19 @@ import org.json.JSONObject
 
 class ShellyAPIParser(val url: String, val resources: Resources) {
 
-    fun parseListItemsJsonV1(response: JSONObject): ArrayList<ListViewItem> {
-        val relays = response.optJSONArray("relays") ?: JSONArray()
-        var currentItem: JSONObject
-        for (i in 0 until relays.length()) {
-            currentItem = relays.getJSONObject(i)
-            if (!currentItem.has("name") || currentItem.isNull("name"))
-                currentItem.put("name", "")
-        }
-        return parseItems(relays.toJSONObject(JSONArray(IntArray(relays.length()) { it })))
-    }
-
-    private fun parseItems(response : JSONObject): ArrayList<ListViewItem> {
+    fun parseListItemsJsonV1(settings: JSONObject): ArrayList<ListViewItem> {
         val listItems = arrayListOf<ListViewItem>()
+
+        val relays = settings.optJSONArray("relays") ?: JSONArray()
+        var currentRelay: JSONObject
         var currentState: Boolean
         var currentName: String
-        for (i in response.keys()) {
-            currentState = response.getJSONObject(i).getBoolean("ison")
-            currentName = response.getJSONObject(i).optString("name", "")
-            if (currentName.trim() == "") {
-                currentName = resources.getString(R.string.shelly_switch_title, i.toInt() + 1)
+        for (relayId in 0 until relays.length()) {
+            currentRelay = relays.getJSONObject(relayId)
+            currentState = currentRelay.getBoolean("ison")
+            currentName = currentRelay.optString("name", "")
+            if (currentName.trim().isEmpty()) {
+                currentName = resources.getString(R.string.shelly_switch_title, relayId.toInt() + 1)
             }
             listItems += ListViewItem(
                     title = currentName,
@@ -35,11 +28,42 @@ class ShellyAPIParser(val url: String, val resources: Resources) {
                             if (currentState) R.string.shelly_switch_summary_on
                             else R.string.shelly_switch_summary_off
                     ),
-                    hidden = i,
+                    hidden = relayId.toString(),
                     state = currentState,
                     icon = R.drawable.ic_do
             )
         }
+        return listItems
+    }
+
+    fun parseListItemsJsonV2(config: JSONObject, status: JSONObject): ArrayList<ListViewItem> {
+        val listItems = arrayListOf<ListViewItem>()
+
+        var currentId: Int
+        var currentState: Boolean
+        var currentName: String
+        for (switchKey in config.keys()) {
+            if (!switchKey.startsWith("switch:")) {
+                continue
+            }
+            val properties = config.getJSONObject(switchKey)
+            currentId = properties.getInt("id")
+            currentName = if (properties.isNull("name")) ""
+                    else properties.getString("name")
+            currentState = status.getJSONObject(switchKey).getBoolean("output")
+
+            listItems += ListViewItem(
+                    title = currentName,
+                    summary = resources.getString(
+                            if (currentState) R.string.shelly_switch_summary_on
+                            else R.string.shelly_switch_summary_off
+                    ),
+                    hidden = currentId.toString(),
+                    state = currentState,
+                    icon = R.drawable.ic_do
+            )
+        }
+
         return listItems
     }
 }
