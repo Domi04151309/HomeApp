@@ -30,7 +30,8 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
     private lateinit var adapter: DeviceDiscoveryListAdapter
     private lateinit var devices: Devices
     private lateinit var nsdManager: NsdManager
-    private lateinit var discoveryListener: NsdManager.DiscoveryListener
+    private lateinit var discoveryListenerHttp: NsdManager.DiscoveryListener
+    private lateinit var discoveryListenerSimpleHome: NsdManager.DiscoveryListener
     private lateinit var resolveListener: NsdManager.ResolveListener
     private var resolveListenerBusy = AtomicBoolean(false)
     private var pendingNsdServices = ConcurrentLinkedQueue<NsdServiceInfo>()
@@ -136,14 +137,25 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
         resolveListener =  object : NsdManager.ResolveListener {
             override fun onServiceResolved(serviceInfo: NsdServiceInfo) {
                 val gen = serviceInfo.attributes["gen"]
+                val url = serviceInfo.attributes["url"]
                 runOnUiThread {
-                    adapter.add(ListViewItem(
-                        title = serviceInfo.serviceName,
-                        summary = serviceInfo.host.hostAddress,
-                        hidden = "Shelly Gen ${if (gen == null) "1" else gen?.decodeToString()}#Lamp",
-                        icon = R.drawable.ic_device_lamp,
-                        state = devices.addressExists(serviceInfo.host.hostAddress)
-                    ))
+                    if (serviceInfo.serviceType.equals("._simplehome._tcp")) {
+                        adapter.add(ListViewItem(
+                            title = serviceInfo.serviceName,
+                            summary = if (url != null) url.decodeToString() else serviceInfo.host.hostAddress,
+                            hidden = "SimpleHome API#Raspberry Pi",
+                            icon = R.drawable.ic_device_raspberry_pi,
+                            state = devices.addressExists(serviceInfo.host.hostAddress)
+                        ))
+                    } else {
+                        adapter.add(ListViewItem(
+                            title = serviceInfo.serviceName,
+                            summary = serviceInfo.host.hostAddress,
+                            hidden = "Shelly Gen ${if (gen == null) "1" else gen?.decodeToString()}#Lamp",
+                            icon = R.drawable.ic_device_lamp,
+                            state = devices.addressExists(serviceInfo.host.hostAddress)
+                        ))
+                    }
                 }
                 resolveNextInQueue()
             }
@@ -153,7 +165,7 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
             }
         }
 
-        discoveryListener = object : NsdManager.DiscoveryListener {
+        class DnsDiscoveryListener : NsdManager.DiscoveryListener {
             override fun onStartDiscoveryFailed(p0: String?, p1: Int) {
                 nsdManager.stopServiceDiscovery(this)
             }
@@ -164,9 +176,8 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
 
             override fun onServiceFound(service: NsdServiceInfo) {
                 val lowService = service.serviceName.lowercase()
-                if (
-                    lowService.startsWith("shelly")
-                    && !lowService.startsWith("shellybutton1")
+                if ((lowService.startsWith("shelly") && !lowService.startsWith("shellybutton1"))
+                        || service.serviceType.equals("_simplehome._tcp.")
                 ) {
                     if (resolveListenerBusy.compareAndSet(false, true))
                         nsdManager.resolveService(service, resolveListener)
@@ -186,7 +197,12 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
             override fun onDiscoveryStarted(p0: String?) { }
             override fun onDiscoveryStopped(p0: String?) { }
         }
-        nsdManager.discoverServices("_http._tcp", NsdManager.PROTOCOL_DNS_SD, discoveryListener)
+
+        discoveryListenerHttp = DnsDiscoveryListener()
+        nsdManager.discoverServices("_http._tcp", NsdManager.PROTOCOL_DNS_SD, discoveryListenerHttp)
+
+        discoveryListenerSimpleHome = DnsDiscoveryListener()
+        nsdManager.discoverServices("_simplehome._tcp", NsdManager.PROTOCOL_DNS_SD, discoveryListenerSimpleHome)
     }
 
     private fun resolveNextInQueue() {
@@ -224,6 +240,7 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
 
     override fun onStop() {
         super.onStop()
-        nsdManager.stopServiceDiscovery(discoveryListener)
+        nsdManager.stopServiceDiscovery(discoveryListenerHttp)
+        nsdManager.stopServiceDiscovery(discoveryListenerSimpleHome)
     }
 }
