@@ -136,13 +136,12 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
         nsdManager = (getSystemService(NSD_SERVICE) as NsdManager)
         resolveListener =  object : NsdManager.ResolveListener {
             override fun onServiceResolved(serviceInfo: NsdServiceInfo) {
-                val gen = serviceInfo.attributes["gen"]
-                val url = serviceInfo.attributes["url"]
                 runOnUiThread {
                     if (serviceInfo.serviceType.equals("._simplehome._tcp")) {
                         adapter.add(ListViewItem(
                             title = serviceInfo.serviceName,
-                            summary = if (url != null) url.decodeToString() else serviceInfo.host.hostAddress,
+                            summary = serviceInfo.attributes["url"]?.decodeToString()
+                                ?: serviceInfo.host.hostAddress,
                             hidden = "SimpleHome API#Raspberry Pi",
                             icon = R.drawable.ic_device_raspberry_pi,
                             state = devices.addressExists(serviceInfo.host.hostAddress)
@@ -151,7 +150,7 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
                         adapter.add(ListViewItem(
                             title = serviceInfo.serviceName,
                             summary = serviceInfo.host.hostAddress,
-                            hidden = "Shelly Gen ${if (gen == null) "1" else gen?.decodeToString()}#Lamp",
+                            hidden = "Shelly Gen ${serviceInfo.attributes["gen"]?.decodeToString() ?: "1"}#Lamp",
                             icon = R.drawable.ic_device_lamp,
                             state = devices.addressExists(serviceInfo.host.hostAddress)
                         ))
@@ -205,7 +204,7 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
         nsdManager.discoverServices("_simplehome._tcp", NsdManager.PROTOCOL_DNS_SD, discoveryListenerSimpleHome)
     }
 
-    private fun resolveNextInQueue() {
+    internal fun resolveNextInQueue() {
         val nextNsdService = pendingNsdServices.poll()
         if (nextNsdService != null)
             nsdManager.resolveService(nextNsdService, resolveListener)
