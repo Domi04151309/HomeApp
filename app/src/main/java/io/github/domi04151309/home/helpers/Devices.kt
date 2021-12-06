@@ -68,6 +68,15 @@ class Devices(private val context: Context) {
         return devicesObject.has(id)
     }
 
+    fun addressExists(address: String): Boolean {
+        val formattedAddress = DeviceItem.formatAddress(address)
+        for (i in devicesObject.keys()) {
+            if (devicesObject.getJSONObject(i).optString("address", "") == formattedAddress)
+                return true
+        }
+        return false
+    }
+
     private fun generateRandomId(): String {
         val random = Random()
         val sb = StringBuilder(8)

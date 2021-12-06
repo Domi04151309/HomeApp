@@ -64,8 +64,6 @@
     <string name="pref_add_address_example">http://127.0.0.1/</string>
     <string name="pref_add_icon">Icono</string>
     <string name="pref_add_mode">Modo</string>
-    <string name="pref_add_success">Añadir dispositivo</string>
-    <string name="pref_add_success_message">El dispositivo fue añadido con éxito a sus dispositivos</string>
     <string name="pref_edit_text">Edición avanzada</string>
     <string name="pref_edit_text_summary">Edita la cadena JSON por tu cuenta</string>
     <string name="pref_reset">Reestablecer cadena JSON</string>

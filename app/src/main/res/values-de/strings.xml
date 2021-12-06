@@ -84,8 +84,8 @@
     <string name="pref_add_mode">Modus</string>
     <string name="pref_add_search">Suche nach kompatiblen Geräten</string>
     <string name="pref_add_search_summary">Dies kann einige Sekunden dauern</string>
-    <string name="pref_add_success">Gerät hinzufügen</string>
-    <string name="pref_add_success_message">Das Gerät wurde erfolgreich zu Ihren Geräten hinzugefügt</string>
+    <string name="pref_add_dialog">Gerär hinzufügen</string>
+    <string name="pref_add_dialog_message">Wollen Sie &#8220;%1$s&#8221; zu Ihren Geräten hinzufügen?</string>
     <string name="pref_edit_text">Erweitertes Bearbeiten</string>
     <string name="pref_edit_text_summary">Bearbeiten Sie die JSON-Zeichenfolge selbst</string>
     <string name="pref_reset">JSON-Zeichenfolge zurücksetzen</string>
@@ -111,6 +111,7 @@
     <string name="str_reset">Zurücksetzen</string>
     <string name="str_show">Anzeigen</string>
     <string name="str_done">Fertig</string>
+    <string name="str_add">Hinzufügen</string>
 
     <string name="about">Über</string>
     <string name="about_summary">Über die App</string>

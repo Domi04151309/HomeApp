@@ -17,9 +17,8 @@ import androidx.recyclerview.widget.RecyclerView
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.adapters.DeviceDiscoveryListAdapter
 import io.github.domi04151309.home.data.DeviceItem
+import io.github.domi04151309.home.data.ListViewItem
 import io.github.domi04151309.home.helpers.Devices
-import io.github.domi04151309.home.data.SimpleListItem
-import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.Theme
 import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
 import java.util.concurrent.ConcurrentLinkedQueue
@@ -42,7 +41,7 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
         setContentView(R.layout.activity_devices)
 
         recyclerView = findViewById(R.id.recyclerView)
-        adapter = DeviceDiscoveryListAdapter(arrayListOf(SimpleListItem(
+        adapter = DeviceDiscoveryListAdapter(arrayListOf(ListViewItem(
             title = resources.getString(R.string.pref_add_search),
             summary = resources.getString(R.string.pref_add_search_summary),
             icon = R.drawable.ic_search
@@ -67,11 +66,12 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
 
         Thread {
             //Add Router
-            adapter.add(SimpleListItem(
+            adapter.add(ListViewItem(
                 title = resources.getString(R.string.pref_device_router),
                 summary = routerIp,
                 hidden = "Website#Router",
-                icon = R.drawable.ic_device_router
+                icon = R.drawable.ic_device_router,
+                state = devices.addressExists(routerIp)
             ))
             addresses += routerIp
 
@@ -80,11 +80,12 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
                 override fun onStart() {}
                 override fun onFoundNewDevice(device: UPnPDevice) {
                     if (device.server.contains("IpBridge") && !addresses.contains(device.hostAddress)) {
-                        adapter.add(SimpleListItem(
-                                title = device.friendlyName,
-                                summary = device.hostAddress,
-                                hidden = "Hue API#Lamp",
-                                icon = R.drawable.ic_device_lamp
+                        adapter.add(ListViewItem(
+                            title = device.friendlyName,
+                            summary = device.hostAddress,
+                            hidden = "Hue API#Lamp",
+                            icon = R.drawable.ic_device_lamp,
+                            state = devices.addressExists(device.hostAddress)
                         ))
                         addresses += device.hostAddress
                     }
@@ -102,20 +103,22 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
                 override fun onFoundNewDevice(device: UPnPDevice) {
                     val friendlyName = device.friendlyName
                     if (friendlyName.startsWith("FRITZ!") && !addresses.contains(device.hostAddress)) {
-                        adapter.add(SimpleListItem(
-                                title = device.friendlyName,
-                                summary = device.hostAddress,
-                                hidden = "Website#Router",
-                                icon = R.drawable.ic_device_router
+                        adapter.add(ListViewItem(
+                            title = device.friendlyName,
+                            summary = device.hostAddress,
+                            hidden = "Website#Router",
+                            icon = R.drawable.ic_device_router,
+                            state = devices.addressExists(device.hostAddress)
                         ))
                         addresses += device.hostAddress
                     }
                     if (device.server.contains("SimpleHome") && !addresses.contains(device.hostAddress)) {
-                        adapter.add(SimpleListItem(
-                                title = device.friendlyName,
-                                summary = device.hostAddress,
-                                hidden = "SimpleHome API#Raspberry Pi",
-                                icon = R.drawable.ic_device_raspberry_pi
+                        adapter.add(ListViewItem(
+                            title = device.friendlyName,
+                            summary = device.hostAddress,
+                            hidden = "SimpleHome API#Raspberry Pi",
+                            icon = R.drawable.ic_device_raspberry_pi,
+                            state = devices.addressExists(device.hostAddress)
                         ))
                         addresses += device.hostAddress
                     }
@@ -134,11 +137,12 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
             override fun onServiceResolved(serviceInfo: NsdServiceInfo) {
                 val gen = serviceInfo.attributes["gen"]
                 runOnUiThread {
-                    adapter.add(SimpleListItem(
+                    adapter.add(ListViewItem(
                         title = serviceInfo.serviceName,
                         summary = serviceInfo.host.hostAddress,
                         hidden = "Shelly Gen ${if (gen == null) "1" else gen?.decodeToString()}#Lamp",
-                        icon = R.drawable.ic_device_lamp
+                        icon = R.drawable.ic_device_lamp,
+                        state = devices.addressExists(serviceInfo.host.hostAddress)
                     ))
                 }
                 resolveNextInQueue()
@@ -160,8 +164,9 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
 
             override fun onServiceFound(service: NsdServiceInfo) {
                 val lowService = service.serviceName.lowercase()
-                if (lowService.startsWith("shelly")
-                        && !lowService.startsWith("shellybutton1")
+                if (
+                    lowService.startsWith("shelly")
+                    && !lowService.startsWith("shellybutton1")
                 ) {
                     if (resolveListenerBusy.compareAndSet(false, true))
                         nsdManager.resolveService(service, resolveListener)
@@ -197,18 +202,22 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
     }
 
     override fun onItemClicked(view: View, position: Int) {
+        val name = view.findViewById<TextView>(R.id.title).text.toString()
         val hidden =  view.findViewById<TextView>(R.id.hidden).text.toString()
         if (hidden != "") {
-            val newItem = DeviceItem(devices.generateNewId())
-            newItem.name = view.findViewById<TextView>(R.id.title).text.toString()
-            newItem.address = view.findViewById<TextView>(R.id.summary).text.toString()
-            newItem.mode = hidden.substring(0 , hidden.indexOf("#"))
-            newItem.iconName = hidden.substring(hidden.lastIndexOf("#") + 1)
-            devices.addDevice(newItem)
             AlertDialog.Builder(this)
-                .setTitle(R.string.pref_add_success)
-                .setMessage(R.string.pref_add_success_message)
-                .setPositiveButton(android.R.string.ok) { _, _ -> }
+                .setTitle(R.string.pref_add_dialog)
+                .setMessage(resources.getString(R.string.pref_add_dialog_message, name))
+                .setPositiveButton(R.string.str_add) { _, _ ->
+                    val newItem = DeviceItem(devices.generateNewId())
+                    newItem.name = name
+                    newItem.address = view.findViewById<TextView>(R.id.summary).text.toString()
+                    newItem.mode = hidden.substring(0 , hidden.indexOf("#"))
+                    newItem.iconName = hidden.substring(hidden.lastIndexOf("#") + 1)
+                    devices.addDevice(newItem)
+                    adapter.changeState(position, true)
+                }
+                .setNegativeButton(android.R.string.cancel) { _, _ -> }
                 .show()
         }
     }

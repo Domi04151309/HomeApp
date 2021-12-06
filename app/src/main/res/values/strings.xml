@@ -86,8 +86,8 @@
     <string name="pref_add_mode">Mode</string>
     <string name="pref_add_search">Searching for compatible devices</string>
     <string name="pref_add_search_summary">This might take a couple of seconds</string>
-    <string name="pref_add_success">Add Device</string>
-    <string name="pref_add_success_message">The device was successfully added to your devices</string>
+    <string name="pref_add_dialog">Add Device</string>
+    <string name="pref_add_dialog_message">Do you want to add &#8220;%1$s&#8221; to your devices?</string>
     <string name="pref_edit_text">Advanced editing</string>
     <string name="pref_edit_text_summary">Edit the JSON string by yourself</string>
     <string name="pref_reset">Reset JSON string</string>
@@ -113,6 +113,7 @@
     <string name="str_reset">Reset</string>
     <string name="str_show">Show</string>
     <string name="str_done">Done</string>
+    <string name="str_add">Add</string>
 
     <string name="about">About</string>
     <string name="about_summary">About the app</string>

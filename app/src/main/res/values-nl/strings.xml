@@ -64,8 +64,6 @@
     <string name="pref_add_address_example">http://127.0.0.1/</string>
     <string name="pref_add_icon">Pictogram</string>
     <string name="pref_add_mode">Modus</string>
-    <string name="pref_add_success">Apparaat toevoegen</string>
-    <string name="pref_add_success_message">Het apparaat is toegevoegd aan je lijst</string>
     <string name="pref_edit_text">Expertmodus</string>
     <string name="pref_edit_text_summary">Pas de json-tekenreeks handmatig aan</string>
     <string name="pref_reset">Standaardwaarden van json-tekenreeks</string>

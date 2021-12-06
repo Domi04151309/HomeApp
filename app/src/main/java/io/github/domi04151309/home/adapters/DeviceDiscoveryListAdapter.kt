@@ -7,11 +7,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import io.github.domi04151309.home.R
 import android.view.LayoutInflater
-import io.github.domi04151309.home.data.SimpleListItem
+import io.github.domi04151309.home.data.ListViewItem
 import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
 
 class DeviceDiscoveryListAdapter(
-    private val items: ArrayList<SimpleListItem>,
+    private val items: ArrayList<ListViewItem>,
     private val helperInterface: RecyclerViewHelperInterface
     ) : RecyclerView.Adapter<DeviceDiscoveryListAdapter.ViewHolder>() {
 
@@ -22,7 +22,7 @@ class DeviceDiscoveryListAdapter(
         return ViewHolder(
             LayoutInflater
                 .from(parent.context)
-                .inflate(R.layout.list_item_simple, parent, false)
+                .inflate(R.layout.list_item_device_discovery, parent, false)
         )
     }
 
@@ -31,6 +31,10 @@ class DeviceDiscoveryListAdapter(
         holder.title.text = items[position].title
         holder.summary.text = items[position].summary
         holder.hidden.text = items[position].hidden
+        holder.stateDrawable.setImageResource(
+            if (items[position].state == true) R.drawable.ic_done
+            else android.R.color.transparent
+        )
         holder.itemView.setOnClickListener { helperInterface.onItemClicked(holder.itemView, position) }
     }
 
@@ -38,9 +42,14 @@ class DeviceDiscoveryListAdapter(
         return items.size
     }
 
-    fun add(item: SimpleListItem) {
+    fun add(item: ListViewItem) {
         items.add(item)
         notifyItemInserted(items.size - 1)
+    }
+
+    fun changeState(i: Int, state: Boolean) {
+        items[i].state = state
+        notifyItemChanged(i)
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -48,5 +57,6 @@ class DeviceDiscoveryListAdapter(
         val title: TextView = view.findViewById(R.id.title)
         val summary: TextView = view.findViewById(R.id.summary)
         val hidden: TextView = view.findViewById(R.id.hidden)
+        val stateDrawable: ImageView = view.findViewById(R.id.state)
     }
 }
