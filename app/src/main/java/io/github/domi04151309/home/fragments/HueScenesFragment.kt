@@ -59,13 +59,11 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes), RecyclerViewHe
                         val gridItems: ArrayList<SceneGridItem> = ArrayList(response.length())
                         val sceneIds: ArrayList<String> = ArrayList(response.length() / 2)
                         val sceneNames: ArrayList<String> = ArrayList(response.length() / 2)
-                        var currentObjectName: String
                         var currentObject: JSONObject
-                        for (i in 0 until response.length()) {
-                            currentObjectName = response.names()?.getString(i) ?: ""
-                            currentObject = response.getJSONObject(currentObjectName)
+                        for (i in response.keys()) {
+                            currentObject = response.getJSONObject(i)
                             if (currentObject.getString("group") == lampData.id) {
-                                sceneIds.add(currentObjectName)
+                                sceneIds.add(i)
                                 sceneNames.add(currentObject.getString("name"))
                             }
                         }
@@ -80,10 +78,8 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes), RecyclerViewHe
                                         val states = sceneResponse.getJSONObject("lightstates")
                                         val currentSceneValues = ArrayList<Int>(states.length())
                                         var lampObject: JSONObject
-                                        for (j in 0 until states.length()) {
-                                            lampObject = states.getJSONObject(
-                                                states.names()?.getString(j) ?: break
-                                            )
+                                        for (j in states.keys()) {
+                                            lampObject = states.getJSONObject(j)
                                             if (lampObject.getBoolean("on")) {
                                                 if (lampObject.has("hue") && lampObject.has("sat")) {
                                                     currentSceneValues.clear()

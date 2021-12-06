@@ -96,19 +96,17 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
         override fun onGroupsLoaded(holder: RequestCallbackObject<JSONObject>) {
             if (holder.response != null) {
                 try {
-                    var currentObjectName: String
                     var currentObject: JSONObject
                     var type: String
                     val listItems: ArrayList<ListViewItem> = ArrayList(holder.response.length())
-                    for (i in 0 until holder.response.length()) {
+                    for (i in holder.response.keys()) {
                         try {
-                            currentObjectName = holder.response.names()?.getString(i) ?: ""
-                            currentObject = holder.response.getJSONObject(currentObjectName)
+                            currentObject = holder.response.getJSONObject(i)
                             type = currentObject.getString("type")
                             listItems += ListViewItem(
                                     title = currentObject.getString("name"),
                                     summary = resources.getString(R.string.hue_tap),
-                                    hidden = "${currentObject.getJSONArray("lights")}@${if (type == "Room") "room" else "zone"}#$currentObjectName",
+                                    hidden = "${currentObject.getJSONArray("lights")}@${if (type == "Room") "room" else "zone"}#$i",
                                     icon = if (type == "Room") R.drawable.ic_room else R.drawable.ic_zone,
                                     state = currentObject.getJSONObject("action").getBoolean("on")
                             )

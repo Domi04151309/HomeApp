@@ -51,13 +51,10 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
             2 -> JsonObjectRequest(
                 Request.Method.GET, url + "rpc/Shelly.GetConfig", null,
                 { response ->
-                    val names = response.names() ?: JSONArray()
                     val relayNames = mutableMapOf<Int, String>()
-                    var currentName: String
-                    for (i in 0 until names.length()) {
-                        currentName = names.getString(i)
-                        if (currentName.contains("switch:")) {
-                            val properties = response.getJSONObject(currentName)
+                    for (i in response.keys()) {
+                        if (i.contains("switch:")) {
+                            val properties = response.getJSONObject(i)
                             relayNames[properties.getInt("id")] =
                                 if (properties.isNull("name")) ""
                                 else properties.getString("name")
@@ -115,17 +112,14 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
     }
 
     private fun parseItems(response : JSONObject): ArrayList<ListViewItem> {
-        val names = response.names() ?: JSONArray()
         val listItems = arrayListOf<ListViewItem>()
-        var currentId: String
         var currentState: Boolean
         var currentName: String
-        for (i in 0 until names.length()) {
-            currentId = names.getString(i)
-            currentState = response.getJSONObject(currentId).getBoolean("ison")
-            currentName = response.getJSONObject(currentId).optString("name", "")
+        for (i in response.keys()) {
+            currentState = response.getJSONObject(i).getBoolean("ison")
+            currentName = response.getJSONObject(i).optString("name", "")
             if (currentName.trim() == "") {
-                currentName = c.resources.getString(R.string.shelly_switch_title, currentId.toInt() + 1)
+                currentName = c.resources.getString(R.string.shelly_switch_title, i.toInt() + 1)
             }
             listItems += ListViewItem(
                 title = currentName,
@@ -133,7 +127,7 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
                     if (currentState) R.string.shelly_switch_summary_on
                     else R.string.shelly_switch_summary_off
                 ),
-                hidden = currentId,
+                hidden = i,
                 state = currentState,
                 icon = R.drawable.ic_do
             )
