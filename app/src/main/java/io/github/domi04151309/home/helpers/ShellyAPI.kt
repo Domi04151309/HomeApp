@@ -44,39 +44,21 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
             )
             2 -> JsonObjectRequest(
                 Request.Method.GET, url + "rpc/Shelly.GetConfig", null,
-                { response ->
-                    val relayNames = mutableMapOf<Int, String>()
-                    for (i in response.keys()) {
-                        if (i.contains("switch:")) {
-                            val properties = response.getJSONObject(i)
-                            relayNames[properties.getInt("id")] =
-                                if (properties.isNull("name")) ""
-                                else properties.getString("name")
+                { configResponse ->
+                    queue.add(JsonObjectRequest(
+                        Request.Method.GET, url + "rpc/Shelly.GetStatus", null,
+                        { statusResponse ->
+                            val parser = ShellyAPIParser(url, c.resources)
+                            callback.onSwitchesLoaded(RequestCallbackObject(
+                                    c,
+                                    parser.parseListItemsJsonV2(configResponse, statusResponse),
+                                    selectedDevice
+                            ))
+                        },
+                        { error ->
+                            callback.onSwitchesLoaded(RequestCallbackObject(c, null, selectedDevice, Global.volleyError(c, error)))
                         }
-                    }
-
-                    val relays = HashMap<String, JSONObject>(relayNames.size)
-                    var completedRequests = 0
-                    for (i in relayNames.keys) {
-                        queue.add(JsonObjectRequest(
-                            Request.Method.GET, url + "relay/$i", null,
-                            { secondResponse ->
-                                secondResponse.put("name", relayNames[i])
-                                relays[i.toString()] = secondResponse
-                                completedRequests++
-                                if (completedRequests == relayNames.size) {
-                                    callback.onSwitchesLoaded(RequestCallbackObject(
-                                        c,
-                                        parseItems(JSONObject(TreeMap(relays).toMap())),
-                                        selectedDevice
-                                    ))
-                                }
-                            },
-                            { error ->
-                                callback.onSwitchesLoaded(RequestCallbackObject(c, null, selectedDevice, Global.volleyError(c, error)))
-                            }
-                        ))
-                    }
+                    ))
                 },
                 { error ->
                     callback.onSwitchesLoaded(RequestCallbackObject(c, null, selectedDevice, Global.volleyError(c, error)))
@@ -103,29 +85,5 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
             else -> null
         }
         queue.add(jsonObjectRequest)
-    }
-
-    private fun parseItems(response : JSONObject): ArrayList<ListViewItem> {
-        val listItems = arrayListOf<ListViewItem>()
-        var currentState: Boolean
-        var currentName: String
-        for (i in response.keys()) {
-            currentState = response.getJSONObject(i).getBoolean("ison")
-            currentName = response.getJSONObject(i).optString("name", "")
-            if (currentName.trim() == "") {
-                currentName = c.resources.getString(R.string.shelly_switch_title, i.toInt() + 1)
-            }
-            listItems += ListViewItem(
-                title = currentName,
-                summary = c.resources.getString(
-                    if (currentState) R.string.shelly_switch_summary_on
-                    else R.string.shelly_switch_summary_off
-                ),
-                hidden = i,
-                state = currentState,
-                icon = R.drawable.ic_do
-            )
-        }
-        return listItems
     }
 }
