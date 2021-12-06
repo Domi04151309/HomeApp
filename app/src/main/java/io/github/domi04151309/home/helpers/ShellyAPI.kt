@@ -31,16 +31,10 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
             1 -> JsonObjectRequestAuth(
                 Request.Method.GET, url + "settings", secrets, null,
                 { response ->
-                    val relays = response.optJSONArray("relays") ?: JSONArray()
-                    var currentItem: JSONObject
-                    for (i in 0 until relays.length()) {
-                        currentItem = relays.getJSONObject(i)
-                        if (!currentItem.has("name") || currentItem.isNull("name"))
-                            currentItem.put("name", "")
-                    }
+                    val parser = ShellyAPIParser(url, c.resources)
                     callback.onSwitchesLoaded(RequestCallbackObject(
                         c,
-                        parseItems(relays.toJSONObject(JSONArray(IntArray(relays.length()) { it }))),
+                        parser.parseListItemsJsonV1(response),
                         selectedDevice
                     ))
                 },
