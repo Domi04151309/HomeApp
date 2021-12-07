@@ -8,9 +8,10 @@ import org.json.JSONObject
 
 class ShellyAPIParser(val url: String, val resources: Resources) {
 
-    fun parseListItemsJsonV1(settings: JSONObject): ArrayList<ListViewItem> {
+    fun parseListItemsJsonV1(settings: JSONObject, status: JSONObject): ArrayList<ListViewItem> {
         val listItems = arrayListOf<ListViewItem>()
 
+        //switches
         val relays = settings.optJSONArray("relays") ?: JSONArray()
         var currentRelay: JSONObject
         var currentState: Boolean
@@ -33,6 +34,19 @@ class ShellyAPIParser(val url: String, val resources: Resources) {
                     icon = R.drawable.ic_do
             )
         }
+
+        //power meters
+        val meters = status.optJSONArray("meters") ?: JSONArray()
+        for (meterId in 0 until meters.length()) {
+            var currentMeter = meters.getJSONObject(meterId)
+            var currentWatts = currentMeter.getDouble("power")
+            listItems += ListViewItem(
+                    title = currentWatts.toString() + " W",
+                    summary = resources.getString(R.string.shelly_powermeter_summary),
+                    icon = R.drawable.ic_bolt
+            )
+        }
+
         return listItems
     }
 
