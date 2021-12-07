@@ -66,10 +66,6 @@
     <string name="pref_add_mode">Modus</string>
     <string name="pref_edit_text">Expertmodus</string>
     <string name="pref_edit_text_summary">Pas de json-tekenreeks handmatig aan</string>
-    <string name="pref_reset">Standaardwaarden van json-tekenreeks</string>
-    <string name="pref_reset_summary">Herstel de standaardwaarden van de json-tekenreeks en verwijder alle apparaten</string>
-    <string name="pref_reset_question">Weet je zeker dat je wilt doorgaan?</string>
-    <string name="pref_reset_toast">Standaardwaarden teruggezet</string>
     <string name="pref_info">Informatie</string>
     <string name="pref_info_wiki">Wiki</string>
     <string name="pref_info_header">Kopachtergrond</string>

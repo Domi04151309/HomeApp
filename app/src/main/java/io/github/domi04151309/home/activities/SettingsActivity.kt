@@ -62,7 +62,7 @@ class SettingsActivity : AppCompatActivity() {
                 AlertDialog.Builder(requireContext())
                     .setTitle(R.string.pref_reset)
                     .setMessage(R.string.pref_reset_question)
-                    .setPositiveButton(R.string.str_reset) { _, _ ->
+                    .setPositiveButton(R.string.str_delete) { _, _ ->
                         PreferenceManager.getDefaultSharedPreferences(context).edit().putString("devices_json", Global.DEFAULT_JSON).apply()
                         Toast.makeText(context, R.string.pref_reset_toast, Toast.LENGTH_LONG).show()
                         Devices.reloadFromPreferences()

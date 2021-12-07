@@ -66,10 +66,6 @@
     <string name="pref_add_mode">Modo</string>
     <string name="pref_edit_text">Edición avanzada</string>
     <string name="pref_edit_text_summary">Edita la cadena JSON por tu cuenta</string>
-    <string name="pref_reset">Reestablecer cadena JSON</string>
-    <string name="pref_reset_summary">Esto reinicia la cadena de JSON y borra todos los dispositivos</string>
-    <string name="pref_reset_question">¿Estás seguro de que quieres reestablecer la cadena JSON y borrar todos los dispositivos?</string>
-    <string name="pref_reset_toast">Reiniciar la cadena de JSON</string>
     <string name="pref_info">Información</string>
     <string name="pref_info_wiki">Wiki</string>
     <string name="pref_info_header">Fondo de cabecera</string>

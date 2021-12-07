@@ -241,6 +241,11 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
     }
 
     private fun checkNetwork() : Boolean {
+        if (
+            !PreferenceManager.getDefaultSharedPreferences(this)
+                .getBoolean("local_only", true)
+        ) return true
+
         val connectivityManager = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
         val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
         return if (capabilities != null) {

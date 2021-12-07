@@ -21,16 +21,28 @@
             app:summary="@string/pref_edit_summary"
             app:title="@string/pref_edit"
             app:iconSpaceReserved="false" />
+        <Preference
+            app:key="reset_json"
+            app:summary="@string/pref_reset_summary"
+            app:title="@string/pref_reset"
+            app:iconSpaceReserved="false" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:title="@string/pref_advanced"
+        app:iconSpaceReserved="false">
+
         <EditTextPreference
             app:defaultValue='{"devices":{}}'
             app:key="devices_json"
             app:summary="@string/pref_edit_text_summary"
             app:title="@string/pref_edit_text"
             app:iconSpaceReserved="false" />
-        <Preference
-            app:key="reset_json"
-            app:summary="@string/pref_reset_summary"
-            app:title="@string/pref_reset"
+        <SwitchPreference
+            app:defaultValue="true"
+            app:key="local_only"
+            app:summary="@string/pref_local_only_summary"
+            app:title="@string/pref_local_only"
             app:iconSpaceReserved="false" />
     </PreferenceCategory>
 
