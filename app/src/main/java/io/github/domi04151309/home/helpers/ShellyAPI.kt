@@ -30,12 +30,20 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
         val jsonObjectRequest = when (version) {
             1 -> JsonObjectRequestAuth(
                 Request.Method.GET, url + "settings", secrets, null,
-                { response ->
-                    val parser = ShellyAPIParser(url, c.resources)
-                    callback.onSwitchesLoaded(RequestCallbackObject(
-                        c,
-                        parser.parseListItemsJsonV1(response),
-                        selectedDevice
+                { settingsResponse ->
+                    queue.add(JsonObjectRequest(
+                        Request.Method.GET, url + "status", null,
+                        { statusResponse ->
+                            val parser = ShellyAPIParser(url, c.resources)
+                            callback.onSwitchesLoaded(RequestCallbackObject(
+                                    c,
+                                    parser.parseListItemsJsonV1(settingsResponse, statusResponse),
+                                    selectedDevice
+                            ))
+                        },
+                        { error ->
+                            callback.onSwitchesLoaded(RequestCallbackObject(c, null, selectedDevice, Global.volleyError(c, error)))
+                        }
                     ))
                 },
                 { error ->
