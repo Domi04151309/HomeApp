@@ -47,6 +47,36 @@ class ShellyAPIParser(val url: String, val resources: Resources) {
             )
         }
 
+        //external temperature sensors
+        val tempSensors = status.optJSONObject("ext_temperature")
+        if (tempSensors != null) {
+            val tempSensorKeys = tempSensors.names()
+            for (sensorId in 0 until tempSensorKeys.length()) {
+                val currentSensor = tempSensors.getJSONObject(sensorId.toString())
+                val currentValue = currentSensor.getDouble("tC")
+                listItems += ListViewItem(
+                        title = currentValue.toString() + "°C",
+                        summary = resources.getString(R.string.shelly_temperature_sensor_summary),
+                        icon = R.drawable.ic_device_thermometer
+                )
+            }
+        }
+
+        //external humidity sensors
+        val humSensors = status.optJSONObject("ext_humidity")
+        if (humSensors != null) {
+            val humSensorKeys = humSensors.names()
+            for (sensorId in 0 until humSensorKeys.length()) {
+                val currentSensor = humSensors.getJSONObject(sensorId.toString())
+                val currentValue = currentSensor.getDouble("hum")
+                listItems += ListViewItem(
+                        title = currentValue.toString() + "%",
+                        summary = resources.getString(R.string.shelly_humidity_sensor_summary),
+                        icon = R.drawable.ic_humidity
+                )
+            }
+        }
+
         return listItems
     }
 
