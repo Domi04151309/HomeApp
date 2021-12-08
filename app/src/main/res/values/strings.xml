@@ -51,12 +51,12 @@
     <string name="tasmota_execute_once">Execute command</string>
     <string name="tasmota_execute_once_summary">Execute command once without adding it to the list</string>
 
-    <string name="shelly_humidity_sensor_summary">current humidity</string>
-    <string name="shelly_powermeter_summary">current power consumption</string>
+    <string name="shelly_humidity_sensor_summary">Current humidity</string>
+    <string name="shelly_powermeter_summary">Current power consumption</string>
     <string name="shelly_switch_title">Switch %1$d</string>
     <string name="shelly_switch_summary_on">The switch is on</string>
     <string name="shelly_switch_summary_off">The switch is off</string>
-    <string name="shelly_temperature_sensor_summary">current temperature</string>
+    <string name="shelly_temperature_sensor_summary">Current temperature</string>
 
     <string name="webView">Web View</string>
     <string name="webView_open">Open in browser</string>
