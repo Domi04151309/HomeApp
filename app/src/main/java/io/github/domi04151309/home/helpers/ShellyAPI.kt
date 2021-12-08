@@ -5,15 +5,10 @@ import android.util.Log
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import io.github.domi04151309.home.R
 import io.github.domi04151309.home.custom.JsonObjectRequestAuth
 import io.github.domi04151309.home.data.ListViewItem
 import io.github.domi04151309.home.data.RequestCallbackObject
-import org.json.JSONArray
-import org.json.JSONObject
-import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 class ShellyAPI(private val c: Context, deviceId: String, private val version: Int) {
 
