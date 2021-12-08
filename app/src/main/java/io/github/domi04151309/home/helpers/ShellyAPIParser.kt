@@ -43,7 +43,7 @@ class ShellyAPIParser(val url: String, val resources: Resources) {
             listItems += ListViewItem(
                     title = currentWatts.toString() + " W",
                     summary = resources.getString(R.string.shelly_powermeter_summary),
-                    icon = R.drawable.ic_bolt
+                    icon = R.drawable.ic_lightning
             )
         }
 
