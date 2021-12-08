@@ -51,18 +51,12 @@ class SimpleHomeAPI(private val c: Context) {
         val queue = Volley.newRequestQueue(c)
         val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null,
                 { response ->
-                    try {
-                        callback.onExecutionFinished(
-                            c,
-                            response.optString("toast", c.resources.getString(R.string.main_execution_completed)),
-                            response.optBoolean("refresh", false),
-                            deviceId
-                        )
-
-                    } catch (e: Exception) {
-                        callback.onExecutionFinished(c, c.resources.getString(R.string.main_execution_completed))
-                        Log.w(Global.LOG_TAG, e.toString())
-                    }
+                    callback.onExecutionFinished(
+                        c,
+                        response.optString("toast", c.resources.getString(R.string.main_execution_completed)),
+                        response.optBoolean("refresh", false),
+                        deviceId
+                    )
                 },
                 { error ->
                     callback.onExecutionFinished(c, volleyError(c, error))

@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
 
         override fun onExecutionFinished(context: Context, result: CharSequence, refresh: Boolean, deviceId: String) {
             Toast.makeText(context, result, Toast.LENGTH_LONG).show()
-            if (refresh) homeAPI.loadCommands(devices.getDeviceById(deviceId).address, this)
+            if (refresh) homeAPI.loadCommands(deviceId, this)
         }
 
         override fun onCommandsLoaded(holder: RequestCallbackObject<ArrayList<ListViewItem>>) {
