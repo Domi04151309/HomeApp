@@ -21,43 +21,41 @@ class ShellyAPIParser(val url: String, val resources: Resources) {
             currentState = currentRelay.getBoolean("ison")
             currentName = currentRelay.optString("name", "")
             if (currentName.trim().isEmpty()) {
-                currentName = resources.getString(R.string.shelly_switch_title, relayId.toInt() + 1)
+                currentName = resources.getString(R.string.shelly_switch_title, relayId + 1)
             }
             listItems += ListViewItem(
-                    title = currentName,
-                    summary = resources.getString(
-                            if (currentState) R.string.shelly_switch_summary_on
-                            else R.string.shelly_switch_summary_off
-                    ),
-                    hidden = relayId.toString(),
-                    state = currentState,
-                    icon = R.drawable.ic_do
+                title = currentName,
+                summary = resources.getString(
+                    if (currentState) R.string.shelly_switch_summary_on
+                    else R.string.shelly_switch_summary_off
+                ),
+                hidden = relayId.toString(),
+                state = currentState,
+                icon = R.drawable.ic_do
             )
         }
 
         //power meters
         val meters = status.optJSONArray("meters") ?: JSONArray()
+        var currentMeter: JSONObject
         for (meterId in 0 until meters.length()) {
-            var currentMeter = meters.getJSONObject(meterId)
-            var currentWatts = currentMeter.getDouble("power")
+            currentMeter = meters.getJSONObject(meterId)
             listItems += ListViewItem(
-                    title = currentWatts.toString() + " W",
-                    summary = resources.getString(R.string.shelly_powermeter_summary),
-                    icon = R.drawable.ic_lightning
+                title = "${currentMeter.getDouble("power")} W",
+                summary = resources.getString(R.string.shelly_powermeter_summary),
+                icon = R.drawable.ic_lightning
             )
         }
 
         //external temperature sensors
         val tempSensors = status.optJSONObject("ext_temperature")
         if (tempSensors != null) {
-            val tempSensorKeys = tempSensors.names()
-            for (sensorId in 0 until tempSensorKeys.length()) {
-                val currentSensor = tempSensors.getJSONObject(sensorId.toString())
-                val currentValue = currentSensor.getDouble("tC")
+            for (sensorId in tempSensors.keys()) {
+                val currentSensor = tempSensors.getJSONObject(sensorId)
                 listItems += ListViewItem(
-                        title = currentValue.toString() + "°C",
-                        summary = resources.getString(R.string.shelly_temperature_sensor_summary),
-                        icon = R.drawable.ic_device_thermometer
+                    title = "${currentSensor.getDouble("tC")} °C",
+                    summary = resources.getString(R.string.shelly_temperature_sensor_summary),
+                    icon = R.drawable.ic_device_thermometer
                 )
             }
         }
@@ -65,14 +63,12 @@ class ShellyAPIParser(val url: String, val resources: Resources) {
         //external humidity sensors
         val humSensors = status.optJSONObject("ext_humidity")
         if (humSensors != null) {
-            val humSensorKeys = humSensors.names()
-            for (sensorId in 0 until humSensorKeys.length()) {
-                val currentSensor = humSensors.getJSONObject(sensorId.toString())
-                val currentValue = currentSensor.getDouble("hum")
+            for (sensorId in humSensors.keys()) {
+                val currentSensor = humSensors.getJSONObject(sensorId)
                 listItems += ListViewItem(
-                        title = currentValue.toString() + "%",
-                        summary = resources.getString(R.string.shelly_humidity_sensor_summary),
-                        icon = R.drawable.ic_humidity
+                    title = "${currentSensor.getDouble("hum")}%",
+                    summary = resources.getString(R.string.shelly_humidity_sensor_summary),
+                    icon = R.drawable.ic_humidity
                 )
             }
         }

@@ -43,7 +43,7 @@ class MainListAdapter(private val helperInterface: RecyclerViewHelperInterface) 
         holder.title.text = items[position].title
         holder.summary.text = items[position].summary
         holder.hidden.text = items[position].hidden
-        if (stateListener != null && items[position].hidden.isNotEmpty()) {
+        if (stateListener != null && items[position].state != null) {
             holder.stateSwitch.isChecked = items[position].state ?: false
             holder.stateSwitch.setOnCheckedChangeListener(stateListener)
         } else {

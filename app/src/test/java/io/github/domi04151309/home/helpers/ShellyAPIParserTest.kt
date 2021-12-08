@@ -4,7 +4,6 @@ import android.content.res.Resources
 import io.github.domi04151309.home.R
 import org.junit.Assert
 import org.json.JSONObject
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -12,10 +11,10 @@ import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
 class ShellyAPIParserTest {
-    var resources = RuntimeEnvironment.getApplication().applicationContext.resources
+    private var resources: Resources = RuntimeEnvironment.getApplication().applicationContext.resources
 
     @Test
-    fun parseListItemsJsonV1_shellyplug1WithPowermeter() {
+    fun parseListItemsJsonV1_shellyPlug1WithPowerMeter() {
         val settingsJson = JSONObject(javaClass.getResource("/shelly/shellyplug1-settings.json").readText())
         val statusJson = JSONObject(javaClass.getResource("/shelly/shellyplug1-status.json").readText())
 
@@ -60,7 +59,7 @@ class ShellyAPIParserTest {
         Assert.assertEquals(R.drawable.ic_lightning, listItems[num].icon)
 
         num = 2
-        Assert.assertEquals("23.0°C", listItems[num].title)
+        Assert.assertEquals("23.0 °C", listItems[num].title)
         Assert.assertEquals(resources.getString(R.string.shelly_temperature_sensor_summary), listItems[num].summary)
         Assert.assertEquals(null, listItems[num].state)
         Assert.assertEquals("", listItems[num].hidden)
@@ -75,7 +74,7 @@ class ShellyAPIParserTest {
     }
 
     @Test
-    fun parseListItemsJsonV2_shellyplus1() {
+    fun parseListItemsJsonV2_shellyPlus1() {
         val configJson = JSONObject(javaClass.getResource("/shelly/shelly-plus-1-Shelly.GetConfig.json").readText())
         val statusJson = JSONObject(javaClass.getResource("/shelly/shelly-plus-1-Shelly.GetStatus.json").readText())
 
