@@ -3,6 +3,7 @@ package io.github.domi04151309.home.helpers
 import android.content.Context
 import android.util.Log
 import com.android.volley.Request
+import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import io.github.domi04151309.home.custom.JsonObjectRequestAuth
@@ -88,5 +89,33 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
             else -> null
         }
         queue.add(jsonObjectRequest)
+    }
+
+    companion object {
+        /**
+         * Detect the name of the shelly device during discovery
+         */
+        fun loadName(url: String, version: Int, listener: Response.Listener<String>): JsonObjectRequest {
+            if (version == 1) {
+                return JsonObjectRequest(
+                    url + "settings",
+                    { statusResponse ->
+                        val name = statusResponse.optString("name")
+                        listener.onResponse(name)
+                    },
+                    {}
+                )
+            } else {
+                // "/shelly" is available without password
+                return JsonObjectRequest(
+                    url + "shelly",
+                    { statusResponse ->
+                        val name = statusResponse.optString("name")
+                        listener.onResponse(name)
+                    },
+                    {}
+                )
+            }
+        }
     }
 }
