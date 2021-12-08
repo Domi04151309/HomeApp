@@ -14,11 +14,13 @@ import androidx.appcompat.app.AlertDialog
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.android.volley.toolbox.Volley
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.adapters.DeviceDiscoveryListAdapter
 import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.data.ListViewItem
 import io.github.domi04151309.home.helpers.Devices
+import io.github.domi04151309.home.helpers.ShellyAPI
 import io.github.domi04151309.home.helpers.Theme
 import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
 import java.util.concurrent.ConcurrentLinkedQueue
@@ -134,6 +136,7 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
 
 
         nsdManager = (getSystemService(NSD_SERVICE) as NsdManager)
+        val queue = Volley.newRequestQueue(this)
         resolveListener =  object : NsdManager.ResolveListener {
             override fun onServiceResolved(serviceInfo: NsdServiceInfo) {
                 runOnUiThread {
@@ -155,6 +158,17 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
                             icon = R.drawable.ic_device_lamp,
                             state = devices.addressExists(serviceInfo.host.hostAddress)
                         ))
+
+                        queue.add(
+                            ShellyAPI.loadName(
+                                "http://" + serviceInfo.host.hostAddress + "/",
+                                serviceInfo.attributes["gen"]?.decodeToString()?.toInt() ?: 1
+                            ) { name ->
+                                if (name.isNotEmpty()) {
+                                    adapter.changeTitle(serviceInfo.host.hostAddress, name)
+                                }
+                            }
+                        )
                     }
                 }
                 resolveNextInQueue()

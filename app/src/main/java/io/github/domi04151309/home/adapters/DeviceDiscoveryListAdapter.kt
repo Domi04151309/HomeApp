@@ -52,6 +52,16 @@ class DeviceDiscoveryListAdapter(
         notifyItemChanged(i)
     }
 
+    fun changeTitle(summary: String, newTitle: String) {
+        for (i in 0 until items.size) {
+            if (items[i].summary.equals(summary)) {
+                items[i].title = newTitle
+                notifyItemChanged(i)
+                break
+            }
+        }
+    }
+
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val drawable: ImageView = view.findViewById(R.id.drawable)
         val title: TextView = view.findViewById(R.id.title)
