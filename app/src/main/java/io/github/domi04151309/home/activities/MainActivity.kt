@@ -467,6 +467,15 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
                     else -> tasmota?.execute(tasmotaRequestCallBack, view.findViewById<TextView>(R.id.summary).text.toString())
                 }
             }
+            Flavors.TWO_SHELLY -> {
+                if (hidden.startsWith("http://") || hidden.startsWith("https://")) {
+                    startActivity(
+                        Intent(this, WebActivity::class.java)
+                            .putExtra("URI", hidden)
+                            .putExtra("title", title)
+                    )
+                }
+            }
         }
     }
 }

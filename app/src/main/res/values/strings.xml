@@ -57,6 +57,8 @@
     <string name="shelly_switch_summary_on">The switch is on</string>
     <string name="shelly_switch_summary_off">The switch is off</string>
     <string name="shelly_temperature_sensor_summary">Current temperature</string>
+    <string name="shelly_web_configuration_summary">Open device website</string>
+    <string name="shelly_web_configuration_title">Configuration</string>
 
     <string name="webView">Web View</string>
     <string name="webView_open">Open in browser</string>
