@@ -138,13 +138,14 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
             override fun onServiceResolved(serviceInfo: NsdServiceInfo) {
                 runOnUiThread {
                     if (serviceInfo.serviceType.equals("._simplehome._tcp")) {
+                        val url = serviceInfo.attributes["url"]?.decodeToString()
+                            ?: serviceInfo.host.hostAddress
                         adapter.add(ListViewItem(
                             title = serviceInfo.serviceName,
-                            summary = serviceInfo.attributes["url"]?.decodeToString()
-                                ?: serviceInfo.host.hostAddress,
+                            summary = url,
                             hidden = "SimpleHome API#Raspberry Pi",
                             icon = R.drawable.ic_device_raspberry_pi,
-                            state = devices.addressExists(serviceInfo.host.hostAddress)
+                            state = devices.addressExists(url)
                         ))
                     } else {
                         adapter.add(ListViewItem(
