@@ -151,7 +151,7 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
                             state = devices.addressExists(url)
                         ))
                     } else {
-                        adapter.add(ListViewItem(
+                        val pos = adapter.add(ListViewItem(
                             title = serviceInfo.serviceName,
                             summary = serviceInfo.host.hostAddress,
                             hidden = "Shelly Gen ${serviceInfo.attributes["gen"]?.decodeToString() ?: "1"}#Lamp",
@@ -164,9 +164,7 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
                                 "http://" + serviceInfo.host.hostAddress + "/",
                                 serviceInfo.attributes["gen"]?.decodeToString()?.toInt() ?: 1
                             ) { name ->
-                                if (name.isNotEmpty()) {
-                                    adapter.changeTitle(serviceInfo.host.hostAddress, name)
-                                }
+                                if (name.isNotEmpty()) adapter.changeTitle(pos, name)
                             }
                         )
                     }
