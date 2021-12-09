@@ -51,6 +51,7 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
         )), this)
         devices = Devices(this)
         val addresses = mutableListOf<String>()
+        val queue = Volley.newRequestQueue(this)
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
@@ -136,7 +137,6 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
 
 
         nsdManager = (getSystemService(NSD_SERVICE) as NsdManager)
-        val queue = Volley.newRequestQueue(this)
         resolveListener =  object : NsdManager.ResolveListener {
             override fun onServiceResolved(serviceInfo: NsdServiceInfo) {
                 runOnUiThread {
