@@ -45,43 +45,36 @@ class ShellyAPIParserTest {
     }
 
     @Test
-    fun parseListItemsJsonV1_shelly1WithTemperature() {
-        val settingsJson = JSONObject(javaClass.getResource("/shelly/shellyplug1-settings.json").readText())//I didn't have a shelly1 settings file :(
+    fun parseListItemsJsonV1_shelly1WithTemperatureNoRelayName() {
+        val settingsJson = JSONObject(javaClass.getResource("/shelly/shelly1-settings.json").readText())
         val statusJson = JSONObject(javaClass.getResource("/shelly/shelly1-status.json").readText())
 
         val sa = ShellyAPIParser("http://shelly/", resources)
         val listItems = sa.parseListItemsJsonV1(settingsJson, statusJson)
-        Assert.assertEquals(5, listItems.size)
+        Assert.assertEquals(4, listItems.size)
 
         var num = 0
-        Assert.assertEquals("Wohnzimmer Gartenfenster", listItems[num].title)
-        Assert.assertEquals(resources.getString(R.string.shelly_switch_summary_on), listItems[num].summary)
-        Assert.assertEquals(true, listItems[num].state)
+        Assert.assertEquals(resources.getString(R.string.shelly_switch_title, 1), listItems[num].title)
+        Assert.assertEquals(resources.getString(R.string.shelly_switch_summary_off), listItems[num].summary)
+        Assert.assertEquals(false, listItems[num].state)
         Assert.assertEquals("0", listItems[num].hidden)
         Assert.assertEquals(R.drawable.ic_do, listItems[num].icon)
 
-        num = 1
-        Assert.assertEquals("0.0 W", listItems[num].title)
-        Assert.assertEquals(resources.getString(R.string.shelly_powermeter_summary), listItems[num].summary)
-        Assert.assertEquals(null, listItems[num].state)
-        Assert.assertEquals("", listItems[num].hidden)
-        Assert.assertEquals(R.drawable.ic_lightning, listItems[num].icon)
-
-        num = 2
+        num++
         Assert.assertEquals("23.0 °C", listItems[num].title)
         Assert.assertEquals(resources.getString(R.string.shelly_temperature_sensor_summary), listItems[num].summary)
         Assert.assertEquals(null, listItems[num].state)
         Assert.assertEquals("", listItems[num].hidden)
         Assert.assertEquals(R.drawable.ic_device_thermometer, listItems[num].icon)
 
-        num = 3
+        num++
         Assert.assertEquals("52.3%", listItems[num].title)
         Assert.assertEquals(resources.getString(R.string.shelly_humidity_sensor_summary), listItems[num].summary)
         Assert.assertEquals(null, listItems[num].state)
         Assert.assertEquals("", listItems[num].hidden)
         Assert.assertEquals(R.drawable.ic_humidity, listItems[num].icon)
 
-        num = 4
+        num++
         Assert.assertEquals(resources.getString(R.string.shelly_web_configuration_title), listItems[num].title)
         Assert.assertEquals(resources.getString(R.string.shelly_web_configuration_summary), listItems[num].summary)
         Assert.assertEquals(null, listItems[num].state)

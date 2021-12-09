@@ -16,10 +16,11 @@ class ShellyAPIParser(val url: String, val resources: Resources) {
         var currentRelay: JSONObject
         var currentState: Boolean
         var currentName: String
+        var hideMeters = false
         for (relayId in 0 until relays.length()) {
             currentRelay = relays.getJSONObject(relayId)
             currentState = currentRelay.getBoolean("ison")
-            currentName = currentRelay.optString("name", "")
+            currentName = if (currentRelay.isNull("name")) "" else currentRelay.optString("name", "")
             if (currentName.trim().isEmpty()) {
                 currentName = resources.getString(R.string.shelly_switch_title, relayId + 1)
             }
@@ -33,10 +34,12 @@ class ShellyAPIParser(val url: String, val resources: Resources) {
                 state = currentState,
                 icon = R.drawable.ic_do
             )
+            //Shelly1 has the "user power constant" setting, but no actual meter
+            hideMeters = currentRelay.has("power")
         }
 
         //power meters
-        val meters = status.optJSONArray("meters") ?: JSONArray()
+        val meters = if (hideMeters) JSONArray() else status.optJSONArray("meters") ?: JSONArray()
         var currentMeter: JSONObject
         for (meterId in 0 until meters.length()) {
             currentMeter = meters.getJSONObject(meterId)
