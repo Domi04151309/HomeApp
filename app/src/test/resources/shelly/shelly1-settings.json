@@ -1,0 +1,164 @@
+{
+  "device": {
+    "type": "SHSW-1",
+    "mac": "40F520052342",
+    "hostname": "shelly1-40F520052342",
+    "num_outputs": 1
+  },
+  "wifi_ap": {
+    "enabled": false,
+    "ssid": "shelly1-40F520052342",
+    "key": ""
+  },
+  "wifi_sta": {
+    "enabled": true,
+    "ssid": "IoT",
+    "ipv4_method": "static",
+    "ip": "172.22.2.19",
+    "gw": "172.22.2.1",
+    "mask": "255.255.255.0",
+    "dns": "8.8.8.8"
+  },
+  "wifi_sta1": {
+    "enabled": false,
+    "ssid": null,
+    "ipv4_method": "dhcp",
+    "ip": null,
+    "gw": null,
+    "mask": null,
+    "dns": null
+  },
+  "ap_roaming": {
+    "enabled": false,
+    "threshold": -70
+  },
+  "mqtt": {
+    "enable": false,
+    "server": "192.168.33.3:1883",
+    "user": "",
+    "id": "shelly1-40F520052342",
+    "reconnect_timeout_max": 60,
+    "reconnect_timeout_min": 2,
+    "clean_session": true,
+    "keep_alive": 60,
+    "max_qos": 0,
+    "retain": false,
+    "update_period": 30
+  },
+  "coiot": {
+    "enabled": true,
+    "update_period": 15,
+    "peer": ""
+  },
+  "sntp": {
+    "server": "time.google.com",
+    "enabled": true
+  },
+  "login": {
+    "enabled": false,
+    "unprotected": false,
+    "username": "admin"
+  },
+  "pin_code": "",
+  "name": null,
+  "fw": "20211109-124958/v1.11.7-g682a0db",
+  "factory_reset_from_switch": true,
+  "discoverable": true,
+  "build_info": {
+    "build_id": "20211109-124958/v1.11.7-g682a0db",
+    "build_timestamp": "2021-11-09T12:49:58Z",
+    "build_version": "1.0"
+  },
+  "cloud": {
+    "enabled": false,
+    "connected": false
+  },
+  "timezone": "Europe/Berlin",
+  "lat": 51.231339,
+  "lng": 12.71792,
+  "tzautodetect": true,
+  "tz_utc_offset": 3600,
+  "tz_dst": false,
+  "tz_dst_auto": true,
+  "time": "21:16",
+  "unixtime": 1638994593,
+  "debug_enable": false,
+  "allow_cross_origin": false,
+  "ext_switch_enable": false,
+  "ext_switch_reverse": false,
+  "ext_switch": {
+    "0": {
+      "relay_num": -1
+    }
+  },
+  "actions": {
+    "active": false,
+    "names": [
+      "btn_on_url",
+      "btn_off_url",
+      "longpush_url",
+      "shortpush_url",
+      "out_on_url",
+      "out_off_url",
+      "lp_on_url",
+      "lp_off_url",
+      "ext_temp_over_url",
+      "ext_temp_under_url",
+      "ext_temp_over_url",
+      "ext_temp_under_url",
+      "ext_temp_over_url",
+      "ext_temp_under_url",
+      "ext_hum_over_url",
+      "ext_hum_under_url"
+    ]
+  },
+  "hwinfo": {
+    "hw_revision": "prod-191217",
+    "batch_id": 1
+  },
+  "mode": "relay",
+  "longpush_time": 800,
+  "relays": [
+    {
+      "name": null,
+      "appliance_type": "General",
+      "ison": false,
+      "has_timer": false,
+      "default_state": "switch",
+      "btn_type": "toggle",
+      "btn_reverse": 0,
+      "auto_on": 0,
+      "auto_off": 0,
+      "power": 0,
+      "schedule": true,
+      "schedule_rules": [
+        "0300-01234-on",
+        "1000-01234-off"
+      ]
+    }
+  ],
+  "ext_sensors": {
+    "temperature_unit": "C"
+  },
+  "ext_temperature": {
+    "0": {
+      "overtemp_threshold_tC": 23,
+      "overtemp_threshold_tF": 73.4,
+      "undertemp_threshold_tC": 20,
+      "undertemp_threshold_tF": 68,
+      "overtemp_act": "relay_off",
+      "undertemp_act": "relay_on",
+      "offset_tC": 0,
+      "offset_tF": 0
+    }
+  },
+  "ext_humidity": {
+    "0": {
+      "overhum_threshold": 0,
+      "underhum_threshold": 0,
+      "overhum_act": "disabled",
+      "underhum_act": "disabled",
+      "offset": 0
+    }
+  }
+}
