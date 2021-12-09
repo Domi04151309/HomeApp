@@ -96,24 +96,20 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
          * Detect the name of the shelly device during discovery
          */
         fun loadName(url: String, version: Int, listener: Response.Listener<String>): JsonObjectRequest {
-            if (version == 1) {
-                return JsonObjectRequest(
+            return if (version == 1) {
+                JsonObjectRequest(
                     url + "settings",
                     { statusResponse ->
-                        val name = statusResponse.optString("name")
-                        listener.onResponse(name)
-                    },
-                    {}
+                        listener.onResponse(statusResponse.optString("name"))
+                    }, {}
                 )
             } else {
                 // "/shelly" is available without password
-                return JsonObjectRequest(
+                JsonObjectRequest(
                     url + "shelly",
                     { statusResponse ->
-                        val name = statusResponse.optString("name")
-                        listener.onResponse(name)
-                    },
-                    {}
+                        listener.onResponse(statusResponse.optString("name"))
+                    }, {}
                 )
             }
         }

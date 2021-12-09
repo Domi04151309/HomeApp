@@ -42,9 +42,10 @@ class DeviceDiscoveryListAdapter(
         return items.size
     }
 
-    fun add(item: ListViewItem) {
+    fun add(item: ListViewItem) : Int {
         items.add(item)
         notifyItemInserted(items.size - 1)
+        return items.size - 1
     }
 
     fun changeState(i: Int, state: Boolean) {
@@ -52,14 +53,9 @@ class DeviceDiscoveryListAdapter(
         notifyItemChanged(i)
     }
 
-    fun changeTitle(summary: String, newTitle: String) {
-        for (i in 0 until items.size) {
-            if (items[i].summary.equals(summary)) {
-                items[i].title = newTitle
-                notifyItemChanged(i)
-                break
-            }
-        }
+    fun changeTitle(i: Int, title: String) {
+        items[i].title = title
+        notifyItemChanged(i)
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
