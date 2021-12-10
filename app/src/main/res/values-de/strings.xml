@@ -25,6 +25,10 @@
     <string name="err_missing_address">Geben Sie bitte eine Adresse ein</string>
     <string name="err_missing_address_summary">Eine Adresse ist wichtig, damit die App das Gerät erreichen kann</string>
 
+    <string name="espeasy_update_interval">%1$d s</string>
+    <string name="espeasy_web_configuration_summary">Geräte-Website öffnen</string>
+    <string name="espeasy_web_configuration_title">Einstellungen</string>
+
     <string name="hue_connect">Verbinde dich mit deiner Bridge</string>
     <string name="hue_press_button">Bitte drücke den Knopf auf deiner Bridge um fortzufahren.</string>
     <string name="hue_tap">Tippe um Auszuwählen</string>

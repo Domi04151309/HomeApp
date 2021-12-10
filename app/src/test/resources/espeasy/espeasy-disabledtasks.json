@@ -1,0 +1,161 @@
+{
+  "System": {
+    "Build": 20111,
+    "Git Build": "",
+    "System Libraries": "ESP82xx Core 2843a5ac, NONOS SDK 2.2.2-dev(38a443e), LWIP: 2.1.2 PUYA support",
+    "Plugin Count": 46,
+    "Plugin Description": "[Normal]",
+    "Local Time": "2021-12-10 22:54:36",
+    "Unit Number": 242,
+    "Unit Name": "TH2",
+    "Uptime": 62,
+    "Last Boot Cause": "Manual reboot",
+    "Reset Reason": "Software/System restart",
+    "Load": 5.24,
+    "Load LC": 3473,
+    "CPU Eco Mode": "false",
+    "Heap Max Free Block": 20512,
+    "Heap Fragmentation": 10,
+    "Free RAM": 22760
+  },
+  "WiFi": {
+    "Hostname": "TH2-242",
+    "IP Config": "DHCP",
+    "IP Address": "192.168.3.113",
+    "IP Subnet": "255.255.255.0",
+    "Gateway": "192.168.3.91",
+    "STA MAC": "CC:50:E3:4F:FD:A2",
+    "DNS 1": "192.168.3.3",
+    "DNS 2": "(IP unset)",
+    "SSID": "home.cweiske.de",
+    "BSSID": "5C:49:79:3B:B1:E0",
+    "Channel": 1,
+    "Connected msec": 3713000,
+    "Last Disconnect Reason": 1,
+    "Last Disconnect Reason str": "(1) Unspecified",
+    "Number Reconnects": 0,
+    "Force WiFi B/G": "false",
+    "Restart WiFi Lost Conn": "false",
+    "Force WiFi No Sleep": "false",
+    "Connection Failure Threshold": 0,
+    "RSSI": -72
+  },
+  "nodes": [
+    {
+      "nr": 242,
+      "name": "TH2",
+      "build": 20111,
+      "platform": "ESP Easy Mega",
+      "ip": "192.168.3.113",
+      "age": 1
+    }
+  ],
+  "Sensors": [
+    {
+      "TaskValues": [
+        {
+          "ValueNumber": 1,
+          "Name": "Ausgang",
+          "NrDecimals": 0,
+          "Value": 0
+        }
+      ],
+      "DataAcquisition": [
+        {
+          "Controller": 1,
+          "IDX": 0,
+          "Enabled": "true"
+        },
+        {
+          "Controller": 2,
+          "IDX": 0,
+          "Enabled": "false"
+        },
+        {
+          "Controller": 3,
+          "IDX": 0,
+          "Enabled": "false"
+        }
+      ],
+      "TaskInterval": 0,
+      "Type": "Switch input - Switch",
+      "TaskName": "Relais",
+      "TaskDeviceNumber": 1,
+      "TaskEnabled": "false",
+      "TaskNumber": 1
+    },
+    {
+      "TaskValues": [
+        {
+          "ValueNumber": 1,
+          "Name": "Eingang",
+          "NrDecimals": 0,
+          "Value": 0
+        }
+      ],
+      "DataAcquisition": [
+        {
+          "Controller": 1,
+          "IDX": 0,
+          "Enabled": "true"
+        },
+        {
+          "Controller": 2,
+          "IDX": 0,
+          "Enabled": "false"
+        },
+        {
+          "Controller": 3,
+          "IDX": 0,
+          "Enabled": "false"
+        }
+      ],
+      "TaskInterval": 0,
+      "Type": "Switch input - Switch",
+      "TaskName": "Schalter",
+      "TaskDeviceNumber": 1,
+      "TaskEnabled": "false",
+      "TaskNumber": 2
+    },
+    {
+      "TaskValues": [
+        {
+          "ValueNumber": 1,
+          "Name": "Temperatur",
+          "NrDecimals": 2,
+          "Value": "nan"
+        },
+        {
+          "ValueNumber": 2,
+          "Name": "Feuchte",
+          "NrDecimals": 2,
+          "Value": "nan"
+        }
+      ],
+      "DataAcquisition": [
+        {
+          "Controller": 1,
+          "IDX": 0,
+          "Enabled": "true"
+        },
+        {
+          "Controller": 2,
+          "IDX": 0,
+          "Enabled": "false"
+        },
+        {
+          "Controller": 3,
+          "IDX": 0,
+          "Enabled": "false"
+        }
+      ],
+      "TaskInterval": 300,
+      "Type": "Environment - DHT11/12/22  SONOFF2301/7021",
+      "TaskName": "DHT_TH2",
+      "TaskDeviceNumber": 5,
+      "TaskEnabled": "false",
+      "TaskNumber": 3
+    }
+  ],
+  "TTL": 60000
+}

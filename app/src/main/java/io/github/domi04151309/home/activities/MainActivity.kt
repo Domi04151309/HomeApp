@@ -38,7 +38,7 @@ import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
 class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
 
     enum class Flavors {
-        ONE, TWO_SIMPLE_HOME, TWO_HUE, TWO_TASMOTA, TWO_SHELLY
+        ONE, TWO_SIMPLE_HOME, TWO_HUE, TWO_TASMOTA, TWO_SHELLY, TWO_ESPEASY
     }
 
     private var currentDevice = ""
@@ -59,6 +59,36 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
     private fun getThemeId(): String =
             PreferenceManager.getDefaultSharedPreferences(this)
                     .getString(P.PREF_THEME, P.PREF_THEME_DEFAULT) ?: P.PREF_THEME_DEFAULT
+
+    /*
+     * Things related to ESP Easy
+     */
+    private var espEasy: EspEasyAPI? = null
+    internal val espEasyStateListener = CompoundButton.OnCheckedChangeListener { compoundButton, newState ->
+        if (compoundButton.isPressed) {
+            val view = (compoundButton.parent as ViewGroup)
+            val gpioId = view.findViewById<TextView>(R.id.hidden).text.toString()
+            if (gpioId.isEmpty()) {
+                return@OnCheckedChangeListener
+            }
+
+            view.findViewById<TextView>(R.id.summary).text = resources.getString(
+                if (newState) R.string.shelly_switch_summary_on
+                else R.string.shelly_switch_summary_off
+            )
+            espEasy?.changeSwitchState(gpioId.toInt(), newState)
+        }
+    }
+    private val espEasyRequestCallBack = object : EspEasyAPI.RequestCallBack {
+        override fun onInfoLoaded(holder: RequestCallbackObject<ArrayList<ListViewItem>>) {
+            if (holder.response != null) {
+                adapter.updateData(holder.response, espEasyStateListener)
+                setLevelTwo(devices.getDeviceById(holder.deviceId), Flavors.TWO_ESPEASY)
+            } else {
+                handleErrorOnLevelOne(holder.errorMessage)
+            }
+        }
+    }
 
     /*
      * Things related to the Home API
@@ -266,6 +296,10 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
                 )
                 reset = true
             }
+            "ESP Easy" -> {
+                espEasy = EspEasyAPI(this, deviceId)
+                espEasy?.loadInfo(espEasyRequestCallBack)
+            }
             "Fritz! Auto-Login" -> {
                 startActivity(
                     Intent(this, WebActivity::class.java)
@@ -454,6 +488,15 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
             }
             Flavors.TWO_SIMPLE_HOME ->
                 homeAPI.executeCommand(currentDevice, hidden, homeRequestCallBack)
+            Flavors.TWO_ESPEASY -> {
+                if (hidden.startsWith("http://") || hidden.startsWith("https://")) {
+                    startActivity(
+                        Intent(this, WebActivity::class.java)
+                            .putExtra("URI", hidden)
+                            .putExtra("title", title)
+                    )
+                }
+            }
             Flavors.TWO_HUE ->
                 startActivity(
                     Intent(this, HueLampActivity::class.java)

@@ -1,0 +1,105 @@
+{
+  "System": {
+    "Load": 100,
+    "Load LC": 3,
+    "Build": 20116,
+    "Git Build": "mega-20211105_c79d675",
+    "System Libraries": "ESP82xx Core 2843a5ac, NONOS SDK 2.2.2-dev(38a443e), LWIP: 2.1.2 PUYA support",
+    "Plugin Count": 47,
+    "Plugin Description": "[Normal]",
+    "Local Time": "2021-12-10 20:10:10",
+    "Time Source": "NTP",
+    "Time Wander": 0,
+    "Use NTP": "true",
+    "Unit Number": 0,
+    "Unit Name": "ESP_Easy",
+    "Uptime": 3,
+    "Uptime (ms)": 157461,
+    "Last Boot Cause": "Cold Boot",
+    "Reset Reason": "External System",
+    "CPU Eco Mode": "false",
+    "Heap Max Free Block": 9928,
+    "Heap Fragmentation": 14,
+    "Free RAM": 11600,
+    "Free Stack": 3488,
+    "Sunrise": "5:50",
+    "Sunset": "17:57",
+    "Timezone Offset": 1,
+    "Latitude": 0,
+    "Longitude": 0
+  },
+  "WiFi": {
+    "Hostname": "ESP-Easy",
+    "IP Config": "DHCP",
+    "IP Address": "192.168.3.119",
+    "IP Subnet": "255.255.255.0",
+    "Gateway": "192.168.3.91",
+    "STA MAC": "60:01:94:01:6E:75",
+    "DNS 1": "192.168.3.3",
+    "DNS 2": "(IP unset)",
+    "SSID": "home.cweiske.de",
+    "BSSID": "5C:49:79:3B:B1:E0",
+    "Channel": 1,
+    "Encryption Type": "WPA2/PSK",
+    "Connected msec": 153000,
+    "Last Disconnect Reason": 1,
+    "Last Disconnect Reason str": "(1) Unspecified",
+    "Number Reconnects": 0,
+    "Configured SSID1": "home.cweiske.de",
+    "Configured SSID2": "Neo809B",
+    "Force WiFi B/G": "false",
+    "Restart WiFi Lost Conn": "false",
+    "Force WiFi No Sleep": "false",
+    "Periodical send Gratuitous ARP": "true",
+    "Connection Failure Threshold": 0,
+    "Max WiFi TX Power": 17.5,
+    "Current WiFi TX Power": 14,
+    "WiFi Sensitivity Margin": 3,
+    "Send With Max TX Power": "false",
+    "Extra WiFi scan loops": 0,
+    "Use Last Connected AP from RTC": "false",
+    "RSSI": -79
+  },
+  "Sensors": [
+    {
+      "TaskValues": [
+        {
+          "ValueNumber": 1,
+          "Name": "Temperatur",
+          "NrDecimals": 1,
+          "Value": "nan"
+        },
+        {
+          "ValueNumber": 2,
+          "Name": "Feuchte",
+          "NrDecimals": 1,
+          "Value": 39.5
+        }
+      ],
+      "DataAcquisition": [
+        {
+          "Controller": 1,
+          "IDX": 0,
+          "Enabled": "true"
+        },
+        {
+          "Controller": 2,
+          "IDX": 0,
+          "Enabled": "true"
+        },
+        {
+          "Controller": 3,
+          "IDX": 0,
+          "Enabled": "false"
+        }
+      ],
+      "TaskInterval": 5,
+      "Type": "Environment - DHT11/12/22  SONOFF2301/7021",
+      "TaskName": "DHT",
+      "TaskDeviceNumber": 5,
+      "TaskEnabled": "true",
+      "TaskNumber": 1
+    }
+  ],
+  "TTL": 5000
+}

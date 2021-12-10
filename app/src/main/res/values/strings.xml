@@ -25,6 +25,10 @@
     <string name="err_missing_address">Please enter an address</string>
     <string name="err_missing_address_summary">An address is important because it allows the app to reach the device</string>
 
+    <string name="espeasy_update_interval">%1$d s</string>
+    <string name="espeasy_web_configuration_summary">Open device website</string>
+    <string name="espeasy_web_configuration_title">Configuration</string>
+
     <string name="hue_connect">Connect to your Bridge</string>
     <string name="hue_press_button">Please press the button on your bridge to continue.</string>
     <string name="hue_tap">Tap to select</string>
@@ -160,6 +164,7 @@
     </string-array>
     <string-array name="pref_add_mode_array" translatable="false">
         <item>SimpleHome API</item>
+        <item>ESP Easy</item>
         <item>Fritz! Auto-Login</item>
         <item>Hue API</item>
         <item>Node-RED</item>
