@@ -332,12 +332,10 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
                 setLevelTwo(deviceObj, Flavors.TWO_TASMOTA)
             }
             "Shelly Gen 1" -> {
-                //TODO: check if authenticated
                 shelly = ShellyAPI(this, deviceId, 1)
                 shelly?.loadSwitches(shellyRequestCallBack)
             }
             "Shelly Gen 2" -> {
-                //TODO: check if authenticated
                 shelly = ShellyAPI(this, deviceId, 2)
                 shelly?.loadSwitches(shellyRequestCallBack)
             }

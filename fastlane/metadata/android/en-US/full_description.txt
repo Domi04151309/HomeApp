@@ -4,6 +4,7 @@ HomeApp is a small and easy to use smart home app with a simple framework. The g
 - Philips Hue Bridge
 - Shelly Gen 1 devices
 - Shelly Gen 2 devices
+- Devices using ESP Easy
 - Devices using Tasmota
 - Devices using the Node-RED dashboard
 - Devices using the SimpleHome API

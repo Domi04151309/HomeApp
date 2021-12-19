@@ -17,6 +17,7 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
     private val url = Devices(c).getDeviceById(deviceId).address
     private val queue = Volley.newRequestQueue(c)
     private val secrets = DeviceSecrets(c, deviceId)
+    private val parser = ShellyAPIParser(url, c.resources)
 
     interface RequestCallBack {
         fun onSwitchesLoaded(holder: RequestCallbackObject<ArrayList<ListViewItem>>)
@@ -30,7 +31,6 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
                     queue.add(JsonObjectRequest(
                         Request.Method.GET, url + "status", null,
                         { statusResponse ->
-                            val parser = ShellyAPIParser(url, c.resources)
                             callback.onSwitchesLoaded(RequestCallbackObject(
                                     c,
                                     parser.parseListItemsJsonV1(settingsResponse, statusResponse),
@@ -52,7 +52,6 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
                     queue.add(JsonObjectRequest(
                         Request.Method.GET, url + "rpc/Shelly.GetStatus", null,
                         { statusResponse ->
-                            val parser = ShellyAPIParser(url, c.resources)
                             callback.onSwitchesLoaded(RequestCallbackObject(
                                     c,
                                     parser.parseListItemsJsonV2(configResponse, statusResponse),
