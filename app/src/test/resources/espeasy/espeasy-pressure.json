@@ -1,0 +1,110 @@
+{
+  "System": {
+    "Build": 20111,
+    "Git Build": "",
+    "System Libraries": "ESP82xx Core 2843a5ac, NONOS SDK 2.2.2-dev(38a443e), LWIP: 2.1.2 PUYA support",
+    "Plugin Count": 46,
+    "Plugin Description": "[Normal]",
+    "Local Time": "2021-12-10 22:54:32",
+    "Unit Number": 244,
+    "Unit Name": "HWR",
+    "Uptime": 121667,
+    "Last Boot Cause": "Manual reboot",
+    "Reset Reason": "Exception",
+    "Load": 14.59,
+    "Load LC": 2255,
+    "CPU Eco Mode": "false",
+    "Heap Max Free Block": 14560,
+    "Heap Fragmentation": 8,
+    "Free RAM": 15696
+  },
+  "WiFi": {
+    "Hostname": "HWR",
+    "IP Config": "DHCP",
+    "IP Address": "172.22.1.244",
+    "IP Subnet": "255.255.255.0",
+    "Gateway": "172.22.1.1",
+    "STA MAC": "5C:CF:7F:2A:1C:D6",
+    "DNS 1": "172.22.1.20",
+    "DNS 2": "(IP unset)",
+    "SSID": "EndeDerVernunft",
+    "BSSID": "E8:DF:70:E4:A7:9C",
+    "Channel": 11,
+    "Connected msec": 1779758000,
+    "Last Disconnect Reason": 8,
+    "Last Disconnect Reason str": "(8) Assoc leave",
+    "Number Reconnects": 2,
+    "Force WiFi B/G": "false",
+    "Restart WiFi Lost Conn": "false",
+    "Force WiFi No Sleep": "false",
+    "Periodical send Gratuitous ARP": "true",
+    "Connection Failure Threshold": 0,
+    "RSSI": -80
+  },
+  "nodes": [
+    {
+      "nr": 244,
+      "name": "HWR",
+      "build": 20111,
+      "platform": "ESP Easy Mega",
+      "ip": "172.22.1.244",
+      "age": 1
+    },
+    {
+      "nr": 245,
+      "name": "Saunahuette",
+      "build": 20116,
+      "platform": "ESP Easy Mega",
+      "ip": "172.22.1.245",
+      "age": 1
+    }
+  ],
+  "Sensors": [
+    {
+      "TaskValues": [
+        {
+          "ValueNumber": 1,
+          "Name": "Temp_BMP",
+          "NrDecimals": 0,
+          "Value": 30
+        },
+        {
+          "ValueNumber": 2,
+          "Name": "Feuchte_BMP",
+          "NrDecimals": 1,
+          "Value": 0
+        },
+        {
+          "ValueNumber": 3,
+          "Name": "Druck_BMP",
+          "NrDecimals": 0,
+          "Value": 1004
+        }
+      ],
+      "DataAcquisition": [
+        {
+          "Controller": 1,
+          "IDX": 0,
+          "Enabled": "true"
+        },
+        {
+          "Controller": 2,
+          "IDX": 0,
+          "Enabled": "false"
+        },
+        {
+          "Controller": 3,
+          "IDX": 0,
+          "Enabled": "false"
+        }
+      ],
+      "TaskInterval": 60,
+      "Type": "Environment - BMx280",
+      "TaskName": "BMP_HWR",
+      "TaskDeviceNumber": 28,
+      "TaskEnabled": "true",
+      "TaskNumber": 1
+    }
+  ],
+  "TTL": 50000
+}
