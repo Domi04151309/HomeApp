@@ -68,9 +68,7 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
         if (compoundButton.isPressed) {
             val view = (compoundButton.parent as ViewGroup)
             val gpioId = view.findViewById<TextView>(R.id.hidden).text.toString()
-            if (gpioId.isEmpty()) {
-                return@OnCheckedChangeListener
-            }
+            if (gpioId.isEmpty()) return@OnCheckedChangeListener
 
             view.findViewById<TextView>(R.id.summary).text = resources.getString(
                 if (newState) R.string.shelly_switch_summary_on

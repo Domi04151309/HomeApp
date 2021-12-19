@@ -56,7 +56,7 @@ class EspEasyAPIParser(val url: String, val resources: Resources) {
         }
 
         val taskName = currentSensor.getString("TaskName")
-        for (taskId in 0 until taskIcons.size) {
+        for (taskId in taskIcons.indices) {
             val currentTask = currentSensor.getJSONArray("TaskValues").getJSONObject(taskId)
             val currentValue = currentTask.getString("Value")
             if (!currentValue.equals("nan")) {
@@ -81,11 +81,11 @@ class EspEasyAPIParser(val url: String, val resources: Resources) {
                 val currentState = currentSensor.getJSONArray("TaskValues").getJSONObject(0).getInt("Value") > 0
                 var taskName =currentSensor.getString("TaskName")
                 var gpioId = ""
-                val gpioFinder = Regex("~GPIO~([0-9]+)$")
+                val gpioFinder = Regex("~GPIO~(?:[0-9]+)$")
                 val matchResult = gpioFinder.find(taskName)
                 if (matchResult != null && matchResult.groupValues.size > 1) {
                     gpioId = matchResult.groupValues[1]
-                    taskName = taskName.replace("~GPIO~" + gpioId, "")
+                    taskName = taskName.replace("~GPIO~$gpioId", "")
                 }
                 listItems += ListViewItem(
                     title = taskName,
