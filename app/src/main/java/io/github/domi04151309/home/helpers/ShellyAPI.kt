@@ -99,7 +99,7 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
                 JsonObjectRequest(
                     url + "settings",
                     { statusResponse ->
-                        listener.onResponse(statusResponse.optString("name"))
+                        listener.onResponse(if (statusResponse.isNull("name")) "" else statusResponse.optString("name", ""))
                     }, {}
                 )
             } else {
@@ -107,7 +107,7 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
                 JsonObjectRequest(
                     url + "shelly",
                     { statusResponse ->
-                        listener.onResponse(statusResponse.optString("name"))
+                        listener.onResponse(if (statusResponse.isNull("name")) "" else statusResponse.optString("name", ""))
                     }, {}
                 )
             }
