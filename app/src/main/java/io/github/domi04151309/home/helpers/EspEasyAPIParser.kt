@@ -44,7 +44,7 @@ class EspEasyAPIParser(val url: String, val resources: Resources) {
             "Environment - BMx280" -> {
                 taskIcons += R.drawable.ic_device_thermometer
                 taskIcons += R.drawable.ic_humidity
-                taskIcons += R.drawable.ic_info
+                taskIcons += R.drawable.ic_gauge
             }
             "Environment - DHT11/12/22  SONOFF2301/7021" -> {
                 taskIcons += R.drawable.ic_device_thermometer
@@ -63,7 +63,7 @@ class EspEasyAPIParser(val url: String, val resources: Resources) {
                 val suffix = when (taskIcons[taskId]) {
                     R.drawable.ic_device_thermometer -> " °C"
                     R.drawable.ic_humidity -> " %"
-                    R.drawable.ic_info -> " hPa"
+                    R.drawable.ic_gauge -> " hPa"
                     else -> ""
                 }
                 listItems += ListViewItem(
