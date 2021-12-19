@@ -430,6 +430,12 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
         deviceName.text = resources.getString(R.string.main_device_name)
         fab.show()
         level = Flavors.ONE
+
+        // Clean up memory
+        espEasy = null
+        hueAPI = null
+        shelly = null
+        tasmota = null
     }
 
     internal fun setLevelTwo(device: DeviceItem, flavor: Flavors) {
