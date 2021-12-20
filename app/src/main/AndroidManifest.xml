@@ -27,37 +27,21 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".activities.HueSceneActivity"
             android:label="@string/hue_add_scene"
-            android:parentActivityName=".activities.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="io.github.domi04151309.home.activities.MainActivity" />
-        </activity>
+            android:parentActivityName=".activities.MainActivity" />
         <activity
             android:name=".activities.AboutActivity"
             android:label="@string/about"
-            android:parentActivityName=".activities.SettingsActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="io.github.domi04151309.home.activities.SettingsActivity" />
-        </activity>
+            android:parentActivityName=".activities.SettingsActivity" />
         <activity
             android:name=".activities.SearchDevicesActivity"
             android:label="@string/pref_add"
-            android:parentActivityName=".activities.DevicesActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="io.github.domi04151309.home.activities.DevicesActivity" />
-        </activity>
+            android:parentActivityName=".activities.DevicesActivity" />
         <activity
             android:name=".activities.HueConnectActivity"
             android:theme="@style/AppThemeDark.NoActionBar" />
         <activity
             android:name=".activities.HueLampActivity"
-            android:parentActivityName=".activities.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="io.github.domi04151309.home.activities.MainActivity" />
-        </activity>
+            android:parentActivityName=".activities.MainActivity" />
         <activity
             android:name=".activities.SplashActivity"
             android:exported="true"
@@ -77,37 +61,21 @@
             android:name=".activities.SettingsActivity"
             android:label="@string/pref"
             android:launchMode="singleTop"
-            android:parentActivityName=".activities.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="io.github.domi04151309.home.activities.MainActivity" />
-        </activity>
+            android:parentActivityName=".activities.MainActivity" />
         <activity
             android:name=".activities.WebActivity"
             android:label="@string/webView"
             android:configChanges="orientation|screenSize"
-            android:parentActivityName=".activities.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="io.github.domi04151309.home.activities.MainActivity" />
-        </activity>
+            android:parentActivityName=".activities.MainActivity" />
         <activity
             android:name=".activities.DevicesActivity"
             android:label="@string/pref"
             android:launchMode="singleTop"
-            android:parentActivityName=".activities.SettingsActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="io.github.domi04151309.home.activities.SettingsActivity" />
-        </activity>
+            android:parentActivityName=".activities.SettingsActivity" />
         <activity
             android:name=".activities.EditDeviceActivity"
             android:label="@string/pref_add"
-            android:parentActivityName=".activities.DevicesActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="io.github.domi04151309.home.activities.DevicesActivity" />
-        </activity>
+            android:parentActivityName=".activities.DevicesActivity" />
     </application>
 
 </manifest>
