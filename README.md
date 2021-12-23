@@ -17,7 +17,7 @@ HomeApp is a small and easy to use smart home app with a simple framework. The g
 ## Supported devices
 Home App natively supports the following devices:
 
-- [Philips Hue Bridge](https://github.com/Domi04151309/HomeApp/wiki/Hue-API-%28v1%29))
+- [Philips Hue Bridge](https://github.com/Domi04151309/HomeApp/wiki/Hue-API-%28v1%29)
 - [Shelly](https://github.com/Domi04151309/HomeApp/wiki/Shelly) Gen 1 devices
 - [Shelly](https://github.com/Domi04151309/HomeApp/wiki/Shelly) Gen 2 devices
 - Devices using [ESP Easy](https://github.com/Domi04151309/HomeApp/wiki/ESP-Easy)
