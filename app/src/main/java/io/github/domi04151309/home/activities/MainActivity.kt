@@ -10,8 +10,6 @@ import android.view.View
 import android.widget.*
 import io.github.domi04151309.home.helpers.SimpleHomeAPI
 import io.github.domi04151309.home.helpers.HueAPI
-import org.json.JSONException
-import org.json.JSONObject
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.preference.PreferenceManager
@@ -20,7 +18,6 @@ import com.google.android.material.snackbar.Snackbar
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.data.ListViewItem
-import io.github.domi04151309.home.data.RequestCallbackObject
 import io.github.domi04151309.home.helpers.*
 import io.github.domi04151309.home.helpers.P
 import io.github.domi04151309.home.helpers.Global
@@ -131,55 +128,10 @@ class MainActivity : AppCompatActivity() {
             )
         }
     }
-    private val hueRequestCallBack = object : HueAPI.RequestCallBack {
-        override fun onLightsLoaded(holder: RequestCallbackObject<JSONObject>) {}
-        override fun onGroupsLoaded(holder: RequestCallbackObject<JSONObject>) {
-            if (holder.response != null) {
-                try {
-                    var currentObject: JSONObject
-                    var type: String
-                    val listItems: ArrayList<ListViewItem> = ArrayList(holder.response.length())
-                    for (i in holder.response.keys()) {
-                        try {
-                            currentObject = holder.response.getJSONObject(i)
-                            type = currentObject.getString("type")
-                            listItems += ListViewItem(
-                                    title = currentObject.getString("name"),
-                                    summary = resources.getString(R.string.hue_tap),
-                                    hidden = "${if (type == "Room") "room" else "zone"}#$i",
-                                    icon = if (type == "Room") R.drawable.ic_room else R.drawable.ic_zone,
-                                    state = currentObject.getJSONObject("action").getBoolean("on")
-                            )
-                        } catch (e: JSONException) {
-                            Log.e(Global.LOG_TAG, e.toString())
-                        }
-                    }
-                    adapter.updateData(listItems, hueHelperInterface)
-                    setLevelTwo(devices.getDeviceById(holder.deviceId))
-                } catch (e: Exception) {
-                    handleErrorOnLevelOne(resources.getString(R.string.err_wrong_format_summary))
-                    Log.e(Global.LOG_TAG, e.toString())
-                }
-            } else {
-                handleErrorOnLevelOne(holder.errorMessage)
-            }
-        }
-    }
-    private val hueRequestUpdaterCallBack = object : HueAPI.RequestCallBack {
-        override fun onLightsLoaded(holder: RequestCallbackObject<JSONObject>) {}
-        override fun onGroupsLoaded(holder: RequestCallbackObject<JSONObject>) {
-            if (holder.response != null) {
-                try {
-                    for (i in 0 until holder.response.length()) {
-                        adapter.updateSwitch(recyclerView, i, holder.response
-                                .getJSONObject(holder.response.names()?.getString(i) ?: "")
-                                .getJSONObject("state")
-                                .getBoolean("any_on")
-                        )
-                    }
-                } catch (e: Exception) {
-                    Log.e(Global.LOG_TAG, e.toString())
-                }
+    private val hueRealTimeStatesCallback = object : HueAPI.RealTimeStatesCallback {
+        override fun onStatesLoaded(states: ArrayList<Boolean>) {
+            for (i in 0 until states.size) {
+                adapter.updateSwitch(recyclerView, i, states[i])
             }
         }
     }
@@ -394,11 +346,11 @@ class MainActivity : AppCompatActivity() {
                 unified?.loadList(unifiedRequestCallback)
             }
             "Hue API" -> {
-                hueAPI = HueAPI(this, deviceId)
-                hueAPI?.loadGroups(hueRequestCallBack)
+                hueAPI = HueAPI(this, deviceId, hueHelperInterface)
+                hueAPI?.loadList(unifiedRequestCallback)
                 updateHandler.setUpdateFunction {
                     if (canReceiveRequest && hueAPI?.readyForRequest == true) {
-                        hueAPI?.loadGroups(hueRequestUpdaterCallBack)
+                        hueAPI?.loadStates(hueRealTimeStatesCallback)
                     }
                 }
             }
