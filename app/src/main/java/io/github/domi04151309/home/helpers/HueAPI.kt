@@ -107,7 +107,7 @@ class HueAPI(
                     callback.onStatesLoaded(states)
                 } catch (e: Exception) {}
             },
-            { _ -> }
+            { }
         )
         queue.add(jsonObjectRequest)
     }
