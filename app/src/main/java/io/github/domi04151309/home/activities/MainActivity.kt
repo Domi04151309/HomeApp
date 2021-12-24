@@ -36,10 +36,8 @@ import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
 
 class MainActivity : AppCompatActivity() {
 
-    //TODO: currentView isn't working yet
-
     enum class Flavors {
-        ONE, TWO_SIMPLE_HOME, TWO_HUE, TWO_TASMOTA, TWO_SHELLY, TWO_ESP_EASY
+        ONE, TWO
     }
 
     private var currentDevice = ""
@@ -80,39 +78,29 @@ class MainActivity : AppCompatActivity() {
     }
     private val espEasyRequestCallBack = object : EspEasyAPI.RequestCallBack {
         override fun onInfoLoaded(holder: RequestCallbackObject<ArrayList<ListViewItem>>) {
-            if (holder.response != null) {
-                adapter.updateData(holder.response, espEasyHelperInterface)
-                setLevelTwo(devices.getDeviceById(holder.deviceId), Flavors.TWO_ESP_EASY)
-            } else {
-                handleErrorOnLevelOne(holder.errorMessage)
-            }
+            updateDataCallback(holder, espEasyHelperInterface)
         }
     }
 
     /*
      * Things related to the Home API
      */
-    private val homeAPI = SimpleHomeAPI(this)
+    private var homeAPI: SimpleHomeAPI? = null
     private val homeHelperInterface: HomeRecyclerViewHelperInterface = object : HomeRecyclerViewHelperInterface {
         override fun onStateChanged(view: View, data: ListViewItem, state: Boolean) { }
 
         override fun onItemClicked(view: View, data: ListViewItem, position: Int) {
-            homeAPI.executeCommand(currentDevice, data.hidden, homeRequestCallBack)
+            homeAPI?.executeCommand(data.hidden, homeRequestCallBack)
         }
     }
     private val homeRequestCallBack = object : SimpleHomeAPI.RequestCallBack {
-        override fun onExecutionFinished(context: Context, result: CharSequence, refresh: Boolean, deviceId: String) {
-            Toast.makeText(context, result, Toast.LENGTH_LONG).show()
-            if (refresh) homeAPI.loadCommands(deviceId, this)
+        override fun onExecutionFinished(result: CharSequence, refresh: Boolean, deviceId: String) {
+            Toast.makeText(this@MainActivity, result, Toast.LENGTH_LONG).show()
+            if (refresh) homeAPI?.loadCommands(this)
         }
 
         override fun onCommandsLoaded(holder: RequestCallbackObject<ArrayList<ListViewItem>>) {
-            if (holder.response != null) {
-                adapter.updateData(holder.response, homeHelperInterface)
-                setLevelTwo(devices.getDeviceById(holder.deviceId), Flavors.TWO_SIMPLE_HOME)
-            } else {
-                handleErrorOnLevelOne(holder.errorMessage)
-            }
+            updateDataCallback(holder, homeHelperInterface)
         }
     }
 
@@ -157,7 +145,7 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                     adapter.updateData(listItems, hueHelperInterface)
-                    setLevelTwo(devices.getDeviceById(holder.deviceId), Flavors.TWO_HUE)
+                    setLevelTwo(devices.getDeviceById(holder.deviceId))
                 } catch (e: Exception) {
                     handleErrorOnLevelOne(resources.getString(R.string.err_wrong_format_summary))
                     Log.e(Global.LOG_TAG, e.toString())
@@ -202,13 +190,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
     private val tasmotaRequestCallBack = object : Tasmota.RequestCallBack {
-        override fun onItemsChanged(context: Context) {
+        override fun onItemsChanged() {
             adapter.updateData(tasmota?.loadList() ?: arrayListOf(), preferredAnimationState = false)
         }
 
-        override fun onResponse(context: Context, response: String) {
+        override fun onResponse(response: String) {
             Snackbar.make(recyclerView, R.string.main_execution_completed, Snackbar.LENGTH_LONG).setAction(R.string.str_show) {
-                AlertDialog.Builder(context)
+                AlertDialog.Builder(this@MainActivity)
                         .setTitle(R.string.main_execution_completed)
                         .setMessage(response)
                         .setPositiveButton(android.R.string.ok) { _, _ -> }
@@ -237,12 +225,7 @@ class MainActivity : AppCompatActivity() {
     }
     private val shellyRequestCallBack = object : ShellyAPI.RequestCallBack {
         override fun onSwitchesLoaded(holder: RequestCallbackObject<ArrayList<ListViewItem>>) {
-            if (holder.response != null) {
-                adapter.updateData(holder.response, shellyHelperInterface)
-                setLevelTwo(devices.getDeviceById(holder.deviceId), Flavors.TWO_SHELLY)
-            } else {
-                handleErrorOnLevelOne(holder.errorMessage)
-            }
+            updateDataCallback(holder, shellyHelperInterface)
         }
     }
 
@@ -427,8 +410,10 @@ class MainActivity : AppCompatActivity() {
                 )
                 reset = true
             }
-            "SimpleHome API" ->
-                homeAPI.loadCommands(deviceId, homeRequestCallBack)
+            "SimpleHome API" -> {
+                homeAPI = SimpleHomeAPI(this, deviceId)
+                homeAPI?.loadCommands(homeRequestCallBack)
+            }
             "Hue API" -> {
                 hueAPI = HueAPI(this, deviceId)
                 hueAPI?.loadGroups(hueRequestCallBack)
@@ -441,7 +426,7 @@ class MainActivity : AppCompatActivity() {
             "Tasmota" -> {
                 tasmota = Tasmota(this, deviceId)
                 adapter.updateData(tasmota?.loadList() ?: arrayListOf(), tasmotaHelperInterface)
-                setLevelTwo(deviceObj, Flavors.TWO_TASMOTA)
+                setLevelTwo(deviceObj)
             }
             "Shelly Gen 1" -> {
                 shelly = ShellyAPI(this, deviceId, 1)
@@ -509,11 +494,23 @@ class MainActivity : AppCompatActivity() {
         tasmota = null
     }
 
-    internal fun setLevelTwo(device: DeviceItem, flavor: Flavors) {
+    internal fun setLevelTwo(device: DeviceItem) {
         fab.hide()
         deviceIcon.setImageResource(device.iconId)
         deviceName.text = device.name
         currentDevice = device.id
-        level = flavor
+        level = Flavors.TWO
+    }
+
+    internal fun updateDataCallback(
+        holder: RequestCallbackObject<ArrayList<ListViewItem>>,
+        helperInterface: HomeRecyclerViewHelperInterface
+    ) {
+        if (holder.response != null) {
+            adapter.updateData(holder.response, helperInterface)
+            setLevelTwo(devices.getDeviceById(holder.deviceId))
+        } else {
+            handleErrorOnLevelOne(holder.errorMessage)
+        }
     }
 }

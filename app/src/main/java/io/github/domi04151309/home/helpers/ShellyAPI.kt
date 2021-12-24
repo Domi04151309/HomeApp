@@ -11,9 +11,8 @@ import io.github.domi04151309.home.data.ListViewItem
 import io.github.domi04151309.home.data.RequestCallbackObject
 import kotlin.collections.ArrayList
 
-class ShellyAPI(private val c: Context, deviceId: String, private val version: Int) {
+class ShellyAPI(private val c: Context, private val deviceId: String, private val version: Int) {
 
-    private val selectedDevice = deviceId
     private val url = Devices(c).getDeviceById(deviceId).address
     private val queue = Volley.newRequestQueue(c)
     private val secrets = DeviceSecrets(c, deviceId)
@@ -32,18 +31,18 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
                         Request.Method.GET, url + "status", null,
                         { statusResponse ->
                             callback.onSwitchesLoaded(RequestCallbackObject(
-                                    c,
-                                    parser.parseListItemsJsonV1(settingsResponse, statusResponse),
-                                    selectedDevice
+                                c,
+                                parser.parseListItemsJsonV1(settingsResponse, statusResponse),
+                                deviceId
                             ))
                         },
                         { error ->
-                            callback.onSwitchesLoaded(RequestCallbackObject(c, null, selectedDevice, Global.volleyError(c, error)))
+                            callback.onSwitchesLoaded(RequestCallbackObject(c, null, deviceId, Global.volleyError(c, error)))
                         }
                     ))
                 },
                 { error ->
-                    callback.onSwitchesLoaded(RequestCallbackObject(c, null, selectedDevice, Global.volleyError(c, error)))
+                    callback.onSwitchesLoaded(RequestCallbackObject(c, null, deviceId, Global.volleyError(c, error)))
                 }
             )
             2 -> JsonObjectRequest(
@@ -53,18 +52,18 @@ class ShellyAPI(private val c: Context, deviceId: String, private val version: I
                         Request.Method.GET, url + "rpc/Shelly.GetStatus", null,
                         { statusResponse ->
                             callback.onSwitchesLoaded(RequestCallbackObject(
-                                    c,
-                                    parser.parseListItemsJsonV2(configResponse, statusResponse),
-                                    selectedDevice
+                                c,
+                                parser.parseListItemsJsonV2(configResponse, statusResponse),
+                                deviceId
                             ))
                         },
                         { error ->
-                            callback.onSwitchesLoaded(RequestCallbackObject(c, null, selectedDevice, Global.volleyError(c, error)))
+                            callback.onSwitchesLoaded(RequestCallbackObject(c, null, deviceId, Global.volleyError(c, error)))
                         }
                     ))
                 },
                 { error ->
-                    callback.onSwitchesLoaded(RequestCallbackObject(c, null, selectedDevice, Global.volleyError(c, error)))
+                    callback.onSwitchesLoaded(RequestCallbackObject(c, null, deviceId, Global.volleyError(c, error)))
                 }
             )
             else -> null
