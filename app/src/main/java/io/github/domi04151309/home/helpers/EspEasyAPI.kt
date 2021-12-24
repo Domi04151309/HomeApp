@@ -4,40 +4,36 @@ import android.content.Context
 import android.util.Log
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
-import io.github.domi04151309.home.data.ListViewItem
-import io.github.domi04151309.home.data.RequestCallbackObject
-import kotlin.collections.ArrayList
+import io.github.domi04151309.home.data.UnifiedRequestCallback
+import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
 
-class EspEasyAPI(private val c: Context, deviceId: String) {
+class EspEasyAPI(
+    c: Context,
+    deviceId: String,
+    recyclerViewInterface: HomeRecyclerViewHelperInterface?
+) : UnifiedAPI(c, deviceId, recyclerViewInterface) {
 
-    private val selectedDevice = deviceId
-    private val url = Devices(c).getDeviceById(deviceId).address
-    private val queue = Volley.newRequestQueue(c)
-
-    interface RequestCallBack {
-        fun onInfoLoaded(holder: RequestCallbackObject<ArrayList<ListViewItem>>)
-    }
-
-    fun loadInfo(callback: RequestCallBack) {
+    override fun loadList(callback: UnifiedAPI.CallbackInterface) {
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.GET, url + "json", null,
             { infoResponse ->
-                callback.onInfoLoaded(RequestCallbackObject(
-                    c,
-                    EspEasyAPIParser(url, c.resources).parseInfo(infoResponse),
-                    selectedDevice
-                ))
+                callback.onItemsLoaded(
+                    UnifiedRequestCallback(
+                        EspEasyAPIParser(url, c.resources).parseInfo(infoResponse),
+                        deviceId
+                    ),
+                    recyclerViewInterface
+                )
             },
             { error ->
-                callback.onInfoLoaded(RequestCallbackObject(c, null, selectedDevice, Global.volleyError(c, error)))
+                callback.onItemsLoaded(UnifiedRequestCallback(null, deviceId, Global.volleyError(c, error)), null)
             }
         )
         queue.add(jsonObjectRequest)
     }
 
-    fun changeSwitchState(gpioId: Int, newState: Boolean) {
-        val switchUrl = url + "control?cmd=GPIO," + gpioId + "," + (if (newState) "1" else "0")
+    override fun changeSwitchState(id: Int, newState: Boolean) {
+        val switchUrl = url + "control?cmd=GPIO," + id + "," + (if (newState) "1" else "0")
         val jsonObjectRequest = JsonObjectRequest(
             switchUrl,
             { },
