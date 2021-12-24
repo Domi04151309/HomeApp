@@ -27,8 +27,7 @@ class HueAPI(
 
     var readyForRequest: Boolean = true
 
-    interface RequestCallBack {
-        fun onGroupsLoaded(holder: RequestCallbackObject<JSONObject>)
+    interface RequestCallback {
         fun onLightsLoaded(holder: RequestCallbackObject<JSONObject>)
     }
 
@@ -123,7 +122,7 @@ class HueAPI(
         )
     }
 
-    fun loadLightsByIDs(lightIDs: JSONArray, callback: RequestCallBack) {
+    fun loadLightsByIDs(lightIDs: JSONArray, callback: RequestCallback) {
         val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url + "api/${getUsername()}/lights", null,
                 { response ->
                     try {
