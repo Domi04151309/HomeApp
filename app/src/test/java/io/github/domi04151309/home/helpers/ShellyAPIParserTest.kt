@@ -77,7 +77,7 @@ class ShellyAPIParserTest {
         val listItems = sa.parseListItemsJsonV2(configJson, statusJson)
         Assert.assertEquals(1, listItems.size)
 
-        var num = 0
+        val num = 0
         Assert.assertEquals("Kamin", listItems[num].title)
         Assert.assertEquals(resources.getString(R.string.shelly_switch_summary_on), listItems[num].summary)
         Assert.assertEquals(true, listItems[num].state)
