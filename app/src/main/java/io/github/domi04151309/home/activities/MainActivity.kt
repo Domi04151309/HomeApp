@@ -241,7 +241,7 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
             startActivity(Intent(this, DevicesActivity::class.java))
         }
 
-        findViewById<ImageView>(R.id.menu_icon).setOnClickListener {
+        findViewById<ImageButton>(R.id.menu_icon).setOnClickListener {
             reset = true
             startActivity(Intent(this, SettingsActivity::class.java))
         }

@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize">
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/menu_icon"
                 android:layout_width="50dp"
                 android:layout_height="?attr/actionBarSize"
@@ -24,7 +24,8 @@
                 android:src="@drawable/ic_nav_settings"
                 android:padding="13dp"
                 android:layout_centerVertical="true"
-                android:contentDescription="@string/pref" />
+                android:contentDescription="@string/pref"
+                style="@style/Widget.AppCompat.Button.Borderless" />
 
             <TextView
                 android:layout_width="match_parent"
