@@ -134,7 +134,7 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
                             listItems += ListViewItem(
                                     title = currentObject.getString("name"),
                                     summary = resources.getString(R.string.hue_tap),
-                                    hidden = "${currentObject.getJSONArray("lights")}@${if (type == "Room") "room" else "zone"}#$i",
+                                    hidden = "${if (type == "Room") "room" else "zone"}#$i",
                                     icon = if (type == "Room") R.drawable.ic_room else R.drawable.ic_zone,
                                     state = currentObject.getJSONObject("action").getBoolean("on")
                             )
@@ -493,7 +493,7 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
             Flavors.TWO_HUE ->
                 startActivity(
                     Intent(this, HueLampActivity::class.java)
-                        .putExtra("ID", hidden.substring(hidden.lastIndexOf("@") + 1))
+                        .putExtra("ID", hidden)
                         .putExtra("Device", currentDevice)
                 )
             Flavors.TWO_TASMOTA -> {
