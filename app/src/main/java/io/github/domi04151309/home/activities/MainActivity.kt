@@ -1,6 +1,5 @@
 package io.github.domi04151309.home.activities
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -32,6 +31,7 @@ import android.net.NetworkCapabilities
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.github.domi04151309.home.adapters.MainListAdapter
+import io.github.domi04151309.home.data.UnifiedRequestCallback
 import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
 
 class MainActivity : AppCompatActivity() {
@@ -60,47 +60,49 @@ class MainActivity : AppCompatActivity() {
                     .getString(P.PREF_THEME, P.PREF_THEME_DEFAULT) ?: P.PREF_THEME_DEFAULT
 
     /*
+     * Unified callbacks
+     */
+    private var unified: UnifiedAPI? = null
+    private val unifiedRequestCallback = object : UnifiedAPI.CallbackInterface {
+        override fun onItemsLoaded(holder: UnifiedRequestCallback, recyclerViewInterface: HomeRecyclerViewHelperInterface?) {
+            if (holder.response != null) {
+                adapter.updateData(holder.response, recyclerViewInterface)
+                setLevelTwo(devices.getDeviceById(holder.deviceId))
+            } else {
+                handleErrorOnLevelOne(holder.errorMessage)
+            }
+        }
+
+        override fun onExecuted(result: String, deviceId: String, shouldRefresh: Boolean) {
+            Toast.makeText(this@MainActivity, result, Toast.LENGTH_LONG).show()
+            if (shouldRefresh) unified?.loadList(this)
+        }
+    }
+
+    /*
      * Things related to ESP Easy
      */
-    private var espEasy: EspEasyAPI? = null
     private val espEasyHelperInterface = object : HomeRecyclerViewHelperInterface {
         override fun onStateChanged(view: View, data: ListViewItem, state: Boolean) {
             if (data.hidden.isEmpty()) return
-
             view.findViewById<TextView>(R.id.summary).text = resources.getString(
                 if (state) R.string.shelly_switch_summary_on
                 else R.string.shelly_switch_summary_off
             )
-            espEasy?.changeSwitchState(data.hidden.toInt(), state)
+            unified?.changeSwitchState(data.hidden.toInt(), state)
         }
 
         override fun onItemClicked(view: View, data: ListViewItem, position: Int) {}
-    }
-    private val espEasyRequestCallBack = object : EspEasyAPI.RequestCallBack {
-        override fun onInfoLoaded(holder: RequestCallbackObject<ArrayList<ListViewItem>>) {
-            updateDataCallback(holder, espEasyHelperInterface)
-        }
     }
 
     /*
      * Things related to the Home API
      */
-    private var homeAPI: SimpleHomeAPI? = null
     private val homeHelperInterface: HomeRecyclerViewHelperInterface = object : HomeRecyclerViewHelperInterface {
         override fun onStateChanged(view: View, data: ListViewItem, state: Boolean) { }
 
         override fun onItemClicked(view: View, data: ListViewItem, position: Int) {
-            homeAPI?.executeCommand(data.hidden, homeRequestCallBack)
-        }
-    }
-    private val homeRequestCallBack = object : SimpleHomeAPI.RequestCallBack {
-        override fun onExecutionFinished(result: CharSequence, refresh: Boolean, deviceId: String) {
-            Toast.makeText(this@MainActivity, result, Toast.LENGTH_LONG).show()
-            if (refresh) homeAPI?.loadCommands(this)
-        }
-
-        override fun onCommandsLoaded(holder: RequestCallbackObject<ArrayList<ListViewItem>>) {
-            updateDataCallback(holder, homeHelperInterface)
+            unified?.execute(data.hidden, unifiedRequestCallback)
         }
     }
 
@@ -208,25 +210,19 @@ class MainActivity : AppCompatActivity() {
     /*
      * Things related to Shelly
      */
-    private var shelly: ShellyAPI? = null
     private val shellyHelperInterface = object : HomeRecyclerViewHelperInterface {
         override fun onStateChanged(view: View, data: ListViewItem, state: Boolean) {
             view.findViewById<TextView>(R.id.summary).text = resources.getString(
                 if (state) R.string.shelly_switch_summary_on
                 else R.string.shelly_switch_summary_off
             )
-            shelly?.changeSwitchState(
+            unified?.changeSwitchState(
                 view.findViewById<TextView>(R.id.hidden).text.toString().toInt(),
                 state
             )
         }
 
         override fun onItemClicked(view: View, data: ListViewItem, position: Int) {}
-    }
-    private val shellyRequestCallBack = object : ShellyAPI.RequestCallBack {
-        override fun onSwitchesLoaded(holder: RequestCallbackObject<ArrayList<ListViewItem>>) {
-            updateDataCallback(holder, shellyHelperInterface)
-        }
     }
 
     /*
@@ -390,8 +386,8 @@ class MainActivity : AppCompatActivity() {
                 reset = true
             }
             "ESP Easy" -> {
-                espEasy = EspEasyAPI(this, deviceId)
-                espEasy?.loadInfo(espEasyRequestCallBack)
+                unified = EspEasyAPI(this, deviceId, espEasyHelperInterface)
+                unified?.loadList(unifiedRequestCallback)
             }
             "Fritz! Auto-Login" -> {
                 startActivity(
@@ -411,8 +407,8 @@ class MainActivity : AppCompatActivity() {
                 reset = true
             }
             "SimpleHome API" -> {
-                homeAPI = SimpleHomeAPI(this, deviceId)
-                homeAPI?.loadCommands(homeRequestCallBack)
+                unified = SimpleHomeAPI(this, deviceId, homeHelperInterface)
+                unified?.loadList(unifiedRequestCallback)
             }
             "Hue API" -> {
                 hueAPI = HueAPI(this, deviceId)
@@ -429,12 +425,12 @@ class MainActivity : AppCompatActivity() {
                 setLevelTwo(deviceObj)
             }
             "Shelly Gen 1" -> {
-                shelly = ShellyAPI(this, deviceId, 1)
-                shelly?.loadSwitches(shellyRequestCallBack)
+                unified = ShellyAPI(this, deviceId, shellyHelperInterface, 1)
+                unified?.loadList(unifiedRequestCallback)
             }
             "Shelly Gen 2" -> {
-                shelly = ShellyAPI(this, deviceId, 2)
-                shelly?.loadSwitches(shellyRequestCallBack)
+                unified = ShellyAPI(this, deviceId, shellyHelperInterface, 2)
+                unified?.loadList(unifiedRequestCallback)
             }
             else ->
                 Toast.makeText(this, R.string.main_unknown_mode, Toast.LENGTH_LONG).show()
@@ -488,9 +484,8 @@ class MainActivity : AppCompatActivity() {
         level = Flavors.ONE
 
         // Clean up memory
-        espEasy = null
+        unified = null
         hueAPI = null
-        shelly = null
         tasmota = null
     }
 

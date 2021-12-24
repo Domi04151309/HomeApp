@@ -5,24 +5,21 @@ import android.util.Log
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
 import io.github.domi04151309.home.custom.JsonObjectRequestAuth
-import io.github.domi04151309.home.data.ListViewItem
-import io.github.domi04151309.home.data.RequestCallbackObject
-import kotlin.collections.ArrayList
+import io.github.domi04151309.home.data.UnifiedRequestCallback
+import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
 
-class ShellyAPI(private val c: Context, private val deviceId: String, private val version: Int) {
+class ShellyAPI(
+    c: Context,
+    deviceId: String,
+    recyclerViewInterface: HomeRecyclerViewHelperInterface?,
+    private val version: Int
+) : UnifiedAPI(c, deviceId, recyclerViewInterface) {
 
-    private val url = Devices(c).getDeviceById(deviceId).address
-    private val queue = Volley.newRequestQueue(c)
     private val secrets = DeviceSecrets(c, deviceId)
     private val parser = ShellyAPIParser(url, c.resources)
 
-    interface RequestCallBack {
-        fun onSwitchesLoaded(holder: RequestCallbackObject<ArrayList<ListViewItem>>)
-    }
-
-    fun loadSwitches(callback: RequestCallBack) {
+    override fun loadList(callback: UnifiedAPI.CallbackInterface) {
         val jsonObjectRequest = when (version) {
             1 -> JsonObjectRequestAuth(
                 Request.Method.GET, url + "settings", secrets, null,
@@ -30,19 +27,21 @@ class ShellyAPI(private val c: Context, private val deviceId: String, private va
                     queue.add(JsonObjectRequest(
                         Request.Method.GET, url + "status", null,
                         { statusResponse ->
-                            callback.onSwitchesLoaded(RequestCallbackObject(
-                                c,
-                                parser.parseListItemsJsonV1(settingsResponse, statusResponse),
-                                deviceId
-                            ))
+                            callback.onItemsLoaded(
+                                UnifiedRequestCallback(
+                                    parser.parseListItemsJsonV1(settingsResponse, statusResponse),
+                                    deviceId
+                                ),
+                                recyclerViewInterface
+                            )
                         },
                         { error ->
-                            callback.onSwitchesLoaded(RequestCallbackObject(c, null, deviceId, Global.volleyError(c, error)))
+                            callback.onItemsLoaded(UnifiedRequestCallback(null, deviceId, Global.volleyError(c, error)), null)
                         }
                     ))
                 },
                 { error ->
-                    callback.onSwitchesLoaded(RequestCallbackObject(c, null, deviceId, Global.volleyError(c, error)))
+                    callback.onItemsLoaded(UnifiedRequestCallback(null, deviceId, Global.volleyError(c, error)), null)
                 }
             )
             2 -> JsonObjectRequest(
@@ -51,19 +50,21 @@ class ShellyAPI(private val c: Context, private val deviceId: String, private va
                     queue.add(JsonObjectRequest(
                         Request.Method.GET, url + "rpc/Shelly.GetStatus", null,
                         { statusResponse ->
-                            callback.onSwitchesLoaded(RequestCallbackObject(
-                                c,
-                                parser.parseListItemsJsonV2(configResponse, statusResponse),
-                                deviceId
-                            ))
+                            callback.onItemsLoaded(
+                                UnifiedRequestCallback(
+                                    parser.parseListItemsJsonV2(configResponse, statusResponse),
+                                    deviceId
+                                ),
+                                recyclerViewInterface
+                            )
                         },
                         { error ->
-                            callback.onSwitchesLoaded(RequestCallbackObject(c, null, deviceId, Global.volleyError(c, error)))
+                            callback.onItemsLoaded(UnifiedRequestCallback(null, deviceId, Global.volleyError(c, error)), null)
                         }
                     ))
                 },
                 { error ->
-                    callback.onSwitchesLoaded(RequestCallbackObject(c, null, deviceId, Global.volleyError(c, error)))
+                    callback.onItemsLoaded(UnifiedRequestCallback(null, deviceId, Global.volleyError(c, error)), null)
                 }
             )
             else -> null
@@ -71,7 +72,7 @@ class ShellyAPI(private val c: Context, private val deviceId: String, private va
         queue.add(jsonObjectRequest)
     }
 
-    fun changeSwitchState(id: Int, state: Boolean) {
+    override fun changeSwitchState(id: Int, state: Boolean) {
         val requestUrl = url + "relay/$id?turn=" + (if (state) "on" else "off")
         val jsonObjectRequest = when (version) {
             1 -> JsonObjectRequestAuth(
