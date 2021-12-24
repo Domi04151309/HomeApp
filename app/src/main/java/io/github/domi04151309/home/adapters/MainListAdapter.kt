@@ -6,17 +6,17 @@ import android.view.*
 import androidx.recyclerview.widget.RecyclerView
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.data.ListViewItem
-import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.view.animation.AnimationSet
 import android.view.animation.TranslateAnimation
 import android.widget.*
+import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
 
-class MainListAdapter(private val helperInterface: RecyclerViewHelperInterface) : RecyclerView.Adapter<MainListAdapter.ViewHolder>() {
+class MainListAdapter : RecyclerView.Adapter<MainListAdapter.ViewHolder>() {
 
     private var items: ArrayList<ListViewItem> = arrayListOf()
-    private var stateListener: CompoundButton.OnCheckedChangeListener? = null
+    private var helperInterface: HomeRecyclerViewHelperInterface? = null
     private var animate: Boolean = true
 
     init {
@@ -43,13 +43,21 @@ class MainListAdapter(private val helperInterface: RecyclerViewHelperInterface) 
         holder.title.text = items[position].title
         holder.summary.text = items[position].summary
         holder.hidden.text = items[position].hidden
-        if (stateListener != null && items[position].state != null) {
+        if (items[position].state != null) {
             holder.stateSwitch.isChecked = items[position].state ?: false
-            holder.stateSwitch.setOnCheckedChangeListener(stateListener)
+            holder.stateSwitch.setOnCheckedChangeListener { compoundButton, b ->
+                if (compoundButton.isPressed) helperInterface?.onStateChanged(
+                    holder.itemView,
+                    items[position],
+                    b
+                )
+            }
         } else {
             holder.stateSwitch.visibility = View.GONE
         }
-        holder.itemView.setOnClickListener { helperInterface.onItemClicked(holder.itemView, position) }
+        holder.itemView.setOnClickListener {
+            helperInterface?.onItemClicked(holder.itemView, items[position], position)
+        }
         holder.itemView.setOnCreateContextMenuListener(holder.itemView.context as Activity)
         if (animate) playAnimation(holder.itemView)
     }
@@ -64,11 +72,11 @@ class MainListAdapter(private val helperInterface: RecyclerViewHelperInterface) 
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateData(newItems: ArrayList<ListViewItem>, newStateListener: CompoundButton.OnCheckedChangeListener? = null, preferredAnimationState: Boolean? = null) {
-        if (newItems.size != items.size || newStateListener != stateListener) {
+    fun updateData(newItems: ArrayList<ListViewItem>, newHelperInterface: HomeRecyclerViewHelperInterface? = null, preferredAnimationState: Boolean? = null) {
+        if (newHelperInterface != null) {
             animate = preferredAnimationState ?: true
             items = newItems
-            stateListener = newStateListener
+            helperInterface = newHelperInterface
             notifyDataSetChanged()
         } else {
             animate = preferredAnimationState ?: false
