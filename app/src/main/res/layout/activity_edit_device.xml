@@ -177,14 +177,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingStart="?dialogPreferredPadding"
-                android:paddingEnd="?dialogPreferredPadding">
+                android:padding="?dialogPreferredPadding">
+
+                <Button
+                    android:id="@+id/configBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pref_device_config"
+                    android:textAlignment="textStart"
+                    android:textColor="?android:attr/textColorPrimary"
+                    app:icon="@drawable/ic_nav_settings"/>
 
                 <Button
                     android:id="@+id/shortcutBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dialog_item_margin"
                     android:text="@string/pref_add_shortcut"
                     android:textAlignment="textStart"
                     android:textColor="?android:attr/textColorPrimary"

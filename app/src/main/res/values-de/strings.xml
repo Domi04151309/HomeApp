@@ -76,6 +76,7 @@
     <string name="pref_edit_summary">Bearbeiten Sie Ihre Geräteliste</string>
     <string name="pref_edit_device">Gerät bearbeiten</string>
     <string name="pref_delete_device_question">Sind Sie sich sicher, dass Sie dieses Gerät löschen möchten?</string>
+    <string name="pref_device_config">Gerätekonfiguration</string>
     <string name="pref_add_shortcut">Zum Startbildschirm hinzufügen</string>
     <string name="pref_add_shortcut_failed">Shortcuts werden von Ihrem System nicht unterstützt</string>
     <string name="pref_add">Ein neues Gerät hinzufügen</string>

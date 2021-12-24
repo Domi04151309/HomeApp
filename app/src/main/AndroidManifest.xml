@@ -15,6 +15,10 @@
         android:maxSdkVersion="28"
         tools:ignore="ScopedStorage" />
 
+    <queries>
+        <package android:name="com.philips.lighting.hue2" />
+    </queries>
+
     <application
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_descriptor"

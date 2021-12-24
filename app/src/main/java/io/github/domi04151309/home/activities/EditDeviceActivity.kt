@@ -1,5 +1,6 @@
 package io.github.domi04151309.home.activities
 
+import android.content.ActivityNotFoundException
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
@@ -12,6 +13,7 @@ import android.content.pm.ShortcutInfo
 import android.os.Build
 import android.content.pm.ShortcutManager
 import android.graphics.drawable.Icon
+import android.net.Uri
 import android.text.TextWatcher
 import android.text.Editable
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -50,6 +52,7 @@ class EditDeviceActivity : AppCompatActivity() {
         val specialSection = findViewById<LinearLayout>(R.id.specialSection)
         val usernameBox = findViewById<TextInputLayout>(R.id.usernameBox)
         val passwordBox = findViewById<TextInputLayout>(R.id.passwordBox)
+        val configBtn = findViewById<Button>(R.id.configBtn)
 
         findViewById<TextView>(R.id.idTxt).text = (resources.getString(R.string.pref_add_id, deviceId))
 
@@ -64,11 +67,20 @@ class EditDeviceActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable) {}
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                val specialVisibility = if (s.toString() == "Fritz! Auto-Login" || s.toString() == "Shelly Gen 1") View.VISIBLE else View.GONE
-                val usernameVisibility = if (s.toString() == "Shelly Gen 1") View.VISIBLE else View.GONE
+                val string = s.toString()
+                val specialVisibility = if (string == "Fritz! Auto-Login" || string == "Shelly Gen 1") View.VISIBLE else View.GONE
+                val usernameVisibility = if (string == "Shelly Gen 1") View.VISIBLE else View.GONE
                 specialDivider.visibility = specialVisibility
                 specialSection.visibility = specialVisibility
                 usernameBox.visibility = usernameVisibility
+
+                if (editing) {
+                    configBtn.visibility =
+                        if (
+                            arrayOf("Hue API", "ESP Easy", "Node-RED", "Shelly Gen 1", "Shelly Gen 2").contains(string)
+                        ) View.VISIBLE
+                        else View.GONE
+                }
             }
         })
         nameBox.editText?.addTextChangedListener(object : TextWatcher {
@@ -90,6 +102,48 @@ class EditDeviceActivity : AppCompatActivity() {
             modeSpinner.setText(deviceObj.mode)
             usernameBox.editText?.setText(deviceSecrets.username)
             passwordBox.editText?.setText(deviceSecrets.password)
+
+            configBtn.setOnClickListener {
+                when (modeSpinner.text.toString()) {
+                    "ESP Easy", "Node-RED", "Shelly Gen 1", "Shelly Gen 2" -> {
+                        startActivity(
+                            Intent(this, WebActivity::class.java)
+                                .putExtra("URI", addressBox.editText?.text.toString())
+                                .putExtra("title", resources.getString(R.string.pref_device_config))
+                        )
+                    }
+                    "Node-RED" -> {
+                        startActivity(
+                            Intent(this, WebActivity::class.java)
+                                .putExtra("URI", formatNodeREDAddress(addressBox.editText?.text.toString()))
+                                .putExtra("title", resources.getString(R.string.pref_device_config))
+                        )
+                    }
+                    "Hue API" -> {
+                        val huePackageName = "com.philips.lighting.hue2"
+                        val launchIntent = packageManager.getLaunchIntentForPackage(huePackageName)
+                        if (launchIntent == null) {
+                            try {
+                                startActivity(
+                                    Intent(
+                                        Intent.ACTION_VIEW,
+                                        Uri.parse("market://details?id=$huePackageName")
+                                    )
+                                )
+                            } catch (e: ActivityNotFoundException) {
+                                startActivity(
+                                    Intent(
+                                        Intent.ACTION_VIEW,
+                                        Uri.parse("https://play.google.com/store/apps/details?id=$huePackageName")
+                                    )
+                                )
+                            }
+                        } else {
+                            startActivity(launchIntent)
+                        }
+                    }
+                }
+            }
 
             findViewById<Button>(R.id.shortcutBtn).setOnClickListener {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -154,14 +208,10 @@ class EditDeviceActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            var tempAddress = addressBox.editText?.text.toString()
-            if (
-                modeSpinner.text.toString() == "Node-RED"
-                && !tempAddress.contains(":1880")
-            ) {
-                if (tempAddress.endsWith('/')) tempAddress = tempAddress.dropLast(1)
-                tempAddress += ":1880/"
-            }
+            val tempAddress =
+                if (modeSpinner.text.toString() == "Node-RED") formatNodeREDAddress(addressBox.editText?.text.toString())
+                else addressBox.editText?.text.toString()
+
 
             val newItem = DeviceItem(deviceId)
             newItem.name = name
@@ -174,5 +224,14 @@ class EditDeviceActivity : AppCompatActivity() {
             deviceSecrets.updateDeviceSecrets()
             finish()
         }
+    }
+
+    private fun formatNodeREDAddress(url: String): String {
+        var result = url
+        if (!result.contains(":1880")) {
+            if (result.endsWith('/')) result = result.dropLast(1)
+            result += ":1880/"
+        }
+        return result
     }
 }
