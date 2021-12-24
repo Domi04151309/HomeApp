@@ -8,7 +8,7 @@ import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
 
 open class UnifiedAPI(
     protected val c: Context,
-    protected val deviceId: String,
+    val deviceId: String,
     protected val recyclerViewInterface: HomeRecyclerViewHelperInterface?
 ) {
 
