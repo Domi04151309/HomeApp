@@ -27,14 +27,6 @@ class EspEasyAPIParser(val url: String, val resources: Resources) {
             }
         }
 
-        //web interface
-        listItems += ListViewItem(
-            title = resources.getString(R.string.espeasy_web_configuration_title),
-            summary = resources.getString(R.string.espeasy_web_configuration_summary),
-            hidden = url,
-            icon = R.drawable.ic_nav_settings
-        )
-
         return listItems
     }
 

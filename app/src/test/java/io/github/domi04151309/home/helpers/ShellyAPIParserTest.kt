@@ -20,7 +20,7 @@ class ShellyAPIParserTest {
 
         val sa = ShellyAPIParser("http://shelly/", resources)
         val listItems = sa.parseListItemsJsonV1(settingsJson, statusJson)
-        Assert.assertEquals(3, listItems.size)
+        Assert.assertEquals(2, listItems.size)
 
         var num = 0
         Assert.assertEquals("Wohnzimmer Gartenfenster", listItems[num].title)
@@ -35,13 +35,6 @@ class ShellyAPIParserTest {
         Assert.assertEquals(null, listItems[num].state)
         Assert.assertEquals("", listItems[num].hidden)
         Assert.assertEquals(R.drawable.ic_lightning, listItems[num].icon)
-
-        num = 2
-        Assert.assertEquals(resources.getString(R.string.shelly_web_configuration_title), listItems[num].title)
-        Assert.assertEquals(resources.getString(R.string.shelly_web_configuration_summary), listItems[num].summary)
-        Assert.assertEquals(null, listItems[num].state)
-        Assert.assertEquals("http://shelly/", listItems[num].hidden)
-        Assert.assertEquals(R.drawable.ic_nav_settings, listItems[num].icon)
     }
 
     @Test
@@ -51,7 +44,7 @@ class ShellyAPIParserTest {
 
         val sa = ShellyAPIParser("http://shelly/", resources)
         val listItems = sa.parseListItemsJsonV1(settingsJson, statusJson)
-        Assert.assertEquals(4, listItems.size)
+        Assert.assertEquals(3, listItems.size)
 
         var num = 0
         Assert.assertEquals(resources.getString(R.string.shelly_switch_title, 1), listItems[num].title)
@@ -73,13 +66,6 @@ class ShellyAPIParserTest {
         Assert.assertEquals(null, listItems[num].state)
         Assert.assertEquals("", listItems[num].hidden)
         Assert.assertEquals(R.drawable.ic_humidity, listItems[num].icon)
-
-        num++
-        Assert.assertEquals(resources.getString(R.string.shelly_web_configuration_title), listItems[num].title)
-        Assert.assertEquals(resources.getString(R.string.shelly_web_configuration_summary), listItems[num].summary)
-        Assert.assertEquals(null, listItems[num].state)
-        Assert.assertEquals("http://shelly/", listItems[num].hidden)
-        Assert.assertEquals(R.drawable.ic_nav_settings, listItems[num].icon)
     }
 
     @Test
@@ -89,7 +75,7 @@ class ShellyAPIParserTest {
 
         val sa = ShellyAPIParser("http://shelly/", resources)
         val listItems = sa.parseListItemsJsonV2(configJson, statusJson)
-        Assert.assertEquals(2, listItems.size)
+        Assert.assertEquals(1, listItems.size)
 
         var num = 0
         Assert.assertEquals("Kamin", listItems[num].title)
@@ -97,12 +83,5 @@ class ShellyAPIParserTest {
         Assert.assertEquals(true, listItems[num].state)
         Assert.assertEquals("0", listItems[num].hidden)
         Assert.assertEquals(R.drawable.ic_do, listItems[num].icon)
-
-        num = 1
-        Assert.assertEquals(resources.getString(R.string.shelly_web_configuration_title), listItems[num].title)
-        Assert.assertEquals(resources.getString(R.string.shelly_web_configuration_summary), listItems[num].summary)
-        Assert.assertEquals(null, listItems[num].state)
-        Assert.assertEquals("http://shelly/", listItems[num].hidden)
-        Assert.assertEquals(R.drawable.ic_nav_settings, listItems[num].icon)
     }
 }

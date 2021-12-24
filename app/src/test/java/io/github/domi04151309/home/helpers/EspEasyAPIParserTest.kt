@@ -19,7 +19,7 @@ class EspEasyAPIParserTest {
 
         val eeap = EspEasyAPIParser("http://espeasy/", resources)
         val listItems = eeap.parseInfo(infoJson)
-        Assert.assertEquals(5, listItems.size)
+        Assert.assertEquals(4, listItems.size)
 
         //sensor 1: Temperature + Humidity
         var num = 0
@@ -51,14 +51,6 @@ class EspEasyAPIParserTest {
         Assert.assertEquals(false, listItems[num].state)
         Assert.assertEquals("12", listItems[num].hidden)
         Assert.assertEquals(R.drawable.ic_do, listItems[num].icon)
-
-        //web interface
-        num++
-        Assert.assertEquals(resources.getString(R.string.espeasy_web_configuration_title), listItems[num].title)
-        Assert.assertEquals(resources.getString(R.string.espeasy_web_configuration_summary), listItems[num].summary)
-        Assert.assertEquals(null, listItems[num].state)
-        Assert.assertEquals("http://espeasy/", listItems[num].hidden)
-        Assert.assertEquals(R.drawable.ic_nav_settings, listItems[num].icon)
     }
 
     @Test
@@ -68,10 +60,7 @@ class EspEasyAPIParserTest {
         val eeap = EspEasyAPIParser("http://espeasy/", resources)
         val listItems = eeap.parseInfo(infoJson)
 
-        Assert.assertEquals(1, listItems.size)
-        //only the web interface
-        val num = 0
-        Assert.assertEquals("http://espeasy/", listItems[num].hidden)
+        Assert.assertEquals(0, listItems.size)
     }
 
     @Test
@@ -81,18 +70,15 @@ class EspEasyAPIParserTest {
         val eeap = EspEasyAPIParser("http://espeasy/", resources)
         val listItems = eeap.parseInfo(infoJson)
 
-        Assert.assertEquals(2, listItems.size)
+        Assert.assertEquals(1, listItems.size)
 
         //first sensor value is humidity since temperature returns a "NaN" that we hidd
-        var num = 0
+        val num = 0
         Assert.assertEquals("39.5 %", listItems[num].title)
         Assert.assertEquals("DHT: Feuchte", listItems[num].summary)
         Assert.assertEquals(null, listItems[num].state)
         Assert.assertEquals("", listItems[num].hidden)
         Assert.assertEquals(R.drawable.ic_humidity, listItems[num].icon)
-
-        num++
-        Assert.assertEquals("http://espeasy/", listItems[num].hidden)
     }
 
     @Test
@@ -102,7 +88,7 @@ class EspEasyAPIParserTest {
         val eeap = EspEasyAPIParser("http://espeasy/", resources)
         val listItems = eeap.parseInfo(infoJson)
 
-        Assert.assertEquals(4, listItems.size)
+        Assert.assertEquals(3, listItems.size)
         //sensor 1: Temperature + Humidity + Pressure
         var num = 0
         Assert.assertEquals("30 °C", listItems[num].title)
@@ -123,9 +109,6 @@ class EspEasyAPIParserTest {
         Assert.assertEquals("BMP_HWR: Druck_BMP", listItems[num].summary)
         Assert.assertEquals(null, listItems[num].state)
         Assert.assertEquals("", listItems[num].hidden)
-        Assert.assertEquals(R.drawable.ic_info, listItems[num].icon)
-
-        num++
-        Assert.assertEquals("http://espeasy/", listItems[num].hidden)
+        Assert.assertEquals(R.drawable.ic_gauge, listItems[num].icon)
     }
 }

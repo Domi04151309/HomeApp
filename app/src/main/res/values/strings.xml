@@ -25,9 +25,6 @@
     <string name="err_missing_address">Please enter an address</string>
     <string name="err_missing_address_summary">An address is important because it allows the app to reach the device</string>
 
-    <string name="espeasy_web_configuration_summary">Open device website</string>
-    <string name="espeasy_web_configuration_title">Configuration</string>
-
     <string name="hue_connect">Connect to your Bridge</string>
     <string name="hue_press_button">Please press the button on your bridge to continue.</string>
     <string name="hue_tap">Tap to select</string>
@@ -60,8 +57,6 @@
     <string name="shelly_switch_summary_on">The switch is on</string>
     <string name="shelly_switch_summary_off">The switch is off</string>
     <string name="shelly_temperature_sensor_summary">Current temperature</string>
-    <string name="shelly_web_configuration_summary">Open device website</string>
-    <string name="shelly_web_configuration_title">Configuration</string>
 
     <string name="webView">Web View</string>
     <string name="webView_open">Open in browser</string>

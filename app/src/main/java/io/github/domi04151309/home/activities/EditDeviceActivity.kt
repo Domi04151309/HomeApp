@@ -105,7 +105,7 @@ class EditDeviceActivity : AppCompatActivity() {
 
             configBtn.setOnClickListener {
                 when (modeSpinner.text.toString()) {
-                    "ESP Easy", "Node-RED", "Shelly Gen 1", "Shelly Gen 2" -> {
+                    "ESP Easy", "Shelly Gen 1", "Shelly Gen 2" -> {
                         startActivity(
                             Intent(this, WebActivity::class.java)
                                 .putExtra("URI", addressBox.editText?.text.toString())

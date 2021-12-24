@@ -490,15 +490,6 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
             }
             Flavors.TWO_SIMPLE_HOME ->
                 homeAPI.executeCommand(currentDevice, hidden, homeRequestCallBack)
-            Flavors.TWO_ESPEASY -> {
-                if (hidden.startsWith("http://") || hidden.startsWith("https://")) {
-                    startActivity(
-                        Intent(this, WebActivity::class.java)
-                            .putExtra("URI", hidden)
-                            .putExtra("title", title)
-                    )
-                }
-            }
             Flavors.TWO_HUE ->
                 startActivity(
                     Intent(this, HueLampActivity::class.java)
@@ -510,15 +501,6 @@ class MainActivity : AppCompatActivity(), RecyclerViewHelperInterface {
                     "add" -> tasmota?.addToList(tasmotaRequestCallBack)
                     "execute_once" -> tasmota?.executeOnce(tasmotaRequestCallBack)
                     else -> tasmota?.execute(tasmotaRequestCallBack, view.findViewById<TextView>(R.id.summary).text.toString())
-                }
-            }
-            Flavors.TWO_SHELLY -> {
-                if (hidden.startsWith("http://") || hidden.startsWith("https://")) {
-                    startActivity(
-                        Intent(this, WebActivity::class.java)
-                            .putExtra("URI", hidden)
-                            .putExtra("title", title)
-                    )
                 }
             }
         }
