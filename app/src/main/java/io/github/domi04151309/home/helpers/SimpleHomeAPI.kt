@@ -11,16 +11,17 @@ import io.github.domi04151309.home.data.ListViewItem
 import io.github.domi04151309.home.data.RequestCallbackObject
 import org.json.JSONException
 
-class SimpleHomeAPI(private val c: Context) {
+class SimpleHomeAPI(private val c: Context, private val deviceId: String) {
+
+    private val url = Devices(c).getDeviceById(deviceId).address
+    private val queue = Volley.newRequestQueue(c)
 
     interface RequestCallBack {
         fun onCommandsLoaded(holder: RequestCallbackObject<ArrayList<ListViewItem>>)
-        fun onExecutionFinished(context: Context, result: CharSequence, refresh: Boolean = false, deviceId: String = "")
+        fun onExecutionFinished(result: CharSequence, refresh: Boolean = false, deviceId: String = "")
     }
 
-    fun loadCommands(deviceId: String, callback: RequestCallBack) {
-        val url = Devices(c).getDeviceById(deviceId).address
-        val queue = Volley.newRequestQueue(c)
+    fun loadCommands(callback: RequestCallBack) {
         val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url + "commands", null,
                 { response ->
                     val commandsObject = Commands(response.getJSONObject("commands"))
@@ -47,19 +48,17 @@ class SimpleHomeAPI(private val c: Context) {
         queue.add(jsonObjectRequest)
     }
 
-    fun executeCommand(deviceId: String, url: String, callback: RequestCallBack) {
-        val queue = Volley.newRequestQueue(c)
+    fun executeCommand(url: String, callback: RequestCallBack) {
         val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null,
                 { response ->
                     callback.onExecutionFinished(
-                        c,
                         response.optString("toast", c.resources.getString(R.string.main_execution_completed)),
                         response.optBoolean("refresh", false),
                         deviceId
                     )
                 },
                 { error ->
-                    callback.onExecutionFinished(c, volleyError(c, error))
+                    callback.onExecutionFinished(volleyError(c, error))
                 }
         )
         queue.add(jsonObjectRequest)

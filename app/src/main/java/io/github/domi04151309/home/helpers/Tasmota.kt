@@ -30,8 +30,8 @@ class Tasmota(private val c: Context, deviceId: String) {
     private val nullParent: ViewGroup? = null
 
     interface RequestCallBack {
-        fun onItemsChanged(context: Context)
-        fun onResponse(context: Context, response: String)
+        fun onItemsChanged()
+        fun onResponse(response: String)
     }
 
     fun loadList(): ArrayList<ListViewItem> {
@@ -96,7 +96,7 @@ class Tasmota(private val c: Context, deviceId: String) {
                         .put("title", if (newTitle == "") c.resources.getString(R.string.tasmota_add_command_dialog_title_empty) else newTitle)
                         .put("command", if (newCommand == "") c.resources.getString(R.string.tasmota_add_command_dialog_command_empty) else newCommand)
                 ).toString()).apply()
-                callback.onItemsChanged(c)
+                callback.onItemsChanged()
             }
             .setNegativeButton(android.R.string.cancel) { _, _ -> }
             .show()
@@ -119,7 +119,7 @@ class Tasmota(private val c: Context, deviceId: String) {
                                     .put("title", if (newTitle == "") c.resources.getString(R.string.tasmota_add_command_dialog_title_empty) else newTitle)
                                     .put("command", if (newCommand == "") c.resources.getString(R.string.tasmota_add_command_dialog_command_empty) else newCommand)
                             ).toString()).apply()
-                    callback.onItemsChanged(c)
+                    callback.onItemsChanged()
                 }
                 .setNegativeButton(android.R.string.cancel) { _, _ -> }
                 .show()
@@ -129,13 +129,13 @@ class Tasmota(private val c: Context, deviceId: String) {
         val array = JSONArray(prefs.getString(selectedDevice, EMPTY_ARRAY))
         array.remove(index)
         prefs.edit().putString(selectedDevice, array.toString()).apply()
-        callback.onItemsChanged(c)
+        callback.onItemsChanged()
     }
 
     fun execute(callback: RequestCallBack, command: String) {
         val request = StringRequest(Request.Method.GET, url + command,
                 { response ->
-                    callback.onResponse(c, response)
+                    callback.onResponse(response)
                 },
                 { error ->
                     Toast.makeText(c, Global.volleyError(c, error), Toast.LENGTH_LONG).show()
