@@ -74,7 +74,17 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun onExecuted(result: String, deviceId: String, shouldRefresh: Boolean) {
-            Toast.makeText(this@MainActivity, result, Toast.LENGTH_LONG).show()
+            if (result.length < 64) {
+                Toast.makeText(this@MainActivity, result, Toast.LENGTH_LONG).show()
+            } else {
+                Snackbar.make(recyclerView, R.string.main_execution_completed, Snackbar.LENGTH_LONG).setAction(R.string.str_show) {
+                    AlertDialog.Builder(this@MainActivity)
+                        .setTitle(R.string.main_execution_completed)
+                        .setMessage(result)
+                        .setPositiveButton(android.R.string.ok) { _, _ -> }
+                        .show()
+                }.show()
+            }
             if (shouldRefresh) unified?.loadList(this)
         }
     }
@@ -179,31 +189,16 @@ class MainActivity : AppCompatActivity() {
     /*
      * Things related to Tasmota
      */
-    internal var tasmota: Tasmota? = null
     private val tasmotaHelperInterface = object : HomeRecyclerViewHelperInterface {
         override fun onStateChanged(view: View, data: ListViewItem, state: Boolean) {}
 
         override fun onItemClicked(view: View, data: ListViewItem, position: Int) {
+            val helper = TasmotaHelper(this@MainActivity, unified ?: return)
             when (data.hidden) {
-                "add" -> tasmota?.addToList(tasmotaRequestCallBack)
-                "execute_once" -> tasmota?.executeOnce(tasmotaRequestCallBack)
-                else -> tasmota?.execute(tasmotaRequestCallBack, view.findViewById<TextView>(R.id.summary).text.toString())
+                "add" -> helper.addToList(unifiedRequestCallback)
+                "execute_once" -> helper.executeOnce(unifiedRequestCallback)
+                else -> unified?.execute(view.findViewById<TextView>(R.id.summary).text.toString(), unifiedRequestCallback)
             }
-        }
-    }
-    private val tasmotaRequestCallBack = object : Tasmota.RequestCallBack {
-        override fun onItemsChanged() {
-            adapter.updateData(tasmota?.loadList() ?: arrayListOf(), preferredAnimationState = false)
-        }
-
-        override fun onResponse(response: String) {
-            Snackbar.make(recyclerView, R.string.main_execution_completed, Snackbar.LENGTH_LONG).setAction(R.string.str_show) {
-                AlertDialog.Builder(this@MainActivity)
-                        .setTitle(R.string.main_execution_completed)
-                        .setMessage(response)
-                        .setPositiveButton(android.R.string.ok) { _, _ -> }
-                        .show()
-            }.show()
         }
     }
 
@@ -315,9 +310,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
+        val helper = TasmotaHelper(this, unified ?: return super.onContextItemSelected(item))
         return when (item.title) {
             resources.getString(R.string.str_edit) -> {
-                tasmota?.updateItem(tasmotaRequestCallBack, tasmotaPosition)
+                helper.updateItem(unifiedRequestCallback, tasmotaPosition)
                 true
             }
             resources.getString(R.string.str_delete) -> {
@@ -325,7 +321,7 @@ class MainActivity : AppCompatActivity() {
                         .setTitle(R.string.str_delete)
                         .setMessage(R.string.tasmota_delete_command)
                         .setPositiveButton(R.string.str_delete) { _, _ ->
-                            tasmota?.removeFromList(tasmotaRequestCallBack, tasmotaPosition)
+                            helper.removeFromList(unifiedRequestCallback, tasmotaPosition)
                         }
                         .setNegativeButton(android.R.string.cancel) { _, _ -> }
                         .show()
@@ -420,9 +416,8 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             "Tasmota" -> {
-                tasmota = Tasmota(this, deviceId)
-                adapter.updateData(tasmota?.loadList() ?: arrayListOf(), tasmotaHelperInterface)
-                setLevelTwo(deviceObj)
+                unified = Tasmota(this, deviceId, tasmotaHelperInterface)
+                unified?.loadList(unifiedRequestCallback)
             }
             "Shelly Gen 1" -> {
                 unified = ShellyAPI(this, deviceId, shellyHelperInterface, 1)
@@ -486,7 +481,6 @@ class MainActivity : AppCompatActivity() {
         // Clean up memory
         unified = null
         hueAPI = null
-        tasmota = null
     }
 
     internal fun setLevelTwo(device: DeviceItem) {
@@ -495,17 +489,5 @@ class MainActivity : AppCompatActivity() {
         deviceName.text = device.name
         currentDevice = device.id
         level = Flavors.TWO
-    }
-
-    internal fun updateDataCallback(
-        holder: RequestCallbackObject<ArrayList<ListViewItem>>,
-        helperInterface: HomeRecyclerViewHelperInterface
-    ) {
-        if (holder.response != null) {
-            adapter.updateData(holder.response, helperInterface)
-            setLevelTwo(devices.getDeviceById(holder.deviceId))
-        } else {
-            handleErrorOnLevelOne(holder.errorMessage)
-        }
     }
 }

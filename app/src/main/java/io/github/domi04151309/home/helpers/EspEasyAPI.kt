@@ -13,7 +13,7 @@ class EspEasyAPI(
     recyclerViewInterface: HomeRecyclerViewHelperInterface?
 ) : UnifiedAPI(c, deviceId, recyclerViewInterface) {
 
-    override fun loadList(callback: UnifiedAPI.CallbackInterface) {
+    override fun loadList(callback: CallbackInterface) {
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.GET, url + "json", null,
             { infoResponse ->

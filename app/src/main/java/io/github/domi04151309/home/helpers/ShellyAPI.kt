@@ -19,7 +19,7 @@ class ShellyAPI(
     private val secrets = DeviceSecrets(c, deviceId)
     private val parser = ShellyAPIParser(url, c.resources)
 
-    override fun loadList(callback: UnifiedAPI.CallbackInterface) {
+    override fun loadList(callback: CallbackInterface) {
         val jsonObjectRequest = when (version) {
             1 -> JsonObjectRequestAuth(
                 Request.Method.GET, url + "settings", secrets, null,
