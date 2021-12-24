@@ -37,7 +37,6 @@ class MainActivity : AppCompatActivity() {
         ONE, TWO
     }
 
-    private var currentDevice = ""
     private var tasmotaPosition: Int = 0
     private var level = Flavors.ONE
     private var reset : Boolean = false
@@ -112,6 +111,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     /*
+     * Things related to Tasmota
+     */
+    private val tasmotaHelperInterface = object : HomeRecyclerViewHelperInterface {
+        override fun onStateChanged(view: View, data: ListViewItem, state: Boolean) {}
+        override fun onItemClicked(view: View, data: ListViewItem, position: Int) {
+            val helper = TasmotaHelper(this@MainActivity, unified ?: return)
+            when (data.hidden) {
+                "add" -> helper.addToList(unifiedRequestCallback)
+                "execute_once" -> helper.executeOnce(unifiedRequestCallback)
+                else -> unified?.execute(view.findViewById<TextView>(R.id.summary).text.toString(), unifiedRequestCallback)
+            }
+        }
+    }
+
+    /*
      * Things related to the Hue API
      */
     private var hueAPI: HueAPI? = null
@@ -124,7 +138,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(
                 Intent(this@MainActivity, HueLampActivity::class.java)
                     .putExtra("ID", data.hidden)
-                    .putExtra("Device", currentDevice)
+                    .putExtra("Device", hueAPI?.deviceId)
             )
         }
     }
@@ -132,21 +146,6 @@ class MainActivity : AppCompatActivity() {
         override fun onStatesLoaded(states: ArrayList<Boolean>) {
             for (i in 0 until states.size) {
                 adapter.updateSwitch(recyclerView, i, states[i])
-            }
-        }
-    }
-
-    /*
-     * Things related to Tasmota
-     */
-    private val tasmotaHelperInterface = object : HomeRecyclerViewHelperInterface {
-        override fun onStateChanged(view: View, data: ListViewItem, state: Boolean) {}
-        override fun onItemClicked(view: View, data: ListViewItem, position: Int) {
-            val helper = TasmotaHelper(this@MainActivity, unified ?: return)
-            when (data.hidden) {
-                "add" -> helper.addToList(unifiedRequestCallback)
-                "execute_once" -> helper.executeOnce(unifiedRequestCallback)
-                else -> unified?.execute(view.findViewById<TextView>(R.id.summary).text.toString(), unifiedRequestCallback)
             }
         }
     }
@@ -414,7 +413,6 @@ class MainActivity : AppCompatActivity() {
         fab.hide()
         deviceIcon.setImageResource(device.iconId)
         deviceName.text = device.name
-        currentDevice = device.id
         level = Flavors.TWO
     }
 }
