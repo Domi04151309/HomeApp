@@ -34,7 +34,7 @@ class HueLampsFragment : Fragment(R.layout.fragment_hue_lamps), RecyclerViewHelp
     private lateinit var lampData: HueLampActivity
     private lateinit var hueAPI: HueAPI
     private lateinit var queue: RequestQueue
-    private lateinit var requestCallBack: HueAPI.RequestCallBack
+    private lateinit var requestCallBack: HueAPI.RequestCallback
     private val updateHandler: UpdateHandler = UpdateHandler()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -56,8 +56,7 @@ class HueLampsFragment : Fragment(R.layout.fragment_hue_lamps), RecyclerViewHelp
         recyclerView.layoutManager = LinearLayoutManager(c)
         recyclerView.adapter = adapter
 
-        requestCallBack = object : HueAPI.RequestCallBack {
-            override fun onGroupsLoaded(holder: RequestCallbackObject<JSONObject>) {}
+        requestCallBack = object : HueAPI.RequestCallback {
             override fun onLightsLoaded(holder: RequestCallbackObject<JSONObject>) {
                 if (holder.response != null) {
                     try {
