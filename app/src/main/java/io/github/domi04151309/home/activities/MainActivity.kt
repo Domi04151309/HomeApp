@@ -90,9 +90,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     /*
-     * Things related to ESP Easy
+     * Things related to ESP Easy and Shelly
      */
-    private val espEasyHelperInterface = object : HomeRecyclerViewHelperInterface {
+    private val switchOnlyHelperInterface = object : HomeRecyclerViewHelperInterface {
         override fun onStateChanged(view: View, data: ListViewItem, state: Boolean) {
             if (data.hidden.isEmpty()) return
             view.findViewById<TextView>(R.id.summary).text = resources.getString(
@@ -101,7 +101,6 @@ class MainActivity : AppCompatActivity() {
             )
             unified?.changeSwitchState(data.hidden.toInt(), state)
         }
-
         override fun onItemClicked(view: View, data: ListViewItem, position: Int) {}
     }
 
@@ -110,7 +109,6 @@ class MainActivity : AppCompatActivity() {
      */
     private val homeHelperInterface: HomeRecyclerViewHelperInterface = object : HomeRecyclerViewHelperInterface {
         override fun onStateChanged(view: View, data: ListViewItem, state: Boolean) { }
-
         override fun onItemClicked(view: View, data: ListViewItem, position: Int) {
             unified?.execute(data.hidden, unifiedRequestCallback)
         }
@@ -191,7 +189,6 @@ class MainActivity : AppCompatActivity() {
      */
     private val tasmotaHelperInterface = object : HomeRecyclerViewHelperInterface {
         override fun onStateChanged(view: View, data: ListViewItem, state: Boolean) {}
-
         override fun onItemClicked(view: View, data: ListViewItem, position: Int) {
             val helper = TasmotaHelper(this@MainActivity, unified ?: return)
             when (data.hidden) {
@@ -203,29 +200,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     /*
-     * Things related to Shelly
-     */
-    private val shellyHelperInterface = object : HomeRecyclerViewHelperInterface {
-        override fun onStateChanged(view: View, data: ListViewItem, state: Boolean) {
-            view.findViewById<TextView>(R.id.summary).text = resources.getString(
-                if (state) R.string.shelly_switch_summary_on
-                else R.string.shelly_switch_summary_off
-            )
-            unified?.changeSwitchState(
-                view.findViewById<TextView>(R.id.hidden).text.toString().toInt(),
-                state
-            )
-        }
-
-        override fun onItemClicked(view: View, data: ListViewItem, position: Int) {}
-    }
-
-    /*
      * Things related to the main menu
      */
     private val mainHelperInterface = object : HomeRecyclerViewHelperInterface {
         override fun onStateChanged(view: View, data: ListViewItem, state: Boolean) {}
-
         override fun onItemClicked(view: View, data: ListViewItem, position: Int) {
             currentView = view
             if (data.title == resources.getString(R.string.main_no_devices) || data.title == resources.getString(R.string.err_wrong_format)) {
@@ -294,10 +272,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (level != Flavors.ONE)
-            loadDevices()
-        else
-            super.onBackPressed()
+        if (level != Flavors.ONE) loadDevices()
+        else super.onBackPressed()
     }
 
     override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
@@ -337,12 +313,11 @@ class MainActivity : AppCompatActivity() {
             themeId = getThemeId()
             recreate()
         }
-
-        canReceiveRequest = true
         if (reset) {
             loadDevices()
             reset = false
         }
+        canReceiveRequest = true
     }
 
     override fun onStop() {
@@ -381,10 +356,6 @@ class MainActivity : AppCompatActivity() {
                 )
                 reset = true
             }
-            "ESP Easy" -> {
-                unified = EspEasyAPI(this, deviceId, espEasyHelperInterface)
-                unified?.loadList(unifiedRequestCallback)
-            }
             "Fritz! Auto-Login" -> {
                 startActivity(
                     Intent(this, WebActivity::class.java)
@@ -402,8 +373,24 @@ class MainActivity : AppCompatActivity() {
                 )
                 reset = true
             }
+            "ESP Easy" -> {
+                unified = EspEasyAPI(this, deviceId, switchOnlyHelperInterface)
+                unified?.loadList(unifiedRequestCallback)
+            }
             "SimpleHome API" -> {
                 unified = SimpleHomeAPI(this, deviceId, homeHelperInterface)
+                unified?.loadList(unifiedRequestCallback)
+            }
+            "Tasmota" -> {
+                unified = Tasmota(this, deviceId, tasmotaHelperInterface)
+                unified?.loadList(unifiedRequestCallback)
+            }
+            "Shelly Gen 1" -> {
+                unified = ShellyAPI(this, deviceId, switchOnlyHelperInterface, 1)
+                unified?.loadList(unifiedRequestCallback)
+            }
+            "Shelly Gen 2" -> {
+                unified = ShellyAPI(this, deviceId, switchOnlyHelperInterface, 2)
                 unified?.loadList(unifiedRequestCallback)
             }
             "Hue API" -> {
@@ -414,18 +401,6 @@ class MainActivity : AppCompatActivity() {
                         hueAPI?.loadGroups(hueRequestUpdaterCallBack)
                     }
                 }
-            }
-            "Tasmota" -> {
-                unified = Tasmota(this, deviceId, tasmotaHelperInterface)
-                unified?.loadList(unifiedRequestCallback)
-            }
-            "Shelly Gen 1" -> {
-                unified = ShellyAPI(this, deviceId, shellyHelperInterface, 1)
-                unified?.loadList(unifiedRequestCallback)
-            }
-            "Shelly Gen 2" -> {
-                unified = ShellyAPI(this, deviceId, shellyHelperInterface, 2)
-                unified?.loadList(unifiedRequestCallback)
             }
             else ->
                 Toast.makeText(this, R.string.main_unknown_mode, Toast.LENGTH_LONG).show()
