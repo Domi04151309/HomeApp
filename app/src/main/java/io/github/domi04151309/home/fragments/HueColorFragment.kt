@@ -166,7 +166,7 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
                     )
                 }
             })
-            colorPickerView.setOnTouchListener { view, event ->
+            colorPickerView.setOnTouchListener { innerView, event ->
                 if (event.action == MotionEvent.ACTION_DOWN) {
                     pauseUpdates()
                 } else if (event.action == MotionEvent.ACTION_UP) {
@@ -174,7 +174,7 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
                     hueAPI.changeHueSatOfGroup(lampActivity.id, hueSat[0], hueSat[1])
                     resumeUpdates()
                 }
-                view.performClick()
+                innerView.performClick()
             }
         } else {
             ctBar.addOnChangeListener { _, value, fromUser ->

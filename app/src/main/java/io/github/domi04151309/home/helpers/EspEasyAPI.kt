@@ -32,8 +32,8 @@ class EspEasyAPI(
         queue.add(jsonObjectRequest)
     }
 
-    override fun changeSwitchState(id: String, newState: Boolean) {
-        val switchUrl = url + "control?cmd=GPIO," + id + "," + (if (newState) "1" else "0")
+    override fun changeSwitchState(id: String, state: Boolean) {
+        val switchUrl = url + "control?cmd=GPIO," + id + "," + (if (state) "1" else "0")
         val jsonObjectRequest = JsonObjectRequest(
             switchUrl,
             { },
