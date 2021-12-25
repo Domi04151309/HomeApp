@@ -62,8 +62,12 @@ class MainActivity : AppCompatActivity() {
     private val unifiedRequestCallback = object : UnifiedAPI.CallbackInterface {
         override fun onItemsLoaded(holder: UnifiedRequestCallback, recyclerViewInterface: HomeRecyclerViewHelperInterface?) {
             if (holder.response != null) {
+                val device = devices.getDeviceById(holder.deviceId)
+                deviceIcon.setImageResource(device.iconId)
+                deviceName.text = device.name
                 adapter.updateData(holder.response, recyclerViewInterface)
-                setLevelTwo(devices.getDeviceById(holder.deviceId))
+                fab.hide()
+                level = Flavors.TWO
             } else {
                 handleErrorOnLevelOne(holder.errorMessage)
             }
@@ -396,12 +400,5 @@ class MainActivity : AppCompatActivity() {
         // Clean up memory
         unified = null
         hueAPI = null
-    }
-
-    internal fun setLevelTwo(device: DeviceItem) {
-        fab.hide()
-        deviceIcon.setImageResource(device.iconId)
-        deviceName.text = device.name
-        level = Flavors.TWO
     }
 }
