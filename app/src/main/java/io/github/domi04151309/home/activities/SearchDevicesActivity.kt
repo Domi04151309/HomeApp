@@ -153,10 +153,10 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
                     } else {
                         val pos = adapter.add(ListViewItem(
                             title = serviceInfo.serviceName,
-                            summary = serviceInfo.host.hostAddress,
+                            summary = serviceInfo.host.hostAddress ?: "",
                             hidden = "Shelly Gen ${serviceInfo.attributes["gen"]?.decodeToString() ?: "1"}#Lamp",
                             icon = R.drawable.ic_device_lamp,
-                            state = devices.addressExists(serviceInfo.host.hostAddress)
+                            state = devices.addressExists(serviceInfo.host.hostAddress ?: "")
                         ))
 
                         queue.add(

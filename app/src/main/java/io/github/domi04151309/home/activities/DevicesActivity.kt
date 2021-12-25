@@ -108,7 +108,7 @@ class DevicesActivity : AppCompatActivity(), RecyclerViewHelperInterfaceAdvanced
         recyclerView.adapter = DeviceListAdapter(listItems, this)
     }
 
-    override fun onItemClicked(view: View, pos: Int) {
+    override fun onItemClicked(view: View, position: Int) {
         val action =  view.findViewById<TextView>(R.id.hidden).text
         if (action.contains("edit")) {
             reset = true

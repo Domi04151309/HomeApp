@@ -144,14 +144,14 @@ class HueAPI(
                             lightID = lightIDs.getString(i)
                             returnObject.put(lightID, response.getJSONObject(lightID))
                         }
-                        callback.onLightsLoaded(RequestCallbackObject(c, returnObject, deviceId))
+                        callback.onLightsLoaded(RequestCallbackObject(returnObject, deviceId))
                     } catch (e: Exception) {
-                        callback.onLightsLoaded(RequestCallbackObject(c, null, deviceId, c.resources.getString(R.string.err_wrong_format_summary)))
+                        callback.onLightsLoaded(RequestCallbackObject(null, deviceId, c.resources.getString(R.string.err_wrong_format_summary)))
                         Log.e(Global.LOG_TAG, e.toString())
                     }
                 },
                 { error ->
-                    callback.onLightsLoaded(RequestCallbackObject(c, null, deviceId, volleyError(c, error)))
+                    callback.onLightsLoaded(RequestCallbackObject(null, deviceId, volleyError(c, error)))
                 }
         )
         queue.add(jsonObjectRequest)
