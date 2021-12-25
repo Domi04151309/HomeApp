@@ -72,7 +72,7 @@ class ShellyAPI(
         queue.add(jsonObjectRequest)
     }
 
-    override fun changeSwitchState(id: Int, state: Boolean) {
+    override fun changeSwitchState(id: String, state: Boolean) {
         val requestUrl = url + "relay/$id?turn=" + (if (state) "on" else "off")
         val jsonObjectRequest = when (version) {
             1 -> JsonObjectRequestAuth(

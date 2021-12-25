@@ -47,7 +47,7 @@ class EspEasyAPIParserTest {
         //sensor 3: Switch in off mode
         num++
         Assert.assertEquals("Relais", listItems[num].title)
-        Assert.assertEquals(resources.getString(R.string.shelly_switch_summary_off), listItems[num].summary)
+        Assert.assertEquals(resources.getString(R.string.switch_summary_off), listItems[num].summary)
         Assert.assertEquals(false, listItems[num].state)
         Assert.assertEquals("12", listItems[num].hidden)
         Assert.assertEquals(R.drawable.ic_do, listItems[num].icon)

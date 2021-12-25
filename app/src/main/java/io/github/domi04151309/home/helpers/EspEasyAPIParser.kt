@@ -82,8 +82,8 @@ class EspEasyAPIParser(val url: String, val resources: Resources) {
                 listItems += ListViewItem(
                     title = taskName,
                     summary = resources.getString(
-                        if (currentState) R.string.shelly_switch_summary_on
-                        else R.string.shelly_switch_summary_off
+                        if (currentState) R.string.switch_summary_on
+                        else R.string.switch_summary_off
                     ),
                     hidden = gpioId,
                     state = currentState,

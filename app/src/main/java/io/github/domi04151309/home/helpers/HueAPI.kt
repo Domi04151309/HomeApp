@@ -13,6 +13,7 @@ import org.json.JSONObject
 import android.os.Handler
 import android.os.Looper
 import io.github.domi04151309.home.activities.HueConnectActivity
+import io.github.domi04151309.home.activities.HueLampActivity
 import io.github.domi04151309.home.data.RequestCallbackObject
 import io.github.domi04151309.home.custom.CustomJsonArrayRequest
 import io.github.domi04151309.home.data.ListViewItem
@@ -26,13 +27,12 @@ class HueAPI(
 ) : UnifiedAPI(c, deviceId, recyclerViewInterface) {
 
     var readyForRequest: Boolean = true
+    init {
+        dynamicSummaries = false
+    }
 
     interface RequestCallback {
         fun onLightsLoaded(holder: RequestCallbackObject<JSONObject>)
-    }
-
-    interface RealTimeStatesCallback {
-        fun onStatesLoaded(states: ArrayList<Boolean>)
     }
 
     fun getUsername(): String {
@@ -74,12 +74,12 @@ class HueAPI(
         queue.add(jsonObjectRequest)
     }
 
-    // For real-time switch states
-    fun loadStates(callback: RealTimeStatesCallback) {
+    override fun loadStates(callback: RealTimeStatesCallback) {
+        if (!readyForRequest) return
         val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url + "api/${getUsername()}/groups", null,
             { response ->
                 try {
-                    val states: ArrayList<Boolean> = ArrayList(response.length())
+                    val states: ArrayList<Boolean?> = ArrayList(response.length())
                     val rooms: ArrayList<Group> = ArrayList(response.length() / 2)
                     val zones: ArrayList<Group> = ArrayList(response.length() / 2)
                     var currentObject: JSONObject
@@ -110,6 +110,18 @@ class HueAPI(
             { }
         )
         queue.add(jsonObjectRequest)
+    }
+
+    override fun execute(url: String, callback: CallbackInterface) {
+        c.startActivity(
+            Intent(c, HueLampActivity::class.java)
+                .putExtra("ID", url)
+                .putExtra("Device", deviceId)
+        )
+    }
+
+    override fun changeSwitchState(id: String, state: Boolean) {
+        switchGroupByID(id.substring(id.lastIndexOf("#") + 1), state)
     }
 
     private fun parseGroupObj(key: String, obj: JSONObject, isZone: Boolean): ListViewItem {

@@ -52,9 +52,10 @@
     <string name="shelly_humidity_sensor_summary">Aktuelle Luftfeuchtigkeit</string>
     <string name="shelly_powermeter_summary">Aktueller Stromverbrauch</string>
     <string name="shelly_switch_title">Schalter %1$d</string>
-    <string name="shelly_switch_summary_on">Der Schalter ist an</string>
-    <string name="shelly_switch_summary_off">Der Schalter ist aus</string>
     <string name="shelly_temperature_sensor_summary">Aktuelle Temperatur</string>
+
+    <string name="switch_summary_on">Der Schalter ist an</string>
+    <string name="switch_summary_off">Der Schalter ist aus</string>
 
     <string name="webView">Internetansicht</string>
     <string name="webView_open">Im Browser öffnen</string>

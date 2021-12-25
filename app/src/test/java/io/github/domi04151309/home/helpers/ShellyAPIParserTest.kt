@@ -24,7 +24,7 @@ class ShellyAPIParserTest {
 
         var num = 0
         Assert.assertEquals("Wohnzimmer Gartenfenster", listItems[num].title)
-        Assert.assertEquals(resources.getString(R.string.shelly_switch_summary_on), listItems[num].summary)
+        Assert.assertEquals(resources.getString(R.string.switch_summary_on), listItems[num].summary)
         Assert.assertEquals(true, listItems[num].state)
         Assert.assertEquals("0", listItems[num].hidden)
         Assert.assertEquals(R.drawable.ic_do, listItems[num].icon)
@@ -48,7 +48,7 @@ class ShellyAPIParserTest {
 
         var num = 0
         Assert.assertEquals(resources.getString(R.string.shelly_switch_title, 1), listItems[num].title)
-        Assert.assertEquals(resources.getString(R.string.shelly_switch_summary_off), listItems[num].summary)
+        Assert.assertEquals(resources.getString(R.string.switch_summary_off), listItems[num].summary)
         Assert.assertEquals(false, listItems[num].state)
         Assert.assertEquals("0", listItems[num].hidden)
         Assert.assertEquals(R.drawable.ic_do, listItems[num].icon)
@@ -79,7 +79,7 @@ class ShellyAPIParserTest {
 
         val num = 0
         Assert.assertEquals("Kamin", listItems[num].title)
-        Assert.assertEquals(resources.getString(R.string.shelly_switch_summary_on), listItems[num].summary)
+        Assert.assertEquals(resources.getString(R.string.switch_summary_on), listItems[num].summary)
         Assert.assertEquals(true, listItems[num].state)
         Assert.assertEquals("0", listItems[num].hidden)
         Assert.assertEquals(R.drawable.ic_do, listItems[num].icon)
