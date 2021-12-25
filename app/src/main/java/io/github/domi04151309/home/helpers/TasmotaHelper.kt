@@ -7,6 +7,7 @@ import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.preference.PreferenceManager
 import io.github.domi04151309.home.R
+import io.github.domi04151309.home.api.UnifiedAPI
 import org.json.JSONArray
 import org.json.JSONObject
 

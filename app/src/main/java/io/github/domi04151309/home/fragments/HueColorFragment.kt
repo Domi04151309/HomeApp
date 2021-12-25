@@ -21,6 +21,7 @@ import com.skydoves.colorpickerview.ColorPickerView
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.activities.HueLampActivity
 import com.skydoves.colorpickerview.listeners.ColorListener
+import io.github.domi04151309.home.api.HueAPI
 import io.github.domi04151309.home.helpers.*
 
 class HueColorFragment : Fragment(R.layout.fragment_hue_color) {

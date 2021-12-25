@@ -22,7 +22,7 @@ import io.github.domi04151309.home.custom.CustomJsonArrayRequest
 import io.github.domi04151309.home.data.SimpleListItem
 import io.github.domi04151309.home.fragments.HueScenesFragment
 import io.github.domi04151309.home.helpers.Devices
-import io.github.domi04151309.home.helpers.HueAPI
+import io.github.domi04151309.home.api.HueAPI
 import io.github.domi04151309.home.helpers.HueUtils
 import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.Theme

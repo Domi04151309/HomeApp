@@ -20,7 +20,7 @@ import io.github.domi04151309.home.adapters.HueLampListAdapter
 import io.github.domi04151309.home.data.ListViewItem
 import io.github.domi04151309.home.data.RequestCallbackObject
 import io.github.domi04151309.home.helpers.Global
-import io.github.domi04151309.home.helpers.HueAPI
+import io.github.domi04151309.home.api.HueAPI
 import io.github.domi04151309.home.helpers.HueUtils
 import io.github.domi04151309.home.helpers.UpdateHandler
 import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface

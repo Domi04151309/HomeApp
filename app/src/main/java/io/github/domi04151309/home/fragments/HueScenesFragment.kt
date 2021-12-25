@@ -23,7 +23,7 @@ import io.github.domi04151309.home.custom.CustomJsonArrayRequest
 import io.github.domi04151309.home.data.SceneGridItem
 import io.github.domi04151309.home.helpers.ColorUtils
 import io.github.domi04151309.home.helpers.Global
-import io.github.domi04151309.home.helpers.HueAPI
+import io.github.domi04151309.home.api.HueAPI
 import io.github.domi04151309.home.helpers.HueUtils
 import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
 import org.json.JSONObject

@@ -1,4 +1,4 @@
-package io.github.domi04151309.home.helpers
+package io.github.domi04151309.home.api
 
 import android.content.Context
 import android.util.Log
@@ -11,6 +11,8 @@ import org.json.JSONArray
 import org.json.JSONObject
 import io.github.domi04151309.home.data.ListViewItem
 import io.github.domi04151309.home.data.UnifiedRequestCallback
+import io.github.domi04151309.home.helpers.Global
+import io.github.domi04151309.home.helpers.TasmotaHelper
 import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
 import org.json.JSONException
 

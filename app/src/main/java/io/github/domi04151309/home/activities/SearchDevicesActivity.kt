@@ -20,7 +20,7 @@ import io.github.domi04151309.home.adapters.DeviceDiscoveryListAdapter
 import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.data.ListViewItem
 import io.github.domi04151309.home.helpers.Devices
-import io.github.domi04151309.home.helpers.ShellyAPI
+import io.github.domi04151309.home.api.ShellyAPI
 import io.github.domi04151309.home.helpers.Theme
 import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
 import java.util.concurrent.ConcurrentLinkedQueue

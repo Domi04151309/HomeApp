@@ -1,4 +1,4 @@
-package io.github.domi04151309.home.helpers
+package io.github.domi04151309.home.api
 
 import android.content.res.Resources
 import io.github.domi04151309.home.R

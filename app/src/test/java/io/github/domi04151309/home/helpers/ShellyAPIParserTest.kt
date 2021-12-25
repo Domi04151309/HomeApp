@@ -2,6 +2,7 @@ package io.github.domi04151309.home.helpers
 
 import android.content.res.Resources
 import io.github.domi04151309.home.R
+import io.github.domi04151309.home.api.ShellyAPIParser
 import org.junit.Assert
 import org.json.JSONObject
 import org.junit.Test
