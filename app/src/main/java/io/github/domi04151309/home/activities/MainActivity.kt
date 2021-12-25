@@ -8,8 +8,7 @@ import android.view.ContextMenu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
-import io.github.domi04151309.home.helpers.SimpleHomeAPI
-import io.github.domi04151309.home.helpers.HueAPI
+import io.github.domi04151309.home.api.SimpleHomeAPI
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.preference.PreferenceManager
@@ -22,12 +21,12 @@ import io.github.domi04151309.home.helpers.*
 import io.github.domi04151309.home.helpers.P
 import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.Theme
-import io.github.domi04151309.home.helpers.Tasmota
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.github.domi04151309.home.adapters.MainListAdapter
+import io.github.domi04151309.home.api.*
 import io.github.domi04151309.home.data.UnifiedRequestCallback
 import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
 

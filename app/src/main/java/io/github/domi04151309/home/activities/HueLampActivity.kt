@@ -20,6 +20,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.adapters.HueDetailsTabAdapter
+import io.github.domi04151309.home.api.HueAPI
 import io.github.domi04151309.home.helpers.*
 import io.github.domi04151309.home.helpers.Global.volleyError
 import io.github.domi04151309.home.helpers.Theme

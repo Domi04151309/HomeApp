@@ -1,10 +1,11 @@
-package io.github.domi04151309.home.helpers
+package io.github.domi04151309.home.api
 
 import android.content.Context
 import android.util.Log
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import io.github.domi04151309.home.data.UnifiedRequestCallback
+import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
 
 class EspEasyAPI(
@@ -26,7 +27,9 @@ class EspEasyAPI(
                 )
             },
             { error ->
-                callback.onItemsLoaded(UnifiedRequestCallback(null, deviceId, Global.volleyError(c, error)), null)
+                callback.onItemsLoaded(UnifiedRequestCallback(null, deviceId,
+                    Global.volleyError(c, error)
+                ), null)
             }
         )
         queue.add(jsonObjectRequest)
