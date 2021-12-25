@@ -17,10 +17,17 @@ open class UnifiedAPI(
         fun onExecuted(result: String, deviceId: String = "", shouldRefresh: Boolean = false)
     }
 
+    interface RealTimeStatesCallback {
+        fun onStatesLoaded(states: ArrayList<Boolean?>)
+    }
+
+    var dynamicSummaries: Boolean = true
+
     protected val url: String = Devices(c).getDeviceById(deviceId).address
     protected val queue: RequestQueue = Volley.newRequestQueue(c)
 
     open fun loadList(callback: CallbackInterface) {}
+    open fun loadStates(callback: RealTimeStatesCallback) {}
     open fun execute(url: String, callback: CallbackInterface) {}
-    open fun changeSwitchState(id: Int, state: Boolean) {}
+    open fun changeSwitchState(id: String, state: Boolean) {}
 }

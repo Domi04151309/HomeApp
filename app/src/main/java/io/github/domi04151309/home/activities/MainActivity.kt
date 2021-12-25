@@ -34,9 +34,11 @@ import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
 class MainActivity : AppCompatActivity() {
 
     companion object {
-        private val WEB_MODES = arrayOf("Fritz! Auto-Login", "Node-RED", "Website")
+        private val WEB_MODES = arrayOf(
+            "Fritz! Auto-Login", "Node-RED", "Website"
+        )
         private val UNIFIED_MODES = arrayOf(
-            "ESP Easy", "Shelly Gen 1", "Shelly Gen 2", "SimpleHome API", "Tasmota"
+            "ESP Easy", "Hue API", "Shelly Gen 1", "Shelly Gen 2", "SimpleHome API", "Tasmota"
         )
     }
 
@@ -98,15 +100,23 @@ class MainActivity : AppCompatActivity() {
     private val unifiedHelperInterface = object : HomeRecyclerViewHelperInterface {
         override fun onStateChanged(view: View, data: ListViewItem, state: Boolean) {
             if (data.hidden.isEmpty()) return
-            view.findViewById<TextView>(R.id.summary).text = resources.getString(
-                if (state) R.string.shelly_switch_summary_on
-                else R.string.shelly_switch_summary_off
-            )
-            unified?.changeSwitchState(data.hidden.toInt(), state)
+            if (unified?.dynamicSummaries == true) view.findViewById<TextView>(R.id.summary).text =
+                resources.getString(
+                    if (state) R.string.switch_summary_on
+                    else R.string.switch_summary_off
+                )
+            unified?.changeSwitchState(data.hidden, state)
         }
 
         override fun onItemClicked(view: View, data: ListViewItem) {
             unified?.execute(data.hidden, unifiedRequestCallback)
+        }
+    }
+    private val unifiedRealTimeStatesCallback = object : UnifiedAPI.RealTimeStatesCallback {
+        override fun onStatesLoaded(states: ArrayList<Boolean?>) {
+            for (i in 0 until states.size) {
+                if (states[i] != null) adapter.updateSwitch(recyclerView, i, states[i] ?: return)
+            }
         }
     }
 
@@ -121,31 +131,6 @@ class MainActivity : AppCompatActivity() {
                 "add" -> helper.addToList(unifiedRequestCallback)
                 "execute_once" -> helper.executeOnce(unifiedRequestCallback)
                 else -> unified?.execute(view.findViewById<TextView>(R.id.summary).text.toString(), unifiedRequestCallback)
-            }
-        }
-    }
-
-    /*
-     * Things related to the Hue API
-     */
-    private var hueAPI: HueAPI? = null
-    private val hueHelperInterface = object : HomeRecyclerViewHelperInterface {
-        override fun onStateChanged(view: View, data: ListViewItem, state: Boolean) {
-            hueAPI?.switchGroupByID(data.hidden.substring(data.hidden.lastIndexOf("#") + 1), state)
-        }
-
-        override fun onItemClicked(view: View, data: ListViewItem) {
-            startActivity(
-                Intent(this@MainActivity, HueLampActivity::class.java)
-                    .putExtra("ID", data.hidden)
-                    .putExtra("Device", hueAPI?.deviceId)
-            )
-        }
-    }
-    private val hueRealTimeStatesCallback = object : HueAPI.RealTimeStatesCallback {
-        override fun onStatesLoaded(states: ArrayList<Boolean>) {
-            for (i in 0 until states.size) {
-                adapter.updateSwitch(recyclerView, i, states[i])
             }
         }
     }
@@ -321,6 +306,7 @@ class MainActivity : AppCompatActivity() {
             UNIFIED_MODES.contains(deviceObj.mode) -> {
                 unified = when (deviceObj.mode) {
                     "ESP Easy" -> EspEasyAPI(this, deviceId, unifiedHelperInterface)
+                    "Hue API" -> HueAPI(this, deviceId, unifiedHelperInterface)
                     "SimpleHome API" -> SimpleHomeAPI(this, deviceId, unifiedHelperInterface)
                     "Tasmota" -> Tasmota(this, deviceId, tasmotaHelperInterface)
                     "Shelly Gen 1" -> ShellyAPI(this, deviceId, unifiedHelperInterface, 1)
@@ -328,15 +314,8 @@ class MainActivity : AppCompatActivity() {
                     else -> null
                 }
                 unified?.loadList(unifiedRequestCallback)
-            }
-            "Hue API" == deviceObj.mode -> {
-                //TODO: Make this unified as well
-                hueAPI = HueAPI(this, deviceId, hueHelperInterface)
-                hueAPI?.loadList(unifiedRequestCallback)
                 updateHandler.setUpdateFunction {
-                    if (canReceiveRequest && hueAPI?.readyForRequest == true) {
-                        hueAPI?.loadStates(hueRealTimeStatesCallback)
-                    }
+                    if (canReceiveRequest) unified?.loadStates(unifiedRealTimeStatesCallback)
                 }
             }
             else -> {
@@ -390,9 +369,6 @@ class MainActivity : AppCompatActivity() {
         deviceName.text = resources.getString(R.string.main_device_name)
         fab.show()
         level = Flavors.ONE
-
-        // Clean up memory
         unified = null
-        hueAPI = null
     }
 }
