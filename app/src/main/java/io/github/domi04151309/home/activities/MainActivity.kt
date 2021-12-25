@@ -84,11 +84,7 @@ class MainActivity : AppCompatActivity() {
             if (shouldRefresh) unified?.loadList(this)
         }
     }
-
-    /*
-     * Things related to ESP Easy and Shelly
-     */
-    private val switchOnlyHelperInterface = object : HomeRecyclerViewHelperInterface {
+    private val unifiedHelperInterface = object : HomeRecyclerViewHelperInterface {
         override fun onStateChanged(view: View, data: ListViewItem, state: Boolean) {
             if (data.hidden.isEmpty()) return
             view.findViewById<TextView>(R.id.summary).text = resources.getString(
@@ -97,15 +93,8 @@ class MainActivity : AppCompatActivity() {
             )
             unified?.changeSwitchState(data.hidden.toInt(), state)
         }
-        override fun onItemClicked(view: View, data: ListViewItem, position: Int) {}
-    }
 
-    /*
-     * Things related to the Home API
-     */
-    private val homeHelperInterface: HomeRecyclerViewHelperInterface = object : HomeRecyclerViewHelperInterface {
-        override fun onStateChanged(view: View, data: ListViewItem, state: Boolean) { }
-        override fun onItemClicked(view: View, data: ListViewItem, position: Int) {
+        override fun onItemClicked(view: View, data: ListViewItem) {
             unified?.execute(data.hidden, unifiedRequestCallback)
         }
     }
@@ -115,7 +104,7 @@ class MainActivity : AppCompatActivity() {
      */
     private val tasmotaHelperInterface = object : HomeRecyclerViewHelperInterface {
         override fun onStateChanged(view: View, data: ListViewItem, state: Boolean) {}
-        override fun onItemClicked(view: View, data: ListViewItem, position: Int) {
+        override fun onItemClicked(view: View, data: ListViewItem) {
             val helper = TasmotaHelper(this@MainActivity, unified ?: return)
             when (data.hidden) {
                 "add" -> helper.addToList(unifiedRequestCallback)
@@ -134,7 +123,7 @@ class MainActivity : AppCompatActivity() {
             hueAPI?.switchGroupByID(data.hidden.substring(data.hidden.lastIndexOf("#") + 1), state)
         }
 
-        override fun onItemClicked(view: View, data: ListViewItem, position: Int) {
+        override fun onItemClicked(view: View, data: ListViewItem) {
             startActivity(
                 Intent(this@MainActivity, HueLampActivity::class.java)
                     .putExtra("ID", data.hidden)
@@ -155,7 +144,7 @@ class MainActivity : AppCompatActivity() {
      */
     private val mainHelperInterface = object : HomeRecyclerViewHelperInterface {
         override fun onStateChanged(view: View, data: ListViewItem, state: Boolean) {}
-        override fun onItemClicked(view: View, data: ListViewItem, position: Int) {
+        override fun onItemClicked(view: View, data: ListViewItem) {
             currentView = view
             if (data.title == resources.getString(R.string.main_no_devices) || data.title == resources.getString(R.string.err_wrong_format)) {
                 reset = true
@@ -325,11 +314,11 @@ class MainActivity : AppCompatActivity() {
                 reset = true
             }
             "ESP Easy" -> {
-                unified = EspEasyAPI(this, deviceId, switchOnlyHelperInterface)
+                unified = EspEasyAPI(this, deviceId, unifiedHelperInterface)
                 unified?.loadList(unifiedRequestCallback)
             }
             "SimpleHome API" -> {
-                unified = SimpleHomeAPI(this, deviceId, homeHelperInterface)
+                unified = SimpleHomeAPI(this, deviceId, unifiedHelperInterface)
                 unified?.loadList(unifiedRequestCallback)
             }
             "Tasmota" -> {
@@ -337,11 +326,11 @@ class MainActivity : AppCompatActivity() {
                 unified?.loadList(unifiedRequestCallback)
             }
             "Shelly Gen 1" -> {
-                unified = ShellyAPI(this, deviceId, switchOnlyHelperInterface, 1)
+                unified = ShellyAPI(this, deviceId, unifiedHelperInterface, 1)
                 unified?.loadList(unifiedRequestCallback)
             }
             "Shelly Gen 2" -> {
-                unified = ShellyAPI(this, deviceId, switchOnlyHelperInterface, 2)
+                unified = ShellyAPI(this, deviceId, unifiedHelperInterface, 2)
                 unified?.loadList(unifiedRequestCallback)
             }
             "Hue API" -> {

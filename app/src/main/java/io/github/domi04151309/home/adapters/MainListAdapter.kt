@@ -56,7 +56,7 @@ class MainListAdapter : RecyclerView.Adapter<MainListAdapter.ViewHolder>() {
             holder.stateSwitch.visibility = View.GONE
         }
         holder.itemView.setOnClickListener {
-            helperInterface?.onItemClicked(holder.itemView, items[position], position)
+            helperInterface?.onItemClicked(holder.itemView, items[position])
         }
         holder.itemView.setOnCreateContextMenuListener(holder.itemView.context as Activity)
         if (animate) playAnimation(holder.itemView)
