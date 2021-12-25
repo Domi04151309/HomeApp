@@ -33,6 +33,13 @@ import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
 
 class MainActivity : AppCompatActivity() {
 
+    companion object {
+        private val WEB_MODES = arrayOf("Fritz! Auto-Login", "Node-RED", "Website")
+        private val UNIFIED_MODES = arrayOf(
+            "ESP Easy", "Shelly Gen 1", "Shelly Gen 2", "SimpleHome API", "Tasmota"
+        )
+    }
+
     enum class Flavors {
         ONE, TWO
     }
@@ -291,53 +298,39 @@ class MainActivity : AppCompatActivity() {
 
     internal fun handleLevelOne(deviceId: String) {
         val deviceObj = devices.getDeviceById(deviceId)
-        when (deviceObj.mode) {
-            "Website" -> {
-                startActivity(
-                    Intent(this, WebActivity::class.java)
-                        .putExtra("URI", deviceObj.address)
-                        .putExtra("title", deviceObj.name)
-                )
+        when {
+            WEB_MODES.contains(deviceObj.mode) -> {
+                val intent = Intent(this, WebActivity::class.java)
+                    .putExtra("title", deviceObj.name)
+
+                when (deviceObj.mode) {
+                    "Fritz! Auto-Login" -> {
+                        intent.putExtra("URI", deviceObj.address)
+                        intent.putExtra("fritz_auto_login", deviceObj.id)
+                    }
+                    "Node-RED" -> {
+                        intent.putExtra("URI", deviceObj.address + "ui/")
+                    }
+                    "Website" -> {
+                        intent.putExtra("URI", deviceObj.address)
+                    }
+                }
+                startActivity(intent)
                 reset = true
             }
-            "Fritz! Auto-Login" -> {
-                startActivity(
-                    Intent(this, WebActivity::class.java)
-                        .putExtra("URI", deviceObj.address)
-                        .putExtra("title", deviceObj.name)
-                        .putExtra("fritz_auto_login", deviceObj.id)
-                )
-                reset = true
-            }
-            "Node-RED" -> {
-                startActivity(
-                    Intent(this, WebActivity::class.java)
-                        .putExtra("URI", deviceObj.address + "ui/")
-                        .putExtra("title", deviceObj.name)
-                )
-                reset = true
-            }
-            "ESP Easy" -> {
-                unified = EspEasyAPI(this, deviceId, unifiedHelperInterface)
+            UNIFIED_MODES.contains(deviceObj.mode) -> {
+                unified = when (deviceObj.mode) {
+                    "ESP Easy" -> EspEasyAPI(this, deviceId, unifiedHelperInterface)
+                    "SimpleHome API" -> SimpleHomeAPI(this, deviceId, unifiedHelperInterface)
+                    "Tasmota" -> Tasmota(this, deviceId, tasmotaHelperInterface)
+                    "Shelly Gen 1" -> ShellyAPI(this, deviceId, unifiedHelperInterface, 1)
+                    "Shelly Gen 2" -> ShellyAPI(this, deviceId, unifiedHelperInterface, 2)
+                    else -> null
+                }
                 unified?.loadList(unifiedRequestCallback)
             }
-            "SimpleHome API" -> {
-                unified = SimpleHomeAPI(this, deviceId, unifiedHelperInterface)
-                unified?.loadList(unifiedRequestCallback)
-            }
-            "Tasmota" -> {
-                unified = Tasmota(this, deviceId, tasmotaHelperInterface)
-                unified?.loadList(unifiedRequestCallback)
-            }
-            "Shelly Gen 1" -> {
-                unified = ShellyAPI(this, deviceId, unifiedHelperInterface, 1)
-                unified?.loadList(unifiedRequestCallback)
-            }
-            "Shelly Gen 2" -> {
-                unified = ShellyAPI(this, deviceId, unifiedHelperInterface, 2)
-                unified?.loadList(unifiedRequestCallback)
-            }
-            "Hue API" -> {
+            "Hue API" == deviceObj.mode -> {
+                //TODO: Make this unified as well
                 hueAPI = HueAPI(this, deviceId, hueHelperInterface)
                 hueAPI?.loadList(unifiedRequestCallback)
                 updateHandler.setUpdateFunction {
@@ -346,8 +339,9 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
-            else ->
+            else -> {
                 Toast.makeText(this, R.string.main_unknown_mode, Toast.LENGTH_LONG).show()
+            }
         }
     }
 
