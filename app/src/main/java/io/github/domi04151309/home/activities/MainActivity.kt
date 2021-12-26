@@ -3,7 +3,6 @@ package io.github.domi04151309.home.activities
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import android.util.Log
 import android.view.ContextMenu
 import android.view.MenuItem
 import android.view.View
@@ -19,7 +18,6 @@ import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.data.ListViewItem
 import io.github.domi04151309.home.helpers.*
 import io.github.domi04151309.home.helpers.P
-import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.Theme
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
@@ -141,9 +139,13 @@ class MainActivity : AppCompatActivity() {
         override fun onStateChanged(view: View, data: ListViewItem, state: Boolean) {}
         override fun onItemClicked(view: View, data: ListViewItem) {
             currentView = view
-            if (data.title == resources.getString(R.string.main_no_devices) || data.title == resources.getString(R.string.err_wrong_format)) {
+            if (data.title == resources.getString(R.string.main_no_devices)) {
                 reset = true
                 startActivity(Intent(this@MainActivity, DevicesActivity::class.java))
+                return
+            } else if (data.title == resources.getString(R.string.err_wrong_format)) {
+                reset = true
+                startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
                 return
             }
             if (checkNetwork()) {
@@ -185,24 +187,29 @@ class MainActivity : AppCompatActivity() {
         }
 
         //Handle shortcut
-        if(intent.hasExtra("device")) {
-            val deviceId = intent.getStringExtra("device") ?: ""
-            if (devices.idExists(deviceId)) {
-                if (checkNetwork()) {
-                    val device = devices.getDeviceById(deviceId)
-                    deviceIcon.setImageResource(device.iconId)
-                    deviceName.text = device.name
-                    handleLevelOne(deviceId)
+        try {
+            if(intent.hasExtra("device")) {
+                val deviceId = intent.getStringExtra("device") ?: ""
+                if (devices.idExists(deviceId)) {
+                    if (checkNetwork()) {
+                        val device = devices.getDeviceById(deviceId)
+                        deviceIcon.setImageResource(device.iconId)
+                        deviceName.text = device.name
+                        handleLevelOne(deviceId)
+                    } else {
+                        loadDevices()
+                        Toast.makeText(this, R.string.main_network_not_secure, Toast.LENGTH_LONG).show()
+                    }
                 } else {
                     loadDevices()
-                    Toast.makeText(this, R.string.main_network_not_secure, Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, R.string.main_device_nonexistent, Toast.LENGTH_LONG).show()
                 }
             } else {
                 loadDevices()
-                Toast.makeText(this, R.string.main_device_nonexistent, Toast.LENGTH_LONG).show()
             }
-        } else {
+        } catch (e: Exception) {
             loadDevices()
+            Toast.makeText(this, R.string.err_wrong_format_summary, Toast.LENGTH_LONG).show()
         }
     }
 
@@ -334,8 +341,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadDevices() {
         updateHandler.stop()
-        val listItems: ArrayList<ListViewItem> = ArrayList(devices.length())
+        val listItems: ArrayList<ListViewItem> = arrayListOf()
         try {
+            listItems.ensureCapacity(devices.length())
             if (devices.length() == 0) {
                 listItems += ListViewItem(
                     title = resources.getString(R.string.main_no_devices),
@@ -349,7 +357,7 @@ class MainActivity : AppCompatActivity() {
                     if (!currentDevice.hide) {
                         listItems += ListViewItem(
                             title = currentDevice.name,
-                            summary = resources.getString(R.string.main_tap_to_connect),
+                            summary = resources.getString(R.string.main_tap_to_connect) + if (currentDevice.directView) " !!!" else "",
                             hidden = currentDevice.id,
                             icon = currentDevice.iconId
                         )
@@ -363,7 +371,6 @@ class MainActivity : AppCompatActivity() {
                 hidden = "none",
                 icon = R.drawable.ic_warning
             )
-            Log.e(Global.LOG_TAG, e.toString())
         }
         adapter.updateData(listItems, mainHelperInterface)
         deviceIcon.setImageResource(R.drawable.ic_home_white)
