@@ -27,6 +27,7 @@ import io.github.domi04151309.home.helpers.Theme
 
 class EditDeviceActivity : AppCompatActivity() {
 
+    //TODO: only enable direct view button for apis that support it
     override fun onCreate(savedInstanceState: Bundle?) {
         Theme.set(this)
         super.onCreate(savedInstanceState)
