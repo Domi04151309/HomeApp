@@ -63,6 +63,7 @@
         <item name="actionBarTheme">@style/AppThemeActionBarTheme</item>
         <item name="actionBarStyle">@style/AppThemeActionBarStyle</item>
         <item name="materialButtonStyle">@style/AppThemeButton</item>
+        <item name="checkboxStyle">@style/AppThemeCheckbox</item>
         <item name="android:switchStyle">@style/AppThemeSwitch</item>
         <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox</item>
         <item name="dialogCornerRadius">8dp</item>
@@ -87,6 +88,15 @@
         <item name="iconPadding">@dimen/drawable_padding</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textColor">?attr/colorAccent</item>
+    </style>
+
+    <style name="AppThemeCheckbox" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Button</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingLeft">4dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:paddingRight">4dp</item>
     </style>
 
     <style name="AppThemeSwitch" parent="Widget.MaterialComponents.CompoundButton.Switch">

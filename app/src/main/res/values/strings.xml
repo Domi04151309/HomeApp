@@ -113,6 +113,9 @@
     <string name="security_username">Username</string>
     <string name="security_password">Password</string>
 
+    <string name="device_config_direct_view">Load device with main list</string>
+    <string name="device_config_hide">Hide device from main list</string>
+
     <string name="str_cancel">Cancel</string>
     <string name="str_name">Name</string>
     <string name="str_rename">Rename</string>

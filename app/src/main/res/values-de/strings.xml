@@ -111,6 +111,9 @@
     <string name="security_username">Benutzername</string>
     <string name="security_password">Passwort</string>
 
+    <string name="device_config_direct_view">Gerät mit Hauptliste laden</string>
+    <string name="device_config_hide">Gerät aus Hauptliste ausblenden</string>
+
     <string name="str_cancel">Abbrechen</string>
     <string name="str_name">Name</string>
     <string name="str_rename">Umbenennen</string>
