@@ -73,7 +73,7 @@ class EspEasyAPIParser(resources: Resources) : UnifiedAPI.Parser(resources) {
                 val currentState = currentSensor.getJSONArray("TaskValues").getJSONObject(0).getInt("Value") > 0
                 var taskName =currentSensor.getString("TaskName")
                 var gpioId = ""
-                val gpioFinder = Regex("~GPIO~(?:[0-9]+)$")
+                val gpioFinder = Regex("~GPIO~([0-9]+)$")
                 val matchResult = gpioFinder.find(taskName)
                 if (matchResult != null && matchResult.groupValues.size > 1) {
                     gpioId = matchResult.groupValues[1]
