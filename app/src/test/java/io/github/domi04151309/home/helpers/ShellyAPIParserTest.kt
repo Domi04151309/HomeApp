@@ -12,15 +12,16 @@ import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
 class ShellyAPIParserTest {
-    private var resources: Resources = RuntimeEnvironment.getApplication().applicationContext.resources
+    private val resources: Resources = RuntimeEnvironment.getApplication().applicationContext.resources
+    private val parserV1 = ShellyAPIParser(resources, 1)
+    private val parserV2 = ShellyAPIParser(resources, 2)
 
     @Test
     fun parseListItemsJsonV1_shellyPlug1WithPowerMeter() {
-        val settingsJson = JSONObject(javaClass.getResource("/shelly/shellyplug1-settings.json").readText())
-        val statusJson = JSONObject(javaClass.getResource("/shelly/shellyplug1-status.json").readText())
+        val settingsJson = JSONObject(Helpers.getFileContents("/shelly/shellyplug1-settings.json"))
+        val statusJson = JSONObject(Helpers.getFileContents("/shelly/shellyplug1-status.json"))
 
-        val sa = ShellyAPIParser("http://shelly/", resources)
-        val listItems = sa.parseListItemsJsonV1(settingsJson, statusJson)
+        val listItems = parserV1.parseResponse(settingsJson, statusJson)
         Assert.assertEquals(2, listItems.size)
 
         var num = 0
@@ -40,11 +41,10 @@ class ShellyAPIParserTest {
 
     @Test
     fun parseListItemsJsonV1_shelly1WithTemperatureNoRelayName() {
-        val settingsJson = JSONObject(javaClass.getResource("/shelly/shelly1-settings.json").readText())
-        val statusJson = JSONObject(javaClass.getResource("/shelly/shelly1-status.json").readText())
+        val settingsJson = JSONObject(Helpers.getFileContents("/shelly/shelly1-settings.json"))
+        val statusJson = JSONObject(Helpers.getFileContents("/shelly/shelly1-status.json"))
 
-        val sa = ShellyAPIParser("http://shelly/", resources)
-        val listItems = sa.parseListItemsJsonV1(settingsJson, statusJson)
+        val listItems = parserV1.parseResponse(settingsJson, statusJson)
         Assert.assertEquals(3, listItems.size)
 
         var num = 0
@@ -71,11 +71,10 @@ class ShellyAPIParserTest {
 
     @Test
     fun parseListItemsJsonV2_shellyPlus1() {
-        val configJson = JSONObject(javaClass.getResource("/shelly/shelly-plus-1-Shelly.GetConfig.json").readText())
-        val statusJson = JSONObject(javaClass.getResource("/shelly/shelly-plus-1-Shelly.GetStatus.json").readText())
+        val configJson = JSONObject(Helpers.getFileContents("/shelly/shelly-plus-1-Shelly.GetConfig.json"))
+        val statusJson = JSONObject(Helpers.getFileContents("/shelly/shelly-plus-1-Shelly.GetStatus.json"))
 
-        val sa = ShellyAPIParser("http://shelly/", resources)
-        val listItems = sa.parseListItemsJsonV2(configJson, statusJson)
+        val listItems = parserV2.parseResponse(configJson, statusJson)
         Assert.assertEquals(1, listItems.size)
 
         val num = 0

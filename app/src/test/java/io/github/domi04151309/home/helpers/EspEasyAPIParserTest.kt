@@ -12,14 +12,14 @@ import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
 class EspEasyAPIParserTest {
-    private var resources: Resources = RuntimeEnvironment.getApplication().applicationContext.resources
+    private val resources: Resources = RuntimeEnvironment.getApplication().applicationContext.resources
+    private val parser = EspEasyAPIParser(resources)
 
     @Test
     fun parseInfo1() {
-        val infoJson = JSONObject(javaClass.getResource("/espeasy/espeasy-1.json").readText())
+        val infoJson = JSONObject(Helpers.getFileContents("/espeasy/espeasy-1.json"))
 
-        val eeap = EspEasyAPIParser("http://espeasy/", resources)
-        val listItems = eeap.parseInfo(infoJson)
+        val listItems = parser.parseResponse(infoJson)
         Assert.assertEquals(4, listItems.size)
 
         //sensor 1: Temperature + Humidity
@@ -56,20 +56,18 @@ class EspEasyAPIParserTest {
 
     @Test
     fun parseInfoDisabledTasks() {
-        val infoJson = JSONObject(javaClass.getResource("/espeasy/espeasy-disabledtasks.json").readText())
+        val infoJson = JSONObject(Helpers.getFileContents("/espeasy/espeasy-disabledtasks.json"))
 
-        val eeap = EspEasyAPIParser("http://espeasy/", resources)
-        val listItems = eeap.parseInfo(infoJson)
+        val listItems = parser.parseResponse(infoJson)
 
         Assert.assertEquals(0, listItems.size)
     }
 
     @Test
     fun parseInfoHideNanSensorValues() {
-        val infoJson = JSONObject(javaClass.getResource("/espeasy/espeasy-nan.json").readText())
+        val infoJson = JSONObject(Helpers.getFileContents("/espeasy/espeasy-nan.json"))
 
-        val eeap = EspEasyAPIParser("http://espeasy/", resources)
-        val listItems = eeap.parseInfo(infoJson)
+        val listItems = parser.parseResponse(infoJson)
 
         Assert.assertEquals(1, listItems.size)
 
@@ -84,10 +82,9 @@ class EspEasyAPIParserTest {
 
     @Test
     fun parseInfoPressure() {
-        val infoJson = JSONObject(javaClass.getResource("/espeasy/espeasy-pressure.json").readText())
+        val infoJson = JSONObject(Helpers.getFileContents("/espeasy/espeasy-pressure.json"))
 
-        val eeap = EspEasyAPIParser("http://espeasy/", resources)
-        val listItems = eeap.parseInfo(infoJson)
+        val listItems = parser.parseResponse(infoJson)
 
         Assert.assertEquals(3, listItems.size)
         //sensor 1: Temperature + Humidity + Pressure

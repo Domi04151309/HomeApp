@@ -19,7 +19,7 @@ class ShellyAPI(
 ) : UnifiedAPI(c, deviceId, recyclerViewInterface) {
 
     private val secrets = DeviceSecrets(c, deviceId)
-    private val parser = ShellyAPIParser(url, c.resources)
+    private val parser = ShellyAPIParser(c.resources, version)
 
     override fun loadList(callback: CallbackInterface) {
         val jsonObjectRequest = when (version) {
@@ -31,7 +31,7 @@ class ShellyAPI(
                         { statusResponse ->
                             callback.onItemsLoaded(
                                 UnifiedRequestCallback(
-                                    parser.parseListItemsJsonV1(settingsResponse, statusResponse),
+                                    parser.parseResponse(settingsResponse, statusResponse),
                                     deviceId
                                 ),
                                 recyclerViewInterface
@@ -58,7 +58,7 @@ class ShellyAPI(
                         { statusResponse ->
                             callback.onItemsLoaded(
                                 UnifiedRequestCallback(
-                                    parser.parseListItemsJsonV2(configResponse, statusResponse),
+                                    parser.parseResponse(configResponse, statusResponse),
                                     deviceId
                                 ),
                                 recyclerViewInterface

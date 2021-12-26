@@ -6,9 +6,13 @@ import io.github.domi04151309.home.data.ListViewItem
 import org.json.JSONArray
 import org.json.JSONObject
 
-class ShellyAPIParser(val url: String, val resources: Resources) {
+class ShellyAPIParser(resources: Resources, private val version: Int): UnifiedAPI.Parser(resources) {
 
-    fun parseListItemsJsonV1(settings: JSONObject, status: JSONObject): ArrayList<ListViewItem> {
+    fun parseResponse(config: JSONObject, status: JSONObject): ArrayList<ListViewItem> {
+        return if (version == 1) parseResponseV1(config, status) else parseResponseV2(config, status)
+    }
+
+    private fun parseResponseV1(settings: JSONObject, status: JSONObject): ArrayList<ListViewItem> {
         val listItems = arrayListOf<ListViewItem>()
 
         //switches
@@ -79,7 +83,7 @@ class ShellyAPIParser(val url: String, val resources: Resources) {
         return listItems
     }
 
-    fun parseListItemsJsonV2(config: JSONObject, status: JSONObject): ArrayList<ListViewItem> {
+    private fun parseResponseV2(config: JSONObject, status: JSONObject): ArrayList<ListViewItem> {
         val listItems = arrayListOf<ListViewItem>()
 
         var currentId: Int

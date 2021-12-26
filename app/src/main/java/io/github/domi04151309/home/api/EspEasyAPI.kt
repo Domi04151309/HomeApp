@@ -20,7 +20,7 @@ class EspEasyAPI(
             { infoResponse ->
                 callback.onItemsLoaded(
                     UnifiedRequestCallback(
-                        EspEasyAPIParser(url, c.resources).parseInfo(infoResponse),
+                        EspEasyAPIParser(c.resources).parseResponse(infoResponse),
                         deviceId
                     ),
                     recyclerViewInterface
