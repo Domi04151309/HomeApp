@@ -1,4 +1,4 @@
-package io.github.domi04151309.home.helpers
+package io.github.domi04151309.home
 
 object Helpers {
 

@@ -1,7 +1,6 @@
-package io.github.domi04151309.home.helpers
+package io.github.domi04151309.home
 
 import android.content.res.Resources
-import io.github.domi04151309.home.R
 import io.github.domi04151309.home.api.SimpleHomeAPIParser
 import org.junit.Assert
 import org.json.JSONObject
