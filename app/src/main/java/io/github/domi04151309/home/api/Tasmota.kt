@@ -67,8 +67,8 @@ class Tasmota(
         callback.onItemsLoaded(UnifiedRequestCallback(listItems, deviceId, ""), recyclerViewInterface)
     }
 
-    override fun execute(url: String, callback: CallbackInterface) {
-        val request = StringRequest(Request.Method.GET, this.url + url,
+    override fun execute(path: String, callback: CallbackInterface) {
+        val request = StringRequest(Request.Method.GET, url + path,
             { response ->
                 callback.onExecuted(response)
             },

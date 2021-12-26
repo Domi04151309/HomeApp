@@ -113,10 +113,10 @@ class HueAPI(
         queue.add(jsonObjectRequest)
     }
 
-    override fun execute(url: String, callback: CallbackInterface) {
+    override fun execute(path: String, callback: CallbackInterface) {
         c.startActivity(
             Intent(c, HueLampActivity::class.java)
-                .putExtra("ID", url)
+                .putExtra("ID", path)
                 .putExtra("Device", deviceId)
         )
     }

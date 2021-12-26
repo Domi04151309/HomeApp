@@ -32,7 +32,7 @@ open class UnifiedAPI(
 
     open fun loadList(callback: CallbackInterface) {}
     open fun loadStates(callback: RealTimeStatesCallback) {}
-    open fun execute(url: String, callback: CallbackInterface) {}
+    open fun execute(path: String, callback: CallbackInterface) {}
     open fun changeSwitchState(id: String, state: Boolean) {}
 
     open class Parser(protected val resources: Resources) {
