@@ -1,11 +1,14 @@
 package io.github.domi04151309.home.api
 
 import android.content.Context
+import android.content.res.Resources
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.Volley
+import io.github.domi04151309.home.data.ListViewItem
 import io.github.domi04151309.home.data.UnifiedRequestCallback
 import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
+import org.json.JSONObject
 
 open class UnifiedAPI(
     protected val c: Context,
@@ -31,4 +34,8 @@ open class UnifiedAPI(
     open fun loadStates(callback: RealTimeStatesCallback) {}
     open fun execute(url: String, callback: CallbackInterface) {}
     open fun changeSwitchState(id: String, state: Boolean) {}
+
+    open class Parser(protected val resources: Resources) {
+        open fun parseResponse(response: JSONObject): ArrayList<ListViewItem> = arrayListOf()
+    }
 }

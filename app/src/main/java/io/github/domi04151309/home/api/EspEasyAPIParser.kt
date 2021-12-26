@@ -6,13 +6,13 @@ import io.github.domi04151309.home.data.ListViewItem
 import org.json.JSONArray
 import org.json.JSONObject
 
-class EspEasyAPIParser(val url: String, val resources: Resources) {
+class EspEasyAPIParser(resources: Resources) : UnifiedAPI.Parser(resources) {
 
-    fun parseInfo(info: JSONObject): ArrayList<ListViewItem> {
+    override fun parseResponse(response: JSONObject): ArrayList<ListViewItem> {
         val listItems = arrayListOf<ListViewItem>()
 
         //sensors
-        val sensors = info.optJSONArray("Sensors") ?: JSONArray()
+        val sensors = response.optJSONArray("Sensors") ?: JSONArray()
         for (sensorId in 0 until sensors.length()) {
             val currentSensor = sensors.getJSONObject(sensorId)
             if (currentSensor.optString("TaskEnabled", "false").equals("false")) {
