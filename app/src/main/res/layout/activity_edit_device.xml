@@ -167,6 +167,31 @@
             </LinearLayout>
 
             <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?attr/dividerColor" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="?dialogPreferredPadding"
+                android:paddingVertical="@dimen/list_padding_vertical">
+
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:text="@string/device_config_direct_view" />
+
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:text="@string/device_config_hide" />
+            </LinearLayout>
+
+            <View
                 android:id="@+id/editDivider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -177,12 +202,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="?dialogPreferredPadding">
+                android:paddingHorizontal="?dialogPreferredPadding"
+                android:paddingVertical="@dimen/list_padding_vertical">
 
                 <Button
                     android:id="@+id/configBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/list_button_padding_horizontal"
                     android:text="@string/pref_device_config"
                     android:textAlignment="textStart"
                     android:textColor="?android:attr/textColorPrimary"
@@ -192,6 +219,7 @@
                     android:id="@+id/shortcutBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/list_button_padding_horizontal"
                     android:text="@string/pref_add_shortcut"
                     android:textAlignment="textStart"
                     android:textColor="?android:attr/textColorPrimary"
@@ -201,6 +229,7 @@
                     android:id="@+id/deleteBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/list_button_padding_horizontal"
                     android:text="@string/str_delete"
                     android:textAlignment="textStart"
                     android:textColor="?android:attr/textColorPrimary"

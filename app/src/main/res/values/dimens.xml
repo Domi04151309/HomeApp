@@ -11,4 +11,7 @@
 
     <dimen name="drawable_padding">8dp</dimen>
     <dimen name="header_size">96dp</dimen>
+
+    <dimen name="list_padding_vertical">8dp</dimen>
+    <dimen name="list_button_padding_horizontal">4dp</dimen>
 </resources>
