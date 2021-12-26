@@ -84,7 +84,9 @@ class DevicesActivity : AppCompatActivity(), RecyclerViewHelperInterfaceAdvanced
                 currentDevice = devices.getDeviceByIndex(i)
                 listItems += SimpleListItem(
                     title = currentDevice.name,
-                    summary = currentDevice.address,
+                    summary =
+                        if (currentDevice.hide) resources.getString(R.string.device_config_hidden) + " · " + currentDevice.address
+                        else currentDevice.address,
                     hidden = "edit#${currentDevice.id}",
                     icon = currentDevice.iconId
                 )

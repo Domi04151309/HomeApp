@@ -179,15 +179,16 @@
                 android:paddingVertical="@dimen/list_padding_vertical">
 
                 <CheckBox
+                    android:id="@+id/configDirectView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:enabled="false"
                     android:text="@string/device_config_direct_view" />
 
                 <CheckBox
+                    android:id="@+id/configHide"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:enabled="false"
                     android:text="@string/device_config_hide" />
             </LinearLayout>
 

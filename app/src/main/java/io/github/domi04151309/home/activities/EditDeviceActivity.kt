@@ -52,6 +52,8 @@ class EditDeviceActivity : AppCompatActivity() {
         val specialSection = findViewById<LinearLayout>(R.id.specialSection)
         val usernameBox = findViewById<TextInputLayout>(R.id.usernameBox)
         val passwordBox = findViewById<TextInputLayout>(R.id.passwordBox)
+        val configHide = findViewById<CheckBox>(R.id.configHide)
+        val configDirectView = findViewById<CheckBox>(R.id.configDirectView)
         val configBtn = findViewById<Button>(R.id.configBtn)
 
         findViewById<TextView>(R.id.idTxt).text = (resources.getString(R.string.pref_add_id, deviceId))
@@ -102,6 +104,8 @@ class EditDeviceActivity : AppCompatActivity() {
             modeSpinner.setText(deviceObj.mode)
             usernameBox.editText?.setText(deviceSecrets.username)
             passwordBox.editText?.setText(deviceSecrets.password)
+            configHide.isChecked = deviceObj.hide
+            configDirectView.isChecked = deviceObj.directView
 
             configBtn.setOnClickListener {
                 when (modeSpinner.text.toString()) {
@@ -218,6 +222,8 @@ class EditDeviceActivity : AppCompatActivity() {
             newItem.address = tempAddress
             newItem.mode = modeSpinner.text.toString()
             newItem.iconName = iconSpinner.text.toString()
+            newItem.hide = configHide.isChecked
+            newItem.directView = configDirectView.isChecked
             devices.addDevice(newItem)
             deviceSecrets.username = usernameBox.editText?.text.toString()
             deviceSecrets.password = passwordBox.editText?.text.toString()

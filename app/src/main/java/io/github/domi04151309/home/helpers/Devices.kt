@@ -48,6 +48,8 @@ class Devices(private val context: Context) {
         device.address = jsonObj.getString("address")
         device.mode = jsonObj.getString("mode")
         device.iconName = jsonObj.getString("icon")
+        device.hide = jsonObj.optBoolean("hide", false)
+        device.directView = jsonObj.optBoolean("direct_view", false)
         return device
     }
 
@@ -95,10 +97,12 @@ class Devices(private val context: Context) {
     fun addDevice(device: DeviceItem) {
         if (!idExists(device.id)) deviceOrder.put(device.id)
         val deviceObject = JSONObject()
-                .put("name", device.name)
-                .put("address", device.address)
-                .put("mode", device.mode)
-                .put("icon", device.iconName)
+            .put("name", device.name)
+            .put("address", device.address)
+            .put("mode", device.mode)
+            .put("icon", device.iconName)
+            .put("hide", device.hide)
+            .put("direct_view", device.directView)
         devicesObject.put(device.id, deviceObject)
         saveChanges()
     }
