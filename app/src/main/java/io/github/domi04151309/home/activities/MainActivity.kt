@@ -346,12 +346,14 @@ class MainActivity : AppCompatActivity() {
                 var currentDevice: DeviceItem
                 for (i in 0 until devices.length()) {
                     currentDevice = devices.getDeviceByIndex(i)
-                    listItems += ListViewItem(
-                        title = currentDevice.name,
-                        summary = resources.getString(R.string.main_tap_to_connect),
-                        hidden = currentDevice.id,
-                        icon = currentDevice.iconId
-                    )
+                    if (!currentDevice.hide) {
+                        listItems += ListViewItem(
+                            title = currentDevice.name,
+                            summary = resources.getString(R.string.main_tap_to_connect),
+                            hidden = currentDevice.id,
+                            icon = currentDevice.iconId
+                        )
+                    }
                 }
             }
         } catch (e: Exception) {

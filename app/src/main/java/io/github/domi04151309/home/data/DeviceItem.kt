@@ -12,6 +12,9 @@ data class DeviceItem(val id: String) {
     var iconName: String = "Lamp"
     val iconId: Int get() = Global.getIcon(iconName)
 
+    var hide: Boolean = false
+    var directView: Boolean = false
+
     companion object {
         fun formatAddress(address: String): String {
             var url = address

@@ -113,6 +113,7 @@
 
     <string name="device_config_direct_view">Gerät mit Hauptliste laden</string>
     <string name="device_config_hide">Gerät aus Hauptliste ausblenden</string>
+    <string name="device_config_hidden">ausgeblendet</string>
 
     <string name="str_cancel">Abbrechen</string>
     <string name="str_name">Name</string>
