@@ -1,0 +1,12 @@
+{
+  "commands": {
+    "temperature": {
+      "title": "Temperature",
+      "summary": "It is currently 18.00°C in your room"
+    },
+    "humidity": {
+      "title": "Humidity",
+      "summary": "The humidity is 86.30%"
+    }
+  }
+}
