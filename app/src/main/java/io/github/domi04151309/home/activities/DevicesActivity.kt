@@ -77,8 +77,9 @@ class DevicesActivity : AppCompatActivity(), RecyclerViewHelperInterfaceAdvanced
     }
 
     private fun loadDevices(){
-        val listItems: ArrayList<SimpleListItem> = ArrayList(devices.length())
+        val listItems: ArrayList<SimpleListItem> = arrayListOf()
         try {
+            listItems.ensureCapacity(devices.length())
             var currentDevice: DeviceItem
             for (i in 0 until devices.length()) {
                 currentDevice = devices.getDeviceByIndex(i)
@@ -104,7 +105,6 @@ class DevicesActivity : AppCompatActivity(), RecyclerViewHelperInterfaceAdvanced
                     hidden = "none",
                     icon = R.drawable.ic_warning
             )
-            Log.e(Global.LOG_TAG, e.toString())
         }
 
         recyclerView.adapter = DeviceListAdapter(listItems, this)
