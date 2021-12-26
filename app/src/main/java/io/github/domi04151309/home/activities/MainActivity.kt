@@ -21,6 +21,7 @@ import io.github.domi04151309.home.helpers.P
 import io.github.domi04151309.home.helpers.Theme
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.github.domi04151309.home.adapters.MainListAdapter
@@ -339,6 +340,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    //TODO: live data on level one
+    //TODO: update onclick interface
     private fun loadDevices() {
         updateHandler.stop()
         val listItems: ArrayList<ListViewItem> = arrayListOf()
@@ -351,13 +354,40 @@ class MainActivity : AppCompatActivity() {
                     icon = R.drawable.ic_info
                 )
             } else {
-                var currentDevice: DeviceItem
                 for (i in 0 until devices.length()) {
-                    currentDevice = devices.getDeviceByIndex(i)
+                    val currentDevice = devices.getDeviceByIndex(i)
                     if (!currentDevice.hide) {
+                        if (currentDevice.directView && UNIFIED_MODES.contains(currentDevice.mode)) {
+                            Log.wtf(Global.LOG_TAG, "can perform request")
+                            val api = when (currentDevice.mode) {
+                                "ESP Easy" -> EspEasyAPI(this, currentDevice.id, null)
+                                "Hue API" -> HueAPI(this, currentDevice.id, null)
+                                "SimpleHome API" -> SimpleHomeAPI(this, currentDevice.id, null)
+                                "Tasmota" -> Tasmota(this, currentDevice.id, null)
+                                "Shelly Gen 1" -> ShellyAPI(this, currentDevice.id, null, 1)
+                                "Shelly Gen 2" -> ShellyAPI(this, currentDevice.id, null, 2)
+                                else -> null
+                            }
+                            api?.loadList(object : UnifiedAPI.CallbackInterface {
+                                override fun onItemsLoaded(
+                                    holder: UnifiedRequestCallback,
+                                    recyclerViewInterface: HomeRecyclerViewHelperInterface?
+                                ) {
+                                    if (holder.response != null) adapter.insertItems(holder.response, i)
+                                }
+
+                                override fun onExecuted(
+                                    result: String,
+                                    deviceId: String,
+                                    shouldRefresh: Boolean
+                                ) {
+                                    //TODO: Not yet implemented
+                                }
+                            })
+                        }
                         listItems += ListViewItem(
                             title = currentDevice.name,
-                            summary = resources.getString(R.string.main_tap_to_connect) + if (currentDevice.directView) " !!!" else "",
+                            summary = resources.getString(R.string.main_tap_to_connect),
                             hidden = currentDevice.id,
                             icon = currentDevice.iconId
                         )

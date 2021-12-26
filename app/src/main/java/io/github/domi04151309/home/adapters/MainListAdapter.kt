@@ -18,6 +18,7 @@ class MainListAdapter : RecyclerView.Adapter<MainListAdapter.ViewHolder>() {
     private var items: ArrayList<ListViewItem> = arrayListOf()
     private var helperInterface: HomeRecyclerViewHelperInterface? = null
     private var animate: Boolean = true
+    private var offsets: IntArray = intArrayOf()
 
     init {
         setHasStableIds(true)
@@ -73,6 +74,7 @@ class MainListAdapter : RecyclerView.Adapter<MainListAdapter.ViewHolder>() {
 
     @SuppressLint("NotifyDataSetChanged")
     fun updateData(newItems: ArrayList<ListViewItem>, newHelperInterface: HomeRecyclerViewHelperInterface? = null, preferredAnimationState: Boolean? = null) {
+        offsets = IntArray(newItems.size) { 1 }
         if (newHelperInterface != null) {
             animate = preferredAnimationState ?: true
             items = newItems
@@ -94,6 +96,15 @@ class MainListAdapter : RecyclerView.Adapter<MainListAdapter.ViewHolder>() {
             items[position].state = state
             (recyclerView.findViewHolderForAdapterPosition(position) as ViewHolder).stateSwitch.isChecked = state
         }
+    }
+
+    fun insertItems(newItems: ArrayList<ListViewItem>, categoryPos: Int) {
+        offsets[categoryPos] = newItems.size
+        val correctOffset = offsets.copyOfRange(0, categoryPos).sum()
+        items.removeAt(correctOffset)
+        notifyItemRemoved(correctOffset)
+        items.addAll(correctOffset, newItems)
+        notifyItemRangeInserted(correctOffset, newItems.size)
     }
 
     private fun playAnimation(v: View) {
