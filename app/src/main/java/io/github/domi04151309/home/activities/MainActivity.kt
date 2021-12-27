@@ -14,14 +14,12 @@ import androidx.preference.PreferenceManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import io.github.domi04151309.home.R
-import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.data.ListViewItem
 import io.github.domi04151309.home.helpers.*
 import io.github.domi04151309.home.helpers.P
 import io.github.domi04151309.home.helpers.Theme
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.github.domi04151309.home.adapters.MainListAdapter
@@ -51,7 +49,6 @@ class MainActivity : AppCompatActivity() {
     private var canReceiveRequest = false
     private var currentView: View? = null
     internal lateinit var devices: Devices
-    internal lateinit var recyclerView: RecyclerView
     internal lateinit var adapter: MainListAdapter
     private lateinit var deviceIcon: ImageView
     private lateinit var deviceName: TextView
@@ -80,18 +77,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        override fun onExecuted(result: String, deviceId: String, shouldRefresh: Boolean) {
-            if (result.length < 64) {
-                Toast.makeText(this@MainActivity, result, Toast.LENGTH_LONG).show()
-            } else {
-                Snackbar.make(recyclerView, R.string.main_execution_completed, Snackbar.LENGTH_LONG).setAction(R.string.str_show) {
-                    AlertDialog.Builder(this@MainActivity)
-                        .setTitle(R.string.main_execution_completed)
-                        .setMessage(result)
-                        .setPositiveButton(android.R.string.ok) { _, _ -> }
-                        .show()
-                }.show()
-            }
+        override fun onExecuted(result: String, shouldRefresh: Boolean) {
+            showExecutionResult(result)
             if (shouldRefresh) unified?.loadList(this)
         }
     }
@@ -113,7 +100,7 @@ class MainActivity : AppCompatActivity() {
     private val unifiedRealTimeStatesCallback = object : UnifiedAPI.RealTimeStatesCallback {
         override fun onStatesLoaded(states: ArrayList<Boolean?>) {
             for (i in 0 until states.size) {
-                if (states[i] != null) adapter.updateSwitch(recyclerView, i, states[i] ?: return)
+                if (states[i] != null) adapter.updateSwitch(i, states[i] ?: return)
             }
         }
     }
@@ -136,24 +123,63 @@ class MainActivity : AppCompatActivity() {
     /*
      * Things related to the main menu
      */
+    private val mainRequestCallback = object : UnifiedAPI.CallbackInterface {
+        override fun onItemsLoaded(holder: UnifiedRequestCallback, recyclerViewInterface: HomeRecyclerViewHelperInterface?) {
+            if (holder.response != null) {
+                val device = devices.getDeviceById(holder.deviceId)
+                deviceIcon.setImageResource(device.iconId)
+                deviceName.text = device.name
+                adapter.updateData(holder.response, recyclerViewInterface)
+                fab.hide()
+                level = Flavors.TWO
+            } else {
+                handleErrorOnLevelOne(holder.errorMessage)
+            }
+        }
+
+        override fun onExecuted(result: String, shouldRefresh: Boolean) {
+            showExecutionResult(result)
+            if (shouldRefresh) unified?.loadList(this)
+        }
+    }
     private val mainHelperInterface = object : HomeRecyclerViewHelperInterface {
-        override fun onStateChanged(view: View, data: ListViewItem, state: Boolean) {}
+        override fun onStateChanged(view: View, data: ListViewItem, state: Boolean) {
+            if (data.hidden.isEmpty()) return
+
+            val deviceId = data.hidden.substring(0, data.hidden.indexOf('@'))
+            val api = getCorrectAPI(devices.getDeviceById(deviceId).mode, deviceId, null)
+            if (api?.dynamicSummaries == true) view.findViewById<TextView>(R.id.summary).text =
+                resources.getString(
+                    if (state) R.string.switch_summary_on
+                    else R.string.switch_summary_off
+                )
+            api?.changeSwitchState(data.hidden, state)
+        }
         override fun onItemClicked(view: View, data: ListViewItem) {
             currentView = view
             if (data.title == resources.getString(R.string.main_no_devices)) {
                 reset = true
                 startActivity(Intent(this@MainActivity, DevicesActivity::class.java))
-                return
             } else if (data.title == resources.getString(R.string.err_wrong_format)) {
                 reset = true
                 startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
-                return
-            }
-            if (checkNetwork()) {
-                view.findViewById<TextView>(R.id.summary).text = resources.getString(R.string.main_connecting)
-                handleLevelOne(data.hidden)
+            } else if (data.hidden.contains('@')) {
+                val deviceId = data.hidden.substring(0, data.hidden.indexOf('@'))
+                val api = getCorrectAPI(devices.getDeviceById(deviceId).mode, deviceId, null)
+                api?.execute(data.hidden.substring(deviceId.length + 1), object : UnifiedAPI.CallbackInterface {
+                    override fun onItemsLoaded(holder: UnifiedRequestCallback, recyclerViewInterface: HomeRecyclerViewHelperInterface?) {}
+                    override fun onExecuted(result: String, shouldRefresh: Boolean) {
+                        showExecutionResult(result)
+                        //TODO: Refresh parameter does not work yet
+                    }
+                })
             } else {
-                view.findViewById<TextView>(R.id.summary).text = resources.getString(R.string.main_network_not_secure)
+                if (checkNetwork()) {
+                    view.findViewById<TextView>(R.id.summary).text = resources.getString(R.string.main_connecting)
+                    handleLevelOne(data.hidden)
+                } else {
+                    view.findViewById<TextView>(R.id.summary).text = resources.getString(R.string.main_network_not_secure)
+                }
             }
         }
     }
@@ -166,14 +192,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
+
         devices = Devices(this)
-        recyclerView = findViewById(R.id.recyclerView)
         deviceIcon = findViewById(R.id.deviceIcon)
         deviceName = findViewById(R.id.deviceName)
         fab = findViewById(R.id.fab)
         themeId = getThemeId()
 
-        adapter = MainListAdapter()
+        adapter = MainListAdapter(recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
@@ -311,6 +338,7 @@ class MainActivity : AppCompatActivity() {
                 reset = true
             }
             UNIFIED_MODES.contains(deviceObj.mode) -> {
+                //TODO: replace this with get correct api
                 unified = when (deviceObj.mode) {
                     "ESP Easy" -> EspEasyAPI(this, deviceId, unifiedHelperInterface)
                     "Hue API" -> HueAPI(this, deviceId, unifiedHelperInterface)
@@ -341,7 +369,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     //TODO: live data on level one
-    //TODO: update onclick interface
     private fun loadDevices() {
         updateHandler.stop()
         val listItems: ArrayList<ListViewItem> = arrayListOf()
@@ -357,32 +384,22 @@ class MainActivity : AppCompatActivity() {
                 for (i in 0 until devices.length()) {
                     val currentDevice = devices.getDeviceByIndex(i)
                     if (!currentDevice.hide) {
-                        if (currentDevice.directView && UNIFIED_MODES.contains(currentDevice.mode)) {
-                            Log.wtf(Global.LOG_TAG, "can perform request")
-                            val api = when (currentDevice.mode) {
-                                "ESP Easy" -> EspEasyAPI(this, currentDevice.id, null)
-                                "Hue API" -> HueAPI(this, currentDevice.id, null)
-                                "SimpleHome API" -> SimpleHomeAPI(this, currentDevice.id, null)
-                                "Tasmota" -> Tasmota(this, currentDevice.id, null)
-                                "Shelly Gen 1" -> ShellyAPI(this, currentDevice.id, null, 1)
-                                "Shelly Gen 2" -> ShellyAPI(this, currentDevice.id, null, 2)
-                                else -> null
-                            }
+                        if (currentDevice.directView && UNIFIED_MODES.contains(currentDevice.mode) && checkNetwork()) {
+                            val api = getCorrectAPI(currentDevice.mode, currentDevice.id, null)
                             api?.loadList(object : UnifiedAPI.CallbackInterface {
                                 override fun onItemsLoaded(
                                     holder: UnifiedRequestCallback,
                                     recyclerViewInterface: HomeRecyclerViewHelperInterface?
                                 ) {
-                                    if (holder.response != null) adapter.insertItems(holder.response, i)
+                                    if (holder.response != null) adapter.insertDirectView(
+                                        currentDevice.id, holder.response, i
+                                    )
                                 }
 
                                 override fun onExecuted(
                                     result: String,
-                                    deviceId: String,
                                     shouldRefresh: Boolean
-                                ) {
-                                    //TODO: Not yet implemented
-                                }
+                                ) {}
                             })
                         }
                         listItems += ListViewItem(
@@ -408,5 +425,37 @@ class MainActivity : AppCompatActivity() {
         fab.show()
         level = Flavors.ONE
         unified = null
+    }
+
+    internal fun getCorrectAPI(
+        identifier: String,
+        deviceId: String,
+        recyclerViewInterface: HomeRecyclerViewHelperInterface?
+    ): UnifiedAPI? {
+        return when (identifier) {
+            "ESP Easy" -> EspEasyAPI(this, deviceId, recyclerViewInterface)
+            "Hue API" -> HueAPI(this, deviceId, recyclerViewInterface)
+            "SimpleHome API" -> SimpleHomeAPI(this, deviceId, recyclerViewInterface)
+            "Tasmota" -> Tasmota(this, deviceId, recyclerViewInterface)
+            "Shelly Gen 1" -> ShellyAPI(this, deviceId, recyclerViewInterface, 1)
+            "Shelly Gen 2" -> ShellyAPI(this, deviceId, recyclerViewInterface, 2)
+            else -> null
+        }
+    }
+
+    internal fun showExecutionResult(result: String) {
+        if (result.length < 64) {
+            Toast.makeText(this, result, Toast.LENGTH_LONG).show()
+        } else {
+            Snackbar
+                .make(findViewById(android.R.id.content), R.string.main_execution_completed, Snackbar.LENGTH_LONG)
+                .setAction(R.string.str_show) {
+                    AlertDialog.Builder(this)
+                        .setTitle(R.string.main_execution_completed)
+                        .setMessage(result)
+                        .setPositiveButton(android.R.string.ok) { _, _ -> }
+                        .show()
+                }.show()
+        }
     }
 }
