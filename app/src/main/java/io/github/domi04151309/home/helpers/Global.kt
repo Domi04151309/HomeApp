@@ -1,7 +1,11 @@
 package io.github.domi04151309.home.helpers
 
 import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.PreferenceManager
 import com.android.volley.ClientError
 import com.android.volley.NoConnectionError
 import com.android.volley.ParseError
@@ -30,6 +34,21 @@ internal object Global {
                 R.drawable.ic_warning
             }
         }
+    }
+
+    fun checkNetwork(context: Context) : Boolean {
+        if (
+            !PreferenceManager.getDefaultSharedPreferences(context)
+                .getBoolean("local_only", true)
+        ) return true
+
+        val connectivityManager = context.getSystemService(AppCompatActivity.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+        return if (capabilities != null) {
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+                    || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
+                    || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN)
+        } else true
     }
 
     fun volleyError(c: Context, error: java.lang.Exception): String {
