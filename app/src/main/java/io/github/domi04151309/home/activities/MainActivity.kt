@@ -139,21 +139,21 @@ class MainActivity : AppCompatActivity() {
         override fun onItemClicked(view: View, data: ListViewItem) {
             currentView = view
             if (data.title == resources.getString(R.string.main_no_devices)) {
-                shouldReset = true
-                startActivity(Intent(this@MainActivity, DevicesActivity::class.java))
+                startActivityAndReset(Intent(this@MainActivity, DevicesActivity::class.java))
             } else if (data.title == resources.getString(R.string.err_wrong_format)) {
-                shouldReset = true
-                startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
+                startActivityAndReset(Intent(this@MainActivity, SettingsActivity::class.java))
             } else if (data.hidden.contains('@')) {
                 val deviceId = data.hidden.substring(0, data.hidden.indexOf('@'))
-                val api = getCorrectAPI(devices.getDeviceById(deviceId).mode, deviceId)
-                api?.execute(data.hidden.substring(deviceId.length + 1), object : UnifiedAPI.CallbackInterface {
-                    override fun onItemsLoaded(holder: UnifiedRequestCallback, recyclerViewInterface: HomeRecyclerViewHelperInterface?) {}
-                    override fun onExecuted(result: String, shouldRefresh: Boolean) {
-                        showExecutionResult(result)
-                        //TODO: Refresh parameter does not work yet
+                getCorrectAPI(devices.getDeviceById(deviceId).mode, deviceId)?.execute(
+                    data.hidden.substring(deviceId.length + 1),
+                    object : UnifiedAPI.CallbackInterface {
+                        override fun onItemsLoaded(holder: UnifiedRequestCallback, recyclerViewInterface: HomeRecyclerViewHelperInterface?) {}
+                        override fun onExecuted(result: String, shouldRefresh: Boolean) {
+                            showExecutionResult(result)
+                            //TODO: Refresh parameter does not work yet
+                        }
                     }
-                })
+                )
             } else {
                 if (checkNetwork(this@MainActivity)) {
                     view.findViewById<TextView>(R.id.summary).text = resources.getString(R.string.main_connecting)
@@ -174,7 +174,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-
         devices = Devices(this)
         deviceIcon = findViewById(R.id.deviceIcon)
         deviceName = findViewById(R.id.deviceName)
@@ -186,13 +185,11 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
 
         fab.setOnClickListener {
-            shouldReset = true
-            startActivity(Intent(this, DevicesActivity::class.java))
+            startActivityAndReset(Intent(this, DevicesActivity::class.java))
         }
 
         findViewById<ImageButton>(R.id.menu_icon).setOnClickListener {
-            shouldReset = true
-            startActivity(Intent(this, SettingsActivity::class.java))
+            startActivityAndReset(Intent(this, SettingsActivity::class.java))
         }
 
         //Handle shortcut
@@ -300,8 +297,7 @@ class MainActivity : AppCompatActivity() {
                         intent.putExtra("URI", deviceObj.address)
                     }
                 }
-                shouldReset = true
-                startActivity(intent)
+                startActivityAndReset(intent)
             }
             UNIFIED_MODES.contains(deviceObj.mode) -> {
                 unified = getCorrectAPI(deviceObj.mode, deviceId, unifiedHelperInterface, tasmotaHelperInterface)
@@ -316,7 +312,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadDeviceList() {
+    internal fun loadDeviceList() {
         val registeredForUpdates: HashMap<Int, UnifiedAPI?> = hashMapOf()
         val listItems: ArrayList<ListViewItem> = arrayListOf()
         try {
@@ -331,7 +327,11 @@ class MainActivity : AppCompatActivity() {
                 for (i in 0 until devices.length()) {
                     val currentDevice = devices.getDeviceByIndex(i)
                     if (!currentDevice.hide) {
-                        if (currentDevice.directView && UNIFIED_MODES.contains(currentDevice.mode) && checkNetwork(this)) {
+                        if (
+                            currentDevice.directView
+                            && UNIFIED_MODES.contains(currentDevice.mode)
+                            && checkNetwork(this)
+                        ) {
                             val api = getCorrectAPI(currentDevice.mode, currentDevice.id)
                             api?.loadList(object : UnifiedAPI.CallbackInterface {
                                 override fun onItemsLoaded(
@@ -399,6 +399,11 @@ class MainActivity : AppCompatActivity() {
             "Shelly Gen 2" -> ShellyAPI(this, deviceId, recyclerViewInterface, 2)
             else -> null
         }
+    }
+
+    internal fun startActivityAndReset(intent: Intent) {
+        shouldReset = true
+        startActivity(intent)
     }
 
     internal fun showExecutionResult(result: String) {
