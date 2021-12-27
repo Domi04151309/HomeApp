@@ -18,13 +18,12 @@ import io.github.domi04151309.home.data.ListViewItem
 import io.github.domi04151309.home.helpers.*
 import io.github.domi04151309.home.helpers.P
 import io.github.domi04151309.home.helpers.Theme
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.github.domi04151309.home.adapters.MainListAdapter
 import io.github.domi04151309.home.api.*
 import io.github.domi04151309.home.data.UnifiedRequestCallback
+import io.github.domi04151309.home.helpers.Global.checkNetwork
 import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
 
 class MainActivity : AppCompatActivity() {
@@ -38,14 +37,10 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    enum class Flavors {
-        ONE, TWO
-    }
-
     private var tasmotaPosition: Int = 0
-    private var level = Flavors.ONE
-    private var reset : Boolean = false
+    private var shouldReset : Boolean = false
     private val updateHandler = UpdateHandler()
+    private var isDeviceSelected = false
     private var canReceiveRequest = false
     private var currentView: View? = null
     internal lateinit var devices: Devices
@@ -71,9 +66,14 @@ class MainActivity : AppCompatActivity() {
                 deviceName.text = device.name
                 adapter.updateData(holder.response, recyclerViewInterface)
                 fab.hide()
-                level = Flavors.TWO
+                isDeviceSelected = true
             } else {
-                handleErrorOnLevelOne(holder.errorMessage)
+                if (currentView == null) {
+                    loadDeviceList()
+                    Toast.makeText(this@MainActivity, holder.errorMessage, Toast.LENGTH_LONG).show()
+                } else {
+                    currentView?.findViewById<TextView>(R.id.summary)?.text = holder.errorMessage
+                }
             }
         }
 
@@ -139,10 +139,10 @@ class MainActivity : AppCompatActivity() {
         override fun onItemClicked(view: View, data: ListViewItem) {
             currentView = view
             if (data.title == resources.getString(R.string.main_no_devices)) {
-                reset = true
+                shouldReset = true
                 startActivity(Intent(this@MainActivity, DevicesActivity::class.java))
             } else if (data.title == resources.getString(R.string.err_wrong_format)) {
-                reset = true
+                shouldReset = true
                 startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
             } else if (data.hidden.contains('@')) {
                 val deviceId = data.hidden.substring(0, data.hidden.indexOf('@'))
@@ -155,9 +155,9 @@ class MainActivity : AppCompatActivity() {
                     }
                 })
             } else {
-                if (checkNetwork()) {
+                if (checkNetwork(this@MainActivity)) {
                     view.findViewById<TextView>(R.id.summary).text = resources.getString(R.string.main_connecting)
-                    handleLevelOne(data.hidden)
+                    selectDevice(data.hidden)
                 } else {
                     view.findViewById<TextView>(R.id.summary).text = resources.getString(R.string.main_network_not_secure)
                 }
@@ -186,12 +186,12 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
 
         fab.setOnClickListener {
-            reset = true
+            shouldReset = true
             startActivity(Intent(this, DevicesActivity::class.java))
         }
 
         findViewById<ImageButton>(R.id.menu_icon).setOnClickListener {
-            reset = true
+            shouldReset = true
             startActivity(Intent(this, SettingsActivity::class.java))
         }
 
@@ -200,30 +200,30 @@ class MainActivity : AppCompatActivity() {
             if(intent.hasExtra("device")) {
                 val deviceId = intent.getStringExtra("device") ?: ""
                 if (devices.idExists(deviceId)) {
-                    if (checkNetwork()) {
+                    if (checkNetwork(this)) {
                         val device = devices.getDeviceById(deviceId)
                         deviceIcon.setImageResource(device.iconId)
                         deviceName.text = device.name
-                        handleLevelOne(deviceId)
+                        selectDevice(deviceId)
                     } else {
-                        loadDevices()
+                        loadDeviceList()
                         Toast.makeText(this, R.string.main_network_not_secure, Toast.LENGTH_LONG).show()
                     }
                 } else {
-                    loadDevices()
+                    loadDeviceList()
                     Toast.makeText(this, R.string.main_device_nonexistent, Toast.LENGTH_LONG).show()
                 }
             } else {
-                loadDevices()
+                loadDeviceList()
             }
         } catch (e: Exception) {
-            loadDevices()
+            loadDeviceList()
             Toast.makeText(this, R.string.err_wrong_format_summary, Toast.LENGTH_LONG).show()
         }
     }
 
     override fun onBackPressed() {
-        if (level != Flavors.ONE) loadDevices()
+        if (isDeviceSelected) loadDeviceList()
         else super.onBackPressed()
     }
 
@@ -264,9 +264,9 @@ class MainActivity : AppCompatActivity() {
             themeId = getThemeId()
             recreate()
         }
-        if (reset) {
-            loadDevices()
-            reset = false
+        if (shouldReset) {
+            loadDeviceList()
+            shouldReset = false
         }
         canReceiveRequest = true
     }
@@ -281,22 +281,7 @@ class MainActivity : AppCompatActivity() {
         updateHandler.stop()
     }
 
-    internal fun checkNetwork() : Boolean {
-        if (
-            !PreferenceManager.getDefaultSharedPreferences(this)
-                .getBoolean("local_only", true)
-        ) return true
-
-        val connectivityManager = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
-        val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
-        return if (capabilities != null) {
-            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
-                    || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
-                    || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN)
-        } else true
-    }
-
-    internal fun handleLevelOne(deviceId: String) {
+    internal fun selectDevice(deviceId: String) {
         val deviceObj = devices.getDeviceById(deviceId)
         when {
             WEB_MODES.contains(deviceObj.mode) -> {
@@ -315,8 +300,8 @@ class MainActivity : AppCompatActivity() {
                         intent.putExtra("URI", deviceObj.address)
                     }
                 }
+                shouldReset = true
                 startActivity(intent)
-                reset = true
             }
             UNIFIED_MODES.contains(deviceObj.mode) -> {
                 unified = getCorrectAPI(deviceObj.mode, deviceId, unifiedHelperInterface, tasmotaHelperInterface)
@@ -331,16 +316,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    internal fun handleErrorOnLevelOne(err: String) {
-        if (currentView == null) {
-            loadDevices()
-            Toast.makeText(this, err, Toast.LENGTH_LONG).show()
-        } else if (level == Flavors.ONE) {
-            currentView?.findViewById<TextView>(R.id.summary)?.text = err
-        }
-    }
-
-    private fun loadDevices() {
+    private fun loadDeviceList() {
         val registeredForUpdates: HashMap<Int, UnifiedAPI?> = hashMapOf()
         val listItems: ArrayList<ListViewItem> = arrayListOf()
         try {
@@ -355,7 +331,7 @@ class MainActivity : AppCompatActivity() {
                 for (i in 0 until devices.length()) {
                     val currentDevice = devices.getDeviceByIndex(i)
                     if (!currentDevice.hide) {
-                        if (currentDevice.directView && UNIFIED_MODES.contains(currentDevice.mode) && checkNetwork()) {
+                        if (currentDevice.directView && UNIFIED_MODES.contains(currentDevice.mode) && checkNetwork(this)) {
                             val api = getCorrectAPI(currentDevice.mode, currentDevice.id)
                             api?.loadList(object : UnifiedAPI.CallbackInterface {
                                 override fun onItemsLoaded(
@@ -369,7 +345,6 @@ class MainActivity : AppCompatActivity() {
                                         registeredForUpdates[i] = api
                                     }
                                 }
-
                                 override fun onExecuted(
                                     result: String,
                                     shouldRefresh: Boolean
@@ -397,7 +372,7 @@ class MainActivity : AppCompatActivity() {
         deviceIcon.setImageResource(R.drawable.ic_home_white)
         deviceName.text = resources.getString(R.string.main_device_name)
         fab.show()
-        level = Flavors.ONE
+        isDeviceSelected = false
         updateHandler.setUpdateFunction {
             for (i in registeredForUpdates.keys) {
                 registeredForUpdates[i]?.loadStates(
