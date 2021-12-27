@@ -35,7 +35,7 @@ class ShellyAPIParserTest {
         Assert.assertEquals(resources.getString(R.string.shelly_powermeter_summary), listItems[num].summary)
         Assert.assertEquals(null, listItems[num].state)
         Assert.assertEquals("", listItems[num].hidden)
-        Assert.assertEquals(R.drawable.ic_lightning, listItems[num].icon)
+        Assert.assertEquals(R.drawable.ic_device_electricity, listItems[num].icon)
     }
 
     @Test
@@ -65,7 +65,7 @@ class ShellyAPIParserTest {
         Assert.assertEquals(resources.getString(R.string.shelly_humidity_sensor_summary), listItems[num].summary)
         Assert.assertEquals(null, listItems[num].state)
         Assert.assertEquals("", listItems[num].hidden)
-        Assert.assertEquals(R.drawable.ic_humidity, listItems[num].icon)
+        Assert.assertEquals(R.drawable.ic_device_hygrometer, listItems[num].icon)
     }
 
     @Test

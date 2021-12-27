@@ -34,7 +34,7 @@ class EspEasyAPIParserTest {
         Assert.assertEquals("DHT: Feuchte", listItems[num].summary)
         Assert.assertEquals(null, listItems[num].state)
         Assert.assertEquals("", listItems[num].hidden)
-        Assert.assertEquals(R.drawable.ic_humidity, listItems[num].icon)
+        Assert.assertEquals(R.drawable.ic_device_hygrometer, listItems[num].icon)
 
         //sensor 2: Temperature only
         num++
@@ -76,7 +76,7 @@ class EspEasyAPIParserTest {
         Assert.assertEquals("DHT: Feuchte", listItems[num].summary)
         Assert.assertEquals(null, listItems[num].state)
         Assert.assertEquals("", listItems[num].hidden)
-        Assert.assertEquals(R.drawable.ic_humidity, listItems[num].icon)
+        Assert.assertEquals(R.drawable.ic_device_hygrometer, listItems[num].icon)
     }
 
     @Test
@@ -99,13 +99,13 @@ class EspEasyAPIParserTest {
         Assert.assertEquals("BMP_HWR: Feuchte_BMP", listItems[num].summary)
         Assert.assertEquals(null, listItems[num].state)
         Assert.assertEquals("", listItems[num].hidden)
-        Assert.assertEquals(R.drawable.ic_humidity, listItems[num].icon)
+        Assert.assertEquals(R.drawable.ic_device_hygrometer, listItems[num].icon)
 
         num++
         Assert.assertEquals("1004 hPa", listItems[num].title)
         Assert.assertEquals("BMP_HWR: Druck_BMP", listItems[num].summary)
         Assert.assertEquals(null, listItems[num].state)
         Assert.assertEquals("", listItems[num].hidden)
-        Assert.assertEquals(R.drawable.ic_gauge, listItems[num].icon)
+        Assert.assertEquals(R.drawable.ic_device_gauge, listItems[num].icon)
     }
 }

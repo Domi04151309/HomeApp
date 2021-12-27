@@ -50,7 +50,7 @@ class ShellyAPIParser(resources: Resources, private val version: Int): UnifiedAP
             listItems += ListViewItem(
                 title = "${currentMeter.getDouble("power")} W",
                 summary = resources.getString(R.string.shelly_powermeter_summary),
-                icon = R.drawable.ic_lightning
+                icon = R.drawable.ic_device_electricity
             )
         }
 
@@ -75,7 +75,7 @@ class ShellyAPIParser(resources: Resources, private val version: Int): UnifiedAP
                 listItems += ListViewItem(
                     title = "${currentSensor.getDouble("hum")}%",
                     summary = resources.getString(R.string.shelly_humidity_sensor_summary),
-                    icon = R.drawable.ic_humidity
+                    icon = R.drawable.ic_device_hygrometer
                 )
             }
         }

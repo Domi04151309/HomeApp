@@ -35,12 +35,12 @@ class EspEasyAPIParser(resources: Resources) : UnifiedAPI.Parser(resources) {
         when (type) {
             "Environment - BMx280" -> {
                 taskIcons += R.drawable.ic_device_thermometer
-                taskIcons += R.drawable.ic_humidity
-                taskIcons += R.drawable.ic_gauge
+                taskIcons += R.drawable.ic_device_hygrometer
+                taskIcons += R.drawable.ic_device_gauge
             }
             "Environment - DHT11/12/22  SONOFF2301/7021" -> {
                 taskIcons += R.drawable.ic_device_thermometer
-                taskIcons += R.drawable.ic_humidity
+                taskIcons += R.drawable.ic_device_hygrometer
             }
             "Environment - DS18b20" -> {
                 taskIcons += R.drawable.ic_device_thermometer
@@ -54,8 +54,8 @@ class EspEasyAPIParser(resources: Resources) : UnifiedAPI.Parser(resources) {
             if (!currentValue.equals("nan")) {
                 val suffix = when (taskIcons[taskId]) {
                     R.drawable.ic_device_thermometer -> " °C"
-                    R.drawable.ic_humidity -> " %"
-                    R.drawable.ic_gauge -> " hPa"
+                    R.drawable.ic_device_hygrometer -> " %"
+                    R.drawable.ic_device_gauge -> " hPa"
                     else -> ""
                 }
                 listItems += ListViewItem(
