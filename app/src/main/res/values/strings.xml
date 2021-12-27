@@ -151,14 +151,15 @@
         <item>Search for compatible devices (experimental)</item>
     </string-array>
     <string-array name="pref_icons" translatable="false">
+        <item>Display</item>
+        <item>Electricity</item>
+        <item>Gauge</item>
+        <item>Hygrometer</item>
         <item>Lamp</item>
-        <item>Laptop</item>
-        <item>Phone</item>
         <item>Raspberry Pi</item>
         <item>Router</item>
         <item>Speaker</item>
         <item>Stack</item>
-        <item>Tablet</item>
         <item>Thermometer</item>
         <item>TV</item>
     </string-array>

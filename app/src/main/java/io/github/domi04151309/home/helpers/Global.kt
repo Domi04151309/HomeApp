@@ -20,16 +20,16 @@ internal object Global {
 
     fun getIcon(icon: String): Int {
         return when (icon) {
+            "Display" -> R.drawable.ic_device_display
+            "Electricity" -> R.drawable.ic_lightning
+            "Gauge" -> R.drawable.ic_gauge
+            "Hygrometer" -> R.drawable.ic_humidity
             "Lamp" -> R.drawable.ic_device_lamp
-            "Laptop" -> R.drawable.ic_device_laptop
-            "Phone" -> R.drawable.ic_device_phone
             "Raspberry Pi" -> R.drawable.ic_device_raspberry_pi
             "Router" -> R.drawable.ic_device_router
             "Speaker" -> R.drawable.ic_device_speaker
             "Stack" -> R.drawable.ic_device_stack
-            "Tablet" -> R.drawable.ic_device_tablet
             "Thermometer" -> R.drawable.ic_device_thermometer
-            "TV" -> R.drawable.ic_device_tv
             else -> {
                 R.drawable.ic_warning
             }
