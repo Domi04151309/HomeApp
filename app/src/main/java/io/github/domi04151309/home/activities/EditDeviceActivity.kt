@@ -27,7 +27,15 @@ import io.github.domi04151309.home.helpers.Theme
 
 class EditDeviceActivity : AppCompatActivity() {
 
-    //TODO: only enable direct view button for apis that support it
+    companion object {
+        private val SUPPORTS_DIRECT_VIEW = arrayOf(
+            "ESP Easy", "Hue API", "Shelly Gen 1", "Shelly Gen 2", "SimpleHome API"
+        )
+        private val HAS_CONFIG = arrayOf(
+            "Hue API", "ESP Easy", "Node-RED", "Shelly Gen 1", "Shelly Gen 2"
+        )
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         Theme.set(this)
         super.onCreate(savedInstanceState)
@@ -77,11 +85,16 @@ class EditDeviceActivity : AppCompatActivity() {
                 specialSection.visibility = specialVisibility
                 usernameBox.visibility = usernameVisibility
 
+                if (SUPPORTS_DIRECT_VIEW.contains(string)) {
+                    configDirectView.isEnabled = true
+                } else {
+                    configDirectView.isEnabled = false
+                    configDirectView.isChecked = false
+                }
+
                 if (editing) {
                     configBtn.visibility =
-                        if (
-                            arrayOf("Hue API", "ESP Easy", "Node-RED", "Shelly Gen 1", "Shelly Gen 2").contains(string)
-                        ) View.VISIBLE
+                        if (HAS_CONFIG.contains(string)) View.VISIBLE
                         else View.GONE
                 }
             }
