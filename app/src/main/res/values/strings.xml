@@ -161,7 +161,6 @@
         <item>Speaker</item>
         <item>Stack</item>
         <item>Thermometer</item>
-        <item>TV</item>
     </string-array>
     <string-array name="pref_add_mode_array" translatable="false">
         <item>SimpleHome API</item>
