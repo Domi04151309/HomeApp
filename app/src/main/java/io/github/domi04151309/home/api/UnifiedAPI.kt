@@ -18,7 +18,7 @@ open class UnifiedAPI(
 
     interface CallbackInterface {
         fun onItemsLoaded(holder: UnifiedRequestCallback, recyclerViewInterface: HomeRecyclerViewHelperInterface?)
-        fun onExecuted(result: String, deviceId: String = "", shouldRefresh: Boolean = false)
+        fun onExecuted(result: String, shouldRefresh: Boolean = false)
     }
 
     interface RealTimeStatesCallback {

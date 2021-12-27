@@ -13,7 +13,7 @@ import android.view.animation.TranslateAnimation
 import android.widget.*
 import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
 
-class MainListAdapter : RecyclerView.Adapter<MainListAdapter.ViewHolder>() {
+class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapter<MainListAdapter.ViewHolder>() {
 
     private var items: ArrayList<ListViewItem> = arrayListOf()
     private var helperInterface: HomeRecyclerViewHelperInterface? = null
@@ -44,12 +44,14 @@ class MainListAdapter : RecyclerView.Adapter<MainListAdapter.ViewHolder>() {
         holder.title.text = items[position].title
         holder.summary.text = items[position].summary
         holder.hidden.text = items[position].hidden
+
+        val id = getItemId(position)
         if (items[position].state != null) {
             holder.stateSwitch.isChecked = items[position].state ?: false
             holder.stateSwitch.setOnCheckedChangeListener { compoundButton, b ->
                 if (compoundButton.isPressed) helperInterface?.onStateChanged(
                     holder.itemView,
-                    items[position],
+                    items[getPosFromId(id)],
                     b
                 )
             }
@@ -57,8 +59,9 @@ class MainListAdapter : RecyclerView.Adapter<MainListAdapter.ViewHolder>() {
             holder.stateSwitch.visibility = View.GONE
         }
         holder.itemView.setOnClickListener {
-            helperInterface?.onItemClicked(holder.itemView, items[position])
+            helperInterface?.onItemClicked(holder.itemView, items[getPosFromId(id)])
         }
+
         holder.itemView.setOnCreateContextMenuListener(holder.itemView.context as Activity)
         if (animate) playAnimation(holder.itemView)
     }
@@ -70,6 +73,11 @@ class MainListAdapter : RecyclerView.Adapter<MainListAdapter.ViewHolder>() {
 
     override fun getItemCount(): Int {
         return items.size
+    }
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        attachedTo = recyclerView
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -91,20 +99,26 @@ class MainListAdapter : RecyclerView.Adapter<MainListAdapter.ViewHolder>() {
         }
     }
 
-    fun updateSwitch(recyclerView: RecyclerView, position: Int, state: Boolean) {
+    fun updateSwitch(position: Int, state: Boolean) {
         if (items[position].state != state) {
             items[position].state = state
-            (recyclerView.findViewHolderForAdapterPosition(position) as ViewHolder).stateSwitch.isChecked = state
+            (attachedTo.findViewHolderForAdapterPosition(position) as ViewHolder).stateSwitch.isChecked = state
         }
     }
 
-    fun insertItems(newItems: ArrayList<ListViewItem>, categoryPos: Int) {
+    fun insertDirectView(id: String, newItems: ArrayList<ListViewItem>, categoryPos: Int) {
+        newItems.forEach { it.hidden = id + '@' + it.hidden }
+
         offsets[categoryPos] = newItems.size
         val correctOffset = offsets.copyOfRange(0, categoryPos).sum()
         items.removeAt(correctOffset)
         notifyItemRemoved(correctOffset)
         items.addAll(correctOffset, newItems)
         notifyItemRangeInserted(correctOffset, newItems.size)
+    }
+
+    private fun getPosFromId(id: Long): Int {
+        return items.indexOfFirst { it.hidden.hashCode().toLong() == id }
     }
 
     private fun playAnimation(v: View) {
