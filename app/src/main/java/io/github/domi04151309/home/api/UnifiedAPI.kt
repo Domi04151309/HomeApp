@@ -22,7 +22,7 @@ open class UnifiedAPI(
     }
 
     interface RealTimeStatesCallback {
-        fun onStatesLoaded(states: ArrayList<Boolean?>)
+        fun onStatesLoaded(states: ArrayList<Boolean?>, offset: Int)
     }
 
     var dynamicSummaries: Boolean = true
@@ -31,7 +31,7 @@ open class UnifiedAPI(
     protected val queue: RequestQueue = Volley.newRequestQueue(c)
 
     open fun loadList(callback: CallbackInterface) {}
-    open fun loadStates(callback: RealTimeStatesCallback) {}
+    open fun loadStates(callback: RealTimeStatesCallback, offset: Int) {}
     open fun execute(path: String, callback: CallbackInterface) {}
     open fun changeSwitchState(id: String, state: Boolean) {}
 

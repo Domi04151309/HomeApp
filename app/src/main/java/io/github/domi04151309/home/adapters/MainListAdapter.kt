@@ -106,11 +106,15 @@ class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapt
         }
     }
 
+    fun getOffset(pos: Int): Int {
+        return offsets.copyOfRange(0, pos).sum()
+    }
+
     fun insertDirectView(id: String, newItems: ArrayList<ListViewItem>, categoryPos: Int) {
         newItems.forEach { it.hidden = id + '@' + it.hidden }
 
         offsets[categoryPos] = newItems.size
-        val correctOffset = offsets.copyOfRange(0, categoryPos).sum()
+        val correctOffset = getOffset(categoryPos)
         items.removeAt(correctOffset)
         notifyItemRemoved(correctOffset)
         items.addAll(correctOffset, newItems)
