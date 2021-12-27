@@ -75,7 +75,7 @@ class HueAPI(
         queue.add(jsonObjectRequest)
     }
 
-    override fun loadStates(callback: RealTimeStatesCallback) {
+    override fun loadStates(callback: RealTimeStatesCallback, offset: Int) {
         if (!readyForRequest) return
         val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url + "api/${getUsername()}/groups", null,
             { response ->
@@ -105,7 +105,7 @@ class HueAPI(
                                 .getBoolean("any_on")
                         )
                     }
-                    callback.onStatesLoaded(states)
+                    callback.onStatesLoaded(states, offset)
                 } catch (e: Exception) {}
             },
             { }

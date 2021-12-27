@@ -98,9 +98,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
     private val unifiedRealTimeStatesCallback = object : UnifiedAPI.RealTimeStatesCallback {
-        override fun onStatesLoaded(states: ArrayList<Boolean?>) {
+        override fun onStatesLoaded(states: ArrayList<Boolean?>, offset: Int) {
             for (i in 0 until states.size) {
-                if (states[i] != null) adapter.updateSwitch(i, states[i] ?: return)
+                if (states[i] != null) adapter.updateSwitch(i + offset, states[i] ?: return)
             }
         }
     }
@@ -128,7 +128,7 @@ class MainActivity : AppCompatActivity() {
             if (data.hidden.isEmpty()) return
 
             val deviceId = data.hidden.substring(0, data.hidden.indexOf('@'))
-            val api = getCorrectAPI(devices.getDeviceById(deviceId).mode, deviceId, null)
+            val api = getCorrectAPI(devices.getDeviceById(deviceId).mode, deviceId)
             if (api?.dynamicSummaries == true) view.findViewById<TextView>(R.id.summary).text =
                 resources.getString(
                     if (state) R.string.switch_summary_on
@@ -146,7 +146,7 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
             } else if (data.hidden.contains('@')) {
                 val deviceId = data.hidden.substring(0, data.hidden.indexOf('@'))
-                val api = getCorrectAPI(devices.getDeviceById(deviceId).mode, deviceId, null)
+                val api = getCorrectAPI(devices.getDeviceById(deviceId).mode, deviceId)
                 api?.execute(data.hidden.substring(deviceId.length + 1), object : UnifiedAPI.CallbackInterface {
                     override fun onItemsLoaded(holder: UnifiedRequestCallback, recyclerViewInterface: HomeRecyclerViewHelperInterface?) {}
                     override fun onExecuted(result: String, shouldRefresh: Boolean) {
@@ -322,7 +322,7 @@ class MainActivity : AppCompatActivity() {
                 unified = getCorrectAPI(deviceObj.mode, deviceId, unifiedHelperInterface, tasmotaHelperInterface)
                 unified?.loadList(unifiedRequestCallback)
                 updateHandler.setUpdateFunction {
-                    if (canReceiveRequest) unified?.loadStates(unifiedRealTimeStatesCallback)
+                    if (canReceiveRequest) unified?.loadStates(unifiedRealTimeStatesCallback, 0)
                 }
             }
             else -> {
@@ -340,9 +340,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    //TODO: live data on level one
     private fun loadDevices() {
-        updateHandler.stop()
+        val registeredForUpdates: HashMap<Int, UnifiedAPI?> = hashMapOf()
         val listItems: ArrayList<ListViewItem> = arrayListOf()
         try {
             listItems.ensureCapacity(devices.length())
@@ -357,15 +356,18 @@ class MainActivity : AppCompatActivity() {
                     val currentDevice = devices.getDeviceByIndex(i)
                     if (!currentDevice.hide) {
                         if (currentDevice.directView && UNIFIED_MODES.contains(currentDevice.mode) && checkNetwork()) {
-                            val api = getCorrectAPI(currentDevice.mode, currentDevice.id, null)
+                            val api = getCorrectAPI(currentDevice.mode, currentDevice.id)
                             api?.loadList(object : UnifiedAPI.CallbackInterface {
                                 override fun onItemsLoaded(
                                     holder: UnifiedRequestCallback,
                                     recyclerViewInterface: HomeRecyclerViewHelperInterface?
                                 ) {
-                                    if (holder.response != null) adapter.insertDirectView(
-                                        currentDevice.id, holder.response, i
-                                    )
+                                    if (holder.response != null) {
+                                        adapter.insertDirectView(
+                                            currentDevice.id, holder.response, i
+                                        )
+                                        registeredForUpdates[i] = api
+                                    }
                                 }
 
                                 override fun onExecuted(
@@ -396,20 +398,28 @@ class MainActivity : AppCompatActivity() {
         deviceName.text = resources.getString(R.string.main_device_name)
         fab.show()
         level = Flavors.ONE
+        updateHandler.setUpdateFunction {
+            for (i in registeredForUpdates.keys) {
+                registeredForUpdates[i]?.loadStates(
+                    unifiedRealTimeStatesCallback,
+                    adapter.getOffset(i)
+                )
+            }
+        }
         unified = null
     }
 
     internal fun getCorrectAPI(
         identifier: String,
         deviceId: String,
-        recyclerViewInterface: HomeRecyclerViewHelperInterface?,
+        recyclerViewInterface: HomeRecyclerViewHelperInterface? = null,
         tasmotaHelperInterface: HomeRecyclerViewHelperInterface? = null
     ): UnifiedAPI? {
         return when (identifier) {
             "ESP Easy" -> EspEasyAPI(this, deviceId, recyclerViewInterface)
             "Hue API" -> HueAPI(this, deviceId, recyclerViewInterface)
             "SimpleHome API" -> SimpleHomeAPI(this, deviceId, recyclerViewInterface)
-            "Tasmota" -> Tasmota(this, deviceId, if (tasmotaHelperInterface != null) tasmotaHelperInterface else recyclerViewInterface)
+            "Tasmota" -> Tasmota(this, deviceId, tasmotaHelperInterface ?: recyclerViewInterface)
             "Shelly Gen 1" -> ShellyAPI(this, deviceId, recyclerViewInterface, 1)
             "Shelly Gen 2" -> ShellyAPI(this, deviceId, recyclerViewInterface, 2)
             else -> null
