@@ -123,25 +123,6 @@ class MainActivity : AppCompatActivity() {
     /*
      * Things related to the main menu
      */
-    private val mainRequestCallback = object : UnifiedAPI.CallbackInterface {
-        override fun onItemsLoaded(holder: UnifiedRequestCallback, recyclerViewInterface: HomeRecyclerViewHelperInterface?) {
-            if (holder.response != null) {
-                val device = devices.getDeviceById(holder.deviceId)
-                deviceIcon.setImageResource(device.iconId)
-                deviceName.text = device.name
-                adapter.updateData(holder.response, recyclerViewInterface)
-                fab.hide()
-                level = Flavors.TWO
-            } else {
-                handleErrorOnLevelOne(holder.errorMessage)
-            }
-        }
-
-        override fun onExecuted(result: String, shouldRefresh: Boolean) {
-            showExecutionResult(result)
-            if (shouldRefresh) unified?.loadList(this)
-        }
-    }
     private val mainHelperInterface = object : HomeRecyclerViewHelperInterface {
         override fun onStateChanged(view: View, data: ListViewItem, state: Boolean) {
             if (data.hidden.isEmpty()) return
@@ -338,16 +319,7 @@ class MainActivity : AppCompatActivity() {
                 reset = true
             }
             UNIFIED_MODES.contains(deviceObj.mode) -> {
-                //TODO: replace this with get correct api
-                unified = when (deviceObj.mode) {
-                    "ESP Easy" -> EspEasyAPI(this, deviceId, unifiedHelperInterface)
-                    "Hue API" -> HueAPI(this, deviceId, unifiedHelperInterface)
-                    "SimpleHome API" -> SimpleHomeAPI(this, deviceId, unifiedHelperInterface)
-                    "Tasmota" -> Tasmota(this, deviceId, tasmotaHelperInterface)
-                    "Shelly Gen 1" -> ShellyAPI(this, deviceId, unifiedHelperInterface, 1)
-                    "Shelly Gen 2" -> ShellyAPI(this, deviceId, unifiedHelperInterface, 2)
-                    else -> null
-                }
+                unified = getCorrectAPI(deviceObj.mode, deviceId, unifiedHelperInterface, tasmotaHelperInterface)
                 unified?.loadList(unifiedRequestCallback)
                 updateHandler.setUpdateFunction {
                     if (canReceiveRequest) unified?.loadStates(unifiedRealTimeStatesCallback)
@@ -430,13 +402,14 @@ class MainActivity : AppCompatActivity() {
     internal fun getCorrectAPI(
         identifier: String,
         deviceId: String,
-        recyclerViewInterface: HomeRecyclerViewHelperInterface?
+        recyclerViewInterface: HomeRecyclerViewHelperInterface?,
+        tasmotaHelperInterface: HomeRecyclerViewHelperInterface? = null
     ): UnifiedAPI? {
         return when (identifier) {
             "ESP Easy" -> EspEasyAPI(this, deviceId, recyclerViewInterface)
             "Hue API" -> HueAPI(this, deviceId, recyclerViewInterface)
             "SimpleHome API" -> SimpleHomeAPI(this, deviceId, recyclerViewInterface)
-            "Tasmota" -> Tasmota(this, deviceId, recyclerViewInterface)
+            "Tasmota" -> Tasmota(this, deviceId, if (tasmotaHelperInterface != null) tasmotaHelperInterface else recyclerViewInterface)
             "Shelly Gen 1" -> ShellyAPI(this, deviceId, recyclerViewInterface, 1)
             "Shelly Gen 2" -> ShellyAPI(this, deviceId, recyclerViewInterface, 2)
             else -> null
