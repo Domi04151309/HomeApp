@@ -3,7 +3,6 @@ package io.github.domi04151309.home.activities
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -15,7 +14,6 @@ import io.github.domi04151309.home.adapters.DeviceListAdapter
 import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.data.SimpleListItem
-import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.Theme
 import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterfaceAdvanced
 
