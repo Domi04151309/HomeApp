@@ -3,6 +3,7 @@ package io.github.domi04151309.home.api
 import android.content.res.Resources
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.data.ListViewItem
+import io.github.domi04151309.home.helpers.Global
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -29,7 +30,7 @@ class ShellyAPIParser(resources: Resources, private val version: Int): UnifiedAP
             if (currentName.trim().isEmpty()) {
                 currentName = resources.getString(R.string.shelly_switch_title, relayId + 1)
             }
-            currentIcon = this.iconFromApplianceType(currentRelay.optString("appliance_type"))
+            currentIcon = Global.getIcon(currentRelay.optString("appliance_type"), R.drawable.ic_do)
             listItems += ListViewItem(
                 title = currentName,
                 summary = resources.getString(
@@ -101,7 +102,7 @@ class ShellyAPIParser(resources: Resources, private val version: Int): UnifiedAP
             currentName = if (properties.isNull("name")) ""
                     else properties.getString("name")
             currentState = status.getJSONObject(switchKey).getBoolean("output")
-            currentIcon = this.iconFromApplianceType(config.optJSONObject("sys")?.optJSONObject("ui_data")?.optJSONArray("consumption_types")?.getString(currentId))
+            currentIcon = Global.getIcon(config.optJSONObject("sys")?.optJSONObject("ui_data")?.optJSONArray("consumption_types")?.getString(currentId) ?: "", R.drawable.ic_do)
 
             listItems += ListViewItem(
                     title = currentName,
@@ -116,17 +117,5 @@ class ShellyAPIParser(resources: Resources, private val version: Int): UnifiedAP
         }
 
         return listItems
-    }
-
-    private fun iconFromApplianceType(appliance_type: String?): Int {
-        return when (appliance_type?.lowercase()) {
-            "christmas tree" -> R.drawable.ic_device_christmas_tree
-            "entertainment" -> R.drawable.ic_device_speaker
-            "heating" -> R.drawable.ic_device_thermometer
-            "lights" -> R.drawable.ic_device_lamp
-            "schwibbogen" -> R.drawable.ic_device_schwibbogen
-            "socket" -> R.drawable.ic_device_socket
-            else -> R.drawable.ic_do
-        }
     }
 }
