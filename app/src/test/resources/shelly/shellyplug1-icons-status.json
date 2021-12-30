@@ -1,0 +1,100 @@
+{
+  "actions_stats": {
+    "skipped": 0
+  },
+  "cfg_changed_cnt": 2,
+  "cloud": {
+    "connected": false,
+    "enabled": false
+  },
+  "fs_free": 164656,
+  "fs_size": 233681,
+  "has_update": false,
+  "mac": "E09806972342",
+  "meters": [
+  ],
+  "mqtt": {
+    "connected": false
+  },
+  "overtemperature": false,
+  "ram_free": 40024,
+  "ram_total": 51272,
+  "relays": [
+    {
+      "has_timer": false,
+      "ison": true,
+      "overpower": false,
+      "source": "http",
+      "timer_duration": 0,
+      "timer_remaining": 0,
+      "timer_started": 0
+    },
+    {
+      "has_timer": false,
+      "ison": true,
+      "overpower": false,
+      "source": "http",
+      "timer_duration": 0,
+      "timer_remaining": 0,
+      "timer_started": 0
+    },
+    {
+      "has_timer": false,
+      "ison": true,
+      "overpower": false,
+      "source": "http",
+      "timer_duration": 0,
+      "timer_remaining": 0,
+      "timer_started": 0
+    },
+    {
+      "has_timer": false,
+      "ison": true,
+      "overpower": false,
+      "source": "http",
+      "timer_duration": 0,
+      "timer_remaining": 0,
+      "timer_started": 0
+    },
+    {
+      "has_timer": false,
+      "ison": true,
+      "overpower": false,
+      "source": "http",
+      "timer_duration": 0,
+      "timer_remaining": 0,
+      "timer_started": 0
+    },
+    {
+      "has_timer": false,
+      "ison": true,
+      "overpower": false,
+      "source": "http",
+      "timer_duration": 0,
+      "timer_remaining": 0,
+      "timer_started": 0
+    }
+  ],
+  "serial": 117,
+  "temperature": 31.49,
+  "time": "20:39",
+  "tmp": {
+    "is_valid": true,
+    "tC": 31.49,
+    "tF": 88.68
+  },
+  "unixtime": 1638905945,
+  "update": {
+    "has_update": false,
+    "new_version": "20211109-130223/v1.11.7-g682a0db",
+    "old_version": "20211109-130223/v1.11.7-g682a0db",
+    "status": "idle"
+  },
+  "uptime": 454998,
+  "wifi_sta": {
+    "connected": true,
+    "ip": "192.168.3.77",
+    "rssi": -68,
+    "ssid": "home.cweiske.de"
+  }
+}

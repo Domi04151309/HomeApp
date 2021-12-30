@@ -1,0 +1,176 @@
+{
+  "device": {
+    "type": "SHPLG-S",
+    "mac": "E09806972342",
+    "hostname": "shellyplug-s-972342",
+    "num_outputs": 1,
+    "num_meters": 1
+  },
+  "wifi_ap": {
+    "enabled": false,
+    "ssid": "shellyplug-s-972342",
+    "key": ""
+  },
+  "wifi_sta": {
+    "enabled": true,
+    "ssid": "home.cweiske.de",
+    "ipv4_method": "static",
+    "ip": "192.168.3.77",
+    "gw": "192.168.3.3",
+    "mask": "255.255.255.0",
+    "dns": "192.168.3.3"
+  },
+  "wifi_sta1": {
+    "enabled": false,
+    "ssid": null,
+    "ipv4_method": "dhcp",
+    "ip": null,
+    "gw": null,
+    "mask": null,
+    "dns": null
+  },
+  "ap_roaming": {
+    "enabled": false,
+    "threshold": -70
+  },
+  "mqtt": {
+    "enable": false,
+    "server": "192.168.33.3:1883",
+    "user": "",
+    "id": "shellyplug-s-972342",
+    "reconnect_timeout_max": 60,
+    "reconnect_timeout_min": 2,
+    "clean_session": true,
+    "keep_alive": 60,
+    "max_qos": 0,
+    "retain": false,
+    "update_period": 30
+  },
+  "coiot": {
+    "enabled": true,
+    "update_period": 15,
+    "peer": ""
+  },
+  "sntp": {
+    "server": "time.google.com",
+    "enabled": true
+  },
+  "login": {
+    "enabled": false,
+    "unprotected": false,
+    "username": "myuser"
+  },
+  "pin_code": "",
+  "name": "Shellyplug1",
+  "fw": "20211109-130223/v1.11.7-g682a0db",
+  "discoverable": true,
+  "build_info": {
+    "build_id": "20211109-130223/v1.11.7-g682a0db",
+    "build_timestamp": "2021-11-09T13:02:23Z",
+    "build_version": "1.0"
+  },
+  "cloud": {
+    "enabled": false,
+    "connected": false
+  },
+  "timezone": "Europe/Berlin",
+  "lat": 49.865711,
+  "lng": 8.62604,
+  "tzautodetect": true,
+  "tz_utc_offset": 3600,
+  "tz_dst": false,
+  "tz_dst_auto": true,
+  "time": "20:46",
+  "unixtime": 1638733563,
+  "led_status_disable": true,
+  "debug_enable": false,
+  "allow_cross_origin": false,
+  "actions": {
+    "active": false,
+    "names": [
+      "btn_on_url",
+      "out_on_url",
+      "out_off_url"
+    ]
+  },
+  "hwinfo": {
+    "hw_revision": "prod-190516",
+    "batch_id": 1
+  },
+  "max_power": 2500,
+  "led_power_disable": true,
+  "relays": [
+    {
+      "name": "Deckenlampe",
+      "appliance_type": "lights",
+      "ison": true,
+      "has_timer": false,
+      "default_state": "last",
+      "auto_on": 0,
+      "auto_off": 0,
+      "schedule": false,
+      "schedule_rules": [],
+      "max_power": 2500
+    },
+    {
+      "name": "Steckdose",
+      "appliance_type": "socket",
+      "ison": true,
+      "has_timer": false,
+      "default_state": "last",
+      "auto_on": 0,
+      "auto_off": 0,
+      "schedule": false,
+      "schedule_rules": [],
+      "max_power": 2500
+    },
+    {
+      "name": "Radiator",
+      "appliance_type": "heating",
+      "ison": true,
+      "has_timer": false,
+      "default_state": "last",
+      "auto_on": 0,
+      "auto_off": 0,
+      "schedule": false,
+      "schedule_rules": [],
+      "max_power": 2500
+    },
+    {
+      "name": "Stereoanlage",
+      "appliance_type": "entertainment",
+      "ison": true,
+      "has_timer": false,
+      "default_state": "last",
+      "auto_on": 0,
+      "auto_off": 0,
+      "schedule": false,
+      "schedule_rules": [],
+      "max_power": 2500
+    },
+    {
+      "name": "Tannenbaum (en)",
+      "appliance_type": "christmas tree",
+      "ison": true,
+      "has_timer": false,
+      "default_state": "last",
+      "auto_on": 0,
+      "auto_off": 0,
+      "schedule": false,
+      "schedule_rules": [],
+      "max_power": 2500
+    },
+    {
+      "name": "Schwibbogen",
+      "appliance_type": "schwibbogen",
+      "ison": true,
+      "has_timer": false,
+      "default_state": "last",
+      "auto_on": 0,
+      "auto_off": 0,
+      "schedule": false,
+      "schedule_rules": [],
+      "max_power": 2500
+    }
+  ]
+}
