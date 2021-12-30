@@ -39,6 +39,39 @@ class ShellyAPIParserTest {
     }
 
     @Test
+    fun parseListItemsJsonV1_shellyPlug1ApplianceTypesForIcons() {
+        val settingsJson = JSONObject(Helpers.getFileContents("/shelly/shellyplug1-icons-settings.json"))
+        val statusJson = JSONObject(Helpers.getFileContents("/shelly/shellyplug1-icons-status.json"))
+
+        val listItems = parserV1.parseResponse(settingsJson, statusJson)
+        Assert.assertEquals(6, listItems.size)
+
+        var num = 0
+        Assert.assertEquals("Deckenlampe", listItems[num].title)
+        Assert.assertEquals(R.drawable.ic_device_lamp, listItems[num].icon)
+
+        num = 1
+        Assert.assertEquals("Steckdose", listItems[num].title)
+        Assert.assertEquals(R.drawable.ic_device_socket, listItems[num].icon)
+
+        num = 2
+        Assert.assertEquals("Radiator", listItems[num].title)
+        Assert.assertEquals(R.drawable.ic_device_thermometer, listItems[num].icon)
+
+        num = 3
+        Assert.assertEquals("Stereoanlage", listItems[num].title)
+        Assert.assertEquals(R.drawable.ic_device_speaker, listItems[num].icon)
+
+        num = 4
+        Assert.assertEquals("Tannenbaum (en)", listItems[num].title)
+        Assert.assertEquals(R.drawable.ic_device_christmas_tree, listItems[num].icon)
+
+        num = 5
+        Assert.assertEquals("Schwibbogen", listItems[num].title)
+        Assert.assertEquals(R.drawable.ic_device_schwibbogen, listItems[num].icon)
+    }
+
+    @Test
     fun parseListItemsJsonV1_shelly1WithTemperatureNoRelayName() {
         val settingsJson = JSONObject(Helpers.getFileContents("/shelly/shelly1-settings.json"))
         val statusJson = JSONObject(Helpers.getFileContents("/shelly/shelly1-status.json"))
@@ -81,6 +114,6 @@ class ShellyAPIParserTest {
         Assert.assertEquals(resources.getString(R.string.switch_summary_on), listItems[num].summary)
         Assert.assertEquals(true, listItems[num].state)
         Assert.assertEquals("0", listItems[num].hidden)
-        Assert.assertEquals(R.drawable.ic_do, listItems[num].icon)
+        Assert.assertEquals(R.drawable.ic_device_lamp, listItems[num].icon)
     }
 }
