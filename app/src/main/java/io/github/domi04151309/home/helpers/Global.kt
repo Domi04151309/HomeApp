@@ -18,20 +18,26 @@ internal object Global {
 
     const val DEFAULT_JSON: String = "{\"devices\":{}}"
 
-    fun getIcon(icon: String): Int {
-        return when (icon) {
-            "Display" -> R.drawable.ic_device_display
-            "Electricity" -> R.drawable.ic_device_electricity
-            "Gauge" -> R.drawable.ic_device_gauge
-            "Hygrometer" -> R.drawable.ic_device_hygrometer
-            "Lamp" -> R.drawable.ic_device_lamp
-            "Raspberry Pi" -> R.drawable.ic_device_raspberry_pi
-            "Router" -> R.drawable.ic_device_router
-            "Speaker" -> R.drawable.ic_device_speaker
-            "Stack" -> R.drawable.ic_device_stack
-            "Thermometer" -> R.drawable.ic_device_thermometer
+    fun getIcon(icon: String, default: Int = R.drawable.ic_warning): Int {
+        return when (icon.lowercase()) {
+            "christmas tree" -> R.drawable.ic_device_christmas_tree
+            "display" -> R.drawable.ic_device_display
+            "electricity" -> R.drawable.ic_device_electricity
+            "entertainment" -> R.drawable.ic_device_speaker
+            "gauge" -> R.drawable.ic_device_gauge
+            "heating" -> R.drawable.ic_device_thermometer
+            "hygrometer" -> R.drawable.ic_device_hygrometer
+            "lamp" -> R.drawable.ic_device_lamp
+            "lights" -> R.drawable.ic_device_lamp
+            "raspberry pi" -> R.drawable.ic_device_raspberry_pi
+            "router" -> R.drawable.ic_device_router
+            "speaker" -> R.drawable.ic_device_speaker
+            "schwibbogen" -> R.drawable.ic_device_schwibbogen
+            "stack" -> R.drawable.ic_device_stack
+            "socket" -> R.drawable.ic_device_socket
+            "thermometer" -> R.drawable.ic_device_thermometer
             else -> {
-                R.drawable.ic_warning
+                default
             }
         }
     }

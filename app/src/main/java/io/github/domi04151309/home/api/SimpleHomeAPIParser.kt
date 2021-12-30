@@ -21,7 +21,7 @@ class SimpleHomeAPIParser(resources: Resources) : UnifiedAPI.Parser(resources) {
                     title = currentObject.getString("title"),
                     summary = currentObject.getString("summary"),
                     hidden = i,
-                    icon = R.drawable.ic_do
+                    icon = Global.getIcon(currentObject.optString("icon"), R.drawable.ic_do)
                 )
             } catch (e: JSONException) {
                 Log.e(Global.LOG_TAG, e.toString())

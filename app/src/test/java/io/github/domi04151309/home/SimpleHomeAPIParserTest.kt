@@ -33,6 +33,6 @@ class SimpleHomeAPIParserTest {
         Assert.assertEquals("The humidity is 86.30%", listItems[num].summary)
         Assert.assertEquals(null, listItems[num].state)
         Assert.assertEquals("humidity", listItems[num].hidden)
-        Assert.assertEquals(R.drawable.ic_do, listItems[num].icon)
+        Assert.assertEquals(R.drawable.ic_device_hygrometer, listItems[num].icon)
     }
 }
