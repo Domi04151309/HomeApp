@@ -36,6 +36,7 @@ internal object Global {
             "stack" -> R.drawable.ic_device_stack
             "socket" -> R.drawable.ic_device_socket
             "thermometer" -> R.drawable.ic_device_thermometer
+            "webcam" -> R.drawable.ic_device_webcam
             else -> {
                 default
             }
