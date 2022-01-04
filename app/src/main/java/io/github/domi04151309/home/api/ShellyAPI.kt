@@ -82,6 +82,41 @@ class ShellyAPI(
         queue.add(jsonObjectRequest)
     }
 
+    override fun loadStates(callback: RealTimeStatesCallback, offset: Int) {
+        val jsonObjectRequest = when (version) {
+            1 -> JsonObjectRequestAuth(
+                Request.Method.GET, url + "settings", secrets, null,
+                { settingsResponse ->
+                    queue.add(JsonObjectRequest(
+                        Request.Method.GET, url + "status", null,
+                        { statusResponse ->
+                            callback.onStatesLoaded(
+                                parser.parseStates(settingsResponse, statusResponse),
+                                offset
+                            )
+                        }, { }
+                    ))
+                }, { }
+            )
+            2 -> JsonObjectRequest(
+                Request.Method.GET, url + "rpc/Shelly.GetConfig", null,
+                { configResponse ->
+                    queue.add(JsonObjectRequest(
+                        Request.Method.GET, url + "rpc/Shelly.GetStatus", null,
+                        { statusResponse ->
+                            callback.onStatesLoaded(
+                                parser.parseStates(configResponse, statusResponse),
+                                offset
+                            )
+                        }, { }
+                    ))
+                }, { }
+            )
+            else -> null
+        }
+        queue.add(jsonObjectRequest)
+    }
+
     override fun changeSwitchState(id: String, state: Boolean) {
         val requestUrl = url + "relay/$id?turn=" + (if (state) "on" else "off")
         val jsonObjectRequest = when (version) {
