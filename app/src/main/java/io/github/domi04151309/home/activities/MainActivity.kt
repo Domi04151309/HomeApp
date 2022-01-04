@@ -144,13 +144,31 @@ class MainActivity : AppCompatActivity() {
                 startActivityAndReset(Intent(this@MainActivity, SettingsActivity::class.java))
             } else if (data.hidden.contains('@')) {
                 val deviceId = data.hidden.substring(0, data.hidden.indexOf('@'))
-                getCorrectAPI(devices.getDeviceById(deviceId).mode, deviceId)?.execute(
+                val api = getCorrectAPI(devices.getDeviceById(deviceId).mode, deviceId)
+                api?.execute(
                     data.hidden.substring(deviceId.length + 1),
                     object : UnifiedAPI.CallbackInterface {
-                        override fun onItemsLoaded(holder: UnifiedRequestCallback, recyclerViewInterface: HomeRecyclerViewHelperInterface?) {}
+                        override fun onItemsLoaded(
+                            holder: UnifiedRequestCallback,
+                            recyclerViewInterface: HomeRecyclerViewHelperInterface?
+                        ) {}
                         override fun onExecuted(result: String, shouldRefresh: Boolean) {
                             showExecutionResult(result)
-                            //TODO: Refresh parameter does not work yet
+                            if (shouldRefresh) {
+                                api.loadList(object : UnifiedAPI.CallbackInterface {
+                                    override fun onItemsLoaded(
+                                        holder: UnifiedRequestCallback,
+                                        recyclerViewInterface: HomeRecyclerViewHelperInterface?
+                                    ) {
+                                        adapter.updateDirectView(
+                                            deviceId,
+                                            holder.response ?: arrayListOf(),
+                                            adapter.getDirectViewPos(deviceId)
+                                        )
+                                    }
+                                    override fun onExecuted(result: String, shouldRefresh: Boolean) {}
+                                })
+                            }
                         }
                     }
                 )
@@ -339,7 +357,7 @@ class MainActivity : AppCompatActivity() {
                                     recyclerViewInterface: HomeRecyclerViewHelperInterface?
                                 ) {
                                     if (holder.response != null) {
-                                        adapter.insertDirectView(
+                                        adapter.updateDirectView(
                                             currentDevice.id, holder.response, i
                                         )
                                         registeredForUpdates[i] = api

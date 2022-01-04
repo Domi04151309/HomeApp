@@ -110,19 +110,31 @@ class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapt
         return offsets.copyOfRange(0, pos).sum()
     }
 
-    fun insertDirectView(id: String, newItems: ArrayList<ListViewItem>, categoryPos: Int) {
+    fun updateDirectView(id: String, newItems: ArrayList<ListViewItem>, directViewPos: Int) {
         newItems.forEach { it.hidden = id + '@' + it.hidden }
 
-        offsets[categoryPos] = newItems.size
-        val correctOffset = getOffset(categoryPos)
-        items.removeAt(correctOffset)
-        notifyItemRemoved(correctOffset)
+        val correctOffset = getOffset(directViewPos)
+        val directViewSize = offsets[directViewPos]
+        for (i in 0 until directViewSize) {
+            items.removeAt(correctOffset)
+            notifyItemRemoved(correctOffset)
+        }
+        offsets[directViewPos] = newItems.size
         items.addAll(correctOffset, newItems)
         notifyItemRangeInserted(correctOffset, newItems.size)
     }
 
     private fun getPosFromId(id: Long): Int {
         return items.indexOfFirst { it.hidden.hashCode().toLong() == id }
+    }
+
+    fun getDirectViewPos(deviceId: String): Int {
+        var currentPos = 0
+        for (i in offsets.indices) {
+            if (items[currentPos].hidden.contains(deviceId)) return i
+            currentPos += offsets[i]
+        }
+        return -1
     }
 
     private fun playAnimation(v: View) {
