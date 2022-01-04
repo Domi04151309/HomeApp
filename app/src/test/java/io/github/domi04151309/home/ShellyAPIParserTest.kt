@@ -39,6 +39,15 @@ class ShellyAPIParserTest {
     }
 
     @Test
+    fun parseStatesJsonV1_shellyPlug1WithPowerMeter() {
+        val settingsJson = JSONObject(Helpers.getFileContents("/shelly/shellyplug1-settings.json"))
+        val statusJson = JSONObject(Helpers.getFileContents("/shelly/shellyplug1-status.json"))
+
+        val states = parserV1.parseStates(settingsJson, statusJson)
+        Assert.assertEquals(arrayListOf(true, null), states)
+    }
+
+    @Test
     fun parseListItemsJsonV1_shellyPlug1ApplianceTypesForIcons() {
         val settingsJson = JSONObject(Helpers.getFileContents("/shelly/shellyplug1-icons-settings.json"))
         val statusJson = JSONObject(Helpers.getFileContents("/shelly/shellyplug1-icons-status.json"))
@@ -102,6 +111,15 @@ class ShellyAPIParserTest {
     }
 
     @Test
+    fun parseStatesJsonV1_shelly1WithTemperatureNoRelayName() {
+        val settingsJson = JSONObject(Helpers.getFileContents("/shelly/shelly1-settings.json"))
+        val statusJson = JSONObject(Helpers.getFileContents("/shelly/shelly1-status.json"))
+
+        val states = parserV1.parseStates(settingsJson, statusJson)
+        Assert.assertEquals(arrayListOf(false, null, null), states)
+    }
+
+    @Test
     fun parseListItemsJsonV2_shellyPlus1() {
         val configJson = JSONObject(Helpers.getFileContents("/shelly/shelly-plus-1-Shelly.GetConfig.json"))
         val statusJson = JSONObject(Helpers.getFileContents("/shelly/shelly-plus-1-Shelly.GetStatus.json"))
@@ -115,5 +133,14 @@ class ShellyAPIParserTest {
         Assert.assertEquals(true, listItems[num].state)
         Assert.assertEquals("0", listItems[num].hidden)
         Assert.assertEquals(R.drawable.ic_device_lamp, listItems[num].icon)
+    }
+
+    @Test
+    fun parseStatesJsonV2_shellyPlus1() {
+        val configJson = JSONObject(Helpers.getFileContents("/shelly/shelly-plus-1-Shelly.GetConfig.json"))
+        val statusJson = JSONObject(Helpers.getFileContents("/shelly/shelly-plus-1-Shelly.GetStatus.json"))
+
+        val states = parserV2.parseStates(configJson, statusJson)
+        Assert.assertEquals(arrayListOf(true), states)
     }
 }
