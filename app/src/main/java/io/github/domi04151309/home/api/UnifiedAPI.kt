@@ -37,5 +37,6 @@ open class UnifiedAPI(
 
     open class Parser(protected val resources: Resources) {
         open fun parseResponse(response: JSONObject): ArrayList<ListViewItem> = arrayListOf()
+        open fun parseStates(response: JSONObject): ArrayList<Boolean?> = arrayListOf()
     }
 }

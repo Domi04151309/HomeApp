@@ -14,13 +14,15 @@ class EspEasyAPI(
     recyclerViewInterface: HomeRecyclerViewHelperInterface?
 ) : UnifiedAPI(c, deviceId, recyclerViewInterface) {
 
+    private val parser = EspEasyAPIParser(c.resources)
+
     override fun loadList(callback: CallbackInterface) {
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.GET, url + "json", null,
             { infoResponse ->
                 callback.onItemsLoaded(
                     UnifiedRequestCallback(
-                        EspEasyAPIParser(c.resources).parseResponse(infoResponse),
+                        parser.parseResponse(infoResponse),
                         deviceId
                     ),
                     recyclerViewInterface
@@ -31,6 +33,19 @@ class EspEasyAPI(
                     Global.volleyError(c, error)
                 ), null)
             }
+        )
+        queue.add(jsonObjectRequest)
+    }
+
+    override fun loadStates(callback: RealTimeStatesCallback, offset: Int) {
+        val jsonObjectRequest = JsonObjectRequest(
+            Request.Method.GET, url + "json", null,
+            { infoResponse ->
+                callback.onStatesLoaded(
+                    parser.parseStates(infoResponse),
+                    offset
+                )
+            }, { }
         )
         queue.add(jsonObjectRequest)
     }
