@@ -23,7 +23,7 @@ Home App natively supports the following devices:
 - Devices using [ESP Easy](https://github.com/Domi04151309/HomeApp/wiki/ESP-Easy)
 - Devices using [Tasmota](https://github.com/Domi04151309/HomeApp/wiki/Tasmota)
 - Devices using the [Node-RED dashboard](https://github.com/Domi04151309/HomeApp/wiki/Node-RED-Dashboard)
-- Devices using the [SimpleHome API](https://github.com/Domi04151309/HomeApp/wiki/SimpleHome-API) based devices
+- Devices using the [SimpleHome API](https://github.com/Domi04151309/HomeApp/wiki/SimpleHome-API)
 - Devices with a [web interface](https://github.com/Domi04151309/HomeApp/wiki/Websites)
 
 
