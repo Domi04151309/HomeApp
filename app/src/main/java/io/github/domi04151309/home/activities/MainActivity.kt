@@ -18,13 +18,16 @@ import io.github.domi04151309.home.data.ListViewItem
 import io.github.domi04151309.home.helpers.*
 import io.github.domi04151309.home.helpers.P
 import io.github.domi04151309.home.helpers.Theme
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.github.domi04151309.home.adapters.MainListAdapter
 import io.github.domi04151309.home.api.*
 import io.github.domi04151309.home.data.UnifiedRequestCallback
 import io.github.domi04151309.home.helpers.Global.checkNetwork
 import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
+import android.util.DisplayMetrics
+import androidx.recyclerview.widget.GridLayoutManager
+import kotlin.math.max
+import kotlin.math.min
 
 class MainActivity : AppCompatActivity() {
 
@@ -199,7 +202,7 @@ class MainActivity : AppCompatActivity() {
         themeId = getThemeId()
 
         adapter = MainListAdapter(recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = GridLayoutManager(this, numberOfRows())
         recyclerView.adapter = adapter
 
         fab.setOnClickListener {
@@ -294,6 +297,13 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         updateHandler.stop()
+    }
+
+    private fun numberOfRows(): Int {
+        val displayMetrics: DisplayMetrics = resources.displayMetrics
+        val horizontal: Int = ((displayMetrics.widthPixels / displayMetrics.density) / 240).toInt()
+        val vertical: Int = ((displayMetrics.heightPixels / displayMetrics.density) / 240).toInt()
+        return max(1, min(horizontal, vertical))
     }
 
     internal fun selectDevice(deviceId: String) {
