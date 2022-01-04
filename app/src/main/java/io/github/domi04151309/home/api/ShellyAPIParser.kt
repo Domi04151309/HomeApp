@@ -58,29 +58,25 @@ class ShellyAPIParser(resources: Resources, private val version: Int): UnifiedAP
         }
 
         //external temperature sensors
-        val tempSensors = status.optJSONObject("ext_temperature")
-        if (tempSensors != null) {
-            for (sensorId in tempSensors.keys()) {
-                val currentSensor = tempSensors.getJSONObject(sensorId)
-                listItems += ListViewItem(
-                    title = "${currentSensor.getDouble("tC")} °C",
-                    summary = resources.getString(R.string.shelly_temperature_sensor_summary),
-                    icon = R.drawable.ic_device_thermometer
-                )
-            }
+        val tempSensors = status.optJSONObject("ext_temperature") ?: JSONObject()
+        for (sensorId in tempSensors.keys()) {
+            val currentSensor = tempSensors.getJSONObject(sensorId)
+            listItems += ListViewItem(
+                title = "${currentSensor.getDouble("tC")} °C",
+                summary = resources.getString(R.string.shelly_temperature_sensor_summary),
+                icon = R.drawable.ic_device_thermometer
+            )
         }
 
         //external humidity sensors
-        val humSensors = status.optJSONObject("ext_humidity")
-        if (humSensors != null) {
-            for (sensorId in humSensors.keys()) {
-                val currentSensor = humSensors.getJSONObject(sensorId)
-                listItems += ListViewItem(
-                    title = "${currentSensor.getDouble("hum")}%",
-                    summary = resources.getString(R.string.shelly_humidity_sensor_summary),
-                    icon = R.drawable.ic_device_hygrometer
-                )
-            }
+        val humSensors = status.optJSONObject("ext_humidity") ?: JSONObject()
+        for (sensorId in humSensors.keys()) {
+            val currentSensor = humSensors.getJSONObject(sensorId)
+            listItems += ListViewItem(
+                title = "${currentSensor.getDouble("hum")}%",
+                summary = resources.getString(R.string.shelly_humidity_sensor_summary),
+                icon = R.drawable.ic_device_hygrometer
+            )
         }
 
         return listItems
@@ -144,19 +140,15 @@ class ShellyAPIParser(resources: Resources, private val version: Int): UnifiedAP
         }
 
         //external temperature sensors
-        val tempSensors = status.optJSONObject("ext_temperature")
-        if (tempSensors != null) {
-            for (sensorId in tempSensors.keys()) {
-                listItems += null
-            }
+        val tempSensors = status.optJSONObject("ext_temperature") ?: JSONObject()
+        for (sensorId in tempSensors.keys()) {
+            listItems += null
         }
 
         //external humidity sensors
-        val humSensors = status.optJSONObject("ext_humidity")
-        if (humSensors != null) {
-            for (sensorId in humSensors.keys()) {
-                listItems += null
-            }
+        val humSensors = status.optJSONObject("ext_humidity") ?: JSONObject()
+        for (sensorId in humSensors.keys()) {
+            listItems += null
         }
 
         return listItems
