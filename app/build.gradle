@@ -7,8 +7,8 @@ android {
         applicationId "io.github.domi04151309.home"
         minSdkVersion 23
         targetSdkVersion 31
-        versionCode 173
-        versionName "1.7.3"
+        versionCode 180
+        versionName "1.8.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

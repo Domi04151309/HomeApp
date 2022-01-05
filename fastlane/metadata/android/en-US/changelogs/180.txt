@@ -1,0 +1,2 @@
+This update adds support for Shelly and Esp Easy devices. Furthermore, the device discovery process has been improved once again, and new device icons have been added. A big new feature is "Direct View" which makes it possible to load devices directly when you start the app.
+Make sure to check out the release notes of previous versions as well!
