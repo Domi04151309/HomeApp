@@ -40,9 +40,9 @@
             app:iconSpaceReserved="false" />
         <SwitchPreference
             app:defaultValue="true"
-            app:key="local_only"
-            app:summary="@string/pref_local_only_summary"
-            app:title="@string/pref_local_only"
+            app:key="safety_checks"
+            app:summary="@string/pref_safety_checks_summary"
+            app:title="@string/pref_safety_checks"
             app:iconSpaceReserved="false" />
     </PreferenceCategory>
 

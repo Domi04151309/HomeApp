@@ -46,7 +46,7 @@ internal object Global {
     fun checkNetwork(context: Context) : Boolean {
         if (
             !PreferenceManager.getDefaultSharedPreferences(context)
-                .getBoolean("local_only", true)
+                .getBoolean("safety_checks", true)
         ) return true
 
         val connectivityManager = context.getSystemService(AppCompatActivity.CONNECTIVITY_SERVICE) as ConnectivityManager

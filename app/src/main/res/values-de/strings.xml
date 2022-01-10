@@ -7,7 +7,7 @@
     <string name="main_device_nonexistent">Diese Gerät existiert nicht</string>
     <string name="main_tap_to_connect">Tippe zum Verbinden</string>
     <string name="main_connecting">Verbinde</string>
-    <string name="main_network_not_secure">Nicht mit lokalem Netzwerk verbunden</string>
+    <string name="main_network_not_secure">Unsichere Verbindung</string>
     <string name="main_unknown_mode">Das Gerät benutzt einen unbekannten Modus</string>
     <string name="main_device_unavailable">Das Gerät ist momentan nicht verfügbar</string>
     <string name="main_parse_error">Die Antwort erfüllt nicht die Voraussetzungen</string>
@@ -98,8 +98,8 @@
     <string name="pref_reset_summary">Löscht alle Geräte</string>
     <string name="pref_reset_question">Sind Sie sich sicher, dass Sie alle Geräte löschen möchten? Dies kann nicht rückgängig gemacht werden!</string>
     <string name="pref_reset_toast">Alle Geräte gelöscht</string>
-    <string name="pref_local_only">Anfragen im Mobilfunknetz blockieren</string>
-    <string name="pref_local_only_summary">Warnung: IoT-Geräte sollten nicht aus dem Internet erreichbar sein! Bei Deaktivierung können Angreifer Verbindungsdaten abgreifen!</string>
+    <string name="pref_safety_checks">Potenziell unsichere Anfragen blockieren</string>
+    <string name="pref_safety_checks_summary">Sicherheitsüberprüfungen durchführen\nWarnung: Bei Deaktivierung können Angreifer Verbindungsdaten abgreifen!</string>
     <string name="pref_info">Informationen</string>
     <string name="pref_info_wiki">Wiki</string>
     <string name="pref_info_wiki_summary">Dokumentation und Hilfe</string>
