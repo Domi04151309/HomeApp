@@ -22,7 +22,7 @@ open class UnifiedAPI(
     }
 
     interface RealTimeStatesCallback {
-        fun onStatesLoaded(states: ArrayList<Boolean?>, offset: Int)
+        fun onStatesLoaded(states: ArrayList<Boolean?>, offset: Int, dynamicSummary: Boolean)
     }
 
     var dynamicSummaries: Boolean = true

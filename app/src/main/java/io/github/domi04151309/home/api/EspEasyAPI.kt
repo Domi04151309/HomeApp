@@ -43,7 +43,8 @@ class EspEasyAPI(
             { infoResponse ->
                 callback.onStatesLoaded(
                     parser.parseStates(infoResponse),
-                    offset
+                    offset,
+                    dynamicSummaries
                 )
             }, { }
         )

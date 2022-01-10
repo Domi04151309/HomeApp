@@ -101,9 +101,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
     private val unifiedRealTimeStatesCallback = object : UnifiedAPI.RealTimeStatesCallback {
-        override fun onStatesLoaded(states: ArrayList<Boolean?>, offset: Int) {
+        override fun onStatesLoaded(states: ArrayList<Boolean?>, offset: Int, dynamicSummary: Boolean) {
             for (i in 0 until states.size) {
-                if (states[i] != null) adapter.updateSwitch(i + offset, states[i] ?: return)
+                if (states[i] != null) adapter.updateSwitch(i + offset, states[i] ?: return, dynamicSummary)
             }
         }
     }
