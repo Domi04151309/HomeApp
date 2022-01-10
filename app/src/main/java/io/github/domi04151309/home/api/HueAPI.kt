@@ -105,7 +105,7 @@ class HueAPI(
                                 .getBoolean("any_on")
                         )
                     }
-                    callback.onStatesLoaded(states, offset)
+                    callback.onStatesLoaded(states, offset, dynamicSummaries)
                 } catch (e: Exception) {}
             },
             { }

@@ -99,10 +99,17 @@ class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapt
         }
     }
 
-    fun updateSwitch(position: Int, state: Boolean) {
+    fun updateSwitch(position: Int, state: Boolean, dynamicSummary: Boolean) {
         if (items[position].state != state) {
             items[position].state = state
-            (attachedTo.findViewHolderForAdapterPosition(position) as ViewHolder).stateSwitch.isChecked = state
+            val viewHolder = attachedTo.findViewHolderForAdapterPosition(position) as ViewHolder
+            viewHolder.stateSwitch.isChecked = state
+            if (dynamicSummary) {
+                viewHolder.summary.text = attachedTo.context.resources.getString(
+                    if (state) R.string.switch_summary_on
+                    else R.string.switch_summary_off
+                )
+            }
         }
     }
 
