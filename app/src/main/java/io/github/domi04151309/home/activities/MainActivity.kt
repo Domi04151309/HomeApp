@@ -341,6 +341,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     internal fun loadDeviceList() {
+        updateHandler.stop()
         val registeredForUpdates: HashMap<Int, UnifiedAPI?> = hashMapOf()
         val listItems: ArrayList<ListViewItem> = arrayListOf()
         try {

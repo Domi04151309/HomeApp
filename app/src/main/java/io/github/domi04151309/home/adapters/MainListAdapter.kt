@@ -2,6 +2,7 @@ package io.github.domi04151309.home.adapters
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.util.Log
 import android.view.*
 import androidx.recyclerview.widget.RecyclerView
 import io.github.domi04151309.home.R
@@ -11,6 +12,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationSet
 import android.view.animation.TranslateAnimation
 import android.widget.*
+import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
 
 class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapter<MainListAdapter.ViewHolder>() {
@@ -101,6 +103,10 @@ class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapt
     }
 
     fun updateSwitch(position: Int, state: Boolean, dynamicSummary: Boolean) {
+        if (position > items.size) {
+            Log.w(Global.LOG_TAG, "The position $position with value $state is larger than the item count")
+            return
+        }
         if (items[position].state != state) {
             items[position].state = state
             val viewHolder = attachedTo.findViewHolderForAdapterPosition(position) as ViewHolder
