@@ -25,7 +25,7 @@ class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapt
     }
 
     override fun getItemId(position: Int): Long {
-        return items[position].hidden.hashCode().toLong()
+        return (position.toString() + items[position].hidden).hashCode().toLong()
     }
 
     override fun onCreateViewHolder(
@@ -84,6 +84,7 @@ class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapt
     fun updateData(newItems: ArrayList<ListViewItem>, newHelperInterface: HomeRecyclerViewHelperInterface? = null, preferredAnimationState: Boolean? = null) {
         offsets = IntArray(newItems.size) { 1 }
         if (newHelperInterface != null) {
+            attachedTo.layoutManager?.scrollToPosition(0)
             animate = preferredAnimationState ?: true
             items = newItems
             helperInterface = newHelperInterface
@@ -132,7 +133,7 @@ class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapt
     }
 
     private fun getPosFromId(id: Long): Int {
-        return items.indexOfFirst { it.hidden.hashCode().toLong() == id }
+        return items.indices.indexOfFirst { getItemId(it) == id }
     }
 
     fun getDirectViewPos(deviceId: String): Int {
