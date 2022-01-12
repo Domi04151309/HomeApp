@@ -2,6 +2,10 @@ package io.github.domi04151309.home.api
 
 import android.content.Context
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
 import com.android.volley.*
 import com.android.volley.toolbox.JsonObjectRequest
 import io.github.domi04151309.home.helpers.Global.volleyError
@@ -43,6 +47,26 @@ class SimpleHomeAPI(
         val realPath = path.substring(splitCharPos + 1)
         when (path.substring(0, splitCharPos)) {
             "none", "switch" -> { }
+            "input" -> {
+                val nullParent: ViewGroup? = null
+                val view = LayoutInflater.from(c).inflate(R.layout.dialog_input, nullParent, false)
+                val input = view.findViewById<EditText>(R.id.input)
+                AlertDialog.Builder(c)
+                    .setTitle(R.string.input_title)
+                    .setView(view)
+                    .setPositiveButton(R.string.str_send) { _, _ ->
+                        val jsonObjectRequest = JsonObjectRequest(
+                            Request.Method.GET,
+                            url + realPath + "?input=" + input.text.toString(),
+                            null,
+                            { },
+                            { e -> Log.e(Global.LOG_TAG, e.toString()) }
+                        )
+                        queue.add(jsonObjectRequest)
+                    }
+                    .setNegativeButton(android.R.string.cancel) { _, _ -> }
+                    .show()
+            }
             else -> {
                 val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url + realPath, null,
                     { response ->

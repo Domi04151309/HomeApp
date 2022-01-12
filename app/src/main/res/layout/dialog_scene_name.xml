@@ -11,8 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:singleLine="true"
-        android:hint="@string/input_hint"
-        android:inputType="text"
+        android:hint="@string/str_name"
+        android:inputType="textCapSentences"
         android:importantForAutofill="no"
         tools:targetApi="o" />
 </FrameLayout>
