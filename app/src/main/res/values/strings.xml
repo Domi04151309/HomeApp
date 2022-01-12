@@ -151,7 +151,9 @@
         <item>Search for compatible devices (experimental)</item>
     </string-array>
     <string-array name="pref_icons" translatable="false">
+        <item>Clock</item>
         <item>Display</item>
+        <item>Display Alt</item>
         <item>Electricity</item>
         <item>Gauge</item>
         <item>Hygrometer</item>

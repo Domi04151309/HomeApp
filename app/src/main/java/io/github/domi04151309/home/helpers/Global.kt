@@ -21,7 +21,9 @@ internal object Global {
     fun getIcon(icon: String, default: Int = R.drawable.ic_warning): Int {
         return when (icon.lowercase()) {
             "christmas tree" -> R.drawable.ic_device_christmas_tree
+            "clock" -> R.drawable.ic_device_clock
             "display" -> R.drawable.ic_device_display
+            "display alt" -> R.drawable.ic_device_display_alt
             "electricity" -> R.drawable.ic_device_electricity
             "entertainment" -> R.drawable.ic_device_speaker
             "gauge" -> R.drawable.ic_device_gauge
