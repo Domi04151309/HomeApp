@@ -240,8 +240,8 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
                     val newItem = DeviceItem(devices.generateNewId())
                     newItem.name = name
                     newItem.address = view.findViewById<TextView>(R.id.summary).text.toString()
-                    newItem.mode = hidden.substring(0 , hidden.indexOf("#"))
-                    newItem.iconName = hidden.substring(hidden.lastIndexOf("#") + 1)
+                    newItem.mode = hidden.substring(0 , hidden.indexOf('#'))
+                    newItem.iconName = hidden.substring(hidden.lastIndexOf('#') + 1)
                     devices.addDevice(newItem)
                     adapter.changeState(position, true)
                 }

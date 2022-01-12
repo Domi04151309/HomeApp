@@ -56,7 +56,7 @@ class HueLampActivity : AppCompatActivity() {
 
         val internId = intent.getStringExtra("ID") ?: "0"
         if (internId.startsWith("room#") || internId.startsWith("zone#")) {
-            id = internId.substring(internId.lastIndexOf("#") + 1)
+            id = internId.substring(internId.lastIndexOf('#') + 1)
             isRoom = true
         } else {
             id = internId

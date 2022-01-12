@@ -249,7 +249,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreateContextMenu(menu, v, menuInfo)
         val hidden = v?.findViewById<TextView>(R.id.hidden)?.text ?: return
         if (hidden.contains("tasmota_command")) {
-            tasmotaPosition = hidden.substring(hidden.lastIndexOf("#") + 1).toInt()
+            tasmotaPosition = hidden.substring(hidden.lastIndexOf('#') + 1).toInt()
             menuInflater.inflate(R.menu.activity_main_tasmota_context, menu)
         }
     }
