@@ -165,7 +165,7 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes), RecyclerViewHe
         return when (item.title) {
             resources.getString(R.string.str_rename) -> {
                 val nullParent: ViewGroup? = null
-                val view = layoutInflater.inflate(R.layout.dialog_input, nullParent, false)
+                val view = layoutInflater.inflate(R.layout.dialog_scene_name, nullParent, false)
                 val input = view.findViewById<EditText>(R.id.input)
                 input.setText(selectedSceneName)
                 AlertDialog.Builder(c)

@@ -54,6 +54,8 @@
     <string name="shelly_switch_title">Schalter %1$d</string>
     <string name="shelly_temperature_sensor_summary">Aktuelle Temperatur</string>
 
+    <string name="input_title">Geben Sie etwas ein</string>
+    <string name="input_hint">Eingabe</string>
     <string name="switch_summary_on">Der Schalter ist an</string>
     <string name="switch_summary_off">Der Schalter ist aus</string>
 
@@ -123,6 +125,7 @@
     <string name="str_show">Anzeigen</string>
     <string name="str_done">Fertig</string>
     <string name="str_add">Hinzufügen</string>
+    <string name="str_send">Senden</string>
 
     <string name="about">Über</string>
     <string name="about_summary">Über die App</string>

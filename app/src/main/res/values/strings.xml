@@ -56,6 +56,8 @@
     <string name="shelly_switch_title">Switch %1$d</string>
     <string name="shelly_temperature_sensor_summary">Current temperature</string>
 
+    <string name="input_title">Please enter something</string>
+    <string name="input_hint">Input</string>
     <string name="switch_summary_on">The switch is on</string>
     <string name="switch_summary_off">The switch is off</string>
 
@@ -125,6 +127,7 @@
     <string name="str_show">Show</string>
     <string name="str_done">Done</string>
     <string name="str_add">Add</string>
+    <string name="str_send">Send</string>
 
     <string name="about">About</string>
     <string name="about_summary">About the app</string>
