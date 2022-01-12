@@ -13,6 +13,7 @@ import io.github.domi04151309.home.R
 import io.github.domi04151309.home.data.UnifiedRequestCallback
 import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
+import java.net.URLEncoder
 
 class SimpleHomeAPI(
     c: Context,
@@ -57,7 +58,7 @@ class SimpleHomeAPI(
                     .setPositiveButton(R.string.str_send) { _, _ ->
                         val jsonObjectRequest = JsonObjectRequest(
                             Request.Method.GET,
-                            url + realPath + "?input=" + input.text.toString(),
+                            url + realPath + "?input=" + URLEncoder.encode(input.text.toString(),"utf-8"),
                             null,
                             { },
                             { e -> Log.e(Global.LOG_TAG, e.toString()) }
