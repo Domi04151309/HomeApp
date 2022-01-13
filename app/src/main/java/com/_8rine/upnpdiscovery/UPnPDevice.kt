@@ -4,21 +4,18 @@ import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserFactory
 import java.io.ByteArrayInputStream
 import android.util.Log
-import io.github.domi04151309.home.helpers.Global
 import java.lang.Exception
 
 class UPnPDevice internal constructor(val hostAddress: String, header: String) {
-    val location: String
+    internal val location: String
     val server: String
-    private val usn: String
-    private val st: String
 
     // XML content
     private var descriptionXML: String = ""
 
     // From description XML
-    private var deviceType: String = ""
     var friendlyName: String = ""
+    private var deviceType: String = ""
     private var presentationURL: String = ""
     private var serialNumber: String = ""
     private var modelName: String = ""
@@ -30,14 +27,8 @@ class UPnPDevice internal constructor(val hostAddress: String, header: String) {
     private var urlBase: String = ""
 
     init {
-        val locationText = "LOCATION: "
-        location = parseHeader(header, locationText)
-        val serverText = "SERVER: "
-        server = parseHeader(header, serverText)
-        val usnText = "USN: "
-        usn = parseHeader(header, usnText)
-        val stText = "ST: "
-        st = parseHeader(header, stText)
+        location = parseHeader(header, "LOCATION: ")
+        server = parseHeader(header, "SERVER: ")
     }
 
     internal fun update(xml: String) {
@@ -45,7 +36,7 @@ class UPnPDevice internal constructor(val hostAddress: String, header: String) {
         try {
             xmlParse(xml)
         } catch (e: Exception) {
-            Log.e(Global.LOG_TAG, e.toString())
+            Log.e(UPnPDiscovery.TAG, e.toString())
         }
     }
 
@@ -54,9 +45,6 @@ class UPnPDevice internal constructor(val hostAddress: String, header: String) {
                 "ModelName: " + modelName + LINE_END +
                 "HostAddress: " + hostAddress + LINE_END +
                 "Location: " + location + LINE_END +
-                "Server: " + server + LINE_END +
-                "USN: " + usn + LINE_END +
-                "ST: " + st + LINE_END +
                 "DeviceType: " + deviceType + LINE_END +
                 "PresentationURL: " + presentationURL + LINE_END +
                 "SerialNumber: " + serialNumber + LINE_END +
@@ -96,22 +84,18 @@ class UPnPDevice internal constructor(val hostAddress: String, header: String) {
         while (event != XmlPullParser.END_DOCUMENT) {
             val name = parser.name
             if (event == XmlPullParser.START_TAG) {
-                try {
-                    when (name) {
-                        "friendlyName" -> friendlyName = readText(parser)
-                        "deviceType" -> deviceType = readText(parser)
-                        "presentationURL" -> presentationURL = readText(parser)
-                        "serialNumber" -> serialNumber = readText(parser)
-                        "modelName" -> modelName = readText(parser)
-                        "modelNumber" -> modelNumber = readText(parser)
-                        "modelURL" -> modelURL = readText(parser)
-                        "manufacturer" -> manufacturer = readText(parser)
-                        "manufacturerURL" -> manufacturerURL = readText(parser)
-                        "UDN" -> udn = readText(parser)
-                        "URLBase" -> urlBase = readText(parser)
-                    }
-                } catch (e: Exception) {
-                    Log.w(Global.LOG_TAG, e.toString())
+                when (name) {
+                    "friendlyName" -> friendlyName = readText(parser)
+                    "deviceType" -> deviceType = readText(parser)
+                    "presentationURL" -> presentationURL = readText(parser)
+                    "serialNumber" -> serialNumber = readText(parser)
+                    "modelName" -> modelName = readText(parser)
+                    "modelNumber" -> modelNumber = readText(parser)
+                    "modelURL" -> modelURL = readText(parser)
+                    "manufacturer" -> manufacturer = readText(parser)
+                    "manufacturerURL" -> manufacturerURL = readText(parser)
+                    "UDN" -> udn = readText(parser)
+                    "URLBase" -> urlBase = readText(parser)
                 }
             }
             event = parser.next()

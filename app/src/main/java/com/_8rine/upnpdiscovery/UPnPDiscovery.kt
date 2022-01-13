@@ -79,7 +79,7 @@ class UPnPDiscovery : AsyncTask<Activity, UPnPDiscovery.OnDiscoveryListener, Voi
                 socket.receive(datagramPacket)
                 val response = String(datagramPacket.data, 0, datagramPacket.length)
                 if (response.substring(0, 12).uppercase() == "HTTP/1.1 200") {
-                    val device = UPnPDevice(datagramPacket.address.hostAddress, response)
+                    val device = UPnPDevice(datagramPacket.address.hostAddress ?: continue, response)
                     mThreadsCount++
                     getData(device.location, device)
                 }
@@ -116,7 +116,7 @@ class UPnPDiscovery : AsyncTask<Activity, UPnPDiscovery.OnDiscoveryListener, Voi
 
     companion object {
 
-        private val TAG = UPnPDiscovery::class.java.simpleName
+        internal val TAG = UPnPDiscovery::class.java.simpleName
 
         private const val DISCOVER_TIMEOUT = 1500
         private const val LINE_END = "\r\n"

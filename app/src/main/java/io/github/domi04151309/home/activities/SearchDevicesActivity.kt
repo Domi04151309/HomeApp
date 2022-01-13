@@ -59,14 +59,6 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
         //Device variables
         val manager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
         val routerIp = intToIp(manager.dhcpInfo.gateway)
-        val customQuery = "M-SEARCH * HTTP/1.1" + "\r\n" +
-                "HOST: 239.255.255.250:1900" + "\r\n" +
-                "MAN: ssdp:discover" + "\r\n" +
-                "MX: 10" + "\r\n" +
-                "ST: ssdp:all" + "\r\n" +
-                "\r\n"
-        val customPort = 1900
-        val customAddress = "239.255.255.250"
 
         Thread {
             //Add Router
@@ -79,7 +71,7 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
             ))
             addresses += routerIp
 
-            //Get Hue Bridges
+            //Get compatible devices
             UPnPDiscovery.discoveryDevices(this, object : UPnPDiscovery.OnDiscoveryListener {
                 override fun onStart() {}
                 override fun onFoundNewDevice(device: UPnPDevice) {
@@ -93,20 +85,7 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
                         ))
                         addresses += device.hostAddress
                     }
-                }
-
-                override fun onFinish(devices: HashSet<UPnPDevice>) {}
-                override fun onError(e: Exception) {
-                    Log.e("UPnPDiscovery", "Error: " + e.localizedMessage)
-                }
-            }, customQuery, customAddress, customPort)
-
-            //Get compatible devices
-            UPnPDiscovery.discoveryDevices(this, object : UPnPDiscovery.OnDiscoveryListener {
-                override fun onStart() {}
-                override fun onFoundNewDevice(device: UPnPDevice) {
-                    val friendlyName = device.friendlyName
-                    if (friendlyName.startsWith("FRITZ!") && !addresses.contains(device.hostAddress)) {
+                    if (device.friendlyName.startsWith("FRITZ!") && !addresses.contains(device.hostAddress)) {
                         adapter.add(ListViewItem(
                             title = device.friendlyName,
                             summary = device.hostAddress,
