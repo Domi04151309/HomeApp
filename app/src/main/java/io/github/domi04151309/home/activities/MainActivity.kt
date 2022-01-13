@@ -331,7 +331,8 @@ class MainActivity : AppCompatActivity() {
                 unified = getCorrectAPI(deviceObj.mode, deviceId, unifiedHelperInterface, tasmotaHelperInterface)
                 unified?.loadList(unifiedRequestCallback)
                 updateHandler.setUpdateFunction {
-                    if (canReceiveRequest) unified?.loadStates(unifiedRealTimeStatesCallback, 0)
+                    if (canReceiveRequest && unified?.needsRealTimeData == true)
+                        unified?.loadStates(unifiedRealTimeStatesCallback, 0)
                 }
             }
             else -> {
@@ -405,10 +406,12 @@ class MainActivity : AppCompatActivity() {
         updateHandler.setUpdateFunction {
             if (canReceiveRequest) {
                 for (i in registeredForUpdates.keys) {
-                    registeredForUpdates[i]?.loadStates(
-                        unifiedRealTimeStatesCallback,
-                        adapter.getOffset(i)
-                    )
+                    if (registeredForUpdates[i]?.needsRealTimeData == true) {
+                        registeredForUpdates[i]?.loadStates(
+                            unifiedRealTimeStatesCallback,
+                            adapter.getOffset(i)
+                        )
+                    }
                 }
             }
         }

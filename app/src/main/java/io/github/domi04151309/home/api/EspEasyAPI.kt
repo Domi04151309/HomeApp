@@ -14,7 +14,7 @@ class EspEasyAPI(
     recyclerViewInterface: HomeRecyclerViewHelperInterface?
 ) : UnifiedAPI(c, deviceId, recyclerViewInterface) {
 
-    private val parser = EspEasyAPIParser(c.resources)
+    private val parser = EspEasyAPIParser(c.resources, this)
 
     override fun loadList(callback: CallbackInterface) {
         val jsonObjectRequest = JsonObjectRequest(

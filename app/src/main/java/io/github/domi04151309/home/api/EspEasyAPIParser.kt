@@ -6,7 +6,7 @@ import io.github.domi04151309.home.data.ListViewItem
 import org.json.JSONArray
 import org.json.JSONObject
 
-class EspEasyAPIParser(resources: Resources) : UnifiedAPI.Parser(resources) {
+class EspEasyAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.Parser(resources, api) {
 
     override fun parseResponse(response: JSONObject): ArrayList<ListViewItem> {
         val listItems = arrayListOf<ListViewItem>()
@@ -89,6 +89,7 @@ class EspEasyAPIParser(resources: Resources) : UnifiedAPI.Parser(resources) {
                     state = currentState,
                     icon = R.drawable.ic_do
                 )
+                api?.needsRealTimeData = true
             }
         }
     }

@@ -20,6 +20,9 @@ class ShellyAPI(
 
     private val secrets = DeviceSecrets(c, deviceId)
     private val parser = ShellyAPIParser(c.resources, version)
+    init {
+        needsRealTimeData = true
+    }
 
     override fun loadList(callback: CallbackInterface) {
         val jsonObjectRequest = when (version) {

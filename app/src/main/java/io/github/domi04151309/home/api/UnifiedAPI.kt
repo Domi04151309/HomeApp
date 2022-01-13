@@ -26,6 +26,7 @@ open class UnifiedAPI(
     }
 
     var dynamicSummaries: Boolean = true
+    var needsRealTimeData: Boolean = false
 
     protected val url: String = Devices(c).getDeviceById(deviceId).address
     protected val queue: RequestQueue = Volley.newRequestQueue(c)
@@ -35,7 +36,7 @@ open class UnifiedAPI(
     open fun execute(path: String, callback: CallbackInterface) {}
     open fun changeSwitchState(id: String, state: Boolean) {}
 
-    open class Parser(protected val resources: Resources) {
+    open class Parser(protected val resources: Resources, protected val api: UnifiedAPI? = null) {
         open fun parseResponse(response: JSONObject): ArrayList<ListViewItem> = arrayListOf()
         open fun parseStates(response: JSONObject): ArrayList<Boolean?> = arrayListOf()
     }

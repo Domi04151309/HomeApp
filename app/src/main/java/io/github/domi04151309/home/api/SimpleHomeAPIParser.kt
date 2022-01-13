@@ -6,7 +6,7 @@ import io.github.domi04151309.home.data.ListViewItem
 import io.github.domi04151309.home.helpers.Global
 import org.json.JSONObject
 
-class SimpleHomeAPIParser(resources: Resources) : UnifiedAPI.Parser(resources) {
+class SimpleHomeAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.Parser(resources, api) {
 
     override fun parseResponse(response: JSONObject): ArrayList<ListViewItem> {
         val listItems: ArrayList<ListViewItem> = ArrayList(response.length())
@@ -23,6 +23,7 @@ class SimpleHomeAPIParser(resources: Resources) : UnifiedAPI.Parser(resources) {
                 icon = Global.getIcon(currentObject.optString("icon"), R.drawable.ic_do),
                 state = if (currentMode == "switch") currentObject.optBoolean("data", false) else null
             )
+            if (currentMode == "switch") api?.needsRealTimeData = true
         }
         return listItems
     }

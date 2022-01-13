@@ -21,7 +21,7 @@ class SimpleHomeAPI(
     recyclerViewInterface: HomeRecyclerViewHelperInterface?
 ) : UnifiedAPI(c, deviceId, recyclerViewInterface) {
 
-    private val parser = SimpleHomeAPIParser(c.resources)
+    private val parser = SimpleHomeAPIParser(c.resources, this)
     init {
         dynamicSummaries = false
     }

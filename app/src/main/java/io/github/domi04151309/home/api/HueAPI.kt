@@ -30,6 +30,7 @@ class HueAPI(
     var readyForRequest: Boolean = true
     init {
         dynamicSummaries = false
+        needsRealTimeData = true
     }
 
     interface RequestCallback {
