@@ -21,6 +21,7 @@ class SimpleHomeAPI(
     recyclerViewInterface: HomeRecyclerViewHelperInterface?
 ) : UnifiedAPI(c, deviceId, recyclerViewInterface) {
 
+    private val parser = SimpleHomeAPIParser(c.resources)
     init {
         dynamicSummaries = false
     }
@@ -30,7 +31,7 @@ class SimpleHomeAPI(
             { response ->
                 callback.onItemsLoaded(
                     UnifiedRequestCallback(
-                        SimpleHomeAPIParser(c.resources).parseResponse(response),
+                        parser.parseResponse(response),
                         deviceId
                     ),
                     recyclerViewInterface
@@ -39,6 +40,20 @@ class SimpleHomeAPI(
             { error ->
                 callback.onItemsLoaded(UnifiedRequestCallback(null, deviceId, volleyError(c, error)), null)
             }
+        )
+        queue.add(jsonObjectRequest)
+    }
+
+    override fun loadStates(callback: RealTimeStatesCallback, offset: Int) {
+        val jsonObjectRequest = JsonObjectRequest(
+            Request.Method.GET, url + "commands", null,
+            { infoResponse ->
+                callback.onStatesLoaded(
+                    parser.parseStates(infoResponse),
+                    offset,
+                    dynamicSummaries
+                )
+            }, { }
         )
         queue.add(jsonObjectRequest)
     }
