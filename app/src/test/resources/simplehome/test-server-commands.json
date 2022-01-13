@@ -1,0 +1,29 @@
+{
+  "commands": {
+    "example": {
+      "title": "Title of the command",
+      "summary": "Summary of the command"
+    },
+    "example2": {
+      "title": "Title of the command",
+      "summary": "Mode: none",
+      "mode": "none"
+    },
+    "example3": {
+      "title": "Title of the command",
+      "summary": "Mode: input",
+      "mode": "input",
+      "data": "Default"
+    },
+    "example4": {
+      "title": "Title of the command",
+      "summary": "Mode: switch",
+      "mode": "switch",
+      "data": true
+    },
+    "rand": {
+      "title": "1944518792",
+      "summary": "523219119"
+    }
+  }
+}
