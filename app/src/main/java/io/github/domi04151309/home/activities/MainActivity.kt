@@ -403,11 +403,13 @@ class MainActivity : AppCompatActivity() {
         fab.show()
         isDeviceSelected = false
         updateHandler.setUpdateFunction {
-            for (i in registeredForUpdates.keys) {
-                registeredForUpdates[i]?.loadStates(
-                    unifiedRealTimeStatesCallback,
-                    adapter.getOffset(i)
-                )
+            if (canReceiveRequest) {
+                for (i in registeredForUpdates.keys) {
+                    registeredForUpdates[i]?.loadStates(
+                        unifiedRealTimeStatesCallback,
+                        adapter.getOffset(i)
+                    )
+                }
             }
         }
         unified = null
