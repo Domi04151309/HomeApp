@@ -229,8 +229,8 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
         }
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onDestroy() {
+        super.onDestroy()
         nsdManager.stopServiceDiscovery(discoveryListenerHttp)
         nsdManager.stopServiceDiscovery(discoveryListenerSimpleHome)
     }
