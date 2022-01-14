@@ -31,27 +31,18 @@
             android:orientation="horizontal"
             tools:ignore="UseCompoundDrawables">
 
-            <ImageView
+            <ImageSwitcher
                 android:id="@+id/deviceIcon"
                 android:layout_width="@dimen/header_icon_height"
                 android:layout_height="@dimen/header_icon_height"
-                android:contentDescription="@string/main_device_icon"
-                android:gravity="center_vertical"
-                app:srcCompat="@drawable/ic_home_white" />
+                android:gravity="center_vertical" />
 
-            <TextView
+            <TextSwitcher
                 android:id="@+id/deviceName"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/header_icon_height"
-                android:layout_weight="1"
-                android:paddingEnd="?dialogPreferredPadding"
-                android:paddingStart="?dialogPreferredPadding"
-                android:gravity="center_vertical"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:text="@string/main_device_name"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textColor="@android:color/white" />
+                android:layout_height="match_parent"
+                android:layout_marginStart="?dialogPreferredPadding"
+                android:layout_weight="1" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

@@ -2,13 +2,13 @@ package io.github.domi04151309.home.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import androidx.appcompat.app.AppCompatActivity
 import android.view.ContextMenu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import io.github.domi04151309.home.api.SimpleHomeAPI
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.preference.PreferenceManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -16,8 +16,6 @@ import com.google.android.material.snackbar.Snackbar
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.data.ListViewItem
 import io.github.domi04151309.home.helpers.*
-import io.github.domi04151309.home.helpers.P
-import io.github.domi04151309.home.helpers.Theme
 import androidx.recyclerview.widget.RecyclerView
 import io.github.domi04151309.home.adapters.MainListAdapter
 import io.github.domi04151309.home.api.*
@@ -25,9 +23,12 @@ import io.github.domi04151309.home.data.UnifiedRequestCallback
 import io.github.domi04151309.home.helpers.Global.checkNetwork
 import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
 import android.util.DisplayMetrics
+import android.view.Gravity
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlin.math.max
 import kotlin.math.min
+import android.view.animation.AnimationUtils
+import androidx.core.content.ContextCompat
 
 class MainActivity : AppCompatActivity() {
 
@@ -48,8 +49,8 @@ class MainActivity : AppCompatActivity() {
     private var currentView: View? = null
     internal lateinit var devices: Devices
     internal lateinit var adapter: MainListAdapter
-    private lateinit var deviceIcon: ImageView
-    private lateinit var deviceName: TextView
+    private lateinit var deviceIcon: ImageSwitcher
+    private lateinit var deviceName: TextSwitcher
     private lateinit var fab: FloatingActionButton
 
     private var themeId = ""
@@ -66,7 +67,7 @@ class MainActivity : AppCompatActivity() {
             if (holder.response != null) {
                 val device = devices.getDeviceById(holder.deviceId)
                 deviceIcon.setImageResource(device.iconId)
-                deviceName.text = device.name
+                deviceName.setText(device.name)
                 adapter.updateData(holder.response, recyclerViewInterface)
                 fab.hide()
                 isDeviceSelected = true
@@ -201,6 +202,37 @@ class MainActivity : AppCompatActivity() {
         fab = findViewById(R.id.fab)
         themeId = getThemeId()
 
+        deviceIcon.setFactory {
+            val view = ImageView(this@MainActivity)
+            view.layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT
+            )
+            view
+        }
+        deviceName.setFactory {
+            val view = TextView(this@MainActivity)
+            view.layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT
+            )
+            view.setTextAppearance(R.style.TextAppearance_AppCompat_Large)
+            view.setTextColor(ContextCompat.getColor(this, android.R.color.white))
+            view.gravity = Gravity.CENTER_VERTICAL
+            view.ellipsize = TextUtils.TruncateAt.END
+            view.maxLines = 1
+            view
+        }
+
+        val inAnimation = AnimationUtils.loadAnimation(this, android.R.anim.fade_in)
+        val outAnimation = AnimationUtils.loadAnimation(this, android.R.anim.fade_out)
+        inAnimation.duration = inAnimation.duration / 2
+        outAnimation.duration = outAnimation.duration / 2
+        deviceIcon.inAnimation = inAnimation
+        deviceIcon.outAnimation = outAnimation
+        deviceName.inAnimation = inAnimation
+        deviceName.outAnimation = outAnimation
+
         adapter = MainListAdapter(recyclerView)
         recyclerView.layoutManager = GridLayoutManager(this, numberOfRows())
         recyclerView.adapter = adapter
@@ -221,7 +253,7 @@ class MainActivity : AppCompatActivity() {
                     if (checkNetwork(this)) {
                         val device = devices.getDeviceById(deviceId)
                         deviceIcon.setImageResource(device.iconId)
-                        deviceName.text = device.name
+                        deviceName.setText(device.name)
                         selectDevice(deviceId)
                     } else {
                         loadDeviceList()
@@ -400,7 +432,7 @@ class MainActivity : AppCompatActivity() {
         }
         adapter.updateData(listItems, mainHelperInterface)
         deviceIcon.setImageResource(R.drawable.ic_home_white)
-        deviceName.text = resources.getString(R.string.main_device_name)
+        deviceName.setText(resources.getString(R.string.main_device_name))
         fab.show()
         isDeviceSelected = false
         updateHandler.setUpdateFunction {
