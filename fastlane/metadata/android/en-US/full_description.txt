@@ -24,5 +24,4 @@ This app is especially useful if you are using microcontrollers or other small d
 <font color="#2467d6"><b>Related Links</b></font>
 Source code: <a href="https://github.com/Domi04151309/HomeApp">https://github.com/Domi04151309/HomeApp</a>
 Documentation: <a href="https://github.com/Domi04151309/HomeApp/wiki">https://github.com/Domi04151309/HomeApp/wiki</a>
-Website: <a href="https://domi04151309.github.io/Android/HomeApp">https://domi04151309.github.io/Android/HomeApp</a>
 Icons8: <a href="https://icons8.com/">https://icons8.com/</a>
