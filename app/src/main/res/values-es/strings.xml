@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Home</string>
-    <string name="app_by">Home App de Domi04151309</string>
 
     <string name="main_no_devices">Sin dispositivos encontrados</string>
     <string name="main_no_devices_summary">Añade un nuevo dispositivo en los ajustes</string>
@@ -80,11 +79,6 @@
 
     <string name="about">Acerca de</string>
     <string name="about_summary">Sobre la aplicación</string>
-    <string name="about_version">Versión %1$s</string>
-    <string name="about_github">Puede que existan versiones más recientes disponibles en <a href="https://github.com/Domi04151309/HomeApp">GitHub</a>. Esta aplicación es y siempre será software libre. No pague por esta aplicación.</string>
-    <string name="about_license">Esta aplicación se distribuye bajo los términos y condiciones de la <a href="https://github.com/Domi04151309/HomeApp/blob/master/LICENSE">GNU General Public License v3.0</a></string>
-    <string name="about_damage" >No soy responsable de ningún daño a su dispositivo.</string>
-    <string name="about_icons">Iconos de <a href="https://icons8.com/">Icon8</a> y <a href="https://material.io/resources/icons/">Google</a>.</string>
 
     <string-array name="pref_theme_array">
         <item>Tema claro</item>

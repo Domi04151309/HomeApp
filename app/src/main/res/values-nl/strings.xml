@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Huis</string>
-    <string name="app_by">Huis-app, gemaakt door @Domi04151309</string>
 
     <string name="main_no_devices">Geen apparaten aangetroffen</string>
     <string name="main_no_devices_summary">Ga naar de instellingen en voeg een apparaat toe</string>
@@ -80,11 +79,6 @@
 
     <string name="about">Over</string>
     <string name="about_summary">Over de app</string>
-    <string name="about_version">Versie %1$s</string>
-    <string name="about_github">Wellicht is er een nieuwere versie beschikbaar op <a href="https://github.com/Domi04151309/HomeApp">GitHub</a>. Deze app is gratis en zal dat ook altijd blijven. Betaal niet voor deze app.</string>
-    <string name="about_license">Deze app wordt verspreid onder de voorwaarden van de <a href="https://github.com/Domi04151309/HomeApp/blob/master/LICENSE">GNU General Public License v3.0</a></string>
-    <string name="about_damage">Ik ben niet verantwoordelijk voor schade aan je apparaat.</string>
-    <string name="about_icons">De pictogrammen zijn gemaakt door <a href="https://icons8.com/">Icons8</a> and <a href="https://material.io/resources/icons/">Google</a>.</string>
 
     <string-array name="pref_theme_array">
         <item>Licht thema</item>
