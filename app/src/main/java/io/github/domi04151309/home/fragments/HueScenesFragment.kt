@@ -62,7 +62,7 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes), RecyclerViewHe
                         var currentObject: JSONObject
                         for (i in response.keys()) {
                             currentObject = response.getJSONObject(i)
-                            if (currentObject.getString("group") == lampData.id) {
+                            if (currentObject.optString("group") == lampData.id) {
                                 sceneIds.add(i)
                                 sceneNames.add(currentObject.getString("name"))
                             }
