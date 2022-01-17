@@ -52,8 +52,10 @@ class HueAPI(
                     var currentObject: JSONObject
                     for (i in response.keys()) {
                         currentObject = response.getJSONObject(i)
-                        if (currentObject.getString("type") == "Room") rooms.add(Group(i, currentObject))
-                        else zones.add(Group(i, currentObject))
+                        when (currentObject.getString("type")) {
+                            "Room" -> rooms.add(Group(i, currentObject))
+                            "Zone" -> zones.add(Group(i, currentObject))
+                        }
                     }
                     val sortedRooms = rooms.sortedWith(compareBy{ it.value.getString("name") })
                     for (i in sortedRooms.indices) {
