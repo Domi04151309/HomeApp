@@ -134,8 +134,9 @@
     <string name="about_contributors_desc">Eine Liste der Mitwirkenden</string>
     <string name="about_general">Allgemein</string>
     <string name="about_github">GitHub-Repository</string>
+    <string name="about_license">Lizenz</string>
     <string name="about_icons">Icons</string>
-    <string name="about_icons_desc">Icons von Icons8 und Google.</string>
+    <string name="about_icons_desc">Icons von Icons8 und Google</string>
     <string name="about_libraries">Bibliotheken</string>
     <string name="about_libraries_desc">Eine Liste aller verwendeten Bibliotheken</string>
 

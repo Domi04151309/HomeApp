@@ -137,8 +137,10 @@
     <string name="about_contributors_desc">A list of the contributors</string>
     <string name="about_general">General</string>
     <string name="about_github">GitHub repository</string>
+    <string name="about_license">License</string>
+    <string name="about_license_desc" translatable="false">GPL-3.0</string>
     <string name="about_icons">Icons</string>
-    <string name="about_icons_desc">Icons by Icons8 and Google.</string>
+    <string name="about_icons_desc">Icons by Icons8 and Google</string>
     <string name="about_libraries">Libraries</string>
     <string name="about_libraries_desc">A list of all used libraries</string>
 

@@ -38,7 +38,7 @@ class AboutActivity : AppCompatActivity() {
                     PackageInfoCompat.getLongVersionCode(pInfo)
                 )
                 setOnPreferenceClickListener {
-                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(REPOSITORY_URL_GITHUB + "/releases")))
+                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("$REPOSITORY_URL_GITHUB/releases")))
                     true
                 }
             }
@@ -48,6 +48,10 @@ class AboutActivity : AppCompatActivity() {
                     startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(REPOSITORY_URL_GITHUB)))
                     true
                 }
+            }
+            findPreference<Preference>("license")?.setOnPreferenceClickListener {
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("$REPOSITORY_URL_GITHUB/blob/master/LICENSE")))
+                true
             }
             findPreference<Preference>("icons")?.setOnPreferenceClickListener {
                 AlertDialog.Builder(requireContext())

@@ -17,10 +17,10 @@
             app:title="@string/about_github" />
 
         <Preference
-            app:icon="@drawable/ic_about_palette"
-            app:key="icons"
-            app:summary="@string/about_icons_desc"
-            app:title="@string/about_icons" />
+            app:icon="@drawable/ic_about_github"
+            app:key="license"
+            app:summary="@string/about_license_desc"
+            app:title="@string/about_license" />
 
         <Preference
             app:icon="@drawable/ic_about_contributor"
@@ -33,5 +33,11 @@
             app:key="libraries"
             app:summary="@string/about_libraries_desc"
             app:title="@string/about_libraries" />
+
+        <Preference
+            app:icon="@drawable/ic_about_palette"
+            app:key="icons"
+            app:summary="@string/about_icons_desc"
+            app:title="@string/about_icons" />
     </PreferenceCategory>
 </PreferenceScreen>
