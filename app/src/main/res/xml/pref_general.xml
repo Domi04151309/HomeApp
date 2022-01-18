@@ -11,6 +11,15 @@
             app:summary="@string/pref_theme_summary"
             app:title="@string/pref_theme"
             app:iconSpaceReserved="false" />
+
+        <ListPreference
+            app:defaultValue="auto"
+            app:entries="@array/pref_columns_array"
+            app:entryValues="@array/pref_columns_array_values"
+            app:key="columns"
+            app:summary="@string/pref_columns_summary"
+            app:title="@string/pref_columns"
+            app:iconSpaceReserved="false" />
     </PreferenceCategory>
     <PreferenceCategory
         app:title="@string/pref_devices"

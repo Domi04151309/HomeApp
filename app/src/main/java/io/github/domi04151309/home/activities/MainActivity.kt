@@ -55,8 +55,13 @@ class MainActivity : AppCompatActivity() {
 
     private var themeId = ""
     private fun getThemeId(): String =
+        PreferenceManager.getDefaultSharedPreferences(this)
+            .getString(P.PREF_THEME, P.PREF_THEME_DEFAULT) ?: P.PREF_THEME_DEFAULT
+    private var columns: Int? = null
+    private fun getColumns(): Int? = (
             PreferenceManager.getDefaultSharedPreferences(this)
-                    .getString(P.PREF_THEME, P.PREF_THEME_DEFAULT) ?: P.PREF_THEME_DEFAULT
+                .getString(P.PREF_COLUMNS, P.PREF_COLUMNS_DEFAULT) ?: P.PREF_COLUMNS_DEFAULT
+            ).toIntOrNull()
 
     /*
      * Unified callbacks
@@ -201,6 +206,7 @@ class MainActivity : AppCompatActivity() {
         deviceName = findViewById(R.id.deviceName)
         fab = findViewById(R.id.fab)
         themeId = getThemeId()
+        columns = getColumns()
 
         deviceIcon.setFactory {
             val view = ImageView(this@MainActivity)
@@ -314,6 +320,10 @@ class MainActivity : AppCompatActivity() {
             themeId = getThemeId()
             recreate()
         }
+        if (getColumns() != columns) {
+            columns = getColumns()
+            recreate()
+        }
         if (shouldReset) {
             loadDeviceList()
             shouldReset = false
@@ -332,6 +342,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun numberOfRows(): Int {
+        if (columns != null) return columns ?: 1
         val displayMetrics: DisplayMetrics = resources.displayMetrics
         val horizontal: Int = ((displayMetrics.widthPixels / displayMetrics.density) / 240).toInt()
         val vertical: Int = ((displayMetrics.heightPixels / displayMetrics.density) / 240).toInt()

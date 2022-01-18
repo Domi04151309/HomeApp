@@ -71,6 +71,8 @@
     <string name="pref_general">General Settings</string>
     <string name="pref_theme">Change theme</string>
     <string name="pref_theme_summary">Changes the look of the app</string>
+    <string name="pref_columns">Column count</string>
+    <string name="pref_columns_summary">Changes the number of columns of the main list</string>
     <string name="pref_devices">Devices</string>
     <string name="pref_edit">Edit device list</string>
     <string name="pref_edit_summary">Edit the list of devices</string>
@@ -165,6 +167,20 @@
         <item>dark</item>
         <item>black</item>
         <item>auto</item>
+    </string-array>
+    <string-array name="pref_columns_array">
+        <item>Auto</item>
+        <item>One</item>
+        <item>Two</item>
+        <item>Three</item>
+        <item>Four</item>
+    </string-array>
+    <string-array name="pref_columns_array_values" translatable="false">
+        <item>auto</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
     </string-array>
     <string-array name="pref_add_method_array">
         <item>Add device by address</item>

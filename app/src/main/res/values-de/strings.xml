@@ -69,6 +69,8 @@
     <string name="pref_general">Generelle Einstellungen</string>
     <string name="pref_theme">Thema ändern</string>
     <string name="pref_theme_summary">Ändert das Aussehen der App</string>
+    <string name="pref_columns">Spaltenanzahl</string>
+    <string name="pref_columns_summary">Ändert die Anzahl der Spalten der Hauptliste</string>
     <string name="pref_devices">Geräte</string>
     <string name="pref_edit">Geräteliste bearbeiten</string>
     <string name="pref_edit_summary">Bearbeiten Sie Ihre Geräteliste</string>
@@ -145,6 +147,13 @@
         <item>Dunkles Thema</item>
         <item>Schwarzes Thema</item>
         <item>System Thema benutzen</item>
+    </string-array>
+    <string-array name="pref_columns_array">
+        <item>Auto</item>
+        <item>Eins</item>
+        <item>Zwei</item>
+        <item>Drei</item>
+        <item>Vier</item>
     </string-array>
     <string-array name="pref_add_method_array">
         <item>Gerät mit Adresse hinzufügen</item>
