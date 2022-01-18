@@ -386,6 +386,7 @@ class MainActivity : AppCompatActivity() {
                     icon = R.drawable.ic_info
                 )
             } else {
+                var actualPosition = 0
                 for (i in 0 until devices.length()) {
                     val currentDevice = devices.getDeviceByIndex(i)
                     if (!currentDevice.hide) {
@@ -394,24 +395,27 @@ class MainActivity : AppCompatActivity() {
                             && UNIFIED_MODES.contains(currentDevice.mode)
                             && checkNetwork(this)
                         ) {
-                            val api = getCorrectAPI(currentDevice.mode, currentDevice.id)
-                            api?.loadList(object : UnifiedAPI.CallbackInterface {
-                                override fun onItemsLoaded(
-                                    holder: UnifiedRequestCallback,
-                                    recyclerViewInterface: HomeRecyclerViewHelperInterface?
-                                ) {
-                                    if (holder.response != null) {
-                                        adapter.updateDirectView(
-                                            currentDevice.id, holder.response, i
-                                        )
-                                        registeredForUpdates[i] = api
+                            actualPosition.let {
+                                val api = getCorrectAPI(currentDevice.mode, currentDevice.id)
+                                api?.loadList(object : UnifiedAPI.CallbackInterface {
+                                    override fun onItemsLoaded(
+                                        holder: UnifiedRequestCallback,
+                                        recyclerViewInterface: HomeRecyclerViewHelperInterface?
+                                    ) {
+                                        if (holder.response != null) {
+                                            adapter.updateDirectView(
+                                                currentDevice.id, holder.response, it
+                                            )
+                                            registeredForUpdates[it] = api
+                                        }
                                     }
-                                }
-                                override fun onExecuted(
-                                    result: String,
-                                    shouldRefresh: Boolean
-                                ) {}
-                            })
+                                    override fun onExecuted(
+                                        result: String,
+                                        shouldRefresh: Boolean
+                                    ) {}
+                                })
+                            }
+
                         }
                         listItems += ListViewItem(
                             title = currentDevice.name,
@@ -419,6 +423,7 @@ class MainActivity : AppCompatActivity() {
                             hidden = currentDevice.id,
                             icon = currentDevice.iconId
                         )
+                        actualPosition++
                     }
                 }
             }
