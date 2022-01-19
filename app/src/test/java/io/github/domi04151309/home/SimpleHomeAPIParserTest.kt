@@ -12,7 +12,7 @@ import org.robolectric.RuntimeEnvironment
 @RunWith(RobolectricTestRunner::class)
 class SimpleHomeAPIParserTest {
     private val resources: Resources = RuntimeEnvironment.getApplication().applicationContext.resources
-    private val parser = SimpleHomeAPIParser(resources)
+    private val parser = SimpleHomeAPIParser(resources, null)
 
     @Test
     fun parseListItems_TemperatureSensor() {
@@ -34,6 +34,14 @@ class SimpleHomeAPIParserTest {
         Assert.assertEquals(null, listItems[num].state)
         Assert.assertEquals("none@humidity", listItems[num].hidden)
         Assert.assertEquals(R.drawable.ic_device_hygrometer, listItems[num].icon)
+    }
+
+    @Test
+    fun parseStates_TemperatureSensor() {
+        val commandsJson = JSONObject(Helpers.getFileContents("/simplehome/temperature-sensor-commands.json"))
+
+        val states = parser.parseStates(commandsJson)
+        Assert.assertEquals(arrayListOf(null, null), states)
     }
 
     @Test
@@ -77,5 +85,13 @@ class SimpleHomeAPIParserTest {
         Assert.assertEquals(null, listItems[num].state)
         Assert.assertEquals("action@rand", listItems[num].hidden)
         Assert.assertEquals(R.drawable.ic_do, listItems[num].icon)
+    }
+
+    @Test
+    fun parseStates_TestServer() {
+        val commandsJson = JSONObject(Helpers.getFileContents("/simplehome/test-server-commands.json"))
+
+        val states = parser.parseStates(commandsJson)
+        Assert.assertEquals(arrayListOf(null, null, null, true, null), states)
     }
 }
