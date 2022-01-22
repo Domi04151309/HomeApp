@@ -143,7 +143,7 @@ class MainActivity : AppCompatActivity() {
                     if (state) R.string.switch_summary_on
                     else R.string.switch_summary_off
                 )
-            api?.changeSwitchState(data.hidden, state)
+            api?.changeSwitchState(data.hidden.substring(deviceId.length + 1), state)
         }
         override fun onItemClicked(view: View, data: ListViewItem) {
             currentView = view
