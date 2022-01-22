@@ -7,4 +7,5 @@
     <color name="dividerLight">#14000000</color>
     <color name="dividerDark">#14ffffff</color>
     <color name="navigationBarColor">#000001</color>
+    <color name="gray">#212121</color>
 </resources>
