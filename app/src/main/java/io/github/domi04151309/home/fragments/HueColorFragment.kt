@@ -41,7 +41,7 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
         c = context ?: throw IllegalStateException()
         lampActivity = context as HueLampActivity
         lampData = lampActivity.lampData
-        hueAPI = HueAPI(c, lampActivity.deviceId)
+        hueAPI = HueAPI(c, lampActivity.device.id)
 
         val view = super.onCreateView(inflater, container, savedInstanceState) ?: throw IllegalStateException()
         val colorPickerView = view.findViewById<ColorPickerView>(R.id.colorPickerView)

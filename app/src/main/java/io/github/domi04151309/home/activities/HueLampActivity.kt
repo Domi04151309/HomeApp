@@ -1,9 +1,16 @@
 package io.github.domi04151309.home.activities
 
 import android.animation.ObjectAnimator
+import android.content.Intent
+import android.content.pm.ShortcutInfo
+import android.content.pm.ShortcutManager
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.drawable.Icon
+import android.os.Build
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.*
@@ -21,6 +28,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.adapters.HueDetailsTabAdapter
 import io.github.domi04151309.home.api.HueAPI
+import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.helpers.*
 import io.github.domi04151309.home.helpers.Global.volleyError
 import io.github.domi04151309.home.helpers.Theme
@@ -37,15 +45,17 @@ class HueLampActivity : AppCompatActivity() {
         }
     }
 
-    var deviceId: String = ""
     var addressPrefix: String = ""
     var id: String = ""
     var lights: JSONArray? = null
     var canReceiveRequest: Boolean = false
     var lampData: HueLampData = HueLampData()
     var isRoom: Boolean = false
-    lateinit var lampIcon: ImageView
+    private var internId: String = ""
+    private var lampName: String = ""
     private var updateDataRequest: JsonObjectRequest? = null
+    lateinit var device: DeviceItem
+    lateinit var lampIcon: ImageView
     internal lateinit var hueAPI: HueAPI
     private lateinit var queue: RequestQueue
 
@@ -54,7 +64,7 @@ class HueLampActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hue_lamp)
 
-        val internId = intent.getStringExtra("ID") ?: "0"
+        internId = intent.getStringExtra("id") ?: "0"
         if (internId.startsWith("room#") || internId.startsWith("zone#")) {
             id = internId.substring(internId.lastIndexOf('#') + 1)
             isRoom = true
@@ -62,12 +72,21 @@ class HueLampActivity : AppCompatActivity() {
             id = internId
             isRoom = false
         }
-        deviceId = intent.getStringExtra("Device") ?: ""
-        val device = Devices(this).getDeviceById(deviceId)
-        hueAPI = HueAPI(this, deviceId)
+        if (intent.hasExtra("device")) {
+            val extraDevice = intent.getStringExtra("device") ?: ""
+            val devices = Devices(this)
+            if (devices.idExists(extraDevice)) {
+                device = devices.getDeviceById(extraDevice)
+            } else {
+                Toast.makeText(this, R.string.main_device_nonexistent, Toast.LENGTH_LONG).show()
+                finish()
+                return
+            }
+        }
+
+        hueAPI = HueAPI(this, device.id)
         addressPrefix = device.address + "api/" + hueAPI.getUsername()
         queue = Volley.newRequestQueue(this)
-
         title = device.name
         lampIcon = findViewById(R.id.lampIcon)
         val nameTxt = findViewById<TextView>(R.id.nameTxt)
@@ -104,7 +123,8 @@ class HueLampActivity : AppCompatActivity() {
             updateDataRequest = JsonObjectRequest(Request.Method.GET, "$addressPrefix/groups/$id", null,
                     { response ->
                         lights = response.getJSONArray("lights")
-                        nameTxt.text = response.getString("name")
+                        lampName = response.getString("name")
+                        nameTxt.text = lampName
                         val action = response.getJSONObject("action")
 
                         if (action.has("bri")) {
@@ -170,7 +190,8 @@ class HueLampActivity : AppCompatActivity() {
         else {
             updateDataRequest = JsonObjectRequest(Request.Method.GET, "$addressPrefix/lights/$id", null,
                     { response ->
-                        nameTxt.text = response.getString("name")
+                        lampName = response.getString("name")
+                        nameTxt.text = lampName
                         val state = response.getJSONObject("state")
 
                         if (state.has("bri")) {
@@ -240,5 +261,40 @@ class HueLampActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         canReceiveRequest = false
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.activity_hue_lamp_actions, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return if (item.itemId == R.id.action_add_shortcut) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val shortcutManager = this.getSystemService(ShortcutManager::class.java)
+                if (shortcutManager != null) {
+                    if (shortcutManager.isRequestPinShortcutSupported) {
+                        val shortcut = ShortcutInfo.Builder(this, device.id + lampName)
+                            .setShortLabel(lampName)
+                            .setLongLabel(lampName)
+                            .setIcon(Icon.createWithResource(this, device.iconId))
+                            .setIntent(
+                                Intent(this, HueLampActivity::class.java)
+                                    .putExtra("id", internId)
+                                    .putExtra("device", device.id)
+                                    .setAction(Intent.ACTION_MAIN)
+                                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                            )
+                            .build()
+                        shortcutManager.requestPinShortcut(shortcut, null)
+                    } else
+                        Toast.makeText(this, R.string.pref_add_shortcut_failed, Toast.LENGTH_LONG).show()
+                }
+            } else
+                Toast.makeText(this, R.string.pref_add_shortcut_failed, Toast.LENGTH_LONG).show()
+            true
+        } else {
+            super.onOptionsItemSelected(item)
+        }
     }
 }

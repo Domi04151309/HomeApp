@@ -253,7 +253,7 @@ class MainActivity : AppCompatActivity() {
 
         //Handle shortcut
         try {
-            if(intent.hasExtra("device")) {
+            if (intent.hasExtra("device")) {
                 val deviceId = intent.getStringExtra("device") ?: ""
                 if (devices.idExists(deviceId)) {
                     if (checkNetwork(this)) {

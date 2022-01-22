@@ -88,8 +88,8 @@ class HueAPI(
     override fun execute(path: String, callback: CallbackInterface) {
         c.startActivity(
             Intent(c, HueLampActivity::class.java)
-                .putExtra("ID", path)
-                .putExtra("Device", deviceId)
+                .putExtra("id", path)
+                .putExtra("device", deviceId)
         )
     }
 

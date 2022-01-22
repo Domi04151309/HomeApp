@@ -40,7 +40,7 @@ class HueLampsFragment : Fragment(R.layout.fragment_hue_lamps), RecyclerViewHelp
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         c = context ?: throw IllegalStateException()
         lampData = context as HueLampActivity
-        hueAPI = HueAPI(c, lampData.deviceId)
+        hueAPI = HueAPI(c, lampData.device.id)
         queue = Volley.newRequestQueue(context)
 
         val recyclerView = (super.onCreateView(inflater, container, savedInstanceState) ?: throw IllegalStateException()) as RecyclerView
@@ -119,8 +119,8 @@ class HueLampsFragment : Fragment(R.layout.fragment_hue_lamps), RecyclerViewHelp
     override fun onItemClicked(view: View, position: Int) {
         startActivity(
             Intent(c, HueLampActivity::class.java)
-                .putExtra("ID", view.findViewById<TextView>(R.id.hidden).text.toString())
-                .putExtra("Device", lampData.deviceId)
+                .putExtra("id", view.findViewById<TextView>(R.id.hidden).text.toString())
+                .putExtra("device", lampData.device.id)
         )
     }
 }
