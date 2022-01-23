@@ -1,0 +1,272 @@
+{
+  "1": {
+    "name": "Bedroom",
+    "lights": [
+      "11"
+    ],
+    "sensors": [],
+    "type": "Room",
+    "state": {
+      "all_on": false,
+      "any_on": false
+    },
+    "recycle": false,
+    "class": "Bedroom",
+    "action": {
+      "on": false,
+      "bri": 254,
+      "ct": 366,
+      "alert": "select",
+      "colormode": "ct"
+    }
+  },
+  "2": {
+    "name": "Living Room",
+    "lights": [
+      "1",
+      "7",
+      "2",
+      "10"
+    ],
+    "sensors": [],
+    "type": "Room",
+    "state": {
+      "all_on": false,
+      "any_on": false
+    },
+    "recycle": false,
+    "class": "Living room",
+    "action": {
+      "on": false,
+      "bri": 254,
+      "hue": 556,
+      "sat": 254,
+      "effect": "none",
+      "xy": [
+        0.5267,
+        0.4133
+      ],
+      "ct": 366,
+      "alert": "select",
+      "colormode": "ct"
+    }
+  },
+  "3": {
+    "name": "Kitchen Ceiling",
+    "lights": [
+      "13",
+      "14",
+      "15"
+    ],
+    "sensors": [],
+    "type": "Zone",
+    "state": {
+      "all_on": false,
+      "any_on": false
+    },
+    "recycle": false,
+    "class": "Kitchen",
+    "action": {
+      "on": false,
+      "bri": 254,
+      "ct": 369,
+      "alert": "select",
+      "colormode": "ct"
+    }
+  },
+  "4": {
+    "name": "Living Room Ambient",
+    "lights": [
+      "7",
+      "2",
+      "1"
+    ],
+    "sensors": [],
+    "type": "Zone",
+    "state": {
+      "all_on": false,
+      "any_on": false
+    },
+    "recycle": false,
+    "class": "Living room",
+    "action": {
+      "on": false,
+      "bri": 76,
+      "hue": 556,
+      "sat": 254,
+      "effect": "none",
+      "xy": [
+        0.5267,
+        0.4133
+      ],
+      "ct": 454,
+      "alert": "select",
+      "colormode": "ct"
+    }
+  },
+  "5": {
+    "name": "Hallway",
+    "lights": [
+      "9",
+      "12"
+    ],
+    "sensors": [],
+    "type": "Room",
+    "state": {
+      "all_on": false,
+      "any_on": false
+    },
+    "recycle": false,
+    "class": "Hallway",
+    "action": {
+      "on": false,
+      "bri": 143,
+      "ct": 443,
+      "alert": "select",
+      "colormode": "ct"
+    }
+  },
+  "6": {
+    "name": "Office",
+    "lights": [
+      "8"
+    ],
+    "sensors": [],
+    "type": "Room",
+    "state": {
+      "all_on": false,
+      "any_on": false
+    },
+    "recycle": false,
+    "class": "Computer",
+    "action": {
+      "on": false,
+      "bri": 254,
+      "alert": "select"
+    }
+  },
+  "7": {
+    "name": "Kitchen",
+    "lights": [
+      "13",
+      "14",
+      "15",
+      "6",
+      "5"
+    ],
+    "sensors": [],
+    "type": "Room",
+    "state": {
+      "all_on": false,
+      "any_on": false
+    },
+    "recycle": false,
+    "class": "Kitchen",
+    "action": {
+      "on": false,
+      "bri": 254,
+      "ct": 369,
+      "alert": "select",
+      "colormode": "hs"
+    }
+  },
+  "8": {
+    "name": "Unused",
+    "lights": [
+      "4",
+      "3"
+    ],
+    "sensors": [],
+    "type": "Room",
+    "state": {
+      "all_on": false,
+      "any_on": false
+    },
+    "recycle": false,
+    "class": "Home",
+    "action": {
+      "on": false,
+      "bri": 119,
+      "ct": 439,
+      "alert": "select",
+      "colormode": "ct"
+    }
+  },
+  "9": {
+    "name": "Kitchen Cabinets",
+    "lights": [
+      "6",
+      "5"
+    ],
+    "sensors": [],
+    "type": "Zone",
+    "state": {
+      "all_on": false,
+      "any_on": false
+    },
+    "recycle": false,
+    "class": "Kitchen",
+    "action": {
+      "on": false,
+      "alert": "select"
+    }
+  },
+  "10": {
+    "name": "Custom group for $leftGroup",
+    "lights": [
+      "10"
+    ],
+    "sensors": [],
+    "type": "LightGroup",
+    "state": {
+      "all_on": false,
+      "any_on": false
+    },
+    "recycle": true,
+    "action": {
+      "on": false,
+      "bri": 254,
+      "ct": 366,
+      "alert": "select",
+      "colormode": "ct"
+    }
+  },
+  "11": {
+    "name": "Custom group for $leftGroup",
+    "lights": [
+      "8"
+    ],
+    "sensors": [],
+    "type": "LightGroup",
+    "state": {
+      "all_on": false,
+      "any_on": false
+    },
+    "recycle": true,
+    "action": {
+      "on": false,
+      "bri": 254,
+      "alert": "select"
+    }
+  },
+  "12": {
+    "name": "Custom group for $leftGroup",
+    "lights": [
+      "11"
+    ],
+    "sensors": [],
+    "type": "LightGroup",
+    "state": {
+      "all_on": false,
+      "any_on": false
+    },
+    "recycle": true,
+    "action": {
+      "on": false,
+      "bri": 254,
+      "ct": 366,
+      "alert": "select",
+      "colormode": "ct"
+    }
+  }
+}
