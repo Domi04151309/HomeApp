@@ -148,7 +148,7 @@ class ShellyAPI(
             return JsonObjectRequest(
                 url + (if (version == 1) "settings" else "shelly"),
                 { statusResponse ->
-                    listener.onResponse(if (statusResponse.isNull("name")) "" else statusResponse.optString("name", ""))
+                    listener.onResponse(if (statusResponse.isNull("name")) "" else statusResponse.optString("name"))
                 }, {}
             )
         }

@@ -38,7 +38,7 @@ class ContributorActivity : AppCompatActivity() {
                 Preference(context).apply {
                     val contributions = contributor.optInt("contributions", -1)
                     icon = drawable
-                    title = contributor.optString("login", "")
+                    title = contributor.optString("login")
                     summary = resources.getQuantityString(R.plurals.about_contributions, contributions, contributions)
                 }
             )
@@ -56,7 +56,7 @@ class ContributorActivity : AppCompatActivity() {
                     for (i in 0 until response.length()) {
                         val currentContributor = response.getJSONObject(i)
                         queue.add(ImageRequest(
-                            currentContributor.optString("avatar_url", ""),
+                            currentContributor.optString("avatar_url"),
                             { image ->
                                 addPreference(currentContributor, BitmapDrawable(resources, image))
                             },

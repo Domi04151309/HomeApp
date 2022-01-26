@@ -22,12 +22,12 @@ class TasmotaHelper(private val c: Context, private val tasmota: UnifiedAPI)  {
 
     fun updateItem(callback: UnifiedAPI.CallbackInterface, index: Int) {
         val array = JSONArray(prefs.getString(tasmota.deviceId, EMPTY_ARRAY))
-        val arrayItem = array.getJSONObject(index)
+        val arrayItem = array.optJSONObject(index) ?: JSONObject()
         val view = LayoutInflater.from(c).inflate(R.layout.dialog_tasmota_add, nullParent, false)
         val titleTxt = view.findViewById<EditText>(R.id.title)
         val commandTxt = view.findViewById<EditText>(R.id.command)
-        titleTxt.setText(arrayItem.getString("title"))
-        commandTxt.setText(arrayItem.getString("command"))
+        titleTxt.setText(arrayItem.optString("title"))
+        commandTxt.setText(arrayItem.optString("command"))
         AlertDialog.Builder(c)
             .setTitle(R.string.tasmota_add_command)
             .setView(view)

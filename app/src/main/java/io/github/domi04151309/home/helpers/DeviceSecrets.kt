@@ -39,7 +39,7 @@ class DeviceSecrets(context: Context, private val id: String) {
 
     var username: String
         get() {
-            return if (secrets.has("username")) secrets.getString("username") else ""
+            return secrets.optString("username")
         }
         set(value) {
             secrets.put("username", value)
@@ -47,7 +47,7 @@ class DeviceSecrets(context: Context, private val id: String) {
 
     var password: String
         get() {
-            return if (secrets.has("password")) secrets.getString("password") else ""
+            return secrets.optString("password")
         }
         set(value) {
             secrets.put("password", value)

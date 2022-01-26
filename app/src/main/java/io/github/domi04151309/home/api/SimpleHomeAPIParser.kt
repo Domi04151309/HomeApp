@@ -17,8 +17,8 @@ class SimpleHomeAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.P
             currentObject = commands.getJSONObject(i)
             currentMode = currentObject.optString("mode", "action")
             listItems += ListViewItem(
-                title = currentObject.optString("title", ""),
-                summary = currentObject.optString("summary", ""),
+                title = currentObject.optString("title"),
+                summary = currentObject.optString("summary"),
                 hidden = "$currentMode@$i",
                 icon = Global.getIcon(currentObject.optString("icon"), R.drawable.ic_do),
                 state = if (currentMode == "switch") currentObject.optBoolean("data", false) else null

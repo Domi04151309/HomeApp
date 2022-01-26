@@ -31,7 +31,7 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
 
             listItems += ListViewItem(
                 title = nameOrDefault(
-                    if (currentRelay.isNull("name")) "" else currentRelay.optString("name", ""),
+                    if (currentRelay.isNull("name")) "" else currentRelay.optString("name"),
                     relayId
                 ),
                 summary = resources.getString(
