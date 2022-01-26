@@ -169,8 +169,12 @@ class EditDeviceActivity : AppCompatActivity() {
                     if (shortcutManager != null) {
                         if (shortcutManager.isRequestPinShortcutSupported) {
                             val shortcut = ShortcutInfo.Builder(this, deviceId)
-                                    .setShortLabel(deviceObj.name)
-                                    .setLongLabel(deviceObj.name)
+                                    .setShortLabel(deviceObj.name.ifEmpty {
+                                        resources.getString(R.string.pref_add_name_empty)
+                                    })
+                                    .setLongLabel(deviceObj.name.ifEmpty {
+                                        resources.getString(R.string.pref_add_name_empty)
+                                    })
                                     .setIcon(Icon.createWithResource(this, deviceObj.iconId))
                                     .setIntent(
                                             Intent(this, MainActivity::class.java)

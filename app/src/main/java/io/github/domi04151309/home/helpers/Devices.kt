@@ -5,8 +5,9 @@ import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import io.github.domi04151309.home.data.DeviceItem
 import org.json.JSONArray
+import org.json.JSONException
 import org.json.JSONObject
-import java.util.*
+import java.util.Random
 
 class Devices(private val context: Context) {
 
@@ -23,16 +24,20 @@ class Devices(private val context: Context) {
 
     private val data: JSONObject get() {
         if (storedData == null) {
-            storedData = JSONObject(
-                _prefs.getString("devices_json", Global.DEFAULT_JSON)
-                    ?: Global.DEFAULT_JSON
-            )
+            storedData = try {
+                JSONObject(
+                    _prefs.getString("devices_json", Global.DEFAULT_JSON)
+                        ?: Global.DEFAULT_JSON
+                )
+            } catch (e: JSONException) {
+                JSONObject(Global.DEFAULT_JSON)
+            }
         }
         return storedData!!
     }
 
     private val devicesObject: JSONObject get() {
-        return data.getJSONObject("devices")
+        return data.optJSONObject("devices") ?: JSONObject()
     }
 
     private val deviceOrder: JSONArray get() {
@@ -40,43 +45,6 @@ class Devices(private val context: Context) {
             data.put("order", devicesObject.names() ?: JSONArray())
         }
         return data.getJSONArray("order")
-    }
-
-    private fun convertToDeviceItem(id: String, jsonObj: JSONObject): DeviceItem {
-        val device = DeviceItem(id)
-        device.name = jsonObj.getString("name")
-        device.address = jsonObj.getString("address")
-        device.mode = jsonObj.getString("mode")
-        device.iconName = jsonObj.getString("icon")
-        device.hide = jsonObj.optBoolean("hide", false)
-        device.directView = jsonObj.optBoolean("direct_view", false)
-        return device
-    }
-
-    fun getDeviceById(id: String): DeviceItem {
-        return convertToDeviceItem(id, devicesObject.getJSONObject(id))
-    }
-
-    fun getDeviceByIndex(index: Int): DeviceItem {
-        val id = deviceOrder.getString(index)
-        return convertToDeviceItem(id, devicesObject.getJSONObject(id))
-    }
-
-    fun length(): Int {
-        return devicesObject.length()
-    }
-
-    fun idExists(id: String): Boolean {
-        return devicesObject.has(id)
-    }
-
-    fun addressExists(address: String): Boolean {
-        val formattedAddress = DeviceItem.formatAddress(address)
-        for (i in devicesObject.keys()) {
-            if (devicesObject.getJSONObject(i).optString("address", "") == formattedAddress)
-                return true
-        }
-        return false
     }
 
     private fun generateRandomId(): String {
@@ -87,10 +55,47 @@ class Devices(private val context: Context) {
         return sb.toString()
     }
 
+    private fun convertToDeviceItem(id: String): DeviceItem {
+        val json = devicesObject.optJSONObject(id) ?: JSONObject()
+        val device = DeviceItem(id)
+        device.name = json.optString("name")
+        device.address = json.optString("address")
+        device.mode = json.optString("mode")
+        device.iconName = json.optString("icon")
+        device.hide = json.optBoolean("hide", false)
+        device.directView = json.optBoolean("direct_view", false)
+        return device
+    }
+
+    fun getDeviceById(id: String): DeviceItem {
+        return convertToDeviceItem(id)
+    }
+
+    fun getDeviceByIndex(index: Int): DeviceItem {
+        val id = deviceOrder.getString(index)
+        return convertToDeviceItem(id)
+    }
+
+    val length: Int get() {
+        return deviceOrder.length()
+    }
+
+    fun idExists(id: String): Boolean {
+        return devicesObject.has(id)
+    }
+
+    fun addressExists(address: String): Boolean {
+        val formattedAddress = DeviceItem.formatAddress(address)
+        for (i in devicesObject.keys()) {
+            if (devicesObject.getJSONObject(i).optString("address") == formattedAddress)
+                return true
+        }
+        return false
+    }
+
     fun generateNewId(): String {
         var id = generateRandomId()
-        while (devicesObject.has(id))
-            id = generateRandomId()
+        while (devicesObject.has(id)) id = generateRandomId()
         return id
     }
 
