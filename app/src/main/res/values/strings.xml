@@ -154,6 +154,7 @@
     <string translatable="false" name="library_junit">JUnit</string>
     <string translatable="false" name="library_material">Material Components For Android</string>
     <string translatable="false" name="library_robolectric">Robolectric</string>
+    <string translatable="false" name="library_upnpdiscovery">UPnPDiscovery</string>
     <string translatable="false" name="library_volley">Volley</string>
 
     <string-array name="pref_theme_array">

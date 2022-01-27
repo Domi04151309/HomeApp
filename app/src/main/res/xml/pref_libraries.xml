@@ -26,5 +26,8 @@
         app:title="@string/library_robolectric" />
     <Preference
         app:icon="@drawable/ic_about_library"
+        app:title="@string/library_upnpdiscovery" />
+    <Preference
+        app:icon="@drawable/ic_about_library"
         app:title="@string/library_volley" />
 </PreferenceScreen>

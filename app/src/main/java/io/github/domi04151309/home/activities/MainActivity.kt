@@ -257,8 +257,8 @@ class MainActivity : AppCompatActivity() {
 
         val inAnimation = AnimationUtils.loadAnimation(this, android.R.anim.fade_in)
         val outAnimation = AnimationUtils.loadAnimation(this, android.R.anim.fade_out)
-        inAnimation.duration = inAnimation.duration / 2
-        outAnimation.duration = outAnimation.duration / 2
+        inAnimation.duration /= 2
+        outAnimation.duration /= 2
         deviceIcon.inAnimation = inAnimation
         deviceIcon.outAnimation = outAnimation
         deviceName.inAnimation = inAnimation
