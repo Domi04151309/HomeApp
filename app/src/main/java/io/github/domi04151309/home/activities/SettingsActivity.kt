@@ -36,14 +36,14 @@ class SettingsActivity : AppCompatActivity() {
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
-            preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener(
+            preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(
                     prefsChangedListener
             )
         }
 
         override fun onDestroy() {
             super.onDestroy()
-            preferenceManager.sharedPreferences.unregisterOnSharedPreferenceChangeListener(
+            preferenceManager.sharedPreferences?.unregisterOnSharedPreferenceChangeListener(
                     prefsChangedListener
             )
         }
@@ -63,7 +63,7 @@ class SettingsActivity : AppCompatActivity() {
                     .setTitle(R.string.pref_reset)
                     .setMessage(R.string.pref_reset_question)
                     .setPositiveButton(R.string.str_delete) { _, _ ->
-                        PreferenceManager.getDefaultSharedPreferences(context).edit().putString("devices_json", Global.DEFAULT_JSON).apply()
+                        PreferenceManager.getDefaultSharedPreferences(requireContext()).edit().putString("devices_json", Global.DEFAULT_JSON).apply()
                         Toast.makeText(context, R.string.pref_reset_toast, Toast.LENGTH_LONG).show()
                         Devices.reloadFromPreferences()
                     }

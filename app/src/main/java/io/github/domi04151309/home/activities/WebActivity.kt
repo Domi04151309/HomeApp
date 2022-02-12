@@ -150,22 +150,18 @@ class WebActivity : AppCompatActivity() {
     }
 
     internal fun injectCSS(webView: WebView) {
-        try {
-            val inputStream = assets.open("github_style.css")
-            val buffer = ByteArray(inputStream.available())
-            inputStream.read(buffer)
-            inputStream.close()
-            webView.loadUrl("javascript:(function() {" +
-                    "var parent = document.getElementsByTagName('head').item(0);" +
-                    "var style = document.createElement('style');" +
-                    "style.type = 'text/css';" +
-                    // Tell the browser to BASE64-decode the string into your script !!!
-                    "style.innerHTML = window.atob('" + Base64.encodeToString(buffer, Base64.NO_WRAP) + "');" +
-                    "parent.appendChild(style)" +
-                    "})()")
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+        val inputStream = assets.open("github_style.css")
+        val buffer = ByteArray(inputStream.available())
+        inputStream.read(buffer)
+        inputStream.close()
+        webView.loadUrl("javascript:(function() {" +
+                "var parent = document.getElementsByTagName('head').item(0);" +
+                "var style = document.createElement('style');" +
+                "style.type = 'text/css';" +
+                // Tell the browser to BASE64-decode the string into your script !!!
+                "style.innerHTML = window.atob('" + Base64.encodeToString(buffer, Base64.NO_WRAP) + "');" +
+                "parent.appendChild(style)" +
+                "})()")
     }
 
     internal fun injectFritzLogin(webView: WebView, uiPass: String) {

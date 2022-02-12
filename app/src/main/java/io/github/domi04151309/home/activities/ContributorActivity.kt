@@ -35,7 +35,7 @@ class ContributorActivity : AppCompatActivity() {
 
         private fun addPreference(contributor: JSONObject, drawable: Drawable?) {
             preferenceScreen.addPreference(
-                Preference(context).apply {
+                Preference(requireContext()).apply {
                     val contributions = contributor.optInt("contributions", -1)
                     icon = drawable
                     title = contributor.optString("login")

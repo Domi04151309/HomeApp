@@ -65,9 +65,4 @@ class HueAPIParser(resources: Resources) : UnifiedAPI.Parser(resources) {
             state = pair.second.optJSONObject("action")?.optBoolean("on")
         )
     }
-
-    private data class Group(
-        val key: String,
-        val value: JSONObject
-    )
 }
