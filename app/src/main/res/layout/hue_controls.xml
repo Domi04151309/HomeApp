@@ -81,6 +81,6 @@
         android:id="@+id/briBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:valueFrom="1.0"
+        android:valueFrom="0.0"
         android:valueTo="254.0" />
 </LinearLayout>
