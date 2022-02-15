@@ -26,22 +26,33 @@ class ContributorActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
         supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.settings, GeneralPreferenceFragment())
-                .commit()
+            .beginTransaction()
+            .replace(R.id.settings, GeneralPreferenceFragment())
+            .commit()
     }
 
     class GeneralPreferenceFragment : PreferenceFragmentCompat() {
 
-        private fun addPreference(contributor: JSONObject, drawable: Drawable?) {
-            preferenceScreen.addPreference(
-                Preference(requireContext()).apply {
-                    val contributions = contributor.optInt("contributions", -1)
-                    icon = drawable
-                    title = contributor.optString("login")
-                    summary = resources.getQuantityString(R.plurals.about_contributions, contributions, contributions)
-                }
-            )
+        private var entries: Array<Preference?> = arrayOf()
+
+        private fun addPreference(i: Int, contributor: JSONObject, drawable: Drawable?) {
+            entries[i] = Preference(requireContext()).apply {
+                val contributions = contributor.optInt("contributions", -1)
+                icon = drawable
+                title = contributor.optString("login")
+                summary = resources.getQuantityString(
+                    R.plurals.about_contributions,
+                    contributions,
+                    contributions
+                )
+            }
+        }
+
+        private fun loadPreferences() {
+            preferenceScreen.removeAll()
+            entries.forEach {
+                preferenceScreen.addPreference(it ?: return)
+            }
         }
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -52,30 +63,46 @@ class ContributorActivity : AppCompatActivity() {
                 "https://api.github.com/repos/${AboutActivity.GITHUB_REPOSITORY}/contributors",
                 null,
                 { response ->
-                    preferenceScreen.removeAll()
+                    entries = Array(response.length()) { null }
                     for (i in 0 until response.length()) {
                         val currentContributor = response.getJSONObject(i)
-                        queue.add(ImageRequest(
-                            currentContributor.optString("avatar_url"),
-                            { image ->
-                                addPreference(currentContributor, BitmapDrawable(resources, image))
-                            },
-                            192,
-                            192,
-                            ImageView.ScaleType.CENTER_INSIDE,
-                            null,
-                            { error ->
-                                Log.e(Global.LOG_TAG, error.toString())
-                                addPreference(
-                                    currentContributor,
-                                    ResourcesCompat.getDrawable(requireContext().resources, R.drawable.ic_about_contributor, requireContext().theme)
-                                )
-                            }
-                        ))
+                        queue.add(
+                            ImageRequest(
+                                currentContributor.optString("avatar_url"),
+                                { image ->
+                                    addPreference(
+                                        i,
+                                        currentContributor,
+                                        BitmapDrawable(resources, image)
+                                    )
+                                    if (i == response.length() - 1) loadPreferences()
+                                },
+                                192,
+                                192,
+                                ImageView.ScaleType.CENTER_INSIDE,
+                                null,
+                                { error ->
+                                    Log.e(Global.LOG_TAG, error.toString())
+                                    addPreference(
+                                        i,
+                                        currentContributor,
+                                        ResourcesCompat.getDrawable(
+                                            requireContext().resources,
+                                            R.drawable.ic_about_contributor,
+                                            requireContext().theme
+                                        )
+                                    )
+                                    if (i == response.length() - 1) loadPreferences()
+                                }
+                            ))
                     }
                 },
                 { error ->
-                    Toast.makeText(requireContext(), Global.volleyError(requireContext(), error), Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        requireContext(),
+                        Global.volleyError(requireContext(), error),
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             ))
         }
