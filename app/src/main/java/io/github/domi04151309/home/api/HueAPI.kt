@@ -6,7 +6,6 @@ import android.util.Log
 import androidx.preference.PreferenceManager
 import com.android.volley.*
 import com.android.volley.toolbox.JsonObjectRequest
-import io.github.domi04151309.home.R
 import io.github.domi04151309.home.helpers.Global.volleyError
 import org.json.JSONArray
 import org.json.JSONObject
@@ -101,24 +100,13 @@ class HueAPI(
         val jsonObjectRequest =
             JsonObjectRequest(Request.Method.GET, url + "api/${getUsername()}/lights", null,
                 { response ->
-                    try {
-                        val returnObject = JSONObject()
-                        var lightID: String
-                        for (i in 0 until lightIDs.length()) {
-                            lightID = lightIDs.getString(i)
-                            returnObject.put(lightID, response.getJSONObject(lightID))
-                        }
-                        callback.onLightsLoaded(RequestCallbackObject(returnObject, deviceId))
-                    } catch (e: Exception) {
-                        callback.onLightsLoaded(
-                            RequestCallbackObject(
-                                null,
-                                deviceId,
-                                c.resources.getString(R.string.err_wrong_format_summary)
-                            )
-                        )
-                        Log.e(Global.LOG_TAG, e.toString())
+                    val returnObject = JSONObject()
+                    var lightID: String
+                    for (i in 0 until lightIDs.length()) {
+                        lightID = lightIDs.getString(i)
+                        returnObject.put(lightID, response.getJSONObject(lightID))
                     }
+                    callback.onLightsLoaded(RequestCallbackObject(returnObject, deviceId))
                 },
                 { error ->
                     callback.onLightsLoaded(
