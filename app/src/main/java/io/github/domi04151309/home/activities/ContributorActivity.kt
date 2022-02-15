@@ -49,7 +49,7 @@ class ContributorActivity : AppCompatActivity() {
             val queue = Volley.newRequestQueue(requireContext())
             queue.add(JsonArrayRequest(
                 Request.Method.GET,
-                "https://api.github.com/repos/domi04151309/homeapp/contributors",
+                "https://api.github.com/repos/${AboutActivity.GITHUB_REPOSITORY}/contributors",
                 null,
                 { response ->
                     preferenceScreen.removeAll()
