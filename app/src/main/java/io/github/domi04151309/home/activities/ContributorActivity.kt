@@ -56,8 +56,8 @@ class ContributorActivity : AppCompatActivity() {
         }
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-            addPreferencesFromResource(R.xml.pref_contributors)
             val queue = Volley.newRequestQueue(requireContext())
+            addPreferencesFromResource(R.xml.pref_about_list)
             queue.add(JsonArrayRequest(
                 Request.Method.GET,
                 "https://api.github.com/repos/${AboutActivity.GITHUB_REPOSITORY}/contributors",
@@ -94,7 +94,8 @@ class ContributorActivity : AppCompatActivity() {
                                     )
                                     if (i == response.length() - 1) loadPreferences()
                                 }
-                            ))
+                            )
+                        )
                     }
                 },
                 { error ->

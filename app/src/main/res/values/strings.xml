@@ -149,17 +149,6 @@
     <string name="about_libraries">Libraries</string>
     <string name="about_libraries_desc">A list of all used libraries</string>
 
-    <string translatable="false" name="library_appcompat">Android AppCompat Library</string>
-    <string translatable="false" name="library_preference_ktx">Android Preferences KTX</string>
-    <string translatable="false" name="library_annotation">Android Support Library Annotations</string>
-    <string translatable="false" name="library_security_crypto_ktx">AndroidX Security Kotlin Extensions</string>
-    <string translatable="false" name="library_colorpickerview">ColorPickerView</string>
-    <string translatable="false" name="library_junit">JUnit</string>
-    <string translatable="false" name="library_material">Material Components For Android</string>
-    <string translatable="false" name="library_robolectric">Robolectric</string>
-    <string translatable="false" name="library_upnpdiscovery">UPnPDiscovery</string>
-    <string translatable="false" name="library_volley">Volley</string>
-
     <string-array name="pref_theme_array">
         <item>Light theme</item>
         <item>Dark theme</item>
@@ -220,5 +209,17 @@
     <string-array name="about_icons_array" translatable="false">
         <item>Icons8</item>
         <item>Google</item>
+    </string-array>
+    <string-array name="about_libraries" translatable="false">
+        <item>Android AppCompat Library</item>
+        <item>Android Preferences KTX</item>
+        <item>Android Support Library Annotations</item>
+        <item>AndroidX Security Kotlin Extensions</item>
+        <item>ColorPickerView</item>
+        <item>JUnit</item>
+        <item>Material Components For Android</item>
+        <item>Robolectric</item>
+        <item>UPnPDiscovery</item>
+        <item>Volley</item>
     </string-array>
 </resources>
