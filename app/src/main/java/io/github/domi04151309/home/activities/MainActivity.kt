@@ -36,9 +36,6 @@ class MainActivity : AppCompatActivity() {
         private val WEB_MODES = arrayOf(
             "Fritz! Auto-Login", "Node-RED", "Website"
         )
-        private val UNIFIED_MODES = arrayOf(
-            "ESP Easy", "Hue API", "Shelly Gen 1", "Shelly Gen 2", "SimpleHome API", "Tasmota"
-        )
     }
 
     private var tasmotaPosition: Int = 0
@@ -152,7 +149,7 @@ class MainActivity : AppCompatActivity() {
             if (data.hidden.isEmpty()) return
 
             val deviceId = data.hidden.substring(0, data.hidden.indexOf('@'))
-            val api = getCorrectAPI(devices.getDeviceById(deviceId).mode, deviceId)
+            val api = Global.getCorrectAPI(this@MainActivity, devices.getDeviceById(deviceId).mode, deviceId)
             if (api?.dynamicSummaries == true) view.findViewById<TextView>(R.id.summary).text =
                 resources.getString(
                     if (state) R.string.switch_summary_on
@@ -169,7 +166,7 @@ class MainActivity : AppCompatActivity() {
                 startActivityAndReset(Intent(this@MainActivity, SettingsActivity::class.java))
             } else if (data.hidden.contains('@')) {
                 val deviceId = data.hidden.substring(0, data.hidden.indexOf('@'))
-                val api = getCorrectAPI(devices.getDeviceById(deviceId).mode, deviceId)
+                val api = Global.getCorrectAPI(this@MainActivity, devices.getDeviceById(deviceId).mode, deviceId)
                 api?.execute(
                     data.hidden.substring(deviceId.length + 1),
                     object : UnifiedAPI.CallbackInterface {
@@ -395,8 +392,8 @@ class MainActivity : AppCompatActivity() {
                 }
                 startActivityAndReset(intent)
             }
-            UNIFIED_MODES.contains(deviceObj.mode) -> {
-                unified = getCorrectAPI(
+            Global.UNIFIED_MODES.contains(deviceObj.mode) -> {
+                unified = Global.getCorrectAPI(this, 
                     deviceObj.mode,
                     deviceId,
                     unifiedHelperInterface,
@@ -432,11 +429,11 @@ class MainActivity : AppCompatActivity() {
                 if (!currentDevice.hide) {
                     if (
                         currentDevice.directView
-                        && UNIFIED_MODES.contains(currentDevice.mode)
+                        && Global.UNIFIED_MODES.contains(currentDevice.mode)
                         && checkNetwork(this)
                     ) {
                         actualPosition.let {
-                            val api = getCorrectAPI(currentDevice.mode, currentDevice.id)
+                            val api = Global.getCorrectAPI(this, currentDevice.mode, currentDevice.id)
                             api?.loadList(object : UnifiedAPI.CallbackInterface {
                                 override fun onItemsLoaded(
                                     holder: UnifiedRequestCallback,
@@ -487,23 +484,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
         unified = null
-    }
-
-    internal fun getCorrectAPI(
-        identifier: String,
-        deviceId: String,
-        recyclerViewInterface: HomeRecyclerViewHelperInterface? = null,
-        tasmotaHelperInterface: HomeRecyclerViewHelperInterface? = null
-    ): UnifiedAPI? {
-        return when (identifier) {
-            "ESP Easy" -> EspEasyAPI(this, deviceId, recyclerViewInterface)
-            "Hue API" -> HueAPI(this, deviceId, recyclerViewInterface)
-            "SimpleHome API" -> SimpleHomeAPI(this, deviceId, recyclerViewInterface)
-            "Tasmota" -> Tasmota(this, deviceId, tasmotaHelperInterface ?: recyclerViewInterface)
-            "Shelly Gen 1" -> ShellyAPI(this, deviceId, recyclerViewInterface, 1)
-            "Shelly Gen 2" -> ShellyAPI(this, deviceId, recyclerViewInterface, 2)
-            else -> null
-        }
     }
 
     internal fun startActivityAndReset(intent: Intent) {
