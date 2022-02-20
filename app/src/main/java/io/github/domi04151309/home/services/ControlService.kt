@@ -11,6 +11,7 @@ import android.service.controls.templates.ControlButton
 import android.service.controls.templates.ToggleTemplate
 import androidx.annotation.RequiresApi
 import io.github.domi04151309.home.R
+import io.github.domi04151309.home.activities.MainActivity
 import io.github.domi04151309.home.api.UnifiedAPI
 import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.data.UnifiedRequestCallback
@@ -22,10 +23,6 @@ import java.util.function.Consumer
 
 @RequiresApi(Build.VERSION_CODES.R)
 class ControlService : ControlsProviderService() {
-
-    companion object {
-        private const val CONTROL_REQUEST_CODE = 1
-    }
 
     private var updateSubscriber: Flow.Subscriber<in Control>? = null
 
@@ -46,8 +43,8 @@ class ControlService : ControlsProviderService() {
                 ) relevantDevices.add(currentDevice)
             }
             val pi = PendingIntent.getActivity(
-                baseContext, CONTROL_REQUEST_CODE, Intent(),
-                PendingIntent.FLAG_UPDATE_CURRENT
+                baseContext, 0, Intent(),
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
             )
             var finishedRequests = 0
             for (i in 0 until relevantDevices.size) {
@@ -98,10 +95,13 @@ class ControlService : ControlsProviderService() {
     }
 
     private fun loadStatefulControl(subscriber: Flow.Subscriber<in Control>?, id: String) {
-        //TODO: Proper activity
         val pi = PendingIntent.getActivity(
-            baseContext, CONTROL_REQUEST_CODE, Intent(),
-            PendingIntent.FLAG_UPDATE_CURRENT
+            this,
+            0,
+            Intent(this, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            },
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
         val device = Devices(this).getDeviceById(id.substring(0, id.indexOf('@')))
         if (Global.checkNetwork(this)) {
