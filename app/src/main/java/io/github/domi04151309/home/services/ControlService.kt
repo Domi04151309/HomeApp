@@ -6,6 +6,8 @@ import android.os.Build
 import android.service.controls.Control
 import android.service.controls.ControlsProviderService
 import android.service.controls.actions.ControlAction
+import android.service.controls.templates.ControlButton
+import android.service.controls.templates.ToggleTemplate
 import androidx.annotation.RequiresApi
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.api.UnifiedAPI
@@ -77,6 +79,8 @@ class ControlService : ControlsProviderService() {
         }
     }
 
+    //TODO: check network
+
     override fun createPublisherFor(controlIds: MutableList<String>): Flow.Publisher<Control> {
         return Flow.Publisher { subscriber ->
             subscriber.onSubscribe(object : Flow.Subscription {
@@ -99,15 +103,28 @@ class ControlService : ControlsProviderService() {
                             if (holder.response != null) {
                                 holder.response.forEach {
                                     if (device.id + '@' + it.hidden == id) {
-                                        subscriber.onNext(
-                                            Control.StatefulBuilder(id, pi)
-                                                .setTitle(it.title)
-                                                .setZone(device.name)
-                                                .setStructure(resources.getString(R.string.app_name))
-                                                .setDeviceType(Global.getDeviceType(device.iconName))
-                                                .setStatus(Control.STATUS_OK)
-                                                .build()
-                                        )
+                                        val controlBuilder = Control.StatefulBuilder(id, pi)
+                                            .setTitle(it.title)
+                                            .setZone(device.name)
+                                            .setStructure(resources.getString(R.string.app_name))
+                                            .setDeviceType(Global.getDeviceType(device.iconName))
+                                            .setStatus(Control.STATUS_OK)
+                                        if (it.state != null) {
+                                            controlBuilder.setControlTemplate(
+                                                ToggleTemplate(
+                                                    id,
+                                                    ControlButton(
+                                                        it.state ?: false,
+                                                        it.state.toString()
+                                                    )
+                                                )
+                                            )
+                                            /*controlBuilder.setStatusText(
+                                                if (it.state == true) resources.getString(R.string.str_on)
+                                                else resources.getString(R.string.str_off)
+                                            )*/
+                                        }
+                                        subscriber.onNext(controlBuilder.build())
                                     }
                                 }
                             } else {
@@ -117,7 +134,9 @@ class ControlService : ControlsProviderService() {
                                         .setZone(device.name)
                                         .setStructure(resources.getString(R.string.app_name))
                                         .setDeviceType(Global.getDeviceType(device.iconName))
-                                        .setStatus(Control.STATUS_NOT_FOUND)
+                                        /*.setStatus(Control.STATUS_NOT_FOUND).setStatusText(
+                                            resources.getString(R.string.str_unreachable)
+                                        )*/
                                         .build()
                                 )
                             }
