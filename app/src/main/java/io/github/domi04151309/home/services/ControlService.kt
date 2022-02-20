@@ -6,9 +6,6 @@ import android.os.Build
 import android.service.controls.Control
 import android.service.controls.ControlsProviderService
 import android.service.controls.actions.ControlAction
-import android.service.controls.templates.ControlButton
-import android.service.controls.templates.ToggleTemplate
-import android.util.Log
 import androidx.annotation.RequiresApi
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.api.UnifiedAPI
@@ -25,7 +22,6 @@ class ControlService : ControlsProviderService() {
 
     companion object {
         private const val CONTROL_REQUEST_CODE = 1
-        private const val TAG = "ControlsBindingControllerImpl"
     }
 
     override fun createPublisherForAllAvailable(): Flow.Publisher<Control> {
@@ -81,27 +77,17 @@ class ControlService : ControlsProviderService() {
         }
     }
 
-    internal fun updateControls(
-        subscriber: Flow.Subscriber<in Control>,
-        controlIds: MutableList<String>,
-        controls: HashMap<String, Control>
-    ) {
-        Log.d(TAG, "sending")
-        controlIds.forEach {
-            subscriber.onNext(controls[it])
-        }
-        subscriber.onComplete()
-    }
-
     override fun createPublisherFor(controlIds: MutableList<String>): Flow.Publisher<Control> {
-        Log.d(TAG, "publisher for $controlIds")
         return Flow.Publisher { subscriber ->
+            subscriber.onSubscribe(object : Flow.Subscription {
+                override fun request(n: Long) {}
+                override fun cancel() {}
+            })
+            //TODO: Proper activity
             val pi = PendingIntent.getActivity(
                 baseContext, CONTROL_REQUEST_CODE, Intent(),
                 PendingIntent.FLAG_UPDATE_CURRENT
             )
-            val map = HashMap<String, Control>(controlIds.size)
-            var completedRequests = 0
             controlIds.forEach { id ->
                 val device = Devices(baseContext).getDeviceById(id.substring(0, id.indexOf('@')))
                 Global.getCorrectAPI(this, device.mode, device.id)
@@ -113,43 +99,26 @@ class ControlService : ControlsProviderService() {
                             if (holder.response != null) {
                                 holder.response.forEach {
                                     if (device.id + '@' + it.hidden == id) {
-                                        Log.d(TAG, it.toString())
-                                        val controlButton = ControlButton(true, "button")
-                                        map[id] = Control.StatefulBuilder(id, pi)
-                                            .setTitle(it.title)
-                                            .setZone(device.name)
-                                            .setStructure(resources.getString(R.string.app_name))
-                                            .setDeviceType(Global.getDeviceType(device.iconName))
-                                            .setStatus(Control.STATUS_OK)
-                                            .setControlId("button")
-                                            .setControlTemplate(
-                                                ToggleTemplate(
-                                                    "button",
-                                                    controlButton
-                                                )
-                                            )
-                                            .build()
-                                        completedRequests++
-                                        if (completedRequests == controlIds.size) updateControls(
-                                            subscriber,
-                                            controlIds,
-                                            map
+                                        subscriber.onNext(
+                                            Control.StatefulBuilder(id, pi)
+                                                .setTitle(it.title)
+                                                .setZone(device.name)
+                                                .setStructure(resources.getString(R.string.app_name))
+                                                .setDeviceType(Global.getDeviceType(device.iconName))
+                                                .setStatus(Control.STATUS_OK)
+                                                .build()
                                         )
                                     }
                                 }
                             } else {
-                                map[id] = Control.StatefulBuilder(id, pi)
-                                    .setTitle(device.name)
-                                    .setZone(device.name)
-                                    .setStructure(resources.getString(R.string.app_name))
-                                    .setDeviceType(Global.getDeviceType(device.iconName))
-                                    .setStatus(Control.STATUS_NOT_FOUND)
-                                    .build()
-                                completedRequests++
-                                if (completedRequests == controlIds.size) updateControls(
-                                    subscriber,
-                                    controlIds,
-                                    map
+                                subscriber.onNext(
+                                    Control.StatefulBuilder(id, pi)
+                                        .setTitle(device.name)
+                                        .setZone(device.name)
+                                        .setStructure(resources.getString(R.string.app_name))
+                                        .setDeviceType(Global.getDeviceType(device.iconName))
+                                        .setStatus(Control.STATUS_NOT_FOUND)
+                                        .build()
                                 )
                             }
                         }
