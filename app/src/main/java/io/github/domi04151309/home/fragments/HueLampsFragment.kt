@@ -83,7 +83,7 @@ class HueLampsFragment : Fragment(R.layout.fragment_hue_lamps), RecyclerViewHelp
                                     title = currentObject.getString("name"),
                                     summary =
                                         if (currentState.getBoolean("reachable")) resources.getString(R.string.hue_tap)
-                                        else resources.getString(R.string.hue_unreachable),
+                                        else resources.getString(R.string.str_unreachable),
                                     hidden = currentObjectName,
                                     state = currentState.getBoolean("on")
                                 )

@@ -28,9 +28,6 @@
     <string name="hue_connect">Verbinde dich mit deiner Bridge</string>
     <string name="hue_press_button">Bitte drücke den Knopf auf deiner Bridge um fortzufahren.</string>
     <string name="hue_tap">Tippe um Auszuwählen</string>
-    <string name="hue_unreachable">Nicht erreichbar</string>
-    <string name="hue_on">An</string>
-    <string name="hue_off">Aus</string>
     <string name="hue_brightness">Helligkeit</string>
     <string name="hue_color_temperature">Farbtemperatur</string>
     <string name="hue_hue_sat">Farbton und Sättigung</string>
@@ -128,6 +125,9 @@
     <string name="str_done">Fertig</string>
     <string name="str_add">Hinzufügen</string>
     <string name="str_send">Senden</string>
+    <string name="str_on">An</string>
+    <string name="str_off">Aus</string>
+    <string name="str_unreachable">Nicht erreichbar</string>
 
     <string name="about">Über</string>
     <string name="about_summary">Über die App</string>
