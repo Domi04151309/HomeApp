@@ -116,10 +116,10 @@ class ControlService : ControlsProviderService() {
                                             )
                                         )
                                     )
-                                    /*controlBuilder.setStatusText(
+                                    controlBuilder.setStatusText(
                                         if (it.state == true) resources.getString(R.string.str_on)
                                         else resources.getString(R.string.str_off)
-                                    )*/
+                                    )
                                 }
                                 subscriber?.onNext(controlBuilder.build())
                             }
@@ -131,9 +131,8 @@ class ControlService : ControlsProviderService() {
                                 .setZone(device.name)
                                 .setStructure(resources.getString(R.string.app_name))
                                 .setDeviceType(Global.getDeviceType(device.iconName))
-                                /*.setStatus(Control.STATUS_NOT_FOUND).setStatusText(
-                                    resources.getString(R.string.str_unreachable)
-                                )*/
+                                .setStatus(Control.STATUS_NOT_FOUND)
+                                .setStatusText(resources.getString(R.string.str_unreachable))
                                 .build()
                         )
                     }
