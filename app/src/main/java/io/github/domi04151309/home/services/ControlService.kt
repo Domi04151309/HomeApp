@@ -32,10 +32,10 @@ class ControlService : ControlsProviderService() {
     override fun createPublisherForAllAvailable(): Flow.Publisher<Control> {
         return Flow.Publisher { subscriber ->
             updateSubscriber = subscriber
-            val pi = PendingIntent.getActivity(
-                baseContext, CONTROL_REQUEST_CODE, Intent(),
-                PendingIntent.FLAG_UPDATE_CURRENT
-            )
+            if (!Global.checkNetwork(this)) {
+                subscriber.onComplete()
+                return@Publisher
+            }
             val devices = Devices(this)
             val relevantDevices = arrayListOf<DeviceItem>()
             for (i in 0 until devices.length) {
@@ -43,9 +43,12 @@ class ControlService : ControlsProviderService() {
                 if (
                     !currentDevice.hide
                     && Global.POWER_MENU_MODES.contains(currentDevice.mode)
-                    && Global.checkNetwork(this)
                 ) relevantDevices.add(currentDevice)
             }
+            val pi = PendingIntent.getActivity(
+                baseContext, CONTROL_REQUEST_CODE, Intent(),
+                PendingIntent.FLAG_UPDATE_CURRENT
+            )
             var finishedRequests = 0
             for (i in 0 until relevantDevices.size) {
                 Global.getCorrectAPI(this, relevantDevices[i].mode, relevantDevices[i].id)
@@ -83,7 +86,17 @@ class ControlService : ControlsProviderService() {
         }
     }
 
-    //TODO: check network
+    internal fun getUnreachableControl(id: String, device: DeviceItem, pi: PendingIntent): Control {
+        return Control.StatefulBuilder(id, pi)
+            .setTitle(device.name)
+            .setZone(device.name)
+            .setStructure(resources.getString(R.string.app_name))
+            .setDeviceType(Global.getDeviceType(device.iconName))
+            .setStatus(Control.STATUS_DISABLED)
+            .setStatusText(resources.getString(R.string.str_unreachable))
+            .build()
+    }
+
     private fun loadStatefulControl(subscriber: Flow.Subscriber<in Control>?, id: String) {
         //TODO: Proper activity
         val pi = PendingIntent.getActivity(
@@ -91,59 +104,54 @@ class ControlService : ControlsProviderService() {
             PendingIntent.FLAG_UPDATE_CURRENT
         )
         val device = Devices(this).getDeviceById(id.substring(0, id.indexOf('@')))
-        Global.getCorrectAPI(this, device.mode, device.id)
-            ?.loadList(object : UnifiedAPI.CallbackInterface {
-                override fun onItemsLoaded(
-                    holder: UnifiedRequestCallback,
-                    recyclerViewInterface: HomeRecyclerViewHelperInterface?
-                ) {
-                    if (holder.response != null) {
-                        holder.response.forEach {
-                            if (device.id + '@' + it.hidden == id) {
-                                val controlBuilder = Control.StatefulBuilder(id, pi)
-                                    .setTitle(it.title)
-                                    .setZone(device.name)
-                                    .setStructure(resources.getString(R.string.app_name))
-                                    .setDeviceType(Global.getDeviceType(device.iconName))
-                                    .setStatus(Control.STATUS_OK)
-                                if (it.state != null) {
-                                    controlBuilder.setControlTemplate(
-                                        ToggleTemplate(
-                                            id,
-                                            ControlButton(
-                                                it.state ?: false,
-                                                it.state.toString()
+        if (Global.checkNetwork(this)) {
+            Global.getCorrectAPI(this, device.mode, device.id)
+                ?.loadList(object : UnifiedAPI.CallbackInterface {
+                    override fun onItemsLoaded(
+                        holder: UnifiedRequestCallback,
+                        recyclerViewInterface: HomeRecyclerViewHelperInterface?
+                    ) {
+                        if (holder.response != null) {
+                            holder.response.forEach {
+                                if (device.id + '@' + it.hidden == id) {
+                                    val controlBuilder = Control.StatefulBuilder(id, pi)
+                                        .setTitle(it.title)
+                                        .setZone(device.name)
+                                        .setStructure(resources.getString(R.string.app_name))
+                                        .setDeviceType(Global.getDeviceType(device.iconName))
+                                        .setStatus(Control.STATUS_OK)
+                                    if (it.state != null) {
+                                        controlBuilder.setControlTemplate(
+                                            ToggleTemplate(
+                                                id,
+                                                ControlButton(
+                                                    it.state ?: false,
+                                                    it.state.toString()
+                                                )
                                             )
                                         )
-                                    )
-                                    controlBuilder.setStatusText(
-                                        if (it.state == true) resources.getString(R.string.str_on)
-                                        else resources.getString(R.string.str_off)
-                                    )
+                                        controlBuilder.setStatusText(
+                                            if (it.state == true) resources.getString(R.string.str_on)
+                                            else resources.getString(R.string.str_off)
+                                        )
+                                    }
+                                    subscriber?.onNext(controlBuilder.build())
                                 }
-                                subscriber?.onNext(controlBuilder.build())
                             }
+                        } else {
+                            subscriber?.onNext(getUnreachableControl(id, device, pi))
                         }
-                    } else {
-                        subscriber?.onNext(
-                            Control.StatefulBuilder(id, pi)
-                                .setTitle(device.name)
-                                .setZone(device.name)
-                                .setStructure(resources.getString(R.string.app_name))
-                                .setDeviceType(Global.getDeviceType(device.iconName))
-                                .setStatus(Control.STATUS_NOT_FOUND)
-                                .setStatusText(resources.getString(R.string.str_unreachable))
-                                .build()
-                        )
                     }
-                }
 
-                override fun onExecuted(
-                    result: String,
-                    shouldRefresh: Boolean
-                ) {
-                }
-            })
+                    override fun onExecuted(
+                        result: String,
+                        shouldRefresh: Boolean
+                    ) {
+                    }
+                })
+        } else {
+            subscriber?.onNext(getUnreachableControl(id, device, pi))
+        }
     }
 
     override fun createPublisherFor(controlIds: MutableList<String>): Flow.Publisher<Control> {
@@ -159,19 +167,22 @@ class ControlService : ControlsProviderService() {
         }
     }
 
-    //TODO: check network
     override fun performControlAction(
         controlId: String,
         action: ControlAction,
         consumer: Consumer<Int>
     ) {
-        val device = Devices(this)
-            .getDeviceById(controlId.substring(0, controlId.indexOf('@')))
-        if (action is BooleanAction) {
-            Global.getCorrectAPI(this, device.mode, device.id)
-                ?.changeSwitchState(controlId.substring(device.id.length + 1), action.newState)
+        if (Global.checkNetwork(this)) {
+            val device = Devices(this)
+                .getDeviceById(controlId.substring(0, controlId.indexOf('@')))
+            if (action is BooleanAction) {
+                Global.getCorrectAPI(this, device.mode, device.id)
+                    ?.changeSwitchState(controlId.substring(device.id.length + 1), action.newState)
+            }
+            consumer.accept(ControlAction.RESPONSE_OK)
+            loadStatefulControl(updateSubscriber, controlId)
+        } else {
+            consumer.accept(ControlAction.RESPONSE_FAIL)
         }
-        consumer.accept(ControlAction.RESPONSE_OK)
-        loadStatefulControl(updateSubscriber, controlId)
     }
 }
