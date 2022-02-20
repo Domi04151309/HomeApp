@@ -8,7 +8,6 @@ import android.view.ContextMenu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
-import io.github.domi04151309.home.api.SimpleHomeAPI
 import androidx.appcompat.app.AlertDialog
 import androidx.preference.PreferenceManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
