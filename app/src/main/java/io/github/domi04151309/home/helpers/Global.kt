@@ -3,8 +3,10 @@ package io.github.domi04151309.home.helpers
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.os.Build
 import android.service.controls.DeviceTypes
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
 import com.android.volley.ClientError
@@ -33,7 +35,7 @@ internal object Global {
         deviceId: String,
         recyclerViewInterface: HomeRecyclerViewHelperInterface? = null,
         tasmotaHelperInterface: HomeRecyclerViewHelperInterface? = null
-    ): UnifiedAPI? {
+    ): UnifiedAPI {
         return when (identifier) {
             "ESP Easy" -> EspEasyAPI(context, deviceId, recyclerViewInterface)
             "Hue API" -> HueAPI(context, deviceId, recyclerViewInterface)
@@ -41,7 +43,7 @@ internal object Global {
             "Tasmota" -> Tasmota(context, deviceId, tasmotaHelperInterface ?: recyclerViewInterface)
             "Shelly Gen 1" -> ShellyAPI(context, deviceId, recyclerViewInterface, 1)
             "Shelly Gen 2" -> ShellyAPI(context, deviceId, recyclerViewInterface, 2)
-            else -> null
+            else -> UnifiedAPI(context, deviceId, recyclerViewInterface)
         }
     }
 
@@ -70,6 +72,7 @@ internal object Global {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.R)
     fun getDeviceType(icon: String): Int {
         return when (icon.lowercase()) {
             "christmas tree", "electricity", "schwibbogen", "socket" -> DeviceTypes.TYPE_OUTLET

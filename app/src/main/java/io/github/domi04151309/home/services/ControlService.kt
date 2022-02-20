@@ -49,7 +49,7 @@ class ControlService : ControlsProviderService() {
             var finishedRequests = 0
             for (i in 0 until relevantDevices.size) {
                 Global.getCorrectAPI(this, relevantDevices[i].mode, relevantDevices[i].id)
-                    ?.loadList(object : UnifiedAPI.CallbackInterface {
+                    .loadList(object : UnifiedAPI.CallbackInterface {
                         override fun onItemsLoaded(
                             holder: UnifiedRequestCallback,
                             recyclerViewInterface: HomeRecyclerViewHelperInterface?
@@ -106,7 +106,7 @@ class ControlService : ControlsProviderService() {
         val device = Devices(this).getDeviceById(id.substring(0, id.indexOf('@')))
         if (Global.checkNetwork(this)) {
             Global.getCorrectAPI(this, device.mode, device.id)
-                ?.loadList(object : UnifiedAPI.CallbackInterface {
+                .loadList(object : UnifiedAPI.CallbackInterface {
                     override fun onItemsLoaded(
                         holder: UnifiedRequestCallback,
                         recyclerViewInterface: HomeRecyclerViewHelperInterface?
@@ -177,7 +177,7 @@ class ControlService : ControlsProviderService() {
                 .getDeviceById(controlId.substring(0, controlId.indexOf('@')))
             if (action is BooleanAction) {
                 Global.getCorrectAPI(this, device.mode, device.id)
-                    ?.changeSwitchState(controlId.substring(device.id.length + 1), action.newState)
+                    .changeSwitchState(controlId.substring(device.id.length + 1), action.newState)
             }
             consumer.accept(ControlAction.RESPONSE_OK)
             loadStatefulControl(updateSubscriber, controlId)

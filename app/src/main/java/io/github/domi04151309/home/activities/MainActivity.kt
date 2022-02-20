@@ -149,12 +149,12 @@ class MainActivity : AppCompatActivity() {
 
             val deviceId = data.hidden.substring(0, data.hidden.indexOf('@'))
             val api = Global.getCorrectAPI(this@MainActivity, devices.getDeviceById(deviceId).mode, deviceId)
-            if (api?.dynamicSummaries == true) view.findViewById<TextView>(R.id.summary).text =
+            if (api.dynamicSummaries) view.findViewById<TextView>(R.id.summary).text =
                 resources.getString(
                     if (state) R.string.switch_summary_on
                     else R.string.switch_summary_off
                 )
-            api?.changeSwitchState(data.hidden.substring(deviceId.length + 1), state)
+            api.changeSwitchState(data.hidden.substring(deviceId.length + 1), state)
         }
 
         override fun onItemClicked(view: View, data: ListViewItem) {
@@ -166,7 +166,7 @@ class MainActivity : AppCompatActivity() {
             } else if (data.hidden.contains('@')) {
                 val deviceId = data.hidden.substring(0, data.hidden.indexOf('@'))
                 val api = Global.getCorrectAPI(this@MainActivity, devices.getDeviceById(deviceId).mode, deviceId)
-                api?.execute(
+                api.execute(
                     data.hidden.substring(deviceId.length + 1),
                     object : UnifiedAPI.CallbackInterface {
                         override fun onItemsLoaded(
@@ -433,7 +433,7 @@ class MainActivity : AppCompatActivity() {
                     ) {
                         actualPosition.let {
                             val api = Global.getCorrectAPI(this, currentDevice.mode, currentDevice.id)
-                            api?.loadList(object : UnifiedAPI.CallbackInterface {
+                            api.loadList(object : UnifiedAPI.CallbackInterface {
                                 override fun onItemsLoaded(
                                     holder: UnifiedRequestCallback,
                                     recyclerViewInterface: HomeRecyclerViewHelperInterface?
