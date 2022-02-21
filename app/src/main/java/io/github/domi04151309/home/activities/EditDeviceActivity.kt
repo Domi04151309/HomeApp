@@ -34,6 +34,9 @@ class EditDeviceActivity : AppCompatActivity() {
         private val HAS_CONFIG = arrayOf(
             "Hue API", "ESP Easy", "Node-RED", "Shelly Gen 1", "Shelly Gen 2"
         )
+        private val HAS_INFO = arrayOf(
+            "Hue API"
+        )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,6 +67,7 @@ class EditDeviceActivity : AppCompatActivity() {
         val configHide = findViewById<CheckBox>(R.id.configHide)
         val configDirectView = findViewById<CheckBox>(R.id.configDirectView)
         val configBtn = findViewById<Button>(R.id.configBtn)
+        val infoBtn = findViewById<Button>(R.id.infoBtn)
 
         findViewById<TextView>(R.id.idTxt).text = (resources.getString(R.string.pref_add_id, deviceId))
 
@@ -95,6 +99,9 @@ class EditDeviceActivity : AppCompatActivity() {
                 if (editing) {
                     configBtn.visibility =
                         if (HAS_CONFIG.contains(string)) View.VISIBLE
+                        else View.GONE
+                    infoBtn.visibility =
+                        if (HAS_INFO.contains(string)) View.VISIBLE
                         else View.GONE
                 }
             }
@@ -161,6 +168,10 @@ class EditDeviceActivity : AppCompatActivity() {
                         }
                     }
                 }
+            }
+
+            infoBtn.setOnClickListener {
+                startActivity(Intent(this, HueSettingsActivity::class.java).putExtra("device", deviceId))
             }
 
             findViewById<Button>(R.id.shortcutBtn).setOnClickListener {

@@ -35,6 +35,8 @@
     <string name="hue_new_scene">Neue Szene</string>
     <string name="hue_rename_scene">Geben Sie bitte einen neuen Namen ein</string>
     <string name="hue_delete_scene">Sind Sie sich sicher, dass Sie diese Szene löschen möchten?</string>
+    <string name="hue_controls">Steuerungen</string>
+    <string name="hue_lights">Lampen</string>
 
     <string name="tasmota_empty_list">Noch keine Befehle hinzugefügt</string>
     <string name="tasmota_empty_list_summary">Fügen Sie Befehle unten hinzu</string>
@@ -115,6 +117,7 @@
     <string name="device_config_direct_view">Gerät mit Hauptliste laden</string>
     <string name="device_config_hide">Gerät aus Hauptliste ausblenden</string>
     <string name="device_config_hidden">ausgeblendet</string>
+    <string name="device_config_info">Geräteinfo</string>
 
     <string name="str_cancel">Abbrechen</string>
     <string name="str_name">Name</string>

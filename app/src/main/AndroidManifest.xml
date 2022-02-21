@@ -92,7 +92,13 @@
         <activity
             android:name=".activities.EditDeviceActivity"
             android:label="@string/pref_add"
+            android:launchMode="singleTop"
             android:parentActivityName=".activities.DevicesActivity" />
+        <activity
+            android:name=".activities.HueSettingsActivity"
+            android:label="@string/device_config_info"
+            android:launchMode="singleTop"
+            android:parentActivityName=".activities.EditDeviceActivity" />
         <service
             android:name=".services.ControlService"
             android:permission="android.permission.BIND_CONTROLS"
