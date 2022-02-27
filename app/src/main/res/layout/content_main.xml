@@ -29,6 +29,7 @@
             android:layout_height="match_parent"
             android:padding="?dialogPreferredPadding"
             android:orientation="horizontal"
+            android:baselineAligned="false"
             tools:ignore="UseCompoundDrawables">
 
             <ImageSwitcher

@@ -28,9 +28,6 @@
     <string name="hue_connect">Verbinde dich mit deiner Bridge</string>
     <string name="hue_press_button">Bitte drücke den Knopf auf deiner Bridge um fortzufahren.</string>
     <string name="hue_tap">Tippe um Auszuwählen</string>
-    <string name="hue_unreachable">Nicht erreichbar</string>
-    <string name="hue_on">An</string>
-    <string name="hue_off">Aus</string>
     <string name="hue_brightness">Helligkeit</string>
     <string name="hue_color_temperature">Farbtemperatur</string>
     <string name="hue_hue_sat">Farbton und Sättigung</string>
@@ -38,6 +35,8 @@
     <string name="hue_new_scene">Neue Szene</string>
     <string name="hue_rename_scene">Geben Sie bitte einen neuen Namen ein</string>
     <string name="hue_delete_scene">Sind Sie sich sicher, dass Sie diese Szene löschen möchten?</string>
+    <string name="hue_controls">Steuerungen</string>
+    <string name="hue_lights">Lampen</string>
 
     <string name="tasmota_empty_list">Noch keine Befehle hinzugefügt</string>
     <string name="tasmota_empty_list_summary">Fügen Sie Befehle unten hinzu</string>
@@ -69,6 +68,8 @@
     <string name="pref_general">Generelle Einstellungen</string>
     <string name="pref_theme">Thema ändern</string>
     <string name="pref_theme_summary">Ändert das Aussehen der App</string>
+    <string name="pref_columns">Spaltenanzahl</string>
+    <string name="pref_columns_summary">Ändert die Anzahl der Spalten der Hauptliste</string>
     <string name="pref_devices">Geräte</string>
     <string name="pref_edit">Geräteliste bearbeiten</string>
     <string name="pref_edit_summary">Bearbeiten Sie Ihre Geräteliste</string>
@@ -116,6 +117,7 @@
     <string name="device_config_direct_view">Gerät mit Hauptliste laden</string>
     <string name="device_config_hide">Gerät aus Hauptliste ausblenden</string>
     <string name="device_config_hidden">ausgeblendet</string>
+    <string name="device_config_info">Geräteinfo</string>
 
     <string name="str_cancel">Abbrechen</string>
     <string name="str_name">Name</string>
@@ -126,10 +128,16 @@
     <string name="str_done">Fertig</string>
     <string name="str_add">Hinzufügen</string>
     <string name="str_send">Senden</string>
+    <string name="str_on">An</string>
+    <string name="str_off">Aus</string>
+    <string name="str_unreachable">Nicht erreichbar</string>
 
     <string name="about">Über</string>
     <string name="about_summary">Über die App</string>
     <string name="about_app_version">App-Version</string>
+    <string name="about_privacy">Externe Inhalte</string>
+    <string name="about_privacy_desc">Mitwirkende werden von GitHub geladen. Lesen Sie deren Datenschutzrichtlinie für weitere Informationen.</string>
+    <string name="about_privacy_policy">Datenschutz-Bestimmungen</string>
     <string name="about_contributors">Mitwirkende</string>
     <string name="about_contributors_desc">Eine Liste der Mitwirkenden</string>
     <string name="about_general">Allgemein</string>
@@ -145,6 +153,13 @@
         <item>Dunkles Thema</item>
         <item>Schwarzes Thema</item>
         <item>System Thema benutzen</item>
+    </string-array>
+    <string-array name="pref_columns_array">
+        <item>Auto</item>
+        <item>Eins</item>
+        <item>Zwei</item>
+        <item>Drei</item>
+        <item>Vier</item>
     </string-array>
     <string-array name="pref_add_method_array">
         <item>Gerät mit Adresse hinzufügen</item>

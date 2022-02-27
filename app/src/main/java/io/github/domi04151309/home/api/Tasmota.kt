@@ -37,10 +37,10 @@ class Tasmota(
             var currentItem: JSONObject
             for (i in 0 until list.length()) {
                 try {
-                    currentItem = list.getJSONObject(i)
+                    currentItem = list.optJSONObject(i) ?: JSONObject()
                     listItems += ListViewItem(
-                        title = currentItem.getString("title"),
-                        summary = currentItem.getString("command"),
+                        title = currentItem.optString("title"),
+                        summary = currentItem.optString("command"),
                         hidden = "tasmota_command#$i",
                         icon = R.drawable.ic_do
                     )

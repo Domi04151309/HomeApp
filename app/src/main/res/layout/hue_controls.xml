@@ -60,14 +60,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/hue_off" />
+                android:text="@string/str_off" />
 
             <Button
                 android:id="@+id/onBtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/hue_on" />
+                android:text="@string/str_on" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
@@ -81,6 +81,6 @@
         android:id="@+id/briBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:valueFrom="1.0"
+        android:valueFrom="0.0"
         android:valueTo="254.0" />
 </LinearLayout>

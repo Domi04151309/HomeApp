@@ -8,7 +8,6 @@ import android.view.ContextMenu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
-import io.github.domi04151309.home.api.SimpleHomeAPI
 import androidx.appcompat.app.AlertDialog
 import androidx.preference.PreferenceManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -36,13 +35,10 @@ class MainActivity : AppCompatActivity() {
         private val WEB_MODES = arrayOf(
             "Fritz! Auto-Login", "Node-RED", "Website"
         )
-        private val UNIFIED_MODES = arrayOf(
-            "ESP Easy", "Hue API", "Shelly Gen 1", "Shelly Gen 2", "SimpleHome API", "Tasmota"
-        )
     }
 
     private var tasmotaPosition: Int = 0
-    private var shouldReset : Boolean = false
+    private var shouldReset: Boolean = false
     private val updateHandler = UpdateHandler()
     private var isDeviceSelected = false
     private var canReceiveRequest = false
@@ -55,15 +51,24 @@ class MainActivity : AppCompatActivity() {
 
     private var themeId = ""
     private fun getThemeId(): String =
+        PreferenceManager.getDefaultSharedPreferences(this)
+            .getString(P.PREF_THEME, P.PREF_THEME_DEFAULT) ?: P.PREF_THEME_DEFAULT
+
+    private var columns: Int? = null
+    private fun getColumns(): Int? = (
             PreferenceManager.getDefaultSharedPreferences(this)
-                    .getString(P.PREF_THEME, P.PREF_THEME_DEFAULT) ?: P.PREF_THEME_DEFAULT
+                .getString(P.PREF_COLUMNS, P.PREF_COLUMNS_DEFAULT) ?: P.PREF_COLUMNS_DEFAULT
+            ).toIntOrNull()
 
     /*
      * Unified callbacks
      */
     private var unified: UnifiedAPI? = null
     private val unifiedRequestCallback = object : UnifiedAPI.CallbackInterface {
-        override fun onItemsLoaded(holder: UnifiedRequestCallback, recyclerViewInterface: HomeRecyclerViewHelperInterface?) {
+        override fun onItemsLoaded(
+            holder: UnifiedRequestCallback,
+            recyclerViewInterface: HomeRecyclerViewHelperInterface?
+        ) {
             if (holder.response != null) {
                 val device = devices.getDeviceById(holder.deviceId)
                 deviceIcon.setImageResource(device.iconId)
@@ -102,9 +107,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
     private val unifiedRealTimeStatesCallback = object : UnifiedAPI.RealTimeStatesCallback {
-        override fun onStatesLoaded(states: ArrayList<Boolean?>, offset: Int, dynamicSummary: Boolean) {
+        override fun onStatesLoaded(
+            states: ArrayList<Boolean?>,
+            offset: Int,
+            dynamicSummary: Boolean
+        ) {
             for (i in 0 until states.size) {
-                if (states[i] != null) adapter.updateSwitch(i + offset, states[i] ?: return, dynamicSummary)
+                if (states[i] != null) adapter.updateSwitch(
+                    i + offset,
+                    states[i] ?: return,
+                    dynamicSummary
+                )
             }
         }
     }
@@ -119,7 +132,10 @@ class MainActivity : AppCompatActivity() {
             when (data.hidden) {
                 "add" -> helper.addToList(unifiedRequestCallback)
                 "execute_once" -> helper.executeOnce(unifiedRequestCallback)
-                else -> unified?.execute(view.findViewById<TextView>(R.id.summary).text.toString(), unifiedRequestCallback)
+                else -> unified?.execute(
+                    view.findViewById<TextView>(R.id.summary).text.toString(),
+                    unifiedRequestCallback
+                )
             }
         }
     }
@@ -132,14 +148,15 @@ class MainActivity : AppCompatActivity() {
             if (data.hidden.isEmpty()) return
 
             val deviceId = data.hidden.substring(0, data.hidden.indexOf('@'))
-            val api = getCorrectAPI(devices.getDeviceById(deviceId).mode, deviceId)
-            if (api?.dynamicSummaries == true) view.findViewById<TextView>(R.id.summary).text =
+            val api = Global.getCorrectAPI(this@MainActivity, devices.getDeviceById(deviceId).mode, deviceId)
+            if (api.dynamicSummaries) view.findViewById<TextView>(R.id.summary).text =
                 resources.getString(
                     if (state) R.string.switch_summary_on
                     else R.string.switch_summary_off
                 )
-            api?.changeSwitchState(data.hidden, state)
+            api.changeSwitchState(data.hidden.substring(deviceId.length + 1), state)
         }
+
         override fun onItemClicked(view: View, data: ListViewItem) {
             currentView = view
             if (data.title == resources.getString(R.string.main_no_devices)) {
@@ -148,14 +165,16 @@ class MainActivity : AppCompatActivity() {
                 startActivityAndReset(Intent(this@MainActivity, SettingsActivity::class.java))
             } else if (data.hidden.contains('@')) {
                 val deviceId = data.hidden.substring(0, data.hidden.indexOf('@'))
-                val api = getCorrectAPI(devices.getDeviceById(deviceId).mode, deviceId)
-                api?.execute(
+                val api = Global.getCorrectAPI(this@MainActivity, devices.getDeviceById(deviceId).mode, deviceId)
+                api.execute(
                     data.hidden.substring(deviceId.length + 1),
                     object : UnifiedAPI.CallbackInterface {
                         override fun onItemsLoaded(
                             holder: UnifiedRequestCallback,
                             recyclerViewInterface: HomeRecyclerViewHelperInterface?
-                        ) {}
+                        ) {
+                        }
+
                         override fun onExecuted(result: String, shouldRefresh: Boolean) {
                             showExecutionResult(result)
                             if (shouldRefresh) {
@@ -170,7 +189,12 @@ class MainActivity : AppCompatActivity() {
                                             adapter.getDirectViewPos(deviceId)
                                         )
                                     }
-                                    override fun onExecuted(result: String, shouldRefresh: Boolean) {}
+
+                                    override fun onExecuted(
+                                        result: String,
+                                        shouldRefresh: Boolean
+                                    ) {
+                                    }
                                 })
                             }
                         }
@@ -178,10 +202,12 @@ class MainActivity : AppCompatActivity() {
                 )
             } else {
                 if (checkNetwork(this@MainActivity)) {
-                    view.findViewById<TextView>(R.id.summary).text = resources.getString(R.string.main_connecting)
+                    view.findViewById<TextView>(R.id.summary).text =
+                        resources.getString(R.string.main_connecting)
                     selectDevice(data.hidden)
                 } else {
-                    view.findViewById<TextView>(R.id.summary).text = resources.getString(R.string.main_network_not_secure)
+                    view.findViewById<TextView>(R.id.summary).text =
+                        resources.getString(R.string.main_network_not_secure)
                 }
             }
         }
@@ -201,6 +227,7 @@ class MainActivity : AppCompatActivity() {
         deviceName = findViewById(R.id.deviceName)
         fab = findViewById(R.id.fab)
         themeId = getThemeId()
+        columns = getColumns()
 
         deviceIcon.setFactory {
             val view = ImageView(this@MainActivity)
@@ -226,8 +253,8 @@ class MainActivity : AppCompatActivity() {
 
         val inAnimation = AnimationUtils.loadAnimation(this, android.R.anim.fade_in)
         val outAnimation = AnimationUtils.loadAnimation(this, android.R.anim.fade_out)
-        inAnimation.duration = inAnimation.duration / 2
-        outAnimation.duration = outAnimation.duration / 2
+        inAnimation.duration /= 2
+        outAnimation.duration /= 2
         deviceIcon.inAnimation = inAnimation
         deviceIcon.outAnimation = outAnimation
         deviceName.inAnimation = inAnimation
@@ -246,29 +273,25 @@ class MainActivity : AppCompatActivity() {
         }
 
         //Handle shortcut
-        try {
-            if(intent.hasExtra("device")) {
-                val deviceId = intent.getStringExtra("device") ?: ""
-                if (devices.idExists(deviceId)) {
-                    if (checkNetwork(this)) {
-                        val device = devices.getDeviceById(deviceId)
-                        deviceIcon.setImageResource(device.iconId)
-                        deviceName.setText(device.name)
-                        selectDevice(deviceId)
-                    } else {
-                        loadDeviceList()
-                        Toast.makeText(this, R.string.main_network_not_secure, Toast.LENGTH_LONG).show()
-                    }
+        if (intent.hasExtra("device")) {
+            val deviceId = intent.getStringExtra("device") ?: ""
+            if (devices.idExists(deviceId)) {
+                if (checkNetwork(this)) {
+                    val device = devices.getDeviceById(deviceId)
+                    deviceIcon.setImageResource(device.iconId)
+                    deviceName.setText(device.name)
+                    selectDevice(deviceId)
                 } else {
                     loadDeviceList()
-                    Toast.makeText(this, R.string.main_device_nonexistent, Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, R.string.main_network_not_secure, Toast.LENGTH_LONG)
+                        .show()
                 }
             } else {
                 loadDeviceList()
+                Toast.makeText(this, R.string.main_device_nonexistent, Toast.LENGTH_LONG).show()
             }
-        } catch (e: Exception) {
+        } else {
             loadDeviceList()
-            Toast.makeText(this, R.string.err_wrong_format_summary, Toast.LENGTH_LONG).show()
         }
     }
 
@@ -277,7 +300,11 @@ class MainActivity : AppCompatActivity() {
         else super.onBackPressed()
     }
 
-    override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
+    override fun onCreateContextMenu(
+        menu: ContextMenu?,
+        v: View?,
+        menuInfo: ContextMenu.ContextMenuInfo?
+    ) {
         super.onCreateContextMenu(menu, v, menuInfo)
         val hidden = v?.findViewById<TextView>(R.id.hidden)?.text ?: return
         if (hidden.contains("tasmota_command")) {
@@ -295,13 +322,13 @@ class MainActivity : AppCompatActivity() {
             }
             resources.getString(R.string.str_delete) -> {
                 AlertDialog.Builder(this)
-                        .setTitle(R.string.str_delete)
-                        .setMessage(R.string.tasmota_delete_command)
-                        .setPositiveButton(R.string.str_delete) { _, _ ->
-                            helper.removeFromList(unifiedRequestCallback, tasmotaPosition)
-                        }
-                        .setNegativeButton(android.R.string.cancel) { _, _ -> }
-                        .show()
+                    .setTitle(R.string.str_delete)
+                    .setMessage(R.string.tasmota_delete_command)
+                    .setPositiveButton(R.string.str_delete) { _, _ ->
+                        helper.removeFromList(unifiedRequestCallback, tasmotaPosition)
+                    }
+                    .setNegativeButton(android.R.string.cancel) { _, _ -> }
+                    .show()
                 true
             }
             else -> super.onContextItemSelected(item)
@@ -312,6 +339,10 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         if (getThemeId() != themeId) {
             themeId = getThemeId()
+            recreate()
+        }
+        if (getColumns() != columns) {
+            columns = getColumns()
             recreate()
         }
         if (shouldReset) {
@@ -332,6 +363,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun numberOfRows(): Int {
+        if (columns != null) return columns ?: 1
         val displayMetrics: DisplayMetrics = resources.displayMetrics
         val horizontal: Int = ((displayMetrics.widthPixels / displayMetrics.density) / 240).toInt()
         val vertical: Int = ((displayMetrics.heightPixels / displayMetrics.density) / 240).toInt()
@@ -359,8 +391,13 @@ class MainActivity : AppCompatActivity() {
                 }
                 startActivityAndReset(intent)
             }
-            UNIFIED_MODES.contains(deviceObj.mode) -> {
-                unified = getCorrectAPI(deviceObj.mode, deviceId, unifiedHelperInterface, tasmotaHelperInterface)
+            Global.UNIFIED_MODES.contains(deviceObj.mode) -> {
+                unified = Global.getCorrectAPI(this, 
+                    deviceObj.mode,
+                    deviceId,
+                    unifiedHelperInterface,
+                    tasmotaHelperInterface
+                )
                 unified?.loadList(unifiedRequestCallback)
                 updateHandler.setUpdateFunction {
                     if (canReceiveRequest && unified?.needsRealTimeData == true)
@@ -376,64 +413,57 @@ class MainActivity : AppCompatActivity() {
     internal fun loadDeviceList() {
         updateHandler.stop()
         val registeredForUpdates: HashMap<Int, UnifiedAPI?> = hashMapOf()
-        val listItems: ArrayList<ListViewItem> = arrayListOf()
-        try {
-            listItems.ensureCapacity(devices.length())
-            if (devices.length() == 0) {
-                listItems += ListViewItem(
-                    title = resources.getString(R.string.main_no_devices),
-                    summary = resources.getString(R.string.main_no_devices_summary),
-                    icon = R.drawable.ic_info
-                )
-            } else {
-                var actualPosition = 0
-                for (i in 0 until devices.length()) {
-                    val currentDevice = devices.getDeviceByIndex(i)
-                    if (!currentDevice.hide) {
-                        if (
-                            currentDevice.directView
-                            && UNIFIED_MODES.contains(currentDevice.mode)
-                            && checkNetwork(this)
-                        ) {
-                            actualPosition.let {
-                                val api = getCorrectAPI(currentDevice.mode, currentDevice.id)
-                                api?.loadList(object : UnifiedAPI.CallbackInterface {
-                                    override fun onItemsLoaded(
-                                        holder: UnifiedRequestCallback,
-                                        recyclerViewInterface: HomeRecyclerViewHelperInterface?
-                                    ) {
-                                        if (holder.response != null) {
-                                            adapter.updateDirectView(
-                                                currentDevice.id, holder.response, it
-                                            )
-                                            registeredForUpdates[it] = api
-                                        }
+        val listItems: ArrayList<ListViewItem> = ArrayList(devices.length)
+        listItems.ensureCapacity(devices.length)
+        if (devices.length == 0) {
+            listItems += ListViewItem(
+                title = resources.getString(R.string.main_no_devices),
+                summary = resources.getString(R.string.main_no_devices_summary),
+                icon = R.drawable.ic_info
+            )
+        } else {
+            var actualPosition = 0
+            for (i in 0 until devices.length) {
+                val currentDevice = devices.getDeviceByIndex(i)
+                if (!currentDevice.hide) {
+                    if (
+                        currentDevice.directView
+                        && Global.UNIFIED_MODES.contains(currentDevice.mode)
+                        && checkNetwork(this)
+                    ) {
+                        actualPosition.let {
+                            val api = Global.getCorrectAPI(this, currentDevice.mode, currentDevice.id)
+                            api.loadList(object : UnifiedAPI.CallbackInterface {
+                                override fun onItemsLoaded(
+                                    holder: UnifiedRequestCallback,
+                                    recyclerViewInterface: HomeRecyclerViewHelperInterface?
+                                ) {
+                                    if (holder.response != null) {
+                                        adapter.updateDirectView(
+                                            currentDevice.id, holder.response, it
+                                        )
+                                        registeredForUpdates[it] = api
                                     }
-                                    override fun onExecuted(
-                                        result: String,
-                                        shouldRefresh: Boolean
-                                    ) {}
-                                })
-                            }
+                                }
 
+                                override fun onExecuted(
+                                    result: String,
+                                    shouldRefresh: Boolean
+                                ) {
+                                }
+                            })
                         }
-                        listItems += ListViewItem(
-                            title = currentDevice.name,
-                            summary = resources.getString(R.string.main_tap_to_connect),
-                            hidden = currentDevice.id,
-                            icon = currentDevice.iconId
-                        )
-                        actualPosition++
+
                     }
+                    listItems += ListViewItem(
+                        title = currentDevice.name,
+                        summary = resources.getString(R.string.main_tap_to_connect),
+                        hidden = currentDevice.id,
+                        icon = currentDevice.iconId
+                    )
+                    actualPosition++
                 }
             }
-        } catch (e: Exception) {
-            listItems += ListViewItem(
-                title = resources.getString(R.string.err_wrong_format),
-                summary = resources.getString(R.string.err_wrong_format_summary),
-                hidden = "none",
-                icon = R.drawable.ic_warning
-            )
         }
         adapter.updateData(listItems, mainHelperInterface)
         deviceIcon.setImageResource(R.drawable.ic_home_white)
@@ -455,23 +485,6 @@ class MainActivity : AppCompatActivity() {
         unified = null
     }
 
-    internal fun getCorrectAPI(
-        identifier: String,
-        deviceId: String,
-        recyclerViewInterface: HomeRecyclerViewHelperInterface? = null,
-        tasmotaHelperInterface: HomeRecyclerViewHelperInterface? = null
-    ): UnifiedAPI? {
-        return when (identifier) {
-            "ESP Easy" -> EspEasyAPI(this, deviceId, recyclerViewInterface)
-            "Hue API" -> HueAPI(this, deviceId, recyclerViewInterface)
-            "SimpleHome API" -> SimpleHomeAPI(this, deviceId, recyclerViewInterface)
-            "Tasmota" -> Tasmota(this, deviceId, tasmotaHelperInterface ?: recyclerViewInterface)
-            "Shelly Gen 1" -> ShellyAPI(this, deviceId, recyclerViewInterface, 1)
-            "Shelly Gen 2" -> ShellyAPI(this, deviceId, recyclerViewInterface, 2)
-            else -> null
-        }
-    }
-
     internal fun startActivityAndReset(intent: Intent) {
         shouldReset = true
         startActivity(intent)
@@ -482,7 +495,11 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, result, Toast.LENGTH_LONG).show()
         } else {
             Snackbar
-                .make(findViewById(android.R.id.content), R.string.main_execution_completed, Snackbar.LENGTH_LONG)
+                .make(
+                    findViewById(android.R.id.content),
+                    R.string.main_execution_completed,
+                    Snackbar.LENGTH_LONG
+                )
                 .setAction(R.string.str_show) {
                     AlertDialog.Builder(this)
                         .setTitle(R.string.main_execution_completed)

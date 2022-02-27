@@ -24,12 +24,14 @@ class DevicesActivity : AppCompatActivity(), RecyclerViewHelperInterfaceAdvanced
     private lateinit var recyclerView: RecyclerView
     private lateinit var itemTouchHelper: ItemTouchHelper
 
-    private val itemTouchHelperCallback = object: ItemTouchHelper.Callback() {
+    private val itemTouchHelperCallback = object : ItemTouchHelper.Callback() {
         override fun getMovementFlags(
             recyclerView: RecyclerView,
             viewHolder: RecyclerView.ViewHolder
         ): Int {
-            return if (viewHolder.adapterPosition == (recyclerView.adapter?.itemCount ?: -1) - 1) makeMovementFlags( 0, 0)
+            return if (viewHolder.adapterPosition == (recyclerView.adapter?.itemCount
+                    ?: -1) - 1
+            ) makeMovementFlags(0, 0)
             else makeMovementFlags(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0)
         }
 
@@ -42,7 +44,10 @@ class DevicesActivity : AppCompatActivity(), RecyclerViewHelperInterfaceAdvanced
             return if (target.adapterPosition == adapter.itemCount - 1) {
                 false
             } else {
-                recyclerView.adapter?.notifyItemMoved(viewHolder.adapterPosition, target.adapterPosition)
+                recyclerView.adapter?.notifyItemMoved(
+                    viewHolder.adapterPosition,
+                    target.adapterPosition
+                )
                 devices.moveDevice(viewHolder.adapterPosition, target.adapterPosition)
                 true
             }
@@ -74,42 +79,32 @@ class DevicesActivity : AppCompatActivity(), RecyclerViewHelperInterfaceAdvanced
         recyclerView.layoutManager = LinearLayoutManager(this)
     }
 
-    private fun loadDevices(){
-        val listItems: ArrayList<SimpleListItem> = arrayListOf()
-        try {
-            listItems.ensureCapacity(devices.length())
-            var currentDevice: DeviceItem
-            for (i in 0 until devices.length()) {
-                currentDevice = devices.getDeviceByIndex(i)
-                listItems += SimpleListItem(
-                    title = currentDevice.name,
-                    summary =
-                        if (currentDevice.hide) resources.getString(R.string.device_config_hidden) + " · " + currentDevice.address
-                        else currentDevice.address,
-                    hidden = "edit#${currentDevice.id}",
-                    icon = currentDevice.iconId
-                )
-            }
+    private fun loadDevices() {
+        val listItems: ArrayList<SimpleListItem> = ArrayList(devices.length)
+        var currentDevice: DeviceItem
+        for (i in 0 until devices.length) {
+            currentDevice = devices.getDeviceByIndex(i)
             listItems += SimpleListItem(
-                    title = resources.getString(R.string.pref_add),
-                    summary = resources.getString(R.string.pref_add_summary),
-                    hidden = "add",
-                    icon = R.drawable.ic_add
-            )
-        } catch (e: Exception) {
-            listItems += SimpleListItem(
-                    title = resources.getString(R.string.err_wrong_format),
-                    summary = resources.getString(R.string.err_wrong_format_summary),
-                    hidden = "none",
-                    icon = R.drawable.ic_warning
+                title = currentDevice.name,
+                summary =
+                if (currentDevice.hide) resources.getString(R.string.device_config_hidden) + " · " + currentDevice.address
+                else currentDevice.address,
+                hidden = "edit#${currentDevice.id}",
+                icon = currentDevice.iconId
             )
         }
+        listItems += SimpleListItem(
+            title = resources.getString(R.string.pref_add),
+            summary = resources.getString(R.string.pref_add_summary),
+            hidden = "add",
+            icon = R.drawable.ic_add
+        )
 
         recyclerView.adapter = DeviceListAdapter(listItems, this)
     }
 
     override fun onItemClicked(view: View, position: Int) {
-        val action =  view.findViewById<TextView>(R.id.hidden).text
+        val action = view.findViewById<TextView>(R.id.hidden).text
         if (action.contains("edit")) {
             reset = true
             startActivity(
@@ -137,7 +132,7 @@ class DevicesActivity : AppCompatActivity(), RecyclerViewHelperInterfaceAdvanced
 
     override fun onStart() {
         super.onStart()
-        if (reset){
+        if (reset) {
             reset = false
             loadDevices()
         }

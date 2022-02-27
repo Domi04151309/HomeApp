@@ -12,7 +12,7 @@ import org.robolectric.RuntimeEnvironment
 @RunWith(RobolectricTestRunner::class)
 class EspEasyAPIParserTest {
     private val resources: Resources = RuntimeEnvironment.getApplication().applicationContext.resources
-    private val parser = EspEasyAPIParser(resources)
+    private val parser = EspEasyAPIParser(resources, null)
 
     @Test
     fun parseInfo1() {

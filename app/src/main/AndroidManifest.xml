@@ -28,7 +28,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppThemeDark"
         android:usesCleartextTraffic="true"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="GoogleAppIndexingWarning,UnusedAttribute"
+        android:dataExtractionRules="@xml/data_extraction_rules">
         <activity
             android:name=".activities.HueSceneActivity"
             android:label="@string/hue_add_scene"
@@ -70,7 +71,6 @@
         </activity>
         <activity
             android:name=".activities.MainActivity"
-            android:label="@string/app_name"
             android:launchMode="singleTop"
             android:configChanges="orientation|screenSize"
             android:theme="@style/AppThemeDark.NoActionBar" />
@@ -92,7 +92,21 @@
         <activity
             android:name=".activities.EditDeviceActivity"
             android:label="@string/pref_add"
+            android:launchMode="singleTop"
             android:parentActivityName=".activities.DevicesActivity" />
+        <activity
+            android:name=".activities.HueSettingsActivity"
+            android:label="@string/device_config_info"
+            android:launchMode="singleTop"
+            android:parentActivityName=".activities.EditDeviceActivity" />
+        <service
+            android:name=".services.ControlService"
+            android:permission="android.permission.BIND_CONTROLS"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.service.controls.ControlsProviderService" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

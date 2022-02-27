@@ -16,33 +16,38 @@ internal object Theme {
             "light" -> {
                 context.setTheme(R.style.AppTheme27)
                 recent(context, R.color.colorPrimary)
+                context.setTheme(R.style.AppThemePatch)
             }
             "dark" -> {
                 context.setTheme(R.style.AppThemeDark)
                 recent(context, R.color.colorPrimaryDark)
+                context.setTheme(R.style.AppThemePatchDark)
             }
             "black" -> {
                 context.setTheme(R.style.AppThemeBlack)
                 recent(context, R.color.colorPrimaryBlack)
+                context.setTheme(R.style.AppThemePatchDark)
             }
             "auto" -> {
                 when (context.resources.configuration.uiMode.and(Configuration.UI_MODE_NIGHT_MASK)) {
                     Configuration.UI_MODE_NIGHT_YES -> {
                         context.setTheme(R.style.AppThemeDark)
                         recent(context, R.color.colorPrimaryDark)
+                        context.setTheme(R.style.AppThemePatchDark)
                     }
                     else -> {
                         context.setTheme(R.style.AppTheme27)
                         recent(context, R.color.colorPrimary)
+                        context.setTheme(R.style.AppThemePatch)
                     }
                 }
             }
             else -> {
                 context.setTheme(R.style.AppTheme27)
                 recent(context, R.color.colorPrimary)
+                context.setTheme(R.style.AppThemePatch)
             }
         }
-        context.setTheme(R.style.AppThemePatch)
     }
 
     fun setNoActionBar(context: Context) {
@@ -50,33 +55,38 @@ internal object Theme {
             "light" -> {
                 context.setTheme(R.style.AppTheme_NoActionBar)
                 recent(context, R.color.colorPrimary)
+                context.setTheme(R.style.AppThemePatch)
             }
             "dark" -> {
                 context.setTheme(R.style.AppThemeDark_NoActionBar)
                 recent(context, R.color.colorPrimaryDark)
+                context.setTheme(R.style.AppThemePatchDark)
             }
             "black" -> {
                 context.setTheme(R.style.AppThemeBlack_NoActionBar)
                 recent(context, R.color.colorPrimaryBlack)
+                context.setTheme(R.style.AppThemePatchDark)
             }
             "auto" -> {
                 when (context.resources.configuration.uiMode.and(Configuration.UI_MODE_NIGHT_MASK)) {
                     Configuration.UI_MODE_NIGHT_YES -> {
                         context.setTheme(R.style.AppThemeDark_NoActionBar)
                         recent(context, R.color.colorPrimaryDark)
+                        context.setTheme(R.style.AppThemePatchDark)
                     }
                     else -> {
                         context.setTheme(R.style.AppTheme_NoActionBar)
                         recent(context, R.color.colorPrimary)
+                        context.setTheme(R.style.AppThemePatch)
                     }
                 }
             }
             else -> {
                 context.setTheme(R.style.AppTheme_NoActionBar)
                 recent(context, R.color.colorPrimary)
+                context.setTheme(R.style.AppThemePatch)
             }
         }
-        context.setTheme(R.style.AppThemePatch)
     }
 
     private fun recent(c: Context, color: Int) {

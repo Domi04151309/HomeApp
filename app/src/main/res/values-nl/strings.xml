@@ -26,8 +26,6 @@
     <string name="hue_connect">Koppel je Bridge</string>
     <string name="hue_press_button">Druk op de knop op je bridge om door te gaan.</string>
     <string name="hue_tap">Druk hier om te kiezen</string>
-    <string name="hue_on">Aan</string>
-    <string name="hue_off">Uit</string>
     <string name="hue_brightness">Helderheid</string>
     <string name="hue_color_temperature">Kleurtemperatuur</string>
     <string name="hue_hue_sat">Tint and verzadiging</string>
@@ -76,6 +74,8 @@
     <string name="str_name">Naam</string>
     <string name="str_rename">Naam wijzigen</string>
     <string name="str_delete">Verwijderen</string>
+    <string name="str_on">Aan</string>
+    <string name="str_off">Uit</string>
 
     <string name="about">Over</string>
     <string name="about_summary">Over de app</string>

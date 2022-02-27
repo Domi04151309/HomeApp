@@ -45,7 +45,7 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes), RecyclerViewHe
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         c = context ?: throw IllegalStateException()
         lampData = context as HueLampActivity
-        hueAPI = HueAPI(c, lampData.deviceId)
+        hueAPI = HueAPI(c, lampData.device.id)
         queue = Volley.newRequestQueue(context)
 
         val recyclerView = (super.onCreateView(inflater, container, savedInstanceState) ?: throw IllegalStateException()) as RecyclerView
@@ -146,7 +146,7 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes), RecyclerViewHe
     override fun onItemClicked(view: View, position: Int) {
         val hiddenText = view.findViewById<TextView>(R.id.hidden).text.toString()
         if (hiddenText == "add") {
-            startActivity(Intent(c, HueSceneActivity::class.java).putExtra("deviceId", lampData.deviceId).putExtra("room", lampData.id))
+            startActivity(Intent(c, HueSceneActivity::class.java).putExtra("deviceId", lampData.device.id).putExtra("room", lampData.id))
         } else {
             hueAPI.activateSceneOfGroup(lampData.id, hiddenText)
         }
