@@ -109,13 +109,17 @@ class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapt
         }
         if (items[position].state != state) {
             items[position].state = state
-            val viewHolder = attachedTo.findViewHolderForAdapterPosition(position) as ViewHolder
-            viewHolder.stateSwitch.isChecked = state
-            if (dynamicSummary) {
-                viewHolder.summary.text = attachedTo.context.resources.getString(
-                    if (state) R.string.switch_summary_on
-                    else R.string.switch_summary_off
-                )
+            val viewHolder = attachedTo.findViewHolderForAdapterPosition(position) as? ViewHolder
+            if (viewHolder == null) {
+                notifyItemChanged(position)
+            } else {
+                viewHolder.stateSwitch.isChecked = state
+                if (dynamicSummary) {
+                    viewHolder.summary.text = attachedTo.context.resources.getString(
+                        if (state) R.string.switch_summary_on
+                        else R.string.switch_summary_off
+                    )
+                }
             }
         }
     }
