@@ -23,7 +23,7 @@ internal object Global {
 
     const val DEFAULT_JSON: String = "{\"devices\":{}}"
     val UNIFIED_MODES = arrayOf(
-        "ESP Easy", "Hue API", "Shelly Gen 1", "Shelly Gen 2", "SimpleHome API", "Tasmota"
+        "ESP Easy", "Hue API", "OpenHAB", "Shelly Gen 1", "Shelly Gen 2", "SimpleHome API", "Tasmota"
     )
     val POWER_MENU_MODES = arrayOf(
         "ESP Easy", "Hue API", "Shelly Gen 1", "Shelly Gen 2", "SimpleHome API"
@@ -39,6 +39,7 @@ internal object Global {
         return when (identifier) {
             "ESP Easy" -> EspEasyAPI(context, deviceId, recyclerViewInterface)
             "Hue API" -> HueAPI(context, deviceId, recyclerViewInterface)
+            "OpenHAB" -> OpenHABAPI(context, deviceId, recyclerViewInterface)
             "SimpleHome API" -> SimpleHomeAPI(context, deviceId, recyclerViewInterface)
             "Tasmota" -> Tasmota(context, deviceId, tasmotaHelperInterface ?: recyclerViewInterface)
             "Shelly Gen 1" -> ShellyAPI(context, deviceId, recyclerViewInterface, 1)
