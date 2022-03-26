@@ -29,7 +29,7 @@ class EditDeviceActivity : AppCompatActivity() {
 
     companion object {
         private val SUPPORTS_DIRECT_VIEW = arrayOf(
-            "ESP Easy", "Hue API", "Shelly Gen 1", "Shelly Gen 2", "SimpleHome API"
+            "ESP Easy", "Hue API", "OpenHAB", "Shelly Gen 1", "Shelly Gen 2", "SimpleHome API"
         )
         private val HAS_CONFIG = arrayOf(
             "Hue API", "ESP Easy", "Node-RED", "Shelly Gen 1", "Shelly Gen 2"

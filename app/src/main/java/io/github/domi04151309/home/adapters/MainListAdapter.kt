@@ -129,6 +129,7 @@ class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapt
     }
 
     fun updateDirectView(id: String, newItems: ArrayList<ListViewItem>, directViewPos: Int) {
+        if (offsets.size < directViewPos) return
         newItems.forEach { it.hidden = id + '@' + it.hidden }
 
         val correctOffset = getOffset(directViewPos)
