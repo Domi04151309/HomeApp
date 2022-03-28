@@ -47,10 +47,10 @@ class EditDeviceActivity : AppCompatActivity() {
         val devices = Devices(this)
         var deviceId = intent.getStringExtra("deviceId")
         val editing =
-                if (deviceId == null){
-                    deviceId = devices.generateNewId()
-                    false
-                } else true
+            if (deviceId == null) {
+                deviceId = devices.generateNewId()
+                false
+            } else true
 
         val deviceSecrets = DeviceSecrets(this, deviceId)
 
@@ -58,8 +58,10 @@ class EditDeviceActivity : AppCompatActivity() {
         val nameTxt = findViewById<TextView>(R.id.nameTxt)
         val nameBox = findViewById<TextInputLayout>(R.id.nameBox)
         val addressBox = findViewById<TextInputLayout>(R.id.addressBox)
-        val iconSpinner = findViewById<TextInputLayout>(R.id.iconSpinner).editText as AutoCompleteTextView
-        val modeSpinner = findViewById<TextInputLayout>(R.id.modeSpinner).editText as AutoCompleteTextView
+        val iconSpinner =
+            findViewById<TextInputLayout>(R.id.iconSpinner).editText as AutoCompleteTextView
+        val modeSpinner =
+            findViewById<TextInputLayout>(R.id.modeSpinner).editText as AutoCompleteTextView
         val specialDivider = findViewById<View>(R.id.specialDivider)
         val specialSection = findViewById<LinearLayout>(R.id.specialSection)
         val usernameBox = findViewById<TextInputLayout>(R.id.usernameBox)
@@ -69,7 +71,8 @@ class EditDeviceActivity : AppCompatActivity() {
         val configBtn = findViewById<Button>(R.id.configBtn)
         val infoBtn = findViewById<Button>(R.id.infoBtn)
 
-        findViewById<TextView>(R.id.idTxt).text = (resources.getString(R.string.pref_add_id, deviceId))
+        findViewById<TextView>(R.id.idTxt).text =
+            (resources.getString(R.string.pref_add_id, deviceId))
 
         iconSpinner.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {}
@@ -83,8 +86,10 @@ class EditDeviceActivity : AppCompatActivity() {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 val string = s.toString()
-                val specialVisibility = if (string == "Fritz! Auto-Login" || string == "Shelly Gen 1") View.VISIBLE else View.GONE
-                val usernameVisibility = if (string == "Shelly Gen 1") View.VISIBLE else View.GONE
+                val specialVisibility =
+                    if (string == "Fritz! Auto-Login" || string == "OpenHAB" || string == "Shelly Gen 1") View.VISIBLE else View.GONE
+                val usernameVisibility =
+                    if (string == "OpenHAB" || string == "Shelly Gen 1") View.VISIBLE else View.GONE
                 specialDivider.visibility = specialVisibility
                 specialSection.visibility = specialVisibility
                 usernameBox.visibility = usernameVisibility
@@ -116,7 +121,7 @@ class EditDeviceActivity : AppCompatActivity() {
             }
         })
 
-        if (editing){
+        if (editing) {
             title = resources.getString(R.string.pref_edit_device)
             val deviceObj = devices.getDeviceById(deviceId)
             nameBox.editText?.setText(deviceObj.name)
@@ -140,7 +145,10 @@ class EditDeviceActivity : AppCompatActivity() {
                     "Node-RED" -> {
                         startActivity(
                             Intent(this, WebActivity::class.java)
-                                .putExtra("URI", formatNodeREDAddress(addressBox.editText?.text.toString()))
+                                .putExtra(
+                                    "URI",
+                                    formatNodeREDAddress(addressBox.editText?.text.toString())
+                                )
                                 .putExtra("title", resources.getString(R.string.pref_device_config))
                         )
                     }
@@ -171,7 +179,12 @@ class EditDeviceActivity : AppCompatActivity() {
             }
 
             infoBtn.setOnClickListener {
-                startActivity(Intent(this, HueSettingsActivity::class.java).putExtra("device", deviceId))
+                startActivity(
+                    Intent(this, HueSettingsActivity::class.java).putExtra(
+                        "device",
+                        deviceId
+                    )
+                )
             }
 
             findViewById<Button>(R.id.shortcutBtn).setOnClickListener {
@@ -180,38 +193,43 @@ class EditDeviceActivity : AppCompatActivity() {
                     if (shortcutManager != null) {
                         if (shortcutManager.isRequestPinShortcutSupported) {
                             val shortcut = ShortcutInfo.Builder(this, deviceId)
-                                    .setShortLabel(deviceObj.name.ifEmpty {
-                                        resources.getString(R.string.pref_add_name_empty)
-                                    })
-                                    .setLongLabel(deviceObj.name.ifEmpty {
-                                        resources.getString(R.string.pref_add_name_empty)
-                                    })
-                                    .setIcon(Icon.createWithResource(this, deviceObj.iconId))
-                                    .setIntent(
-                                            Intent(this, MainActivity::class.java)
-                                                    .putExtra("device", deviceId)
-                                                    .setAction(Intent.ACTION_MAIN)
-                                                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                                    )
-                                    .build()
+                                .setShortLabel(deviceObj.name.ifEmpty {
+                                    resources.getString(R.string.pref_add_name_empty)
+                                })
+                                .setLongLabel(deviceObj.name.ifEmpty {
+                                    resources.getString(R.string.pref_add_name_empty)
+                                })
+                                .setIcon(Icon.createWithResource(this, deviceObj.iconId))
+                                .setIntent(
+                                    Intent(this, MainActivity::class.java)
+                                        .putExtra("device", deviceId)
+                                        .setAction(Intent.ACTION_MAIN)
+                                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                                )
+                                .build()
                             shortcutManager.requestPinShortcut(shortcut, null)
                         } else
-                            Toast.makeText(this, R.string.pref_add_shortcut_failed, Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                this,
+                                R.string.pref_add_shortcut_failed,
+                                Toast.LENGTH_LONG
+                            ).show()
                     }
                 } else
-                    Toast.makeText(this, R.string.pref_add_shortcut_failed, Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, R.string.pref_add_shortcut_failed, Toast.LENGTH_LONG)
+                        .show()
             }
 
             findViewById<Button>(R.id.deleteBtn).setOnClickListener {
                 AlertDialog.Builder(this)
-                        .setTitle(R.string.str_delete)
-                        .setMessage(R.string.pref_delete_device_question)
-                        .setPositiveButton(R.string.str_delete) { _, _ ->
-                            devices.deleteDevice(deviceId)
-                            finish()
-                        }
-                        .setNegativeButton(android.R.string.cancel) { _, _ -> }
-                        .show()
+                    .setTitle(R.string.str_delete)
+                    .setMessage(R.string.pref_delete_device_question)
+                    .setPositiveButton(R.string.str_delete) { _, _ ->
+                        devices.deleteDevice(deviceId)
+                        finish()
+                    }
+                    .setNegativeButton(android.R.string.cancel) { _, _ -> }
+                    .show()
             }
         } else {
             iconSpinner.setText(resources.getStringArray(R.array.pref_icons)[0])
@@ -221,23 +239,29 @@ class EditDeviceActivity : AppCompatActivity() {
         }
 
         iconSpinner.setAdapter(IconSpinnerAdapter(resources.getStringArray(R.array.pref_icons)))
-        modeSpinner.setAdapter(ArrayAdapter(this, R.layout.dropdown_item, resources.getStringArray(R.array.pref_add_mode_array)))
+        modeSpinner.setAdapter(
+            ArrayAdapter(
+                this,
+                R.layout.dropdown_item,
+                resources.getStringArray(R.array.pref_add_mode_array)
+            )
+        )
 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
             val name = nameBox.editText?.text.toString()
             if (name == "") {
                 AlertDialog.Builder(this)
-                        .setTitle(R.string.err_missing_name)
-                        .setMessage(R.string.err_missing_name_summary)
-                        .setPositiveButton(android.R.string.ok) { _, _ -> }
-                        .show()
+                    .setTitle(R.string.err_missing_name)
+                    .setMessage(R.string.err_missing_name_summary)
+                    .setPositiveButton(android.R.string.ok) { _, _ -> }
+                    .show()
                 return@setOnClickListener
             } else if (addressBox.editText?.text.toString() == "") {
                 AlertDialog.Builder(this)
-                        .setTitle(R.string.err_missing_address)
-                        .setMessage(R.string.err_missing_address_summary)
-                        .setPositiveButton(android.R.string.ok) { _, _ -> }
-                        .show()
+                    .setTitle(R.string.err_missing_address)
+                    .setMessage(R.string.err_missing_address_summary)
+                    .setPositiveButton(android.R.string.ok) { _, _ -> }
+                    .show()
                 return@setOnClickListener
             }
 
