@@ -1,10 +1,15 @@
 package io.github.domi04151309.home.api
 
 import android.content.Context
+import com.android.volley.Request
+import com.android.volley.toolbox.JsonArrayRequest
+import com.android.volley.toolbox.JsonObjectRequest
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.data.ListViewItem
 import io.github.domi04151309.home.data.UnifiedRequestCallback
+import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
+import org.json.JSONObject
 
 class OpenHABAPI(
     c: Context,
@@ -12,25 +17,28 @@ class OpenHABAPI(
     recyclerViewInterface: HomeRecyclerViewHelperInterface?
 ) : UnifiedAPI(c, deviceId, recyclerViewInterface) {
 
+    private val parser = OpenHABAPIParser(c.resources)
     init {
         dynamicSummaries = false
     }
 
     override fun loadList(callback: CallbackInterface) {
-        //TODO: implement
-        callback.onItemsLoaded(
-            UnifiedRequestCallback(
-                arrayListOf(
-                    ListViewItem(
-                        "Not yet implemented!",
-                        "Not yet implemented!",
-                        icon = R.drawable.ic_device_clock
-                    )
-                ),
-                deviceId
-            ),
-            recyclerViewInterface
+        val jsonArrayRequest = JsonArrayRequest(
+            Request.Method.GET, url + "rest/items", null,
+            { response ->
+                callback.onItemsLoaded(
+                    UnifiedRequestCallback(
+                        parser.parseResponse(JSONObject("{\"items\":${response}}")),
+                        deviceId
+                    ),
+                    recyclerViewInterface
+                )
+            },
+            { error ->
+                callback.onItemsLoaded(UnifiedRequestCallback(null, deviceId, Global.volleyError(c, error)), null)
+            }
         )
+        queue.add(jsonArrayRequest)
     }
 
     override fun loadStates(callback: RealTimeStatesCallback, offset: Int) {
