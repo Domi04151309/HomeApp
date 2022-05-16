@@ -163,25 +163,12 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes), RecyclerViewHe
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
         return when (item.title) {
-            resources.getString(R.string.str_rename) -> {
-                val nullParent: ViewGroup? = null
-                val view = layoutInflater.inflate(R.layout.dialog_scene_name, nullParent, false)
-                val input = view.findViewById<EditText>(R.id.input)
-                input.setText(selectedSceneName)
-                AlertDialog.Builder(c)
-                    .setTitle(R.string.str_rename)
-                    .setMessage(R.string.hue_rename_scene)
-                    .setView(view)
-                    .setPositiveButton(android.R.string.ok) { _, _ ->
-                        val requestObject = "{\"name\":\"" + input.text.toString() + "\"}"
-                        val renameSceneRequest = CustomJsonArrayRequest(Request.Method.PUT, lampData.addressPrefix + "/scenes/$selectedScene", JSONObject(requestObject),
-                            { queue.add(scenesRequest) },
-                            { e -> Log.e(Global.LOG_TAG, e.toString()) }
-                        )
-                        queue.add(renameSceneRequest)
-                    }
-                    .setNegativeButton(android.R.string.cancel) { _, _ -> }
-                    .show()
+            resources.getString(R.string.str_edit) -> {
+                startActivity(
+                    Intent(c, HueSceneActivity::class.java)
+                        .putExtra("deviceId", lampData.device.id)
+                        .putExtra("scene", selectedScene)
+                )
                 true
             }
             resources.getString(R.string.str_delete) -> {

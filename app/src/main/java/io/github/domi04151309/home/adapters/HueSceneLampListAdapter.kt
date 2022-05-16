@@ -12,8 +12,7 @@ import androidx.core.widget.ImageViewCompat
 import io.github.domi04151309.home.data.SimpleListItem
 
 class HueSceneLampListAdapter(
-    private val items: ArrayList<SimpleListItem>,
-    private val colors: ArrayList<Int>
+    private val items: ArrayList<Pair<SimpleListItem,Int>>
     ) : RecyclerView.Adapter<HueSceneLampListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(
@@ -28,11 +27,11 @@ class HueSceneLampListAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.drawable.setImageResource(items[position].icon)
-        holder.title.text = items[position].title
-        holder.summary.text = items[position].summary
-        holder.hidden.text = items[position].hidden
-        ImageViewCompat.setImageTintList(holder.drawable, ColorStateList.valueOf(colors[position]))
+        holder.drawable.setImageResource(items[position].first.icon)
+        holder.title.text = items[position].first.title
+        holder.summary.text = items[position].first.summary
+        holder.hidden.text = items[position].first.hidden
+        ImageViewCompat.setImageTintList(holder.drawable, ColorStateList.valueOf(items[position].second))
     }
 
     override fun getItemCount(): Int {
