@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -21,39 +22,44 @@ import com.google.android.material.textfield.TextInputLayout
 import io.github.domi04151309.home.*
 import io.github.domi04151309.home.adapters.HueSceneLampListAdapter
 import io.github.domi04151309.home.custom.CustomJsonArrayRequest
-import io.github.domi04151309.home.data.SimpleListItem
 import io.github.domi04151309.home.fragments.HueScenesFragment
 import io.github.domi04151309.home.api.HueAPI
+import io.github.domi04151309.home.data.LightStates
+import io.github.domi04151309.home.data.SceneListItem
 import io.github.domi04151309.home.helpers.*
 import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.Theme
+import io.github.domi04151309.home.interfaces.SceneRecyclerViewHelperInterface
 import org.json.JSONArray
 import org.json.JSONObject
 
-class HueSceneActivity : AppCompatActivity() {
+class HueSceneActivity : AppCompatActivity(), SceneRecyclerViewHelperInterface {
 
-    //TODO: brightness on edit scenes; change brightness live and in list
-    //TODO: edit on/off
+    private lateinit var hueAPI: HueAPI
+    private val lightStates = LightStates()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         Theme.set(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hue_scene)
 
         val deviceId = intent.getStringExtra("deviceId") ?: ""
-        val hueAPI = HueAPI(this, deviceId)
+        hueAPI = HueAPI(this, deviceId)
         val addressPrefix = Devices(this).getDeviceById(deviceId).address +
                 "api/" + hueAPI.getUsername()
         val queue = Volley.newRequestQueue(this)
-        val listItems: ArrayList<Pair<SimpleListItem, Int>> = arrayListOf()
+        val listItems: ArrayList<SceneListItem> = arrayListOf()
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         val nameTxt = findViewById<TextView>(R.id.nameTxt)
         val nameBox = findViewById<TextInputLayout>(R.id.nameBox)
         val briBar = findViewById<Slider>(R.id.briBar)
 
         val editing = intent.hasExtra("scene")
-        val id = intent.getStringExtra(if (editing) "scene" else "room") ?: ""
-        val adapter = HueSceneLampListAdapter(listItems)
+        val groupId = intent.getStringExtra("room") ?: "0"
+        val id = if (editing) intent.getStringExtra("scene") ?: "" else groupId
+        val adapter = HueSceneLampListAdapter(listItems, this)
         lateinit var defaultText: String
+        lateinit var lightIDs: JSONArray
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
@@ -64,7 +70,7 @@ class HueSceneActivity : AppCompatActivity() {
         if (editing) {
             supportActionBar?.setTitle(R.string.hue_edit_scene)
             defaultText = resources.getString(R.string.hue_scene)
-            briBar.isEnabled = false
+            hueAPI.activateSceneOfGroup(groupId, id)
             queue.add(
                 JsonObjectRequest(
                     Request.Method.GET,
@@ -78,18 +84,19 @@ class HueSceneActivity : AppCompatActivity() {
                                 null,
                                 { secondResponse ->
                                     nameBox.editText?.setText(response.optString("name"))
+                                    lightIDs = response.optJSONArray("lights") ?: JSONArray()
                                     val lights =
                                         response.optJSONObject("lightstates") ?: JSONObject()
                                     var lightObj: JSONObject
                                     val brightness = Array(2) { 0 }
                                     for (i in lights.keys()) {
                                         lightObj = lights.getJSONObject(i)
-                                        listItems += Pair(
-                                            generateListItem(
-                                                (secondResponse.optJSONObject(i) ?: JSONObject())
-                                                    .optString("name"), lightObj
-                                            ),
-                                            generateColor(lightObj)
+                                        lightStates.addLight(i, lightObj)
+                                        listItems += generateListItem(
+                                            i,
+                                            (secondResponse.optJSONObject(i) ?: JSONObject())
+                                                .optString("name"),
+                                            lightObj
                                         )
                                         if (lightObj.has("bri")) {
                                             brightness[0] += lightObj.getInt("bri")
@@ -101,7 +108,7 @@ class HueSceneActivity : AppCompatActivity() {
                                         briBar,
                                         if (brightness[1] > 0) brightness[0] / brightness[1] else 0
                                     )
-                                    listItems.sortBy { it.first.title }
+                                    listItems.sortBy { it.title }
                                     adapter.notifyDataSetChanged()
                                 },
                                 ::onError
@@ -114,22 +121,13 @@ class HueSceneActivity : AppCompatActivity() {
         } else {
             supportActionBar?.setTitle(R.string.hue_add_scene)
             defaultText = resources.getString(R.string.hue_new_scene)
-            briBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
-                override fun onStartTrackingTouch(slider: Slider) {
-                }
-
-                override fun onStopTrackingTouch(slider: Slider) {
-                    hueAPI.changeBrightnessOfGroup(id, slider.value.toInt())
-                    adapter.changeSceneBrightness(HueUtils.briToPercent(slider.value.toInt()))
-                }
-            })
             queue.add(
                 JsonObjectRequest(
                     Request.Method.GET,
                     "$addressPrefix/groups/$id",
                     null,
                     { response ->
-                        val lights = response.getJSONArray("lights")
+                        lightIDs = response.getJSONArray("lights")
                         HueLampActivity.setProgress(
                             briBar,
                             (response.optJSONObject("action") ?: JSONObject()).optInt("bri")
@@ -141,20 +139,18 @@ class HueSceneActivity : AppCompatActivity() {
                                 null,
                                 { secondResponse ->
                                     var lightObj: JSONObject
-                                    for (i in 0 until lights.length()) {
+                                    for (i in 0 until lightIDs.length()) {
                                         lightObj =
-                                            secondResponse.getJSONObject(lights.get(i).toString())
+                                            secondResponse.getJSONObject(lightIDs.getString(i))
                                         val state = lightObj.getJSONObject("state")
-                                        listItems += Pair(
-                                            generateListItem(
-                                                lightObj.getString("name"),
-                                                state
-                                            ),
-                                            generateColor(state)
+                                        listItems += generateListItem(
+                                            lightIDs.getString(i),
+                                            lightObj.getString("name"),
+                                            state
                                         )
                                     }
 
-                                    listItems.sortBy { it.first.title }
+                                    listItems.sortBy { it.title }
                                     adapter.notifyDataSetChanged()
                                 },
                                 ::onError
@@ -176,6 +172,15 @@ class HueSceneActivity : AppCompatActivity() {
             }
         })
 
+        briBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
+            override fun onStartTrackingTouch(slider: Slider) {}
+            override fun onStopTrackingTouch(slider: Slider) {
+                hueAPI.changeBrightnessOfGroup(groupId, slider.value.toInt())
+                adapter.changeSceneBrightness(HueUtils.briToPercent(slider.value.toInt()))
+                lightStates.setSceneBrightness(slider.value.toInt())
+            }
+        })
+
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
             val name = nameBox.editText?.text.toString()
             if (name == "") {
@@ -191,7 +196,7 @@ class HueSceneActivity : AppCompatActivity() {
                     CustomJsonArrayRequest(
                         Request.Method.PUT,
                         "$addressPrefix/scenes/$id",
-                        JSONObject("{\"name\":\"$name\"}"),
+                        JSONObject("{\"name\":\"$name\",\"lightstates\":$lightStates}"),
                         ::onSuccess,
                         ::onError
                     )
@@ -208,23 +213,12 @@ class HueSceneActivity : AppCompatActivity() {
         }
     }
 
-    private fun generateListItem(title: String, state: JSONObject): SimpleListItem {
-        val item = SimpleListItem(title)
-        item.summary =
-            resources.getString(if (state.optBoolean("on")) R.string.str_on else R.string.str_off)
-        item.summary += " · " + resources.getString(R.string.hue_brightness) + ": "
-        item.summary += if (state.optBoolean("on")) {
-            if (state.has("bri")) HueUtils.briToPercent(state.getInt("bri"))
-            else "100%"
-        } else {
-            "0%"
-        }
-        item.icon = R.drawable.ic_circle
-        return item
-    }
-
-    private fun generateColor(state: JSONObject): Int {
-        return if (state.has("xy")) {
+    private fun generateListItem(id: String, title: String, state: JSONObject): SceneListItem {
+        val item = SceneListItem(title)
+        item.state = state.optBoolean("on")
+        item.hidden = id
+        item.brightness = HueUtils.briToPercent(state.optInt("bri", 255))
+        item.color = if (state.has("xy")) {
             val xyArray = state.getJSONArray("xy")
             ColorUtils.xyToRGB(
                 xyArray.getDouble(0),
@@ -237,6 +231,7 @@ class HueSceneActivity : AppCompatActivity() {
         } else {
             Color.parseColor("#FFFFFF")
         }
+        return item
     }
 
     private fun onSuccess(response: JSONArray) {
@@ -247,5 +242,14 @@ class HueSceneActivity : AppCompatActivity() {
     private fun onError(error: VolleyError) {
         Toast.makeText(this, Global.volleyError(this, error), Toast.LENGTH_LONG).show()
         Log.e(Global.LOG_TAG, error.toString())
+    }
+
+    override fun onItemClicked(view: View, data: SceneListItem) {
+        //TODO: add detailed lamp controls
+    }
+
+    override fun onStateChanged(view: View, data: SceneListItem, state: Boolean) {
+        hueAPI.switchLightByID(data.hidden, state)
+        lightStates.switchLight(data.hidden, state)
     }
 }

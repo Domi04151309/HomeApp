@@ -167,6 +167,7 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes), RecyclerViewHe
                 startActivity(
                     Intent(c, HueSceneActivity::class.java)
                         .putExtra("deviceId", lampData.device.id)
+                        .putExtra("room", lampData.id)
                         .putExtra("scene", selectedScene)
                 )
                 true

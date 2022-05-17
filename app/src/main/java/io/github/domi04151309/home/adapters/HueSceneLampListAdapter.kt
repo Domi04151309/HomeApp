@@ -1,5 +1,6 @@
 package io.github.domi04151309.home.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.view.ViewGroup
@@ -9,14 +10,25 @@ import android.widget.ImageView
 import android.widget.TextView
 import io.github.domi04151309.home.R
 import android.view.LayoutInflater
+import android.widget.Switch
 import androidx.core.widget.ImageViewCompat
-import io.github.domi04151309.home.data.SimpleListItem
+import io.github.domi04151309.home.data.SceneListItem
+import io.github.domi04151309.home.interfaces.SceneRecyclerViewHelperInterface
 
 class HueSceneLampListAdapter(
-    private var items: ArrayList<Pair<SimpleListItem, Int>>
+    private var items: ArrayList<SceneListItem>,
+    private var helperInterface: SceneRecyclerViewHelperInterface
 ) : RecyclerView.Adapter<HueSceneLampListAdapter.ViewHolder>() {
 
     lateinit var c: Context
+
+    init {
+        setHasStableIds(true)
+    }
+
+    override fun getItemId(position: Int): Long {
+        return (position.toString() + items[position].hidden).hashCode().toLong()
+    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -26,19 +38,34 @@ class HueSceneLampListAdapter(
         return ViewHolder(
             LayoutInflater
                 .from(parent.context)
-                .inflate(R.layout.list_item_simple, parent, false)
+                .inflate(R.layout.list_item, parent, false)
         )
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.drawable.setImageResource(items[position].first.icon)
-        holder.title.text = items[position].first.title
-        holder.summary.text = items[position].first.summary
-        holder.hidden.text = items[position].first.hidden
+        val id = getItemId(position)
+        holder.drawable.setImageResource(items[position].icon)
+        holder.title.text = items[position].title
+        holder.summary.text = generateSummary(items[position])
+        holder.hidden.text = items[position].hidden
+        holder.stateSwitch.isChecked = items[position].state
+        holder.stateSwitch.setOnCheckedChangeListener { compoundButton, b ->
+            items[getPosFromId(id)].state = b
+            holder.summary.text = generateSummary(items[getPosFromId(id)])
+            if (compoundButton.isPressed) helperInterface.onStateChanged(
+                holder.itemView,
+                items[getPosFromId(id)],
+                b
+            )
+        }
         ImageViewCompat.setImageTintList(
             holder.drawable,
-            ColorStateList.valueOf(items[position].second)
+            ColorStateList.valueOf(items[position].color)
         )
+        holder.itemView.setOnClickListener {
+            helperInterface.onItemClicked(holder.itemView, items[getPosFromId(id)])
+        }
     }
 
     override fun getItemCount(): Int {
@@ -47,14 +74,19 @@ class HueSceneLampListAdapter(
 
     fun changeSceneBrightness(brightness: String) {
         for (i in 0 until items.size) {
-            if (items[i].first.summary.contains(c.resources.getString(R.string.str_on))) {
-                items[i].first.summary = items[i].first.summary.substring(
-                    0,
-                    items[i].first.summary.lastIndexOf(' ') + 1
-                ) + brightness
-                notifyItemChanged(i)
-            }
+            items[i].brightness = brightness
+            if (items[i].state) notifyItemChanged(i)
         }
+    }
+
+    private fun generateSummary(item: SceneListItem): String {
+        return c.resources.getString(if (item.state) R.string.str_on else R.string.str_off) +
+                " · " + c.resources.getString(R.string.hue_brightness) +
+                ": " + if (item.state) item.brightness else "0%"
+    }
+
+    private fun getPosFromId(id: Long): Int {
+        return items.indices.indexOfFirst { getItemId(it) == id }
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -62,5 +94,6 @@ class HueSceneLampListAdapter(
         val title: TextView = view.findViewById(R.id.title)
         val summary: TextView = view.findViewById(R.id.summary)
         val hidden: TextView = view.findViewById(R.id.hidden)
+        val stateSwitch: Switch = view.findViewById(R.id.state)
     }
 }
