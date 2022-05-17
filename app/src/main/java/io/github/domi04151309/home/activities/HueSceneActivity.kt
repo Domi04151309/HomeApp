@@ -16,6 +16,7 @@ import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.slider.Slider
 import com.google.android.material.textfield.TextInputLayout
 import io.github.domi04151309.home.*
 import io.github.domi04151309.home.adapters.HueSceneLampListAdapter
@@ -31,29 +32,39 @@ import org.json.JSONObject
 
 class HueSceneActivity : AppCompatActivity() {
 
+    //TODO: brightness on edit scenes; change brightness live and in list
+    //TODO: edit on/off
     override fun onCreate(savedInstanceState: Bundle?) {
         Theme.set(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hue_scene)
 
         val deviceId = intent.getStringExtra("deviceId") ?: ""
+        val hueAPI = HueAPI(this, deviceId)
         val addressPrefix = Devices(this).getDeviceById(deviceId).address +
-                "api/" + HueAPI(this, deviceId).getUsername()
+                "api/" + hueAPI.getUsername()
         val queue = Volley.newRequestQueue(this)
         val listItems: ArrayList<Pair<SimpleListItem, Int>> = arrayListOf()
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         val nameTxt = findViewById<TextView>(R.id.nameTxt)
         val nameBox = findViewById<TextInputLayout>(R.id.nameBox)
+        val briBar = findViewById<Slider>(R.id.briBar)
 
         val editing = intent.hasExtra("scene")
-        val id = intent.getStringExtra(if (editing) "scene" else "room")
+        val id = intent.getStringExtra(if (editing) "scene" else "room") ?: ""
+        val adapter = HueSceneLampListAdapter(listItems)
         lateinit var defaultText: String
 
         recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = adapter
+        briBar.setLabelFormatter { value: Float ->
+            HueUtils.briToPercent(value.toInt())
+        }
 
         if (editing) {
             supportActionBar?.setTitle(R.string.hue_edit_scene)
             defaultText = resources.getString(R.string.hue_scene)
+            briBar.isEnabled = false
             queue.add(
                 JsonObjectRequest(
                     Request.Method.GET,
@@ -70,6 +81,7 @@ class HueSceneActivity : AppCompatActivity() {
                                     val lights =
                                         response.optJSONObject("lightstates") ?: JSONObject()
                                     var lightObj: JSONObject
+                                    val brightness = Array(2) { 0 }
                                     for (i in lights.keys()) {
                                         lightObj = lights.getJSONObject(i)
                                         listItems += Pair(
@@ -79,11 +91,18 @@ class HueSceneActivity : AppCompatActivity() {
                                             ),
                                             generateColor(lightObj)
                                         )
+                                        if (lightObj.has("bri")) {
+                                            brightness[0] += lightObj.getInt("bri")
+                                            brightness[1]++
+                                        }
                                     }
 
+                                    HueLampActivity.setProgress(
+                                        briBar,
+                                        if (brightness[1] > 0) brightness[0] / brightness[1] else 0
+                                    )
                                     listItems.sortBy { it.first.title }
-                                    recyclerView.adapter =
-                                        HueSceneLampListAdapter(listItems)
+                                    adapter.notifyDataSetChanged()
                                 },
                                 ::onError
                             )
@@ -95,6 +114,15 @@ class HueSceneActivity : AppCompatActivity() {
         } else {
             supportActionBar?.setTitle(R.string.hue_add_scene)
             defaultText = resources.getString(R.string.hue_new_scene)
+            briBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
+                override fun onStartTrackingTouch(slider: Slider) {
+                }
+
+                override fun onStopTrackingTouch(slider: Slider) {
+                    hueAPI.changeBrightnessOfGroup(id, slider.value.toInt())
+                    adapter.changeSceneBrightness(HueUtils.briToPercent(slider.value.toInt()))
+                }
+            })
             queue.add(
                 JsonObjectRequest(
                     Request.Method.GET,
@@ -102,6 +130,10 @@ class HueSceneActivity : AppCompatActivity() {
                     null,
                     { response ->
                         val lights = response.getJSONArray("lights")
+                        HueLampActivity.setProgress(
+                            briBar,
+                            (response.optJSONObject("action") ?: JSONObject()).optInt("bri")
+                        )
                         queue.add(
                             JsonObjectRequest(
                                 Request.Method.GET,
@@ -123,8 +155,7 @@ class HueSceneActivity : AppCompatActivity() {
                                     }
 
                                     listItems.sortBy { it.first.title }
-                                    recyclerView.adapter =
-                                        HueSceneLampListAdapter(listItems)
+                                    adapter.notifyDataSetChanged()
                                 },
                                 ::onError
                             )
@@ -182,10 +213,12 @@ class HueSceneActivity : AppCompatActivity() {
         item.summary =
             resources.getString(if (state.optBoolean("on")) R.string.str_on else R.string.str_off)
         item.summary += " · " + resources.getString(R.string.hue_brightness) + ": "
-        if (state.has("bri"))
-            item.summary += HueUtils.briToPercent(state.getInt("bri"))
-        else
-            item.summary += "100%"
+        item.summary += if (state.optBoolean("on")) {
+            if (state.has("bri")) HueUtils.briToPercent(state.getInt("bri"))
+            else "100%"
+        } else {
+            "0%"
+        }
         item.icon = R.drawable.ic_circle
         return item
     }
