@@ -23,6 +23,7 @@ import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.api.HueAPI
 import io.github.domi04151309.home.helpers.HueUtils
 import io.github.domi04151309.home.helpers.UpdateHandler
+import io.github.domi04151309.home.interfaces.HueRoomInterface
 import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
 import org.json.JSONArray
 import org.json.JSONException
@@ -31,7 +32,7 @@ import org.json.JSONObject
 class HueLampsFragment : Fragment(R.layout.fragment_hue_lamps), RecyclerViewHelperInterface {
 
     private lateinit var c: Context
-    private lateinit var lampData: HueLampActivity
+    private lateinit var lampData: HueRoomInterface
     private lateinit var hueAPI: HueAPI
     private lateinit var queue: RequestQueue
     private lateinit var requestCallBack: HueAPI.RequestCallback
@@ -39,7 +40,7 @@ class HueLampsFragment : Fragment(R.layout.fragment_hue_lamps), RecyclerViewHelp
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         c = context ?: throw IllegalStateException()
-        lampData = context as HueLampActivity
+        lampData = context as HueRoomInterface
         hueAPI = HueAPI(c, lampData.device.id)
         queue = Volley.newRequestQueue(context)
 

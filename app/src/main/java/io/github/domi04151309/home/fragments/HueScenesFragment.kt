@@ -16,7 +16,6 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import io.github.domi04151309.home.R
-import io.github.domi04151309.home.activities.HueLampActivity
 import io.github.domi04151309.home.activities.HueSceneActivity
 import io.github.domi04151309.home.adapters.HueSceneGridAdapter
 import io.github.domi04151309.home.custom.CustomJsonArrayRequest
@@ -25,6 +24,7 @@ import io.github.domi04151309.home.helpers.ColorUtils
 import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.api.HueAPI
 import io.github.domi04151309.home.helpers.HueUtils
+import io.github.domi04151309.home.interfaces.HueLampInterface
 import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
 import org.json.JSONObject
 
@@ -38,13 +38,13 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes), RecyclerViewHe
     private var selectedScene: CharSequence = ""
     private var selectedSceneName: CharSequence = ""
     private lateinit var c: Context
-    private lateinit var lampData: HueLampActivity
+    private lateinit var lampData: HueLampInterface
     private lateinit var hueAPI: HueAPI
     private lateinit var queue: RequestQueue
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         c = context ?: throw IllegalStateException()
-        lampData = context as HueLampActivity
+        lampData = context as HueLampInterface
         hueAPI = HueAPI(c, lampData.device.id)
         queue = Volley.newRequestQueue(context)
 

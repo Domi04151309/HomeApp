@@ -32,9 +32,10 @@ import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.helpers.*
 import io.github.domi04151309.home.helpers.Global.volleyError
 import io.github.domi04151309.home.helpers.Theme
+import io.github.domi04151309.home.interfaces.HueRoomInterface
 import org.json.JSONArray
 
-class HueLampActivity : AppCompatActivity() {
+class HueLampActivity : AppCompatActivity(), HueRoomInterface {
 
     companion object {
         fun setProgress(slider: Slider, value: Int) {
@@ -45,19 +46,19 @@ class HueLampActivity : AppCompatActivity() {
         }
     }
 
-    var addressPrefix: String = ""
-    var id: String = ""
-    var lights: JSONArray? = null
-    var canReceiveRequest: Boolean = false
-    var lampData: HueLampData = HueLampData()
-    var isRoom: Boolean = false
+    override var addressPrefix: String = ""
+    override var id: String = ""
+    override var lights: JSONArray? = null
+    override var canReceiveRequest: Boolean = false
+    override var lampData: HueLampData = HueLampData()
+    override var isRoom: Boolean = false
+    override lateinit var device: DeviceItem
     private var internId: String = ""
     private var lampName: String = ""
     private var updateDataRequest: JsonObjectRequest? = null
-    lateinit var device: DeviceItem
-    lateinit var lampIcon: ImageView
-    internal lateinit var hueAPI: HueAPI
+    private lateinit var hueAPI: HueAPI
     private lateinit var queue: RequestQueue
+    private lateinit var lampIcon: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Theme.set(this)
@@ -261,6 +262,13 @@ class HueLampActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         canReceiveRequest = false
+    }
+
+    override fun updateIconColor(color: Int) {
+        ImageViewCompat.setImageTintList(
+            lampIcon,
+            ColorStateList.valueOf(color)
+        )
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
