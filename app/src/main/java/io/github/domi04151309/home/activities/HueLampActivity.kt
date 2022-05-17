@@ -1,6 +1,5 @@
 package io.github.domi04151309.home.activities
 
-import android.animation.ObjectAnimator
 import android.content.Intent
 import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
@@ -12,7 +11,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.animation.DecelerateInterpolator
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
@@ -36,15 +34,6 @@ import io.github.domi04151309.home.interfaces.HueRoomInterface
 import org.json.JSONArray
 
 class HueLampActivity : AppCompatActivity(), HueRoomInterface {
-
-    companion object {
-        fun setProgress(slider: Slider, value: Int) {
-            val animation = ObjectAnimator.ofFloat(slider, "value", value.toFloat())
-            animation.duration = 300
-            animation.interpolator = DecelerateInterpolator()
-            animation.start()
-        }
-    }
 
     override var addressPrefix: String = ""
     override var id: String = ""
@@ -129,7 +118,7 @@ class HueLampActivity : AppCompatActivity(), HueRoomInterface {
                         val action = response.getJSONObject("action")
 
                         if (action.has("bri")) {
-                            setProgress(briBar, action.getInt("bri"))
+                            SliderUtils.setProgress(briBar, action.getInt("bri"))
                         } else {
                             findViewById<TextView>(R.id.briTxt).visibility = View.GONE
                             briBar.visibility = View.GONE
@@ -196,7 +185,7 @@ class HueLampActivity : AppCompatActivity(), HueRoomInterface {
                         val state = response.getJSONObject("state")
 
                         if (state.has("bri")) {
-                            setProgress(briBar, state.getInt("bri"))
+                            SliderUtils.setProgress(briBar, state.getInt("bri"))
                         } else {
                             findViewById<TextView>(R.id.briTxt).visibility = View.GONE
                             briBar.visibility = View.GONE

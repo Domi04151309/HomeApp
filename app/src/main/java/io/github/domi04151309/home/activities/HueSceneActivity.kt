@@ -24,28 +24,38 @@ import io.github.domi04151309.home.adapters.HueSceneLampListAdapter
 import io.github.domi04151309.home.custom.CustomJsonArrayRequest
 import io.github.domi04151309.home.fragments.HueScenesFragment
 import io.github.domi04151309.home.api.HueAPI
+import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.data.LightStates
 import io.github.domi04151309.home.data.SceneListItem
+import io.github.domi04151309.home.fragments.HueColorSheet
 import io.github.domi04151309.home.helpers.*
 import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.Theme
+import io.github.domi04151309.home.interfaces.HueLampInterface
 import io.github.domi04151309.home.interfaces.SceneRecyclerViewHelperInterface
 import org.json.JSONArray
 import org.json.JSONObject
 
-class HueSceneActivity : AppCompatActivity(), SceneRecyclerViewHelperInterface {
+class HueSceneActivity : AppCompatActivity(), SceneRecyclerViewHelperInterface, HueLampInterface {
 
+    private var editing: Boolean = false
+    private val lightStates: LightStates = LightStates()
     private lateinit var hueAPI: HueAPI
-    private val lightStates = LightStates()
+    private lateinit var adapter: HueSceneLampListAdapter
+
+    override var id: String = ""
+    override var canReceiveRequest: Boolean = true
+    override lateinit var device: DeviceItem
+    override lateinit var addressPrefix: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Theme.set(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hue_scene)
 
-        val deviceId = intent.getStringExtra("deviceId") ?: ""
-        hueAPI = HueAPI(this, deviceId)
-        val addressPrefix = Devices(this).getDeviceById(deviceId).address +
+        device = Devices(this).getDeviceById(intent.getStringExtra("deviceId") ?: "")
+        hueAPI = HueAPI(this, device.id)
+        addressPrefix = device.address +
                 "api/" + hueAPI.getUsername()
         val queue = Volley.newRequestQueue(this)
         val listItems: ArrayList<SceneListItem> = arrayListOf()
@@ -54,10 +64,10 @@ class HueSceneActivity : AppCompatActivity(), SceneRecyclerViewHelperInterface {
         val nameBox = findViewById<TextInputLayout>(R.id.nameBox)
         val briBar = findViewById<Slider>(R.id.briBar)
 
-        val editing = intent.hasExtra("scene")
+        editing = intent.hasExtra("scene")
+        adapter = HueSceneLampListAdapter(listItems, this)
         val groupId = intent.getStringExtra("room") ?: "0"
-        val id = if (editing) intent.getStringExtra("scene") ?: "" else groupId
-        val adapter = HueSceneLampListAdapter(listItems, this)
+        val sceneId = intent.getStringExtra("scene") ?: ""
         lateinit var defaultText: String
         lateinit var lightIDs: JSONArray
 
@@ -70,11 +80,11 @@ class HueSceneActivity : AppCompatActivity(), SceneRecyclerViewHelperInterface {
         if (editing) {
             supportActionBar?.setTitle(R.string.hue_edit_scene)
             defaultText = resources.getString(R.string.hue_scene)
-            hueAPI.activateSceneOfGroup(groupId, id)
+            hueAPI.activateSceneOfGroup(groupId, sceneId)
             queue.add(
                 JsonObjectRequest(
                     Request.Method.GET,
-                    "$addressPrefix/scenes/$id",
+                    "$addressPrefix/scenes/$sceneId",
                     null,
                     { response ->
                         queue.add(
@@ -104,7 +114,7 @@ class HueSceneActivity : AppCompatActivity(), SceneRecyclerViewHelperInterface {
                                         }
                                     }
 
-                                    HueLampActivity.setProgress(
+                                    SliderUtils.setProgress(
                                         briBar,
                                         if (brightness[1] > 0) brightness[0] / brightness[1] else 0
                                     )
@@ -124,11 +134,11 @@ class HueSceneActivity : AppCompatActivity(), SceneRecyclerViewHelperInterface {
             queue.add(
                 JsonObjectRequest(
                     Request.Method.GET,
-                    "$addressPrefix/groups/$id",
+                    "$addressPrefix/groups/$groupId",
                     null,
                     { response ->
                         lightIDs = response.getJSONArray("lights")
-                        HueLampActivity.setProgress(
+                        SliderUtils.setProgress(
                             briBar,
                             (response.optJSONObject("action") ?: JSONObject()).optInt("bri")
                         )
@@ -195,7 +205,7 @@ class HueSceneActivity : AppCompatActivity(), SceneRecyclerViewHelperInterface {
                 if (editing) {
                     CustomJsonArrayRequest(
                         Request.Method.PUT,
-                        "$addressPrefix/scenes/$id",
+                        "$addressPrefix/scenes/$sceneId",
                         JSONObject("{\"name\":\"$name\",\"lightstates\":$lightStates}"),
                         ::onSuccess,
                         ::onError
@@ -204,7 +214,7 @@ class HueSceneActivity : AppCompatActivity(), SceneRecyclerViewHelperInterface {
                     CustomJsonArrayRequest(
                         Request.Method.POST,
                         "$addressPrefix/scenes",
-                        JSONObject("{\"name\":\"$name\",\"recycle\":false,\"group\":\"$id\",\"type\":\"GroupScene\"}"),
+                        JSONObject("{\"name\":\"$name\",\"recycle\":false,\"group\":\"$groupId\",\"type\":\"GroupScene\"}"),
                         ::onSuccess,
                         ::onError
                     )
@@ -245,11 +255,19 @@ class HueSceneActivity : AppCompatActivity(), SceneRecyclerViewHelperInterface {
     }
 
     override fun onItemClicked(view: View, data: SceneListItem) {
-        //TODO: add detailed lamp controls
+        if (!editing) {
+            id = data.hidden
+            HueColorSheet().show(supportFragmentManager, HueColorSheet.TAG)
+        }
     }
 
     override fun onStateChanged(view: View, data: SceneListItem, state: Boolean) {
         hueAPI.switchLightByID(data.hidden, state)
         lightStates.switchLight(data.hidden, state)
+    }
+
+    override fun updateIconColor(color: Int) {
+        //TODO: update lightstates
+        adapter.updateColor(id, color)
     }
 }

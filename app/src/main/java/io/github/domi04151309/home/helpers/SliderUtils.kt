@@ -1,11 +1,14 @@
 package io.github.domi04151309.home.helpers
 
+import android.animation.ObjectAnimator
 import android.content.res.Resources
 import android.graphics.LinearGradient
 import android.graphics.Shader
 import android.graphics.drawable.LayerDrawable
 import android.graphics.drawable.PaintDrawable
 import android.view.View
+import android.view.animation.DecelerateInterpolator
+import com.google.android.material.slider.Slider
 
 object SliderUtils {
 
@@ -39,5 +42,12 @@ object SliderUtils {
         view.post {
             setSliderGradientNow(view, colors)
         }
+    }
+
+    fun setProgress(slider: Slider, value: Int) {
+        val animation = ObjectAnimator.ofFloat(slider, "value", value.toFloat())
+        animation.duration = 300
+        animation.interpolator = DecelerateInterpolator()
+        animation.start()
     }
 }

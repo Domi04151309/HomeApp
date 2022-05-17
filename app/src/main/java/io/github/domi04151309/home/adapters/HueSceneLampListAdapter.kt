@@ -79,6 +79,12 @@ class HueSceneLampListAdapter(
         }
     }
 
+    fun updateColor(id: String, color: Int) {
+        val i = items.indexOfFirst { it.hidden == id }
+        items[i].color = color
+        notifyItemChanged(i)
+    }
+
     private fun generateSummary(item: SceneListItem): String {
         return c.resources.getString(if (item.state) R.string.str_on else R.string.str_off) +
                 " · " + c.resources.getString(R.string.hue_brightness) +

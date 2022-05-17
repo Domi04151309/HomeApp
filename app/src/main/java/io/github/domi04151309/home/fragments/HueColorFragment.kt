@@ -244,7 +244,7 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
                     ctViews.forEach {
                         it.visibility = View.VISIBLE
                     }
-                    HueLampActivity.setProgress(ctBar, data.ct)
+                    SliderUtils.setProgress(ctBar, data.ct)
                 }
                 if (data.hue == -1 || data.sat == -1) {
                     hueSatViews.forEach {
@@ -255,8 +255,8 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
                         it.visibility = View.VISIBLE
                     }
                     colorPickerView.selectByHsvColor(HueUtils.hueSatToRGB(data.hue, data.sat))
-                    HueLampActivity.setProgress(hueBar, data.hue)
-                    HueLampActivity.setProgress(satBar, data.sat)
+                    SliderUtils.setProgress(hueBar, data.hue)
+                    SliderUtils.setProgress(satBar, data.sat)
                 }
                 availableInputs.forEach {
                     it.isEnabled = data.on
