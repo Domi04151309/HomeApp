@@ -266,8 +266,13 @@ class HueSceneActivity : AppCompatActivity(), SceneRecyclerViewHelperInterface, 
         lightStates.switchLight(data.hidden, state)
     }
 
-    override fun updateIconColor(color: Int) {
+    override fun onColorChanged(color: Int) {
         //TODO: update lightstates
         adapter.updateColor(id, color)
+    }
+
+    override fun onBrightnessChanged(brightness: String) {
+        //TODO: update lightstates
+        adapter.updateBrightness(id, brightness)
     }
 }

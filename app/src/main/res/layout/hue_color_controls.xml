@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.skydoves.colorpickerview.ColorPickerView
+        android:id="@+id/colorPickerView"
+        android:layout_width="match_parent"
+        android:layout_height="288dp"
+        android:layout_marginBottom="?dialogPreferredPadding" />
+
+    <TextView
+        android:id="@+id/hueSatTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/hue_hue_sat" />
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/hueBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:valueFrom="0.0"
+        android:valueTo="65535"
+        app:trackColor="@android:color/transparent" />
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/satBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:valueFrom="0.0"
+        android:valueTo="254"
+        app:trackColor="@android:color/transparent" />
+
+    <TextView
+        android:id="@+id/ctTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/hue_color_temperature" />
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/ctBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:valueFrom="0.0"
+        android:valueTo="347"
+        app:trackColor="@android:color/transparent" />
+</LinearLayout>

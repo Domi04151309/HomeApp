@@ -88,7 +88,7 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
         if (lampInterface.isRoom) {
             ctBar.addOnChangeListener { _, value, fromUser ->
                 if (fromUser) {
-                    lampInterface.updateIconColor(HueUtils.ctToRGB(value.toInt() + 153))
+                    lampInterface.onColorChanged(HueUtils.ctToRGB(value.toInt() + 153))
                 }
             }
             ctBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
@@ -105,7 +105,7 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
                 if (fromUser) {
                     val color = HueUtils.hueSatToRGB(value.toInt(), satBar.value.toInt())
                     colorPickerView.selectByHsvColor(color)
-                    lampInterface.updateIconColor(color)
+                    lampInterface.onColorChanged(color)
                 }
                 SliderUtils.setSliderGradientNow(
                     satBar, intArrayOf(
@@ -128,7 +128,7 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
                 if (fromUser) {
                     val color = HueUtils.hueSatToRGB(hueBar.value.toInt(), value.toInt())
                     colorPickerView.selectByHsvColor(color)
-                    lampInterface.updateIconColor(color)
+                    lampInterface.onColorChanged(color)
                 }
             }
             satBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
@@ -146,7 +146,7 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
                     val hueSat = HueUtils.rgbToHueSat(color)
                     hueBar.value = hueSat[0].toFloat()
                     satBar.value = hueSat[1].toFloat()
-                    lampInterface.updateIconColor(color)
+                    lampInterface.onColorChanged(color)
                 }
             })
             colorPickerView.setOnTouchListener { innerView, event ->
@@ -163,7 +163,7 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
             ctBar.addOnChangeListener { _, value, fromUser ->
                 if (fromUser) {
                     hueAPI.changeColorTemperature(lampInterface.id, value.toInt() + 153)
-                    lampInterface.updateIconColor(HueUtils.ctToRGB(value.toInt() + 153))
+                    lampInterface.onColorChanged(HueUtils.ctToRGB(value.toInt() + 153))
                 }
             }
             ctBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
@@ -180,7 +180,7 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
                     val color = HueUtils.hueSatToRGB(value.toInt(), satBar.value.toInt())
                     hueAPI.changeHue(lampInterface.id, value.toInt())
                     colorPickerView.selectByHsvColor(color)
-                    lampInterface.updateIconColor(color)
+                    lampInterface.onColorChanged(color)
                 }
                 SliderUtils.setSliderGradientNow(
                     satBar, intArrayOf(
@@ -203,7 +203,7 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
                     val color = HueUtils.hueSatToRGB(hueBar.value.toInt(), value.toInt())
                     hueAPI.changeSaturation(lampInterface.id, value.toInt())
                     colorPickerView.selectByHsvColor(color)
-                    lampInterface.updateIconColor(color)
+                    lampInterface.onColorChanged(color)
                 }
             }
             satBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
@@ -221,7 +221,7 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
                     hueAPI.changeHueSat(lampInterface.id, hueSat[0], hueSat[1])
                     hueBar.value = hueSat[0].toFloat()
                     satBar.value = hueSat[1].toFloat()
-                    lampInterface.updateIconColor(color)
+                    lampInterface.onColorChanged(color)
                 }
             })
             colorPickerView.setOnTouchListener { _, event ->

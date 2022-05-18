@@ -8,5 +8,6 @@ interface HueLampInterface {
     var addressPrefix: String
     var canReceiveRequest: Boolean
 
-    fun updateIconColor(color: Int)
+    fun onColorChanged(color: Int)
+    fun onBrightnessChanged(brightness: String)
 }

@@ -253,12 +253,14 @@ class HueLampActivity : AppCompatActivity(), HueRoomInterface {
         canReceiveRequest = false
     }
 
-    override fun updateIconColor(color: Int) {
+    override fun onColorChanged(color: Int) {
         ImageViewCompat.setImageTintList(
             lampIcon,
             ColorStateList.valueOf(color)
         )
     }
+
+    override fun onBrightnessChanged(brightness: String) {}
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.activity_hue_lamp_actions, menu)

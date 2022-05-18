@@ -29,6 +29,7 @@ class HueColorSheet : BottomSheetDialogFragment() {
         const val TAG = "HueColorSheet"
     }
 
+    //TODO: make work in edit scenes
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -38,16 +39,20 @@ class HueColorSheet : BottomSheetDialogFragment() {
         val lampInterface = context as HueLampInterface
         val hueAPI = HueAPI(c, lampInterface.device.id)
 
-        val view = inflater.inflate(R.layout.fragment_hue_color, container, false)
+        val view = inflater.inflate(R.layout.fragment_hue_bri_color, container, false)
         val colorPickerView = view.findViewById<ColorPickerView>(R.id.colorPickerView)
         val ctText = view.findViewById<TextView>(R.id.ctTxt)
         val ctBar = view.findViewById<Slider>(R.id.ctBar)
         val hueSatText = view.findViewById<TextView>(R.id.hueSatTxt)
         val hueBar = view.findViewById<Slider>(R.id.hueBar)
         val satBar = view.findViewById<Slider>(R.id.satBar)
+        val briText = view.findViewById<TextView>(R.id.briTxt)
+        val briBar = view.findViewById<Slider>(R.id.briBar)
 
+        val availableInputs = arrayOf<View>(colorPickerView, hueBar, satBar, ctBar, briBar)
         val ctViews = arrayOf<View>(ctText, ctBar)
         val hueSatViews = arrayOf<View>(colorPickerView, hueSatText, hueBar, satBar)
+        val briViews = arrayOf<View>(briText, briBar)
 
         //Load colors
         Volley.newRequestQueue(c)
@@ -84,6 +89,19 @@ class HueColorSheet : BottomSheetDialogFragment() {
                         SliderUtils.setProgress(hueBar, state.getInt("hue"))
                         SliderUtils.setProgress(satBar, state.getInt("sat"))
                     }
+                    if (!state.has("bri")) {
+                        briViews.forEach {
+                            it.visibility = View.GONE
+                        }
+                    } else {
+                        briViews.forEach {
+                            it.visibility = View.VISIBLE
+                        }
+                        SliderUtils.setProgress(briBar, state.getInt("bri"))
+                    }
+                    availableInputs.forEach {
+                        it.isEnabled = state.optBoolean("on")
+                    }
                 },
                 { error ->
                     Toast.makeText(c, Global.volleyError(c, error), Toast.LENGTH_LONG).show()
@@ -99,6 +117,9 @@ class HueColorSheet : BottomSheetDialogFragment() {
         }
         satBar.setLabelFormatter { value: Float ->
             HueUtils.satToPercent(value.toInt())
+        }
+        briBar.setLabelFormatter { value: Float ->
+            HueUtils.briToPercent(value.toInt())
         }
 
         //Slider tints
@@ -129,7 +150,7 @@ class HueColorSheet : BottomSheetDialogFragment() {
         ctBar.addOnChangeListener { _, value, fromUser ->
             if (fromUser) {
                 hueAPI.changeColorTemperature(lampInterface.id, value.toInt() + 153)
-                lampInterface.updateIconColor(HueUtils.ctToRGB(value.toInt() + 153))
+                lampInterface.onColorChanged(HueUtils.ctToRGB(value.toInt() + 153))
             }
         }
 
@@ -138,7 +159,7 @@ class HueColorSheet : BottomSheetDialogFragment() {
                 val color = HueUtils.hueSatToRGB(value.toInt(), satBar.value.toInt())
                 hueAPI.changeHue(lampInterface.id, value.toInt())
                 colorPickerView.selectByHsvColor(color)
-                lampInterface.updateIconColor(color)
+                lampInterface.onColorChanged(color)
             }
             SliderUtils.setSliderGradientNow(
                 satBar, intArrayOf(
@@ -155,7 +176,7 @@ class HueColorSheet : BottomSheetDialogFragment() {
                 val color = HueUtils.hueSatToRGB(hueBar.value.toInt(), value.toInt())
                 hueAPI.changeSaturation(lampInterface.id, value.toInt())
                 colorPickerView.selectByHsvColor(color)
-                lampInterface.updateIconColor(color)
+                lampInterface.onColorChanged(color)
             }
         }
 
@@ -165,10 +186,15 @@ class HueColorSheet : BottomSheetDialogFragment() {
                 hueAPI.changeHueSat(lampInterface.id, hueSat[0], hueSat[1])
                 hueBar.value = hueSat[0].toFloat()
                 satBar.value = hueSat[1].toFloat()
-                lampInterface.updateIconColor(color)
-                lampInterface.updateIconColor(color)
+                lampInterface.onColorChanged(color)
+                lampInterface.onColorChanged(color)
             }
         })
+
+        briBar.addOnChangeListener { _, value, fromUser ->
+            if (fromUser) hueAPI.changeBrightness(lampInterface.id, value.toInt())
+            lampInterface.onBrightnessChanged(HueUtils.briToPercent(value.toInt()))
+        }
 
         return view
     }

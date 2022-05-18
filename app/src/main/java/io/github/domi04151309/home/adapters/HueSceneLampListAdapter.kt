@@ -79,6 +79,12 @@ class HueSceneLampListAdapter(
         }
     }
 
+    fun updateBrightness(id: String, brightness: String) {
+        val i = items.indexOfFirst { it.hidden == id }
+        items[i].brightness = brightness
+        if (items[i].state) notifyItemChanged(i)
+    }
+
     fun updateColor(id: String, color: Int) {
         val i = items.indexOfFirst { it.hidden == id }
         items[i].color = color
