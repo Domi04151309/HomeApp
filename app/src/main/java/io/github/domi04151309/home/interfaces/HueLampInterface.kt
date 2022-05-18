@@ -9,5 +9,5 @@ interface HueLampInterface {
     var canReceiveRequest: Boolean
 
     fun onColorChanged(color: Int)
-    fun onBrightnessChanged(brightness: String)
+    fun onBrightnessChanged(brightness: Int)
 }

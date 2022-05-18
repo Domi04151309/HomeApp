@@ -271,8 +271,8 @@ class HueSceneActivity : AppCompatActivity(), SceneRecyclerViewHelperInterface, 
         adapter.updateColor(id, color)
     }
 
-    override fun onBrightnessChanged(brightness: String) {
-        //TODO: update lightstates
-        adapter.updateBrightness(id, brightness)
+    override fun onBrightnessChanged(brightness: Int) {
+        lightStates.setLightBrightness(id, brightness)
+        adapter.updateBrightness(id, HueUtils.briToPercent(brightness))
     }
 }

@@ -193,7 +193,7 @@ class HueColorSheet : BottomSheetDialogFragment() {
 
         briBar.addOnChangeListener { _, value, fromUser ->
             if (fromUser) hueAPI.changeBrightness(lampInterface.id, value.toInt())
-            lampInterface.onBrightnessChanged(HueUtils.briToPercent(value.toInt()))
+            lampInterface.onBrightnessChanged(value.toInt())
         }
 
         return view

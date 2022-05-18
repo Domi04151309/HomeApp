@@ -22,6 +22,10 @@ class LightStates {
         }
     }
 
+    fun setLightBrightness(id: String, bri: Int) {
+        lights[id]?.bri = bri
+    }
+
     fun switchLight(id: String, on: Boolean) {
         lights[id]?.on = on
     }
