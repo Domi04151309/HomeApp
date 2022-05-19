@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,15 +22,19 @@ import io.github.domi04151309.home.data.ListViewItem
 import io.github.domi04151309.home.data.RequestCallbackObject
 import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.api.HueAPI
+import io.github.domi04151309.home.data.DeviceItem
+import io.github.domi04151309.home.data.SceneListItem
 import io.github.domi04151309.home.helpers.HueUtils
 import io.github.domi04151309.home.helpers.UpdateHandler
+import io.github.domi04151309.home.interfaces.HueAdvancedLampInterface
 import io.github.domi04151309.home.interfaces.HueRoomInterface
 import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
-class HueLampsFragment : Fragment(R.layout.fragment_hue_lamps), RecyclerViewHelperInterface {
+class HueLampsFragment : Fragment(R.layout.fragment_hue_lamps), RecyclerViewHelperInterface,
+    HueAdvancedLampInterface {
 
     private lateinit var c: Context
     private lateinit var lampData: HueRoomInterface
@@ -38,17 +43,31 @@ class HueLampsFragment : Fragment(R.layout.fragment_hue_lamps), RecyclerViewHelp
     private lateinit var requestCallBack: HueAPI.RequestCallback
     private val updateHandler: UpdateHandler = UpdateHandler()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override var id: String = ""
+    override var canReceiveRequest: Boolean = true
+    override lateinit var device: DeviceItem
+    override lateinit var addressPrefix: String
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         c = context ?: throw IllegalStateException()
         lampData = context as HueRoomInterface
         hueAPI = HueAPI(c, lampData.device.id)
         queue = Volley.newRequestQueue(context)
 
-        val recyclerView = (super.onCreateView(inflater, container, savedInstanceState) ?: throw IllegalStateException()) as RecyclerView
+        device = lampData.device
+        addressPrefix = lampData.addressPrefix
+
+        val recyclerView = (super.onCreateView(inflater, container, savedInstanceState)
+            ?: throw IllegalStateException()) as RecyclerView
 
         val hueLampStateListener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
             if (compoundButton.isPressed) {
-                val hidden = (compoundButton.parent as ViewGroup).findViewById<TextView>(R.id.hidden).text.toString()
+                val hidden =
+                    (compoundButton.parent as ViewGroup).findViewById<TextView>(R.id.hidden).text.toString()
                 hueAPI.switchLightByID(hidden, b)
             }
         }
@@ -73,7 +92,10 @@ class HueLampsFragment : Fragment(R.layout.fragment_hue_lamps), RecyclerViewHelp
 
                                 currentState = currentObject.getJSONObject("state")
                                 colorArray += if (currentState.has("hue") && currentState.has("sat")) {
-                                    HueUtils.hueSatToRGB(currentState.getInt("hue"), currentState.getInt("sat"))
+                                    HueUtils.hueSatToRGB(
+                                        currentState.getInt("hue"),
+                                        currentState.getInt("sat")
+                                    )
                                 } else if (currentState.has("ct")) {
                                     HueUtils.ctToRGB(currentState.getInt("ct"))
                                 } else {
@@ -83,8 +105,8 @@ class HueLampsFragment : Fragment(R.layout.fragment_hue_lamps), RecyclerViewHelp
                                 listItems += ListViewItem(
                                     title = currentObject.getString("name"),
                                     summary =
-                                        if (currentState.getBoolean("reachable")) resources.getString(R.string.hue_tap)
-                                        else resources.getString(R.string.str_unreachable),
+                                    if (currentState.getBoolean("reachable")) resources.getString(R.string.hue_tap)
+                                    else resources.getString(R.string.str_unreachable),
                                     hidden = currentObjectName,
                                     state = currentState.getBoolean("on")
                                 )
@@ -118,10 +140,15 @@ class HueLampsFragment : Fragment(R.layout.fragment_hue_lamps), RecyclerViewHelp
     }
 
     override fun onItemClicked(view: View, position: Int) {
-        startActivity(
-            Intent(c, HueLampActivity::class.java)
-                .putExtra("id", view.findViewById<TextView>(R.id.hidden).text.toString())
-                .putExtra("device", lampData.device.id)
+        id = view.findViewById<TextView>(R.id.hidden).text.toString()
+        HueColorSheet(this).show(
+            (c as AppCompatActivity).supportFragmentManager,
+            HueColorSheet::class.simpleName
         )
     }
+
+    override fun onColorChanged(color: Int) {}
+    override fun onBrightnessChanged(brightness: Int) {}
+    override fun onHueSatChanged(hue: Int, sat: Int) {}
+    override fun onCtChanged(ct: Int) {}
 }

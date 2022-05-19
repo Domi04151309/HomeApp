@@ -8,22 +8,17 @@ import io.github.domi04151309.home.fragments.HueLampsFragment
 import io.github.domi04151309.home.fragments.HueScenesFragment
 
 class HueDetailsTabAdapter(
-        activity: FragmentActivity,
-        private val isRoom: Boolean
+        activity: FragmentActivity
 ) : FragmentStateAdapter(activity) {
 
     override fun createFragment(position: Int): Fragment {
-        return if (isRoom) {
-            when (position) {
-                0 -> HueColorFragment()
-                1 -> HueScenesFragment()
-                2 -> HueLampsFragment()
-                else -> Fragment()
-            }
-        } else {
-            HueColorFragment()
+        return when (position) {
+            0 -> HueColorFragment()
+            1 -> HueScenesFragment()
+            2 -> HueLampsFragment()
+            else -> Fragment()
         }
     }
 
-    override fun getItemCount(): Int = if (isRoom) 3 else 1
+    override fun getItemCount(): Int = 3
 }

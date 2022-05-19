@@ -2,7 +2,6 @@ package io.github.domi04151309.home.fragments
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,14 +20,8 @@ import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.HueUtils
 import io.github.domi04151309.home.helpers.SliderUtils
 import io.github.domi04151309.home.interfaces.HueAdvancedLampInterface
-import io.github.domi04151309.home.interfaces.HueLampInterface
-import java.lang.Exception
 
-class HueColorSheet : BottomSheetDialogFragment() {
-
-    companion object {
-        const val TAG = "HueColorSheet"
-    }
+class HueColorSheet(private val lampInterface: HueAdvancedLampInterface) : BottomSheetDialogFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,7 +29,6 @@ class HueColorSheet : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         val c = context ?: throw IllegalStateException()
-        val lampInterface = context as HueAdvancedLampInterface
         val hueAPI = HueAPI(c, lampInterface.device.id)
 
         val view = inflater.inflate(R.layout.fragment_hue_bri_color, container, false)

@@ -60,7 +60,7 @@ class HueAPIParser(resources: Resources) : UnifiedAPI.Parser(resources) {
         return ListViewItem(
             title = pair.second.getString("name"),
             summary = resources.getString(R.string.hue_tap),
-            hidden = "${if (isZone) "zone" else "room"}#${pair.first}",
+            hidden = pair.first,
             icon = if (isZone) R.drawable.ic_zone else R.drawable.ic_room,
             state = pair.second.optJSONObject("action")?.optBoolean("on")
         )

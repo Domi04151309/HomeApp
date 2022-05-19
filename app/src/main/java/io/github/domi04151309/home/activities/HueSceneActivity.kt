@@ -257,7 +257,7 @@ class HueSceneActivity : AppCompatActivity(), SceneRecyclerViewHelperInterface, 
 
     override fun onItemClicked(view: View, data: SceneListItem) {
         id = data.hidden
-        HueColorSheet().show(supportFragmentManager, HueColorSheet.TAG)
+        HueColorSheet(this).show(supportFragmentManager, HueColorSheet::class.simpleName)
     }
 
     override fun onStateChanged(view: View, data: SceneListItem, state: Boolean) {
