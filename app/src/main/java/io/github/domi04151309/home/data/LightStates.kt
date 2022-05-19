@@ -10,11 +10,11 @@ class LightStates {
     fun addLight(id: String, state: JSONObject) {
         lights[id] = Light(
             state.optBoolean("on"),
-            if (state.has("bri")) state.getInt("bri") else null,
+            if (state.has("bri")) state.getInt("bri") else -1,
             if (state.has("xy")) state.getJSONArray("xy") else null,
-            null,
-            null,
-            if (state.has("ct")) state.getInt("ct") else null
+            -1,
+            -1,
+            if (state.has("ct")) state.getInt("ct") else -1
         )
     }
 
@@ -52,24 +52,24 @@ class LightStates {
         for ((key, value) in lights) {
             val light = JSONObject()
             light.put("on", value.on)
-            if (value.bri != null) light.put("bri", value.bri)
+            if (value.bri != -1) light.put("bri", value.bri)
             if (value.xy != null) light.put("xy", value.xy)
-            if (value.hue != null && value.sat != null) {
+            if (value.hue != -1 && value.sat != -1) {
                 light.put("hue", value.hue)
                 light.put("sat", value.sat)
             }
-            else if (value.ct != null) light.put("ct", value.ct)
+            else if (value.ct != -1) light.put("ct", value.ct)
             json.put(key, light)
         }
         return json.toString()
     }
 
     data class Light(
-        var on: Boolean,
-        var bri: Int?,
-        var xy: JSONArray?,
-        var hue: Int?,
-        var sat: Int?,
-        var ct: Int?
+        var on: Boolean = false,
+        var bri: Int = -1,
+        var xy: JSONArray? = null,
+        var hue: Int = -1,
+        var sat: Int = -1,
+        var ct: Int = -1
     )
 }
