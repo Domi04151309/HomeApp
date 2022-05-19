@@ -27,7 +27,7 @@ class HueSceneLampListAdapter(
     }
 
     override fun getItemId(position: Int): Long {
-        return (position.toString() + items[position].hidden).hashCode().toLong()
+        return (position.toString() + '#' + items[position].hidden).hashCode().toLong()
     }
 
     override fun onCreateViewHolder(

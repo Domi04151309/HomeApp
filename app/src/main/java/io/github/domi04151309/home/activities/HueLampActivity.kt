@@ -40,9 +40,7 @@ class HueLampActivity : AppCompatActivity(), HueRoomInterface {
     override var lights: JSONArray? = null
     override var canReceiveRequest: Boolean = false
     override var lampData: HueLampData = HueLampData()
-    override var isRoom: Boolean = false
     override lateinit var device: DeviceItem
-    private var internId: String = ""
     private var lampName: String = ""
     private var updateDataRequest: JsonObjectRequest? = null
     private lateinit var hueAPI: HueAPI
@@ -54,14 +52,7 @@ class HueLampActivity : AppCompatActivity(), HueRoomInterface {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hue_lamp)
 
-        internId = intent.getStringExtra("id") ?: "0"
-        if (internId.startsWith("room#") || internId.startsWith("zone#")) {
-            id = internId.substring(internId.lastIndexOf('#') + 1)
-            isRoom = true
-        } else {
-            id = internId
-            isRoom = false
-        }
+        id = intent.getStringExtra("id") ?: "0"
         if (intent.hasExtra("device")) {
             val extraDevice = intent.getStringExtra("device") ?: ""
             val devices = Devices(this)
@@ -85,7 +76,7 @@ class HueLampActivity : AppCompatActivity(), HueRoomInterface {
         val viewPager = findViewById<ViewPager2>(R.id.viewPager)
 
         viewPager.isUserInputEnabled = false
-        viewPager.adapter = HueDetailsTabAdapter(this, isRoom)
+        viewPager.adapter = HueDetailsTabAdapter(this)
 
         //Slider labels
         briBar.setLabelFormatter { value: Float ->
@@ -108,132 +99,70 @@ class HueLampActivity : AppCompatActivity(), HueRoomInterface {
             )
         }
 
-        // Selected item is a whole room
-        if (isRoom) {
-            updateDataRequest = JsonObjectRequest(Request.Method.GET, "$addressPrefix/groups/$id", null,
-                    { response ->
-                        lights = response.getJSONArray("lights")
-                        lampName = response.getString("name")
-                        nameTxt.text = lampName
-                        val action = response.getJSONObject("action")
+        updateDataRequest = JsonObjectRequest(Request.Method.GET, "$addressPrefix/groups/$id", null,
+            { response ->
+                lights = response.getJSONArray("lights")
+                lampName = response.getString("name")
+                nameTxt.text = lampName
+                val action = response.getJSONObject("action")
 
-                        if (action.has("bri")) {
-                            SliderUtils.setProgress(briBar, action.getInt("bri"))
-                        } else {
-                            findViewById<TextView>(R.id.briTxt).visibility = View.GONE
-                            briBar.visibility = View.GONE
-                        }
-                        lampData.ct =
-                            if (action.has("ct")) action.getInt("ct") - 153
-                            else -1
-
-                        if (action.has("hue") && action.has("sat")) {
-                            lampData.hue = action.getInt("hue")
-                            lampData.sat = action.getInt("sat")
-                        } else {
-                            lampData.hue = -1
-                            lampData.sat = -1
-                        }
-
-                        lampData.on = response.getJSONObject("state").getBoolean("any_on")
-                        briBar.isEnabled = lampData.on
-
-                        lampData.notifyDataChanged()
-                    },
-                    { error ->
-                        finish()
-                        Toast.makeText(this, volleyError(this, error), Toast.LENGTH_LONG).show()
-                    }
-            )
-
-            findViewById<Button>(R.id.onBtn).setOnClickListener {
-                hueAPI.switchGroupByID(id, true)
-            }
-
-            findViewById<Button>(R.id.offBtn).setOnClickListener {
-                hueAPI.switchGroupByID(id, false)
-            }
-
-            briBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
-                override fun onStartTrackingTouch(slider: Slider) {
-                    canReceiveRequest = false
+                if (action.has("bri")) {
+                    SliderUtils.setProgress(briBar, action.getInt("bri"))
+                } else {
+                    findViewById<TextView>(R.id.briTxt).visibility = View.GONE
+                    briBar.visibility = View.GONE
                 }
-                override fun onStopTrackingTouch(slider: Slider) {
-                    hueAPI.changeBrightnessOfGroup(id, slider.value.toInt())
-                    canReceiveRequest = true
+                lampData.ct =
+                    if (action.has("ct")) action.getInt("ct") - 153
+                    else -1
+
+                if (action.has("hue") && action.has("sat")) {
+                    lampData.hue = action.getInt("hue")
+                    lampData.sat = action.getInt("sat")
+                } else {
+                    lampData.hue = -1
+                    lampData.sat = -1
                 }
-            })
 
-            viewPager.setCurrentItem(1, false)
+                lampData.on = response.getJSONObject("state").getBoolean("any_on")
+                briBar.isEnabled = lampData.on
 
-            val tabIcons = arrayOf(
-                ResourcesCompat.getDrawable(resources, R.drawable.ic_color_palette, theme),
-                ResourcesCompat.getDrawable(resources, R.drawable.ic_scene, theme),
-                ResourcesCompat.getDrawable(resources, R.drawable.ic_device_lamp, theme)
-            )
-            TabLayoutMediator(tabBar, viewPager) { tab, position ->
-                tab.icon = tabIcons[position]
-            }.attach()
+                lampData.notifyDataChanged()
+            },
+            { error ->
+                finish()
+                Toast.makeText(this, volleyError(this, error), Toast.LENGTH_LONG).show()
+            }
+        )
+
+        findViewById<Button>(R.id.onBtn).setOnClickListener {
+            hueAPI.switchGroupByID(id, true)
         }
 
-        // Selected item is a single light
-        else {
-            updateDataRequest = JsonObjectRequest(Request.Method.GET, "$addressPrefix/lights/$id", null,
-                    { response ->
-                        lampName = response.getString("name")
-                        nameTxt.text = lampName
-                        val state = response.getJSONObject("state")
-
-                        if (state.has("bri")) {
-                            SliderUtils.setProgress(briBar, state.getInt("bri"))
-                        } else {
-                            findViewById<TextView>(R.id.briTxt).visibility = View.GONE
-                            briBar.visibility = View.GONE
-                        }
-
-                        lampData.ct =
-                            if (state.has("ct")) state.getInt("ct") - 153
-                            else -1
-
-                        if (state.has("hue") && state.has("sat")) {
-                            lampData.hue = state.getInt("hue")
-                            lampData.sat = state.getInt("sat")
-                        } else {
-                            lampData.hue = -1
-                            lampData.sat = -1
-                        }
-
-                        lampData.on = state.getBoolean("on")
-                        briBar.isEnabled = lampData.on
-
-                        lampData.notifyDataChanged()
-                    },
-                    { error ->
-                        finish()
-                        Toast.makeText(this, volleyError(this, error), Toast.LENGTH_LONG).show()
-                    }
-            )
-
-            findViewById<Button>(R.id.onBtn).setOnClickListener {
-                hueAPI.switchLightByID(id, true)
-            }
-
-            findViewById<Button>(R.id.offBtn).setOnClickListener {
-                hueAPI.switchLightByID(id, false)
-            }
-
-            briBar.addOnChangeListener { _, value, fromUser ->
-                if (fromUser) hueAPI.changeBrightness(id, value.toInt())
-            }
-            briBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
-                override fun onStartTrackingTouch(slider: Slider) {
-                    canReceiveRequest = false
-                }
-                override fun onStopTrackingTouch(slider: Slider) {
-                    canReceiveRequest = true
-                }
-            })
+        findViewById<Button>(R.id.offBtn).setOnClickListener {
+            hueAPI.switchGroupByID(id, false)
         }
+
+        briBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
+            override fun onStartTrackingTouch(slider: Slider) {
+                canReceiveRequest = false
+            }
+            override fun onStopTrackingTouch(slider: Slider) {
+                hueAPI.changeBrightnessOfGroup(id, slider.value.toInt())
+                canReceiveRequest = true
+            }
+        })
+
+        viewPager.setCurrentItem(1, false)
+
+        val tabIcons = arrayOf(
+            ResourcesCompat.getDrawable(resources, R.drawable.ic_color_palette, theme),
+            ResourcesCompat.getDrawable(resources, R.drawable.ic_scene, theme),
+            ResourcesCompat.getDrawable(resources, R.drawable.ic_device_lamp, theme)
+        )
+        TabLayoutMediator(tabBar, viewPager) { tab, position ->
+            tab.icon = tabIcons[position]
+        }.attach()
 
         val updateHandler = UpdateHandler()
         updateHandler.setUpdateFunction {
@@ -277,7 +206,7 @@ class HueLampActivity : AppCompatActivity(), HueRoomInterface {
                             .setIcon(Icon.createWithResource(this, device.iconId))
                             .setIntent(
                                 Intent(this, HueLampActivity::class.java)
-                                    .putExtra("id", internId)
+                                    .putExtra("id", id)
                                     .putExtra("device", device.id)
                                     .setAction(Intent.ACTION_MAIN)
                                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)

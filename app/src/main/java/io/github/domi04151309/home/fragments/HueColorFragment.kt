@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.slider.Slider
 import com.skydoves.colorpickerview.ColorPickerView
 import io.github.domi04151309.home.R
-import io.github.domi04151309.home.activities.HueLampActivity
 import com.skydoves.colorpickerview.listeners.ColorListener
 import io.github.domi04151309.home.api.HueAPI
 import io.github.domi04151309.home.helpers.*
@@ -85,153 +84,78 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
             )
         )
 
-        if (lampInterface.isRoom) {
-            ctBar.addOnChangeListener { _, value, fromUser ->
-                if (fromUser) {
-                    lampInterface.onColorChanged(HueUtils.ctToRGB(value.toInt() + 153))
-                }
+        ctBar.addOnChangeListener { _, value, fromUser ->
+            if (fromUser) {
+                lampInterface.onColorChanged(HueUtils.ctToRGB(value.toInt() + 153))
             }
-            ctBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
-                override fun onStartTrackingTouch(slider: Slider) {
-                    pauseUpdates()
-                }
-                override fun onStopTrackingTouch(slider: Slider) {
-                    hueAPI.changeColorTemperatureOfGroup(lampInterface.id, slider.value.toInt() + 153)
-                    resumeUpdates()
-                }
-            })
+        }
+        ctBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
+            override fun onStartTrackingTouch(slider: Slider) {
+                pauseUpdates()
+            }
+            override fun onStopTrackingTouch(slider: Slider) {
+                hueAPI.changeColorTemperatureOfGroup(lampInterface.id, slider.value.toInt() + 153)
+                resumeUpdates()
+            }
+        })
 
-            hueBar.addOnChangeListener { _, value, fromUser ->
-                if (fromUser) {
-                    val color = HueUtils.hueSatToRGB(value.toInt(), satBar.value.toInt())
-                    colorPickerView.selectByHsvColor(color)
-                    lampInterface.onColorChanged(color)
-                }
-                SliderUtils.setSliderGradientNow(
-                    satBar, intArrayOf(
-                        Color.WHITE,
-                        HueUtils.hueToRGB(value.toInt())
-                    )
+        hueBar.addOnChangeListener { _, value, fromUser ->
+            if (fromUser) {
+                val color = HueUtils.hueSatToRGB(value.toInt(), satBar.value.toInt())
+                colorPickerView.selectByHsvColor(color)
+                lampInterface.onColorChanged(color)
+            }
+            SliderUtils.setSliderGradientNow(
+                satBar, intArrayOf(
+                    Color.WHITE,
+                    HueUtils.hueToRGB(value.toInt())
                 )
+            )
+        }
+        hueBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
+            override fun onStartTrackingTouch(slider: Slider) {
+                pauseUpdates()
             }
-            hueBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
-                override fun onStartTrackingTouch(slider: Slider) {
-                    pauseUpdates()
-                }
-                override fun onStopTrackingTouch(slider: Slider) {
-                    hueAPI.changeHueOfGroup(lampInterface.id, slider.value.toInt())
-                    resumeUpdates()
-                }
-            })
+            override fun onStopTrackingTouch(slider: Slider) {
+                hueAPI.changeHueOfGroup(lampInterface.id, slider.value.toInt())
+                resumeUpdates()
+            }
+        })
 
-            satBar.addOnChangeListener { _, value, fromUser ->
-                if (fromUser) {
-                    val color = HueUtils.hueSatToRGB(hueBar.value.toInt(), value.toInt())
-                    colorPickerView.selectByHsvColor(color)
-                    lampInterface.onColorChanged(color)
-                }
+        satBar.addOnChangeListener { _, value, fromUser ->
+            if (fromUser) {
+                val color = HueUtils.hueSatToRGB(hueBar.value.toInt(), value.toInt())
+                colorPickerView.selectByHsvColor(color)
+                lampInterface.onColorChanged(color)
             }
-            satBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
-                override fun onStartTrackingTouch(slider: Slider) {
-                    pauseUpdates()
-                }
-                override fun onStopTrackingTouch(slider: Slider) {
-                    hueAPI.changeSaturationOfGroup(lampInterface.id, slider.value.toInt())
-                    resumeUpdates()
-                }
-            })
+        }
+        satBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
+            override fun onStartTrackingTouch(slider: Slider) {
+                pauseUpdates()
+            }
+            override fun onStopTrackingTouch(slider: Slider) {
+                hueAPI.changeSaturationOfGroup(lampInterface.id, slider.value.toInt())
+                resumeUpdates()
+            }
+        })
 
-            colorPickerView.setColorListener(ColorListener { color, fromUser ->
-                if (fromUser) {
-                    val hueSat = HueUtils.rgbToHueSat(color)
-                    hueBar.value = hueSat[0].toFloat()
-                    satBar.value = hueSat[1].toFloat()
-                    lampInterface.onColorChanged(color)
-                }
-            })
-            colorPickerView.setOnTouchListener { innerView, event ->
-                if (event.action == MotionEvent.ACTION_DOWN) {
-                    pauseUpdates()
-                } else if (event.action == MotionEvent.ACTION_UP) {
-                    val hueSat = HueUtils.rgbToHueSat(colorPickerView.color)
-                    hueAPI.changeHueSatOfGroup(lampInterface.id, hueSat[0], hueSat[1])
-                    resumeUpdates()
-                }
-                innerView.performClick()
+        colorPickerView.setColorListener(ColorListener { color, fromUser ->
+            if (fromUser) {
+                val hueSat = HueUtils.rgbToHueSat(color)
+                hueBar.value = hueSat[0].toFloat()
+                satBar.value = hueSat[1].toFloat()
+                lampInterface.onColorChanged(color)
             }
-        } else {
-            ctBar.addOnChangeListener { _, value, fromUser ->
-                if (fromUser) {
-                    hueAPI.changeColorTemperature(lampInterface.id, value.toInt() + 153)
-                    lampInterface.onColorChanged(HueUtils.ctToRGB(value.toInt() + 153))
-                }
+        })
+        colorPickerView.setOnTouchListener { innerView, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                pauseUpdates()
+            } else if (event.action == MotionEvent.ACTION_UP) {
+                val hueSat = HueUtils.rgbToHueSat(colorPickerView.color)
+                hueAPI.changeHueSatOfGroup(lampInterface.id, hueSat[0], hueSat[1])
+                resumeUpdates()
             }
-            ctBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
-                override fun onStartTrackingTouch(slider: Slider) {
-                    pauseUpdates()
-                }
-                override fun onStopTrackingTouch(slider: Slider) {
-                    resumeUpdates()
-                }
-            })
-
-            hueBar.addOnChangeListener { _, value, fromUser ->
-                if (fromUser) {
-                    val color = HueUtils.hueSatToRGB(value.toInt(), satBar.value.toInt())
-                    hueAPI.changeHue(lampInterface.id, value.toInt())
-                    colorPickerView.selectByHsvColor(color)
-                    lampInterface.onColorChanged(color)
-                }
-                SliderUtils.setSliderGradientNow(
-                    satBar, intArrayOf(
-                        Color.WHITE,
-                        HueUtils.hueToRGB(value.toInt()
-                    )
-                ))
-            }
-            hueBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
-                override fun onStartTrackingTouch(slider: Slider) {
-                    pauseUpdates()
-                }
-                override fun onStopTrackingTouch(slider: Slider) {
-                    resumeUpdates()
-                }
-            })
-
-            satBar.addOnChangeListener { _, value, fromUser ->
-                if (fromUser) {
-                    val color = HueUtils.hueSatToRGB(hueBar.value.toInt(), value.toInt())
-                    hueAPI.changeSaturation(lampInterface.id, value.toInt())
-                    colorPickerView.selectByHsvColor(color)
-                    lampInterface.onColorChanged(color)
-                }
-            }
-            satBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
-                override fun onStartTrackingTouch(slider: Slider) {
-                    pauseUpdates()
-                }
-                override fun onStopTrackingTouch(slider: Slider) {
-                    resumeUpdates()
-                }
-            })
-
-            colorPickerView.setColorListener(ColorListener { color, fromUser ->
-                if (fromUser) {
-                    val hueSat = HueUtils.rgbToHueSat(color)
-                    hueAPI.changeHueSat(lampInterface.id, hueSat[0], hueSat[1])
-                    hueBar.value = hueSat[0].toFloat()
-                    satBar.value = hueSat[1].toFloat()
-                    lampInterface.onColorChanged(color)
-                }
-            })
-            colorPickerView.setOnTouchListener { _, event ->
-                if (event.action == MotionEvent.ACTION_DOWN) {
-                    pauseUpdates()
-                } else if (event.action == MotionEvent.ACTION_UP) {
-                    resumeUpdates()
-                }
-                view.performClick()
-            }
+            innerView.performClick()
         }
 
         fun updateFunction(data: HueLampData) {
