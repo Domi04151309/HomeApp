@@ -11,9 +11,10 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.google.android.material.slider.Slider
 import com.skydoves.colorpickerview.ColorPickerView
-import io.github.domi04151309.home.R
 import com.skydoves.colorpickerview.listeners.ColorListener
+import io.github.domi04151309.home.R
 import io.github.domi04151309.home.api.HueAPI
+import io.github.domi04151309.home.data.LightStates
 import io.github.domi04151309.home.helpers.*
 import io.github.domi04151309.home.interfaces.HueRoomInterface
 
@@ -23,20 +24,22 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
         private const val UPDATE_DELAY = 5000L
     }
 
-    private var shouldBeUpdated = true
     private lateinit var c: Context
     private lateinit var lampInterface: HueRoomInterface
-    private lateinit var lampData: HueLampData
     private lateinit var hueAPI: HueAPI
 
     @SuppressLint("ClickableViewAccessibility")
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         c = context ?: throw IllegalStateException()
         lampInterface = context as HueRoomInterface
-        lampData = lampInterface.lampData
         hueAPI = HueAPI(c, lampInterface.device.id)
 
-        val view = super.onCreateView(inflater, container, savedInstanceState) ?: throw IllegalStateException()
+        val view = super.onCreateView(inflater, container, savedInstanceState)
+            ?: throw IllegalStateException()
         val colorPickerView = view.findViewById<ColorPickerView>(R.id.colorPickerView)
         val ctText = view.findViewById<TextView>(R.id.ctTxt)
         val ctBar = view.findViewById<Slider>(R.id.ctBar)
@@ -93,6 +96,7 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
             override fun onStartTrackingTouch(slider: Slider) {
                 pauseUpdates()
             }
+
             override fun onStopTrackingTouch(slider: Slider) {
                 hueAPI.changeColorTemperatureOfGroup(lampInterface.id, slider.value.toInt() + 153)
                 resumeUpdates()
@@ -116,6 +120,7 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
             override fun onStartTrackingTouch(slider: Slider) {
                 pauseUpdates()
             }
+
             override fun onStopTrackingTouch(slider: Slider) {
                 hueAPI.changeHueOfGroup(lampInterface.id, slider.value.toInt())
                 resumeUpdates()
@@ -133,6 +138,7 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
             override fun onStartTrackingTouch(slider: Slider) {
                 pauseUpdates()
             }
+
             override fun onStopTrackingTouch(slider: Slider) {
                 hueAPI.changeSaturationOfGroup(lampInterface.id, slider.value.toInt())
                 resumeUpdates()
@@ -158,8 +164,8 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
             innerView.performClick()
         }
 
-        fun updateFunction(data: HueLampData) {
-            if (shouldBeUpdated) {
+        fun updateFunction(data: LightStates.Light) {
+            if (lampInterface.canReceiveRequest) {
                 if (data.ct == -1) {
                     ctViews.forEach {
                         it.visibility = View.GONE
@@ -189,22 +195,28 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
         }
 
         view.post {
-            updateFunction(lampData)
-            lampData.addOnDataChangedListener(::updateFunction)
+            view.postDelayed({
+                colorPickerView.selectByHsvColor(
+                    HueUtils.hueSatToRGB(
+                        lampInterface.lampData.state.hue,
+                        lampInterface.lampData.state.sat
+                    )
+                )
+            },200)
+            updateFunction(lampInterface.lampData.state)
+            lampInterface.lampData.addOnDataChangedListener(::updateFunction)
         }
 
         return view
     }
 
     internal fun pauseUpdates() {
-        shouldBeUpdated = false
         lampInterface.canReceiveRequest = false
     }
 
     internal fun resumeUpdates() {
-        lampInterface.canReceiveRequest = true
         Handler(Looper.getMainLooper()).postDelayed({
-            shouldBeUpdated = true
+            lampInterface.canReceiveRequest = true
         }, UPDATE_DELAY)
     }
 }

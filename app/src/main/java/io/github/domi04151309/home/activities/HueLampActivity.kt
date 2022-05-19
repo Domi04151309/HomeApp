@@ -27,6 +27,7 @@ import io.github.domi04151309.home.R
 import io.github.domi04151309.home.adapters.HueDetailsTabAdapter
 import io.github.domi04151309.home.api.HueAPI
 import io.github.domi04151309.home.data.DeviceItem
+import io.github.domi04151309.home.data.LightStates
 import io.github.domi04151309.home.helpers.*
 import io.github.domi04151309.home.helpers.Global.volleyError
 import io.github.domi04151309.home.helpers.Theme
@@ -39,7 +40,7 @@ class HueLampActivity : AppCompatActivity(), HueRoomInterface {
     override var id: String = ""
     override var lights: JSONArray? = null
     override var canReceiveRequest: Boolean = false
-    override var lampData: HueLampData = HueLampData()
+    override var lampData: HueLightListener = HueLightListener()
     override lateinit var device: DeviceItem
     private var lampName: String = ""
     private var updateDataRequest: JsonObjectRequest? = null
@@ -105,6 +106,7 @@ class HueLampActivity : AppCompatActivity(), HueRoomInterface {
                 lampName = response.getString("name")
                 nameTxt.text = lampName
                 val action = response.getJSONObject("action")
+                val light = LightStates.Light()
 
                 if (action.has("bri")) {
                     SliderUtils.setProgress(briBar, action.getInt("bri"))
@@ -112,22 +114,22 @@ class HueLampActivity : AppCompatActivity(), HueRoomInterface {
                     findViewById<TextView>(R.id.briTxt).visibility = View.GONE
                     briBar.visibility = View.GONE
                 }
-                lampData.ct =
+                light.ct =
                     if (action.has("ct")) action.getInt("ct") - 153
                     else -1
 
                 if (action.has("hue") && action.has("sat")) {
-                    lampData.hue = action.getInt("hue")
-                    lampData.sat = action.getInt("sat")
+                    light.hue = action.getInt("hue")
+                    light.sat = action.getInt("sat")
                 } else {
-                    lampData.hue = -1
-                    lampData.sat = -1
+                    light.hue = -1
+                    light.sat = -1
                 }
 
-                lampData.on = response.getJSONObject("state").getBoolean("any_on")
-                briBar.isEnabled = lampData.on
+                light.on = response.getJSONObject("state").getBoolean("any_on")
+                briBar.isEnabled = light.on
 
-                lampData.notifyDataChanged()
+                lampData.state = light
             },
             { error ->
                 finish()
