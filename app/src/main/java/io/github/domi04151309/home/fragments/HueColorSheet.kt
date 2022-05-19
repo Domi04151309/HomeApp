@@ -20,6 +20,7 @@ import io.github.domi04151309.home.api.HueAPI
 import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.HueUtils
 import io.github.domi04151309.home.helpers.SliderUtils
+import io.github.domi04151309.home.interfaces.HueAdvancedLampInterface
 import io.github.domi04151309.home.interfaces.HueLampInterface
 import java.lang.Exception
 
@@ -29,14 +30,13 @@ class HueColorSheet : BottomSheetDialogFragment() {
         const val TAG = "HueColorSheet"
     }
 
-    //TODO: make work in edit scenes
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val c = context ?: throw IllegalStateException()
-        val lampInterface = context as HueLampInterface
+        val lampInterface = context as HueAdvancedLampInterface
         val hueAPI = HueAPI(c, lampInterface.device.id)
 
         val view = inflater.inflate(R.layout.fragment_hue_bri_color, container, false)
@@ -151,6 +151,7 @@ class HueColorSheet : BottomSheetDialogFragment() {
             if (fromUser) {
                 hueAPI.changeColorTemperature(lampInterface.id, value.toInt() + 153)
                 lampInterface.onColorChanged(HueUtils.ctToRGB(value.toInt() + 153))
+                lampInterface.onCtChanged(value.toInt() + 153)
             }
         }
 
@@ -160,6 +161,7 @@ class HueColorSheet : BottomSheetDialogFragment() {
                 hueAPI.changeHue(lampInterface.id, value.toInt())
                 colorPickerView.selectByHsvColor(color)
                 lampInterface.onColorChanged(color)
+                lampInterface.onHueSatChanged(value.toInt(), satBar.value.toInt())
             }
             SliderUtils.setSliderGradientNow(
                 satBar, intArrayOf(
@@ -177,6 +179,7 @@ class HueColorSheet : BottomSheetDialogFragment() {
                 hueAPI.changeSaturation(lampInterface.id, value.toInt())
                 colorPickerView.selectByHsvColor(color)
                 lampInterface.onColorChanged(color)
+                lampInterface.onHueSatChanged(hueBar.value.toInt(), value.toInt())
             }
         }
 
@@ -188,6 +191,7 @@ class HueColorSheet : BottomSheetDialogFragment() {
                 satBar.value = hueSat[1].toFloat()
                 lampInterface.onColorChanged(color)
                 lampInterface.onColorChanged(color)
+                lampInterface.onHueSatChanged(hueSat[0], hueSat[1])
             }
         })
 

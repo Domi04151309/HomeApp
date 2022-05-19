@@ -31,12 +31,13 @@ import io.github.domi04151309.home.fragments.HueColorSheet
 import io.github.domi04151309.home.helpers.*
 import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.Theme
+import io.github.domi04151309.home.interfaces.HueAdvancedLampInterface
 import io.github.domi04151309.home.interfaces.HueLampInterface
 import io.github.domi04151309.home.interfaces.SceneRecyclerViewHelperInterface
 import org.json.JSONArray
 import org.json.JSONObject
 
-class HueSceneActivity : AppCompatActivity(), SceneRecyclerViewHelperInterface, HueLampInterface {
+class HueSceneActivity : AppCompatActivity(), SceneRecyclerViewHelperInterface, HueAdvancedLampInterface {
 
     private var editing: Boolean = false
     private val lightStates: LightStates = LightStates()
@@ -255,10 +256,8 @@ class HueSceneActivity : AppCompatActivity(), SceneRecyclerViewHelperInterface, 
     }
 
     override fun onItemClicked(view: View, data: SceneListItem) {
-        if (!editing) {
-            id = data.hidden
-            HueColorSheet().show(supportFragmentManager, HueColorSheet.TAG)
-        }
+        id = data.hidden
+        HueColorSheet().show(supportFragmentManager, HueColorSheet.TAG)
     }
 
     override fun onStateChanged(view: View, data: SceneListItem, state: Boolean) {
@@ -267,12 +266,20 @@ class HueSceneActivity : AppCompatActivity(), SceneRecyclerViewHelperInterface, 
     }
 
     override fun onColorChanged(color: Int) {
-        //TODO: update lightstates
         adapter.updateColor(id, color)
     }
 
     override fun onBrightnessChanged(brightness: Int) {
         lightStates.setLightBrightness(id, brightness)
         adapter.updateBrightness(id, HueUtils.briToPercent(brightness))
+    }
+
+    override fun onHueSatChanged(hue: Int, sat: Int) {
+        lightStates.setLightHue(id, hue)
+        lightStates.setLightSat(id, sat)
+    }
+
+    override fun onCtChanged(ct: Int) {
+        lightStates.setLightCt(id, ct)
     }
 }
