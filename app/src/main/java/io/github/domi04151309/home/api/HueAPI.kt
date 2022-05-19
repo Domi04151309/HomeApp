@@ -13,7 +13,6 @@ import android.os.Handler
 import android.os.Looper
 import io.github.domi04151309.home.activities.HueConnectActivity
 import io.github.domi04151309.home.activities.HueLampActivity
-import io.github.domi04151309.home.data.RequestCallbackObject
 import io.github.domi04151309.home.custom.CustomJsonArrayRequest
 import io.github.domi04151309.home.data.UnifiedRequestCallback
 import io.github.domi04151309.home.helpers.Global
@@ -34,7 +33,7 @@ class HueAPI(
     }
 
     interface RequestCallback {
-        fun onLightsLoaded(holder: RequestCallbackObject<JSONObject>)
+        fun onLightsLoaded(response: JSONObject?)
     }
 
     fun getUsername(): String {
@@ -106,17 +105,9 @@ class HueAPI(
                         lightID = lightIDs.getString(i)
                         returnObject.put(lightID, response.getJSONObject(lightID))
                     }
-                    callback.onLightsLoaded(RequestCallbackObject(returnObject, deviceId))
+                    callback.onLightsLoaded(returnObject)
                 },
-                { error ->
-                    callback.onLightsLoaded(
-                        RequestCallbackObject(
-                            null,
-                            deviceId,
-                            volleyError(c, error)
-                        )
-                    )
-                }
+                { callback.onLightsLoaded(null) }
             )
         queue.add(jsonObjectRequest)
     }

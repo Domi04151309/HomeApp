@@ -42,37 +42,40 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes), RecyclerViewHe
     private lateinit var hueAPI: HueAPI
     private lateinit var queue: RequestQueue
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         c = context ?: throw IllegalStateException()
         lampData = context as HueLampInterface
         hueAPI = HueAPI(c, lampData.device.id)
         queue = Volley.newRequestQueue(context)
 
-        val recyclerView = (super.onCreateView(inflater, container, savedInstanceState) ?: throw IllegalStateException()) as RecyclerView
+        val recyclerView = super.onCreateView(inflater, container, savedInstanceState) as RecyclerView
         val adapter = HueSceneGridAdapter(this, this)
         recyclerView.layoutManager = GridLayoutManager(c, 3)
         recyclerView.adapter = adapter
 
-        scenesRequest = JsonObjectRequest(Request.Method.GET, lampData.addressPrefix + "/scenes/", null,
+        scenesRequest =
+            JsonObjectRequest(Request.Method.GET, lampData.addressPrefix + "/scenes/", null,
                 { response ->
                     try {
                         val gridItems: ArrayList<SceneGridItem> = ArrayList(response.length())
-                        val sceneIds: ArrayList<String> = ArrayList(response.length() / 2)
-                        val sceneNames: ArrayList<String> = ArrayList(response.length() / 2)
+                        val scenes: ArrayList<Pair<String, String>> = ArrayList(response.length() / 4)
                         var currentObject: JSONObject
                         for (i in response.keys()) {
                             currentObject = response.getJSONObject(i)
                             if (currentObject.optString("group") == lampData.id) {
-                                sceneIds.add(i)
-                                sceneNames.add(currentObject.getString("name"))
+                                scenes.add(Pair(i, currentObject.getString("name")))
                             }
                         }
-                        if (sceneIds.size > 0) {
+                        if (scenes.size > 0) {
                             var completedRequests = 0
-                            for (i in 0 until sceneIds.size) {
+                            for (i in 0 until scenes.size) {
                                 queue.add(JsonObjectRequest(
                                     Request.Method.GET,
-                                    lampData.addressPrefix + "/scenes/" + sceneIds[i],
+                                    lampData.addressPrefix + "/scenes/" + scenes[i].first,
                                     null,
                                     { sceneResponse ->
                                         val states = sceneResponse.getJSONObject("lightstates")
@@ -106,13 +109,15 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes), RecyclerViewHe
                                             }
                                         }
                                         gridItems += SceneGridItem(
-                                            name = sceneNames[i],
-                                            hidden = sceneIds[i],
+                                            name = scenes[i].second,
+                                            hidden = scenes[i].first,
                                             color = if (currentSceneValues.size > 0) currentSceneValues[0] else Color.WHITE
                                         )
                                         completedRequests++
-                                        if (completedRequests == sceneIds.size) {
-                                            val sortedItems = gridItems.sortedWith(compareBy { it.color }).toMutableList()
+                                        if (completedRequests == scenes.size) {
+                                            val sortedItems =
+                                                gridItems.sortedWith(compareBy { it.color })
+                                                    .toMutableList()
                                             sortedItems += SceneGridItem(
                                                 name = resources.getString(R.string.hue_add_scene),
                                                 hidden = "add"
@@ -126,19 +131,23 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes), RecyclerViewHe
                                 ))
                             }
                         } else {
-                            adapter.updateData(mutableListOf(SceneGridItem(
-                                name = resources.getString(R.string.hue_add_scene),
-                                hidden = "add"
-                            )))
+                            adapter.updateData(
+                                mutableListOf(
+                                    SceneGridItem(
+                                        name = resources.getString(R.string.hue_add_scene),
+                                        hidden = "add"
+                                    )
+                                )
+                            )
                         }
-                    } catch (e: Exception){
+                    } catch (e: Exception) {
                         Log.e(Global.LOG_TAG, e.toString())
                     }
                 },
                 { error ->
                     Toast.makeText(c, Global.volleyError(c, error), Toast.LENGTH_LONG).show()
                 }
-        )
+            )
         queue.add(scenesRequest)
         return recyclerView
     }
@@ -146,19 +155,26 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes), RecyclerViewHe
     override fun onItemClicked(view: View, position: Int) {
         val hiddenText = view.findViewById<TextView>(R.id.hidden).text.toString()
         if (hiddenText == "add") {
-            startActivity(Intent(c, HueSceneActivity::class.java).putExtra("deviceId", lampData.device.id).putExtra("room", lampData.id))
+            startActivity(
+                Intent(c, HueSceneActivity::class.java).putExtra(
+                    "deviceId",
+                    lampData.device.id
+                ).putExtra("room", lampData.id)
+            )
         } else {
             hueAPI.activateSceneOfGroup(lampData.id, hiddenText)
         }
     }
 
-    override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
+    override fun onCreateContextMenu(
+        menu: ContextMenu,
+        v: View,
+        menuInfo: ContextMenu.ContextMenuInfo?
+    ) {
         super.onCreateContextMenu(menu, v, menuInfo)
         selectedScene = v.findViewById<TextView>(R.id.hidden).text
         selectedSceneName = v.findViewById<TextView>(R.id.title).text
-        if (selectedScene != "add") {
-            MenuInflater(c).inflate(R.menu.activity_hue_lamp_context, menu)
-        }
+        if (selectedScene != "add") MenuInflater(c).inflate(R.menu.activity_hue_lamp_context, menu)
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
@@ -177,7 +193,9 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes), RecyclerViewHe
                     .setTitle(R.string.str_delete)
                     .setMessage(R.string.hue_delete_scene)
                     .setPositiveButton(R.string.str_delete) { _, _ ->
-                        val deleteSceneRequest = CustomJsonArrayRequest(Request.Method.DELETE, lampData.addressPrefix + "/scenes/" + selectedScene, null,
+                        val deleteSceneRequest = CustomJsonArrayRequest(Request.Method.DELETE,
+                            lampData.addressPrefix + "/scenes/" + selectedScene,
+                            null,
                             { queue.add(scenesRequest) },
                             { e -> Log.e(Global.LOG_TAG, e.toString()) }
                         )
