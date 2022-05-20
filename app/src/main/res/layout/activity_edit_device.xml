@@ -223,7 +223,7 @@
                     android:text="@string/pref_device_config"
                     android:textAlignment="textStart"
                     android:textColor="?android:attr/textColorPrimary"
-                    app:icon="@drawable/ic_nav_settings"/>
+                    app:icon="@drawable/ic_settings"/>
 
                 <Button
                     android:id="@+id/shortcutBtn"
