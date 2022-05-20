@@ -60,6 +60,7 @@
         <item name="materialButtonStyle">@style/AppThemeButton</item>
         <item name="checkboxStyle">@style/AppThemeCheckbox</item>
         <item name="android:switchStyle">@style/AppThemeSwitch</item>
+        <item name="bottomSheetDialogTheme">@style/AppThemeBottomSheetDialog</item>
         <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox</item>
         <item name="dialogCornerRadius">8dp</item>
         <item name="android:listDivider">@null</item>
@@ -104,5 +105,17 @@
         <item name="android:track">@drawable/theme_switch_track</item>
         <item name="android:thumb">@drawable/theme_switch_thumb</item>
         <item name="android:showText">false</item>
+    </style>
+
+    <style name="AppThemeBottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/ModalBottomSheetDialog</item>
+    </style>
+
+    <style name="ModalBottomSheetDialog" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="shapeAppearance">@style/ShapeAppearance.App.LargeComponent</item>
+    </style>
+
+    <style name="ShapeAppearance.App.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+        <item name="cornerSize">16dp</item>
     </style>
 </resources>
