@@ -92,7 +92,7 @@ class HueAPI(
     }
 
     override fun changeSwitchState(id: String, state: Boolean) {
-        switchGroupByID(id.substring(id.lastIndexOf('#') + 1), state)
+        switchGroupByID(id, state)
     }
 
     fun loadLightsByIDs(lightIDs: JSONArray, callback: RequestCallback) {
