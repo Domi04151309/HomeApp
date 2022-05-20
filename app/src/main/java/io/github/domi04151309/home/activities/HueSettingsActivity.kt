@@ -46,57 +46,105 @@ class HueSettingsActivity : AppCompatActivity(), RecyclerViewHelperInterface {
                 icon = device.iconId
             )
         )
+
         queue.add(
             JsonObjectRequest(
-                Request.Method.GET, "$addressPrefix/sensors", null,
+                Request.Method.GET, "$addressPrefix/config", null,
                 { response ->
-                    val sensorItems = arrayListOf<SimpleListItem>()
-                    for (i in response.keys()) {
-                        val current = response.optJSONObject(i) ?: JSONObject()
-                        val config = current.optJSONObject("config") ?: JSONObject()
-                        if (config.has("battery")) {
-                            sensorItems.add(
-                                SimpleListItem(
-                                    current.optString("name"),
-                                    config.optString("battery") + "%",
-                                    icon = if (config.optBoolean("reachable")) R.drawable.ic_device_raspberry_pi
-                                    else R.drawable.ic_warning
-                                )
+                    items.addAll(
+                        arrayOf(
+                            SimpleListItem(summary = resources.getString(R.string.hue_bridge)),
+                            SimpleListItem(
+                                response.optString("name"),
+                                resources.getString(R.string.hue_bridge_name),
+                                icon = R.drawable.ic_about_info
+                            ),
+                            SimpleListItem(
+                                response.optString("modelid"),
+                                resources.getString(R.string.hue_bridge_model),
+                                icon = R.drawable.ic_about_info
+                            ),
+                            SimpleListItem(
+                                response.optString("bridgeid"),
+                                resources.getString(R.string.hue_bridge_id),
+                                icon = R.drawable.ic_about_info
+                            ),
+                            SimpleListItem(
+                                response.optString("swversion"),
+                                resources.getString(R.string.hue_bridge_software),
+                                icon = R.drawable.ic_about_info
+                            ),
+                            SimpleListItem(
+                                response.optString("zigbeechannel"),
+                                resources.getString(R.string.hue_bridge_zigbee),
+                                icon = R.drawable.ic_about_info
+                            ),
+                            SimpleListItem(
+                                response.optString("timezone"),
+                                resources.getString(R.string.hue_bridge_time_zone),
+                                icon = R.drawable.ic_about_info
                             )
-                        }
-                    }
-                    items.add(
-                        SimpleListItem(summary = resources.getString(R.string.hue_controls))
+                        )
                     )
-                    sensorItems.sortBy { it.title }
-                    items.addAll(sensorItems)
 
                     queue.add(
                         JsonObjectRequest(
-                            Request.Method.GET, "$addressPrefix/lights", null,
+                            Request.Method.GET, "$addressPrefix/sensors", null,
                             { innerResponse ->
-                                val lightItems = arrayListOf<SimpleListItem>()
+                                val sensorItems = arrayListOf<SimpleListItem>()
                                 for (i in innerResponse.keys()) {
                                     val current = innerResponse.optJSONObject(i) ?: JSONObject()
-                                    val state = current.optJSONObject("state") ?: JSONObject()
-                                    lightItems.add(
-                                        SimpleListItem(
-                                            current.optString("name"),
-                                            (if (state.optBoolean("on")) resources.getString(R.string.str_on)
-                                            else resources.getString(R.string.str_off))
-                                                    + " · "
-                                                    + current.optString("productname"),
-                                            icon = if (state.optBoolean("reachable")) R.drawable.ic_device_lamp
-                                            else R.drawable.ic_warning
+                                    val config = current.optJSONObject("config") ?: JSONObject()
+                                    if (config.has("battery")) {
+                                        sensorItems.add(
+                                            SimpleListItem(
+                                                current.optString("name"),
+                                                config.optString("battery") + "%",
+                                                icon = if (config.optBoolean("reachable")) R.drawable.ic_device_raspberry_pi
+                                                else R.drawable.ic_warning
+                                            )
                                         )
-                                    )
+                                    }
                                 }
                                 items.add(
-                                    SimpleListItem(summary = resources.getString(R.string.hue_lights))
+                                    SimpleListItem(summary = resources.getString(R.string.hue_controls))
                                 )
-                                lightItems.sortBy { it.title }
-                                items.addAll(lightItems)
-                                recyclerView.adapter = SimpleListAdapter(items, this)
+                                sensorItems.sortBy { it.title }
+                                items.addAll(sensorItems)
+
+                                queue.add(
+                                    JsonObjectRequest(
+                                        Request.Method.GET, "$addressPrefix/lights", null,
+                                        { innerInnerResponse ->
+                                            val lightItems = arrayListOf<SimpleListItem>()
+                                            for (i in innerInnerResponse.keys()) {
+                                                val current = innerInnerResponse.optJSONObject(i)
+                                                    ?: JSONObject()
+                                                val state =
+                                                    current.optJSONObject("state") ?: JSONObject()
+                                                lightItems.add(
+                                                    SimpleListItem(
+                                                        current.optString("name"),
+                                                        (if (state.optBoolean("on")) resources.getString(
+                                                            R.string.str_on
+                                                        )
+                                                        else resources.getString(R.string.str_off))
+                                                                + " · "
+                                                                + current.optString("productname"),
+                                                        icon = if (state.optBoolean("reachable")) R.drawable.ic_device_lamp
+                                                        else R.drawable.ic_warning
+                                                    )
+                                                )
+                                            }
+                                            items.add(
+                                                SimpleListItem(summary = resources.getString(R.string.hue_lights))
+                                            )
+                                            lightItems.sortBy { it.title }
+                                            items.addAll(lightItems)
+                                            recyclerView.adapter = SimpleListAdapter(items, this)
+                                        }, { }
+                                    )
+                                )
                             }, { }
                         )
                     )

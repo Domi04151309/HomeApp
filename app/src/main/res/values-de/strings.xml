@@ -37,6 +37,13 @@
     <string name="hue_new_scene">Neue Szene</string>
     <string name="hue_rename_scene">Geben Sie bitte einen neuen Namen ein</string>
     <string name="hue_delete_scene">Sind Sie sich sicher, dass Sie diese Szene löschen möchten?</string>
+    <string name="hue_bridge">Brücke</string>
+    <string name="hue_bridge_name">Brückenname</string>
+    <string name="hue_bridge_model">Brückenmodell</string>
+    <string name="hue_bridge_id">Brücken-ID</string>
+    <string name="hue_bridge_software">Softwareversion</string>
+    <string name="hue_bridge_zigbee">Zigbee-Kanal</string>
+    <string name="hue_bridge_time_zone">Zeitzone</string>
     <string name="hue_controls">Steuerungen</string>
     <string name="hue_lights">Lampen</string>
 
