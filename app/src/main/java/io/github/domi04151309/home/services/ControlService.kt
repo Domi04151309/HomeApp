@@ -3,6 +3,8 @@ package io.github.domi04151309.home.services
 import android.app.PendingIntent
 import android.content.Intent
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.service.controls.Control
 import android.service.controls.ControlsProviderService
 import android.service.controls.actions.BooleanAction
@@ -180,7 +182,9 @@ class ControlService : ControlsProviderService() {
                     .changeSwitchState(controlId.substring(device.id.length + 1), action.newState)
             }
             consumer.accept(ControlAction.RESPONSE_OK)
-            loadStatefulControl(updateSubscriber, controlId)
+            Handler(Looper.getMainLooper()).postDelayed({
+                loadStatefulControl(updateSubscriber, controlId)
+            }, 100)
         } else {
             consumer.accept(ControlAction.RESPONSE_FAIL)
         }
