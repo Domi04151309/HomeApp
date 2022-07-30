@@ -13,6 +13,12 @@ HomeApp is a small and easy to use smart home app with a simple framework. The g
   height="80"/>
 </a>
 
+## Donate
+Support the development by donating.
+
+<a href="https://www.paypal.com/donate/?hosted_button_id=487FTCX52P9WA">
+	<img src="https://img.shields.io/badge/-Donate-black?style=for-the-badge&logo=paypal" alt="Donate">
+</a>
 
 ## Supported devices
 Home App natively supports the following devices:
@@ -26,18 +32,15 @@ Home App natively supports the following devices:
 - Devices using the [SimpleHome API](https://github.com/Domi04151309/HomeApp/wiki/SimpleHome-API)
 - Devices with a [web interface](https://github.com/Domi04151309/HomeApp/wiki/Websites)
 
-
 ## How it works
 Communication between the devices uses HTTP requests and JSON strings. After the commanding device has send a HTTP request to the smart home device, the smart home device sends back a JSON string containing the information the app needs.
 
 This app is especially useful if you are using microcontrollers or other small devices such as the Raspberry Pi for smart home automation.
 
-
 ## Previews
 <img src="https://raw.githubusercontent.com/Domi04151309/HomeApp/master/fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg" width="18%" /><img src="https://raw.githubusercontent.com/Domi04151309/HomeApp/master/fastlane/metadata/android/en-US/images/phoneScreenshots/2.jpg" width="18%" /><img src="https://raw.githubusercontent.com/Domi04151309/HomeApp/master/fastlane/metadata/android/en-US/images/phoneScreenshots/3.jpg" width="18%" /><img src="https://raw.githubusercontent.com/Domi04151309/HomeApp/master/fastlane/metadata/android/en-US/images/phoneScreenshots/4.jpg" width="18%" /><img src="https://raw.githubusercontent.com/Domi04151309/HomeApp/master/fastlane/metadata/android/en-US/images/phoneScreenshots/5.jpg" width="18%" /><img src="https://raw.githubusercontent.com/Domi04151309/HomeApp/master/fastlane/metadata/android/en-US/images/phoneScreenshots/6.jpg" width="18%" />
 
 <i style="color:gray;">Android, Google Play and the Google Play logo are trademarks of Google LLC.</i>
-
 
 ## Legal Notice
 Copyright (C) 2020 Domi04151309
