@@ -48,6 +48,7 @@
     <string name="hue_lights">Lights</string>
     <string name="hue_room">Hue Room</string>
 
+    <string name="tasmota" translatable="false">Tasmota</string>
     <string name="tasmota_empty_list">No commands added yet</string>
     <string name="tasmota_empty_list_summary">Add commands below</string>
     <string name="tasmota_add_command">Add command to list</string>

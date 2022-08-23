@@ -115,6 +115,20 @@
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activities.ShortcutTasmotaActivity"
+            android:label="@string/tasmota"
+            android:exported="true">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.CREATE_SHORTCUT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.ShortcutTasmotaActionActivity"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.NoDisplay"
+            android:exported="true" />
         <service
             android:name=".services.ControlService"
             android:permission="android.permission.BIND_CONTROLS"

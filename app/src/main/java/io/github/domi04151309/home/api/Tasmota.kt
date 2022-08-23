@@ -3,9 +3,11 @@ package io.github.domi04151309.home.api
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.preference.PreferenceManager
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
+import com.google.android.material.snackbar.Snackbar
 import io.github.domi04151309.home.R
 import org.json.JSONArray
 import org.json.JSONObject
