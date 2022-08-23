@@ -191,7 +191,7 @@ class HueLampActivity : AppCompatActivity(), HueRoomInterface {
         )
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.activity_hue_lamp_actions, menu)
         return true
     }

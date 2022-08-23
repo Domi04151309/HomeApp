@@ -171,7 +171,7 @@ class WebActivity : AppCompatActivity() {
                 "})()")
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.activity_web_actions, menu)
         return true
     }
