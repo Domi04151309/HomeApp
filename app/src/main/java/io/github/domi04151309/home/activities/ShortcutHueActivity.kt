@@ -12,20 +12,16 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.android.volley.ParseError
-import com.android.volley.Request
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.adapters.SimpleListAdapter
 import io.github.domi04151309.home.api.HueAPI
-import io.github.domi04151309.home.api.HueAPIParser
+import io.github.domi04151309.home.api.UnifiedAPI
 import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.data.SimpleListItem
 import io.github.domi04151309.home.data.UnifiedRequestCallback
 import io.github.domi04151309.home.helpers.Devices
-import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.Theme
+import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
 import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
 
 class ShortcutHueActivity : AppCompatActivity(), RecyclerViewHelperInterface {
@@ -60,27 +56,30 @@ class ShortcutHueActivity : AppCompatActivity(), RecyclerViewHelperInterface {
     override fun onItemClicked(view: View, position: Int) {
         if (deviceId == null) {
             deviceId = view.findViewById<TextView>(R.id.hidden).text.toString()
-            Volley.newRequestQueue(this).add(JsonObjectRequest(Request.Method.GET,
-                Devices(this).getDeviceById(
-                    deviceId ?: throw IllegalStateException()
-                ).address + "api/" + HueAPI(
-                    this,
-                    deviceId ?: throw IllegalStateException()
-                ).getUsername() + "/groups",
-                null,
-                { response ->
-                    HueAPIParser(resources).parseResponse(response)
-                    recyclerView.adapter = SimpleListAdapter(
-                        HueAPIParser(resources).parseResponse(response) as? ArrayList<SimpleListItem>
-                            ?: throw IllegalStateException(), this
-                    )
-                },
-                { error ->
-                    deviceId = null
-                    Toast.makeText(this, Global.volleyError(this, error), Toast.LENGTH_LONG).show()
+            HueAPI(this, deviceId ?: throw IllegalStateException()).loadList(
+                object : UnifiedAPI.CallbackInterface {
+                    override fun onItemsLoaded(
+                        holder: UnifiedRequestCallback,
+                        recyclerViewInterface: HomeRecyclerViewHelperInterface?
+                    ) {
+                        if (holder.response != null) {
+                            recyclerView.adapter = SimpleListAdapter(
+                                holder.response as? ArrayList<SimpleListItem>
+                                    ?: throw IllegalStateException(), this@ShortcutHueActivity
+                            )
+                        } else {
+                            deviceId = null
+                            Toast.makeText(
+                                this@ShortcutHueActivity,
+                                holder.errorMessage,
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+
+                    override fun onExecuted(result: String, shouldRefresh: Boolean) {}
                 }
-            ))
-            HueAPI(this, deviceId ?: throw IllegalStateException())
+            )
         } else {
             val device = Devices(this).getDeviceById(deviceId ?: throw IllegalStateException())
             val lampName = view.findViewById<TextView>(R.id.title).text
