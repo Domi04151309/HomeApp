@@ -6,18 +6,21 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
+import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.adapters.SimpleListAdapter
-import io.github.domi04151309.home.api.HueAPI
+import io.github.domi04151309.home.api.*
+import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.data.SimpleListItem
 import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.helpers.Theme
 import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
 import org.json.JSONObject
+import java.util.concurrent.TimeUnit
 
-class HueSettingsActivity : AppCompatActivity(), RecyclerViewHelperInterface {
+class DeviceInfoActivity : AppCompatActivity(), RecyclerViewHelperInterface {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Theme.set(this)
@@ -32,13 +35,10 @@ class HueSettingsActivity : AppCompatActivity(), RecyclerViewHelperInterface {
         }
 
         val device = devices.getDeviceById(id)
-        val hueAPI = HueAPI(this, device.id)
-        val addressPrefix = device.address + "api/" + hueAPI.getUsername()
         val queue = Volley.newRequestQueue(this)
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-
         val items = arrayListOf<SimpleListItem>()
+        recyclerView.layoutManager = LinearLayoutManager(this)
         items.add(
             SimpleListItem(
                 device.name,
@@ -46,6 +46,37 @@ class HueSettingsActivity : AppCompatActivity(), RecyclerViewHelperInterface {
                 icon = device.iconId
             )
         )
+
+        when (device.mode) {
+            "ESP Easy" -> null
+            "Hue API" -> showHueInfo(device, queue, items, recyclerView)
+            "SimpleHome API" -> null
+            "Tasmota" -> null
+            "Shelly Gen 1" -> null
+            "Shelly Gen 2" -> showShelly2Info(device, queue, items, recyclerView)
+        }
+    }
+
+    override fun onItemClicked(view: View, position: Int) {}
+
+    private fun boolToString(bool: Boolean): String {
+        return resources.getString(if (bool) R.string.str_on else R.string.str_off)
+    }
+
+    private fun rssiToPercent(rssi: Int): Int {
+        return if (rssi <= -100) 0
+        else if (rssi >= -50) 100
+        else 2 * (rssi + 100)
+    }
+
+    private fun showHueInfo(
+        device: DeviceItem,
+        queue: RequestQueue,
+        items: ArrayList<SimpleListItem>,
+        recyclerView: RecyclerView
+    ) {
+        val hueAPI = HueAPI(this, device.id)
+        val addressPrefix = device.address + "api/" + hueAPI.getUsername()
 
         queue.add(
             JsonObjectRequest(
@@ -153,5 +184,97 @@ class HueSettingsActivity : AppCompatActivity(), RecyclerViewHelperInterface {
         )
     }
 
-    override fun onItemClicked(view: View, position: Int) {}
+    private fun showShelly2Info(
+        device: DeviceItem,
+        queue: RequestQueue,
+        items: ArrayList<SimpleListItem>,
+        recyclerView: RecyclerView
+    ) {
+        queue.add(
+            JsonObjectRequest(
+                Request.Method.GET, device.address + "rpc/Shelly.GetStatus", null,
+                { response ->
+
+                    items.addAll(
+                        arrayOf(
+                            SimpleListItem(summary = resources.getString(R.string.device_config_info_status)),
+                            SimpleListItem(
+                                (response.optJSONObject("wifi") ?: JSONObject()).run {
+                                    optString("ssid") + " (" + rssiToPercent(optInt("rssi")) + " %)"
+                                },
+                                resources.getString(R.string.shelly_wifi),
+                                icon = R.drawable.ic_about_info
+                            ),
+                            SimpleListItem(
+                                boolToString(
+                                    (response.optJSONObject("mqtt")
+                                        ?: JSONObject()).optBoolean("connected")
+                                ),
+                                resources.getString(R.string.shelly_mqtt),
+                                icon = R.drawable.ic_about_info
+                            ),
+                            SimpleListItem(
+                                boolToString(
+                                    (response.optJSONObject("cloud")
+                                        ?: JSONObject()).optBoolean("connected")
+                                ),
+                                resources.getString(R.string.shelly_cloud),
+                                icon = R.drawable.ic_about_info
+                            ),
+                            SimpleListItem(
+
+                                (response.optJSONObject("sys")
+                                    ?: JSONObject()).optLong("uptime").run {
+                                    String.format(
+                                        "%02d:%02d:%02d",
+                                        TimeUnit.SECONDS.toHours(this),
+                                        TimeUnit.SECONDS.toMinutes(this) -
+                                                TimeUnit.HOURS.toMinutes(
+                                                    TimeUnit.SECONDS.toHours(
+                                                        this
+                                                    )
+                                                ),
+                                        TimeUnit.SECONDS.toSeconds(this) -
+                                                TimeUnit.MINUTES.toSeconds(
+                                                    TimeUnit.SECONDS.toMinutes(
+                                                        this
+                                                    )
+                                                )
+                                    )
+                                },
+                                resources.getString(R.string.shelly_uptime),
+                                icon = R.drawable.ic_about_info
+                            ),
+                            SimpleListItem(
+                                (response.optJSONObject("sys") ?: JSONObject()).run {
+                                    "${(optInt("fs_free") / optInt("fs_size").toFloat() * 100).toInt()} %"
+                                },
+                                resources.getString(R.string.shelly_storage),
+                                icon = R.drawable.ic_about_info
+                            ),
+                            SimpleListItem(
+                                (response.optJSONObject("sys") ?: JSONObject()).run {
+                                    "${(optInt("ram_free") / optInt("ram_size").toFloat() * 100).toInt()} %"
+                                },
+                                resources.getString(R.string.shelly_ram),
+                                icon = R.drawable.ic_about_info
+                            ),
+                            SimpleListItem(
+                                resources.getString(
+                                    if (((response.optJSONObject("sys")
+                                            ?: JSONObject()).optJSONObject("available_updates")
+                                            ?: JSONObject()).has("stable")
+                                    ) R.string.str_yes
+                                    else R.string.str_no
+                                ),
+                                resources.getString(R.string.shelly_update),
+                                icon = R.drawable.ic_about_info
+                            ),
+                        )
+                    )
+                    recyclerView.adapter = SimpleListAdapter(items, this)
+                }, { }
+            )
+        )
+    }
 }

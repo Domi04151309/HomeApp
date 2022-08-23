@@ -63,6 +63,13 @@
     <string name="shelly_powermeter_summary">Current power consumption</string>
     <string name="shelly_switch_title">Switch %1$d</string>
     <string name="shelly_temperature_sensor_summary">Current temperature</string>
+    <string name="shelly_wifi">WiFi</string>
+    <string name="shelly_mqtt">MQTT</string>
+    <string name="shelly_cloud">Cloud</string>
+    <string name="shelly_uptime">Uptime</string>
+    <string name="shelly_storage">Storage Used</string>
+    <string name="shelly_ram">RAM Used</string>
+    <string name="shelly_update">Updates Available</string>
 
     <string name="input_title">Please enter something</string>
     <string name="input_hint">Input</string>
@@ -129,6 +136,7 @@
     <string name="device_config_hide">Hide device from main list</string>
     <string name="device_config_hidden">hidden</string>
     <string name="device_config_info">Device Info</string>
+    <string name="device_config_info_status">Status</string>
 
     <string name="str_cancel">Cancel</string>
     <string name="str_name">Name</string>
@@ -141,6 +149,8 @@
     <string name="str_send">Send</string>
     <string name="str_on">On</string>
     <string name="str_off">Off</string>
+    <string name="str_yes">Yes</string>
+    <string name="str_no">No</string>
     <string name="str_unreachable">Unreachable</string>
 
     <string name="about">About</string>

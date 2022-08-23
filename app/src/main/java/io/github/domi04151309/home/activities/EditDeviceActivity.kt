@@ -35,7 +35,7 @@ class EditDeviceActivity : AppCompatActivity() {
             "Hue API", "ESP Easy", "Node-RED", "Shelly Gen 1", "Shelly Gen 2"
         )
         private val HAS_INFO = arrayOf(
-            "Hue API"
+            "Hue API", "Shelly Gen 2"
         )
     }
 
@@ -171,7 +171,7 @@ class EditDeviceActivity : AppCompatActivity() {
             }
 
             infoBtn.setOnClickListener {
-                startActivity(Intent(this, HueSettingsActivity::class.java).putExtra("device", deviceId))
+                startActivity(Intent(this, DeviceInfoActivity::class.java).putExtra("device", deviceId))
             }
 
             findViewById<Button>(R.id.shortcutBtn).setOnClickListener {

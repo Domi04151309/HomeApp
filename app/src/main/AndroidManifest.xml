@@ -93,7 +93,7 @@
             android:launchMode="singleTop"
             android:parentActivityName=".activities.DevicesActivity" />
         <activity
-            android:name=".activities.HueSettingsActivity"
+            android:name=".activities.DeviceInfoActivity"
             android:label="@string/device_config_info"
             android:launchMode="singleTop"
             android:parentActivityName=".activities.EditDeviceActivity" />
