@@ -19,7 +19,7 @@ import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.helpers.Theme
 import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
 
-class DeviceShortcutActivity : AppCompatActivity(), RecyclerViewHelperInterface {
+class ShortcutDeviceActivity : AppCompatActivity(), RecyclerViewHelperInterface {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Theme.set(this)
@@ -45,24 +45,24 @@ class DeviceShortcutActivity : AppCompatActivity(), RecyclerViewHelperInterface 
     }
 
     override fun onItemClicked(view: View, position: Int) {
-        val deviceObj = Devices(this).getDeviceByIndex(position)
+        val device = Devices(this).getDeviceByIndex(position)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val shortcutManager = this.getSystemService(ShortcutManager::class.java)
             if (shortcutManager != null) {
                 setResult(
                     RESULT_OK,
                     shortcutManager.createShortcutResultIntent(
-                        ShortcutInfo.Builder(this, deviceObj.id)
-                            .setShortLabel(deviceObj.name.ifEmpty {
+                        ShortcutInfo.Builder(this, device.id)
+                            .setShortLabel(device.name.ifEmpty {
                                 resources.getString(R.string.pref_add_name_empty)
                             })
-                            .setLongLabel(deviceObj.name.ifEmpty {
+                            .setLongLabel(device.name.ifEmpty {
                                 resources.getString(R.string.pref_add_name_empty)
                             })
-                            .setIcon(Icon.createWithResource(this, deviceObj.iconId))
+                            .setIcon(Icon.createWithResource(this, device.iconId))
                             .setIntent(
                                 Intent(this, MainActivity::class.java)
-                                    .putExtra("device", deviceObj.id)
+                                    .putExtra("device", device.id)
                                     .setAction(Intent.ACTION_MAIN)
                                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                             )

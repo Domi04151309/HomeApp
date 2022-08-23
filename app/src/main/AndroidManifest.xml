@@ -98,8 +98,17 @@
             android:launchMode="singleTop"
             android:parentActivityName=".activities.EditDeviceActivity" />
         <activity
-            android:name=".activities.DeviceShortcutActivity"
+            android:name=".activities.ShortcutDeviceActivity"
             android:label="@string/pref_add_name_empty"
+            android:exported="true">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.CREATE_SHORTCUT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.ShortcutHueActivity"
+            android:label="@string/hue_room"
             android:exported="true">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />

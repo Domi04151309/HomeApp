@@ -46,6 +46,7 @@
     <string name="hue_bridge_time_zone">Zeitzone</string>
     <string name="hue_controls">Steuerungen</string>
     <string name="hue_lights">Lampen</string>
+    <string name="hue_room">Hue Raum</string>
 
     <string name="tasmota_empty_list">Noch keine Befehle hinzugefügt</string>
     <string name="tasmota_empty_list_summary">Fügen Sie Befehle unten hinzu</string>

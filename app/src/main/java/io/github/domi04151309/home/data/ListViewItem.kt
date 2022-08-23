@@ -1,9 +1,9 @@
 package io.github.domi04151309.home.data
 
-data class ListViewItem(
-    var title: String = "",
-    var summary: String = "",
-    var hidden: String = "",
-    var icon: Int = 0,
+class ListViewItem(
+    title: String = "",
+    summary: String = "",
+    hidden: String = "",
+    icon: Int = 0,
     var state: Boolean? = null
-)
+) : SimpleListItem(title, summary, hidden, icon)
