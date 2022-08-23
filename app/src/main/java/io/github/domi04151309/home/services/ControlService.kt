@@ -8,9 +8,12 @@ import android.os.Looper
 import android.service.controls.Control
 import android.service.controls.ControlsProviderService
 import android.service.controls.actions.BooleanAction
+import android.service.controls.actions.CommandAction
 import android.service.controls.actions.ControlAction
 import android.service.controls.templates.ControlButton
+import android.service.controls.templates.StatelessTemplate
 import android.service.controls.templates.ToggleTemplate
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.activities.MainActivity
@@ -137,6 +140,11 @@ class ControlService : ControlsProviderService() {
                                             else resources.getString(R.string.str_off)
                                         )
                                     }
+                                    if (device.mode == "Tasmota") {
+                                        controlBuilder.setControlTemplate(
+                                            StatelessTemplate(id)
+                                        )
+                                    }
                                     subscriber?.onNext(controlBuilder.build())
                                 }
                             }
@@ -177,9 +185,23 @@ class ControlService : ControlsProviderService() {
         if (Global.checkNetwork(this)) {
             val device = Devices(this)
                 .getDeviceById(controlId.substring(0, controlId.indexOf('@')))
+            val api = Global.getCorrectAPI(this, device.mode, device.id)
             if (action is BooleanAction) {
-                Global.getCorrectAPI(this, device.mode, device.id)
-                    .changeSwitchState(controlId.substring(device.id.length + 1), action.newState)
+                api.changeSwitchState(controlId.substring(device.id.length + 1), action.newState)
+            } else if (action is CommandAction) {
+                api.execute(
+                    controlId.substring(device.id.length + 1),
+                    object : UnifiedAPI.CallbackInterface {
+                        override fun onItemsLoaded(
+                            holder: UnifiedRequestCallback,
+                            recyclerViewInterface: HomeRecyclerViewHelperInterface?
+                        ) {
+                        }
+
+                        override fun onExecuted(result: String, shouldRefresh: Boolean) {
+                            Toast.makeText(this@ControlService, result, Toast.LENGTH_LONG).show()
+                        }
+                    })
             }
             consumer.accept(ControlAction.RESPONSE_OK)
             Handler(Looper.getMainLooper()).postDelayed({

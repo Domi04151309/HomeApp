@@ -26,7 +26,7 @@ internal object Global {
         "ESP Easy", "Hue API", "Shelly Gen 1", "Shelly Gen 2", "SimpleHome API", "Tasmota"
     )
     val POWER_MENU_MODES = arrayOf(
-        "ESP Easy", "Hue API", "Shelly Gen 1", "Shelly Gen 2", "SimpleHome API"
+        "ESP Easy", "Hue API", "Shelly Gen 1", "Shelly Gen 2", "SimpleHome API", "Tasmota"
     )
 
     fun getCorrectAPI(
