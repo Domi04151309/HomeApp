@@ -26,7 +26,7 @@ class SimpleHomeAPI(
         dynamicSummaries = false
     }
 
-    override fun loadList(callback: CallbackInterface) {
+    override fun loadList(callback: CallbackInterface, extended: Boolean) {
         val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url + "commands", null,
             { response ->
                 callback.onItemsLoaded(

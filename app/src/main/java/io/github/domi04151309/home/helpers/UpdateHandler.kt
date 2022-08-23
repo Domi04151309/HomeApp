@@ -9,6 +9,8 @@ class UpdateHandler: Handler(Looper.getMainLooper()) {
         private const val UPDATE_DELAY = 1000L
     }
 
+    var running: Boolean = false; private set
+
     fun setUpdateFunction(function: () -> Unit) {
         removeCallbacksAndMessages(null)
         postDelayed(object : Runnable {
@@ -17,9 +19,11 @@ class UpdateHandler: Handler(Looper.getMainLooper()) {
                 postDelayed(this, UPDATE_DELAY)
             }
         }, 0)
+        running = true
     }
 
     fun stop() {
+        running = false
         removeCallbacksAndMessages(null)
     }
 }

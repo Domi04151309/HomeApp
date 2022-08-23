@@ -399,7 +399,7 @@ class MainActivity : AppCompatActivity() {
                     unifiedHelperInterface,
                     tasmotaHelperInterface
                 )
-                unified?.loadList(unifiedRequestCallback)
+                unified?.loadList(unifiedRequestCallback, true)
                 updateHandler.setUpdateFunction {
                     if (canReceiveRequest && unified?.needsRealTimeData == true)
                         unified?.loadStates(unifiedRealTimeStatesCallback, 0)
@@ -440,10 +440,15 @@ class MainActivity : AppCompatActivity() {
                                     recyclerViewInterface: HomeRecyclerViewHelperInterface?
                                 ) {
                                     if (holder.response != null) {
-                                        adapter.updateDirectView(
-                                            currentDevice.id, holder.response, it
-                                        )
-                                        registeredForUpdates[it] = api
+                                        Thread {
+                                            while (!updateHandler.running) Thread.sleep(10)
+                                            runOnUiThread {
+                                                adapter.updateDirectView(
+                                                    currentDevice.id, holder.response, it
+                                                )
+                                            }
+                                            registeredForUpdates[it] = api
+                                        }.start()
                                     }
                                 }
 

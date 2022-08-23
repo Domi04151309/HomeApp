@@ -48,11 +48,7 @@ class DeviceInfoActivity : AppCompatActivity(), RecyclerViewHelperInterface {
         )
 
         when (device.mode) {
-            "ESP Easy" -> null
             "Hue API" -> showHueInfo(device, queue, items, recyclerView)
-            "SimpleHome API" -> null
-            "Tasmota" -> null
-            "Shelly Gen 1" -> null
             "Shelly Gen 2" -> showShelly2Info(device, queue, items, recyclerView)
         }
     }

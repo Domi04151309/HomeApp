@@ -16,7 +16,7 @@ class EspEasyAPI(
 
     private val parser = EspEasyAPIParser(c.resources, this)
 
-    override fun loadList(callback: CallbackInterface) {
+    override fun loadList(callback: CallbackInterface, extended: Boolean) {
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.GET, url + "json", null,
             { infoResponse ->

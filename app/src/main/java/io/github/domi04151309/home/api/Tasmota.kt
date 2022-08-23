@@ -24,7 +24,7 @@ class Tasmota(
 
     private val prefs = PreferenceManager.getDefaultSharedPreferences(c)
 
-    override fun loadList(callback: CallbackInterface) {
+    override fun loadList(callback: CallbackInterface, extended: Boolean) {
         val list = JSONArray(prefs.getString(deviceId, TasmotaHelper.EMPTY_ARRAY))
         val listItems: ArrayList<ListViewItem> = ArrayList(list.length())
         if (list.length() == 0) {
@@ -50,19 +50,21 @@ class Tasmota(
             }
         }
 
-        listItems += ListViewItem(
-            title = c.resources.getString(R.string.tasmota_add_command),
-            summary = c.resources.getString(R.string.tasmota_add_command_summary),
-            icon = R.drawable.ic_add,
-            hidden = "add"
-        )
+        if (extended) {
+            listItems += ListViewItem(
+                title = c.resources.getString(R.string.tasmota_add_command),
+                summary = c.resources.getString(R.string.tasmota_add_command_summary),
+                icon = R.drawable.ic_add,
+                hidden = "add"
+            )
 
-        listItems += ListViewItem(
-            title = c.resources.getString(R.string.tasmota_execute_once),
-            summary = c.resources.getString(R.string.tasmota_execute_once_summary),
-            icon = R.drawable.ic_edit,
-            hidden = "execute_once"
-        )
+            listItems += ListViewItem(
+                title = c.resources.getString(R.string.tasmota_execute_once),
+                summary = c.resources.getString(R.string.tasmota_execute_once_summary),
+                icon = R.drawable.ic_edit,
+                hidden = "execute_once"
+            )
+        }
 
         callback.onItemsLoaded(UnifiedRequestCallback(listItems, deviceId, ""), recyclerViewInterface)
     }

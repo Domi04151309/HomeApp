@@ -24,7 +24,7 @@ class ShellyAPI(
         needsRealTimeData = true
     }
 
-    override fun loadList(callback: CallbackInterface) {
+    override fun loadList(callback: CallbackInterface, extended: Boolean) {
         val jsonObjectRequest = when (version) {
             1 -> JsonObjectRequestAuth(
                 Request.Method.GET, url + "settings", secrets, null,

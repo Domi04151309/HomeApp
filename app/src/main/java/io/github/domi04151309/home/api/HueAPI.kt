@@ -41,7 +41,7 @@ class HueAPI(
     }
 
     // For unified API
-    override fun loadList(callback: CallbackInterface) {
+    override fun loadList(callback: CallbackInterface, extended: Boolean) {
         val jsonObjectRequest =
             JsonObjectRequest(Request.Method.GET, url + "api/${getUsername()}/groups", null,
                 { response ->
