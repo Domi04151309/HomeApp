@@ -103,7 +103,7 @@ class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapt
     }
 
     fun updateSwitch(position: Int, state: Boolean, dynamicSummary: Boolean) {
-        if (position > items.size) {
+        if (position > items.size - 1) {
             Log.w(Global.LOG_TAG, "The position $position with value $state is larger than the item count")
             return
         }
