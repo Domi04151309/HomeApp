@@ -78,7 +78,11 @@ class WebActivity : AppCompatActivity() {
                         .show()
             }
 
-            override fun onReceivedError(view: WebView, errorCode: Int, description: String, failingUrl: String) {
+            override fun onReceivedError(
+                view: WebView,
+                request: WebResourceRequest,
+                error: WebResourceError
+            ) {
                 view.loadUrl("about:blank")
                 errorOccurred = true
                 progress.visibility = View.GONE

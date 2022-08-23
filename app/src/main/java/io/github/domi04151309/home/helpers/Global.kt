@@ -102,14 +102,12 @@ internal object Global {
 
     fun volleyError(c: Context, error: java.lang.Exception): String {
         Log.w(LOG_TAG, error)
-        return if(error is TimeoutError || error is NoConnectionError)
-            c.resources.getString(R.string.main_device_unavailable)
-        else if(error is ParseError)
-            c.resources.getString(R.string.main_parse_error)
-        else if(error is ClientError)
-            c.resources.getString(R.string.main_client_error)
-        else
-            c.resources.getString(R.string.main_device_unavailable)
+        return when (error) {
+            is TimeoutError, is NoConnectionError -> c.resources.getString(R.string.main_device_unavailable)
+            is ParseError -> c.resources.getString(R.string.main_parse_error)
+            is ClientError -> c.resources.getString(R.string.main_client_error)
+            else -> c.resources.getString(R.string.main_device_unavailable)
+        }
     }
 
 }

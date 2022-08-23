@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import kotlin.math.max
 import kotlin.math.min
 import android.view.animation.AnimationUtils
+import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 
 class MainActivity : AppCompatActivity() {
@@ -293,11 +294,11 @@ class MainActivity : AppCompatActivity() {
         } else {
             loadDeviceList()
         }
-    }
 
-    override fun onBackPressed() {
-        if (isDeviceSelected) loadDeviceList()
-        else super.onBackPressed()
+        onBackPressedDispatcher.addCallback {
+            if (isDeviceSelected) loadDeviceList()
+            else finish()
+        }
     }
 
     override fun onCreateContextMenu(
