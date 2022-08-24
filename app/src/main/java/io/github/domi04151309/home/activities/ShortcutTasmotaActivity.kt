@@ -63,9 +63,10 @@ class ShortcutTasmotaActivity : AppCompatActivity(), RecyclerViewHelperInterface
                         recyclerViewInterface: HomeRecyclerViewHelperInterface?
                     ) {
                         if (holder.response != null) {
+                            @Suppress("UNCHECKED_CAST")
                             recyclerView.adapter = SimpleListAdapter(
-                                holder.response as? ArrayList<SimpleListItem>
-                                    ?: throw IllegalStateException(), this@ShortcutTasmotaActivity
+                                holder.response as ArrayList<SimpleListItem>,
+                                this@ShortcutTasmotaActivity
                             )
                         } else {
                             deviceId = null

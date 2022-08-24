@@ -69,9 +69,10 @@ class ShortcutHueSceneActivity : AppCompatActivity(), RecyclerViewHelperInterfac
                         recyclerViewInterface: HomeRecyclerViewHelperInterface?
                     ) {
                         if (holder.response != null) {
+                            @Suppress("UNCHECKED_CAST")
                             recyclerView.adapter = SimpleListAdapter(
-                                holder.response as? ArrayList<SimpleListItem>
-                                    ?: throw IllegalStateException(), this@ShortcutHueSceneActivity
+                                holder.response as ArrayList<SimpleListItem>,
+                                this@ShortcutHueSceneActivity
                             )
                         } else {
                             deviceId = null
