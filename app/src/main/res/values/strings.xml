@@ -47,6 +47,7 @@
     <string name="hue_controls">Controls</string>
     <string name="hue_lights">Lights</string>
     <string name="hue_room">Hue Room</string>
+    <string name="hue_scene_shortcut">Hue Scene</string>
 
     <string name="tasmota" translatable="false">Tasmota</string>
     <string name="tasmota_empty_list">No commands added yet</string>

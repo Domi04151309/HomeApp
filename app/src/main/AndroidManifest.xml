@@ -116,6 +116,20 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".activities.ShortcutHueSceneActivity"
+            android:label="@string/hue_scene_shortcut"
+            android:exported="true">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.CREATE_SHORTCUT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.ShortcutHueSceneActionActivity"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.NoDisplay"
+            android:exported="true" />
+        <activity
             android:name=".activities.ShortcutTasmotaActivity"
             android:label="@string/tasmota"
             android:exported="true">
