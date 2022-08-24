@@ -107,7 +107,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.ShortcutHueActivity"
+            android:name=".activities.ShortcutHueRoomActivity"
             android:label="@string/hue_room"
             android:exported="true">
             <intent-filter>

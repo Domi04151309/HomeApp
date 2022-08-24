@@ -24,7 +24,7 @@ import io.github.domi04151309.home.helpers.Theme
 import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
 import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
 
-class ShortcutHueActivity : AppCompatActivity(), RecyclerViewHelperInterface {
+class ShortcutHueRoomActivity : AppCompatActivity(), RecyclerViewHelperInterface {
 
     private var deviceId: String? = null
     private lateinit var recyclerView: RecyclerView
@@ -65,12 +65,12 @@ class ShortcutHueActivity : AppCompatActivity(), RecyclerViewHelperInterface {
                         if (holder.response != null) {
                             recyclerView.adapter = SimpleListAdapter(
                                 holder.response as? ArrayList<SimpleListItem>
-                                    ?: throw IllegalStateException(), this@ShortcutHueActivity
+                                    ?: throw IllegalStateException(), this@ShortcutHueRoomActivity
                             )
                         } else {
                             deviceId = null
                             Toast.makeText(
-                                this@ShortcutHueActivity,
+                                this@ShortcutHueRoomActivity,
                                 holder.errorMessage,
                                 Toast.LENGTH_LONG
                             ).show()
