@@ -16,8 +16,17 @@ open class UnifiedAPI(
     protected val recyclerViewInterface: HomeRecyclerViewHelperInterface?
 ) {
 
+    companion object {
+        private const val LIST_REQUEST_TIMEOUT = 1000
+        private val listCache: MutableMap<String, Pair<Long, ArrayList<ListViewItem>>> = mutableMapOf()
+    }
+
     interface CallbackInterface {
-        fun onItemsLoaded(holder: UnifiedRequestCallback, recyclerViewInterface: HomeRecyclerViewHelperInterface?)
+        fun onItemsLoaded(
+            holder: UnifiedRequestCallback,
+            recyclerViewInterface: HomeRecyclerViewHelperInterface?
+        )
+
         fun onExecuted(result: String, shouldRefresh: Boolean = false)
     }
 
@@ -31,7 +40,20 @@ open class UnifiedAPI(
     protected val url: String = Devices(c).getDeviceById(deviceId).address
     protected val queue: RequestQueue = Volley.newRequestQueue(c)
 
-    open fun loadList(callback: CallbackInterface, extended: Boolean = false) {}
+    protected fun updateCache(items: ArrayList<ListViewItem>) {
+        listCache[deviceId] = Pair(System.currentTimeMillis(), items)
+    }
+
+    open fun loadList(callback: CallbackInterface, extended: Boolean = false) {
+        if (System.currentTimeMillis() - (listCache[deviceId]?.first ?: 0) < LIST_REQUEST_TIMEOUT) {
+            callback.onItemsLoaded(
+                UnifiedRequestCallback(listCache[deviceId]?.second, deviceId, ""),
+                recyclerViewInterface
+            )
+            return
+        }
+    }
+
     open fun loadStates(callback: RealTimeStatesCallback, offset: Int) {}
     open fun execute(path: String, callback: CallbackInterface) {}
     open fun changeSwitchState(id: String, state: Boolean) {}

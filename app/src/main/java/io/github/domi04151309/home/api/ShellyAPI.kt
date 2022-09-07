@@ -25,6 +25,7 @@ class ShellyAPI(
     }
 
     override fun loadList(callback: CallbackInterface, extended: Boolean) {
+        super.loadList(callback, extended)
         val jsonObjectRequest = when (version) {
             1 -> JsonObjectRequestAuth(
                 Request.Method.GET, url + "settings", secrets, null,
@@ -32,9 +33,11 @@ class ShellyAPI(
                     queue.add(JsonObjectRequest(
                         Request.Method.GET, url + "status", null,
                         { statusResponse ->
+                            val listItems = parser.parseResponse(settingsResponse, statusResponse)
+                            updateCache(listItems)
                             callback.onItemsLoaded(
                                 UnifiedRequestCallback(
-                                    parser.parseResponse(settingsResponse, statusResponse),
+                                    listItems,
                                     deviceId
                                 ),
                                 recyclerViewInterface
@@ -59,9 +62,11 @@ class ShellyAPI(
                     queue.add(JsonObjectRequest(
                         Request.Method.GET, url + "rpc/Shelly.GetStatus", null,
                         { statusResponse ->
+                            val listItems = parser.parseResponse(configResponse, statusResponse)
+                            updateCache(listItems)
                             callback.onItemsLoaded(
                                 UnifiedRequestCallback(
-                                    parser.parseResponse(configResponse, statusResponse),
+                                    listItems,
                                     deviceId
                                 ),
                                 recyclerViewInterface

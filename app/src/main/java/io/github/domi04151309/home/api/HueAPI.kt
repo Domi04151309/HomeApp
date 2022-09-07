@@ -42,12 +42,15 @@ class HueAPI(
 
     // For unified API
     override fun loadList(callback: CallbackInterface, extended: Boolean) {
+        super.loadList(callback, extended)
         val jsonObjectRequest =
             JsonObjectRequest(Request.Method.GET, url + "api/${getUsername()}/groups", null,
                 { response ->
+                    val listItems = parser.parseResponse(response)
+                    updateCache(listItems)
                     callback.onItemsLoaded(
                         UnifiedRequestCallback(
-                            parser.parseResponse(response),
+                            listItems,
                             deviceId
                         ), recyclerViewInterface
                     )

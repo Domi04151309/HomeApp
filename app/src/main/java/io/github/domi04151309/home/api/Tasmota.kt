@@ -27,6 +27,7 @@ class Tasmota(
     private val prefs = PreferenceManager.getDefaultSharedPreferences(c)
 
     override fun loadList(callback: CallbackInterface, extended: Boolean) {
+        super.loadList(callback, extended)
         val list = JSONArray(prefs.getString(deviceId, TasmotaHelper.EMPTY_ARRAY))
         val listItems: ArrayList<ListViewItem> = ArrayList(list.length())
         if (list.length() == 0) {
@@ -68,6 +69,7 @@ class Tasmota(
             )
         }
 
+        updateCache(listItems)
         callback.onItemsLoaded(UnifiedRequestCallback(listItems, deviceId, ""), recyclerViewInterface)
     }
 
