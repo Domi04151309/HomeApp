@@ -62,7 +62,7 @@ class HueAPIParser(resources: Resources) : UnifiedAPI.Parser(resources) {
             summary = resources.getString(R.string.hue_tap),
             hidden = pair.first,
             icon = if (isZone) R.drawable.ic_zone else R.drawable.ic_room,
-            state = pair.second.optJSONObject("action")?.optBoolean("on")
+            state = pair.second.optJSONObject("state")?.optBoolean("any_on")
         )
     }
 }
