@@ -30,8 +30,8 @@ class ShellyAPI(
             1 -> JsonObjectRequestAuth(
                 Request.Method.GET, url + "settings", secrets, null,
                 { settingsResponse ->
-                    queue.add(JsonObjectRequest(
-                        Request.Method.GET, url + "status", null,
+                    queue.add(JsonObjectRequestAuth(
+                        Request.Method.GET, url + "status", secrets, null,
                         { statusResponse ->
                             val listItems = parser.parseResponse(settingsResponse, statusResponse)
                             updateCache(listItems)
@@ -95,8 +95,8 @@ class ShellyAPI(
             1 -> JsonObjectRequestAuth(
                 Request.Method.GET, url + "settings", secrets, null,
                 { settingsResponse ->
-                    queue.add(JsonObjectRequest(
-                        Request.Method.GET, url + "status", null,
+                    queue.add(JsonObjectRequestAuth(
+                        Request.Method.GET, url + "status", secrets, null,
                         { statusResponse ->
                             callback.onStatesLoaded(
                                 parser.parseStates(settingsResponse, statusResponse),
