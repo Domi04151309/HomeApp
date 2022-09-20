@@ -67,6 +67,7 @@ class ControlService : ControlsProviderService() {
                                             pi
                                         )
                                             .setTitle(it.title)
+                                            .setSubtitle(relevantDevices[i].name)
                                             .setZone(relevantDevices[i].name)
                                             .setStructure(resources.getString(R.string.app_name))
                                             .setDeviceType(Global.getDeviceType(relevantDevices[i].iconName))
@@ -121,6 +122,7 @@ class ControlService : ControlsProviderService() {
                                 if (device.id + '@' + it.hidden == id) {
                                     val controlBuilder = Control.StatefulBuilder(id, pi)
                                         .setTitle(it.title)
+                                        .setSubtitle(device.name)
                                         .setZone(device.name)
                                         .setStructure(resources.getString(R.string.app_name))
                                         .setDeviceType(Global.getDeviceType(device.iconName))
