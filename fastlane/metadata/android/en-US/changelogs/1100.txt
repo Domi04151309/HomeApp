@@ -1,0 +1,1 @@
+This version includes a new editor for Hue scenes and supports tinted app icons on the new Android version. There are also some new shortcuts (widgets) for devices and Hue controls that help you find what you are looking for faster. Furthermore, there is now a new device info page for Shelly Gen 2 devices, and an issue with Shelly Gen 1 devices has been fixed thanks to @Gared.
