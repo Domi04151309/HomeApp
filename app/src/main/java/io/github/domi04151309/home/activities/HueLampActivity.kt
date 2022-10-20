@@ -44,6 +44,7 @@ class HueLampActivity : AppCompatActivity(), HueRoomInterface {
     override lateinit var device: DeviceItem
     private var lampName: String = ""
     private var updateDataRequest: JsonObjectRequest? = null
+    private var updateHandler: UpdateHandler = UpdateHandler()
     private lateinit var hueAPI: HueAPI
     private lateinit var queue: RequestQueue
     private lateinit var lampIcon: ImageView
@@ -100,6 +101,35 @@ class HueLampActivity : AppCompatActivity(), HueRoomInterface {
             )
         }
 
+        findViewById<Button>(R.id.onBtn).setOnClickListener {
+            hueAPI.switchGroupByID(id, true)
+        }
+
+        findViewById<Button>(R.id.offBtn).setOnClickListener {
+            hueAPI.switchGroupByID(id, false)
+        }
+
+        briBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
+            override fun onStartTrackingTouch(slider: Slider) {
+                canReceiveRequest = false
+            }
+            override fun onStopTrackingTouch(slider: Slider) {
+                hueAPI.changeBrightnessOfGroup(id, slider.value.toInt())
+                canReceiveRequest = true
+            }
+        })
+
+        viewPager.setCurrentItem(1, false)
+
+        val tabIcons = arrayOf(
+            ResourcesCompat.getDrawable(resources, R.drawable.ic_color_palette, theme),
+            ResourcesCompat.getDrawable(resources, R.drawable.ic_scene_white, theme),
+            ResourcesCompat.getDrawable(resources, R.drawable.ic_device_lamp, theme)
+        )
+        TabLayoutMediator(tabBar, viewPager) { tab, position ->
+            tab.icon = tabIcons[position]
+        }.attach()
+
         updateDataRequest = JsonObjectRequest(Request.Method.GET, "$addressPrefix/groups/$id", null,
             { response ->
                 lights = response.getJSONArray("lights")
@@ -131,42 +161,12 @@ class HueLampActivity : AppCompatActivity(), HueRoomInterface {
 
                 lampData.state = light
             },
-            { error ->
-                finish()
-                Toast.makeText(this, volleyError(this, error), Toast.LENGTH_LONG).show()
-            }
-        )
-
-        findViewById<Button>(R.id.onBtn).setOnClickListener {
-            hueAPI.switchGroupByID(id, true)
-        }
-
-        findViewById<Button>(R.id.offBtn).setOnClickListener {
-            hueAPI.switchGroupByID(id, false)
-        }
-
-        briBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
-            override fun onStartTrackingTouch(slider: Slider) {
+            {
                 canReceiveRequest = false
+                updateHandler.stop()
+                finish()
             }
-            override fun onStopTrackingTouch(slider: Slider) {
-                hueAPI.changeBrightnessOfGroup(id, slider.value.toInt())
-                canReceiveRequest = true
-            }
-        })
-
-        viewPager.setCurrentItem(1, false)
-
-        val tabIcons = arrayOf(
-            ResourcesCompat.getDrawable(resources, R.drawable.ic_color_palette, theme),
-            ResourcesCompat.getDrawable(resources, R.drawable.ic_scene_white, theme),
-            ResourcesCompat.getDrawable(resources, R.drawable.ic_device_lamp, theme)
         )
-        TabLayoutMediator(tabBar, viewPager) { tab, position ->
-            tab.icon = tabIcons[position]
-        }.attach()
-
-        val updateHandler = UpdateHandler()
         updateHandler.setUpdateFunction {
             if (canReceiveRequest && hueAPI.readyForRequest) {
                 queue.add(updateDataRequest)
@@ -182,6 +182,11 @@ class HueLampActivity : AppCompatActivity(), HueRoomInterface {
     override fun onStop() {
         super.onStop()
         canReceiveRequest = false
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        updateHandler.stop()
     }
 
     override fun onColorChanged(color: Int) {
