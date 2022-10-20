@@ -117,6 +117,8 @@
     <string name="pref_add_dialog_message">Do you want to add &#8220;%1$s&#8221; to your devices?</string>
     <string name="pref_edit_text">Advanced editing</string>
     <string name="pref_edit_text_summary">Edit the JSON string by yourself</string>
+    <string name="pref_controls_auth">Require device unlock for controls</string>
+    <string name="pref_controls_auth_summary">Require the device to be unlocked for power menu controls</string>
     <string name="pref_advanced">Advanced Settings</string>
     <string name="pref_reset">Delete all devices</string>
     <string name="pref_reset_summary">This deletes all your devices</string>

@@ -10,6 +10,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import android.net.Uri
+import android.os.Build
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.helpers.P
@@ -23,33 +24,35 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
         supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.settings, GeneralPreferenceFragment())
-                .commit()
+            .beginTransaction()
+            .replace(R.id.settings, GeneralPreferenceFragment())
+            .commit()
     }
 
     class GeneralPreferenceFragment : PreferenceFragmentCompat() {
         private val prefsChangedListener =
-                SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-                    if (key == P.PREF_THEME) requireActivity().recreate()
-                }
+            SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+                if (key == P.PREF_THEME) requireActivity().recreate()
+            }
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(
-                    prefsChangedListener
+                prefsChangedListener
             )
         }
 
         override fun onDestroy() {
             super.onDestroy()
             preferenceManager.sharedPreferences?.unregisterOnSharedPreferenceChangeListener(
-                    prefsChangedListener
+                prefsChangedListener
             )
         }
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             addPreferencesFromResource(R.xml.pref_general)
+            findPreference<Preference>(P.PREF_CONTROLS_AUTH)?.isVisible =
+                Build.VERSION.SDK_INT >= 33
             findPreference<Preference>("devices")?.setOnPreferenceClickListener {
                 startActivity(Intent(context, DevicesActivity::class.java))
                 true
@@ -63,7 +66,8 @@ class SettingsActivity : AppCompatActivity() {
                     .setTitle(R.string.pref_reset)
                     .setMessage(R.string.pref_reset_question)
                     .setPositiveButton(R.string.str_delete) { _, _ ->
-                        PreferenceManager.getDefaultSharedPreferences(requireContext()).edit().putString("devices_json", Global.DEFAULT_JSON).apply()
+                        PreferenceManager.getDefaultSharedPreferences(requireContext()).edit()
+                            .putString("devices_json", Global.DEFAULT_JSON).apply()
                         Toast.makeText(context, R.string.pref_reset_toast, Toast.LENGTH_LONG).show()
                         Devices.reloadFromPreferences()
                     }
@@ -77,11 +81,19 @@ class SettingsActivity : AppCompatActivity() {
             }
             findPreference<Preference>("wiki")?.setOnPreferenceClickListener {
                 val uri = "https://github.com/Domi04151309/HomeApp/wiki"
-                startActivity(Intent(context, WebActivity::class.java).putExtra("URI", uri).putExtra("title", resources.getString(R.string.pref_info_wiki)))
+                startActivity(
+                    Intent(context, WebActivity::class.java).putExtra("URI", uri)
+                        .putExtra("title", resources.getString(R.string.pref_info_wiki))
+                )
                 true
             }
             findPreference<Preference>("header")?.setOnPreferenceClickListener {
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://unsplash.com/photos/mx4mSkK9zeo")))
+                startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("https://unsplash.com/photos/mx4mSkK9zeo")
+                    )
+                )
                 true
             }
         }

@@ -114,6 +114,8 @@
     <string name="pref_add_dialog_message">Wollen Sie &#8220;%1$s&#8221; zu Ihren Geräten hinzufügen?</string>
     <string name="pref_edit_text">Erweitertes Bearbeiten</string>
     <string name="pref_edit_text_summary">Bearbeiten Sie die JSON-Zeichenfolge selbst</string>
+    <string name="pref_controls_auth">Entsperren des Geräts für Steuerelemente erfordern</string>
+    <string name="pref_controls_auth_summary">Erfordern, dass das Gerät für die Steuerung über das Power-Menü entsperrt wird</string>
     <string name="pref_advanced">Erweiterte Einstellungen</string>
     <string name="pref_reset">Alle Geräte löschen</string>
     <string name="pref_reset_summary">Löscht alle Geräte</string>

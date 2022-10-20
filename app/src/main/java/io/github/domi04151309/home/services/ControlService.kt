@@ -15,6 +15,7 @@ import android.service.controls.templates.StatelessTemplate
 import android.service.controls.templates.ToggleTemplate
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.preference.PreferenceManager
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.activities.MainActivity
 import io.github.domi04151309.home.api.UnifiedAPI
@@ -22,6 +23,7 @@ import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.data.UnifiedRequestCallback
 import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.helpers.Global
+import io.github.domi04151309.home.helpers.P
 import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
 import java.util.concurrent.Flow
 import java.util.function.Consumer
@@ -127,6 +129,15 @@ class ControlService : ControlsProviderService() {
                                         .setStructure(resources.getString(R.string.app_name))
                                         .setDeviceType(Global.getDeviceType(device.iconName))
                                         .setStatus(Control.STATUS_OK)
+                                    if (Build.VERSION.SDK_INT >= 33) {
+                                        controlBuilder.setAuthRequired(
+                                            PreferenceManager.getDefaultSharedPreferences(this@ControlService)
+                                                .getBoolean(
+                                                    P.PREF_CONTROLS_AUTH,
+                                                    P.PREF_CONTROLS_AUTH_DEFAULT
+                                                )
+                                        )
+                                    }
                                     if (it.state != null) {
                                         controlBuilder.setControlTemplate(
                                             ToggleTemplate(

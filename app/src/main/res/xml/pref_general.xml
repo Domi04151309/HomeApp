@@ -20,6 +20,13 @@
             app:summary="@string/pref_columns_summary"
             app:title="@string/pref_columns"
             app:iconSpaceReserved="false" />
+
+        <SwitchPreference
+            app:defaultValue="false"
+            app:key="controls_auth"
+            app:summary="@string/pref_controls_auth_summary"
+            app:title="@string/pref_controls_auth"
+            app:iconSpaceReserved="false" />
     </PreferenceCategory>
     <PreferenceCategory
         app:title="@string/pref_devices"
