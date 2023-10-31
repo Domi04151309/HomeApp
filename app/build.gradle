@@ -4,9 +4,9 @@ apply plugin: 'kotlin-android'
 def readAndUnderstoodLicense = false
 
 android {
-    compileSdkVersion 33
     defaultConfig {
         applicationId "io.github.domi04151309.home"
+        compileSdk 33
         minSdkVersion 23
         targetSdkVersion 33
         versionCode 1100
@@ -50,14 +50,14 @@ preBuild.doFirst {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.4.0'
-    implementation 'androidx.preference:preference-ktx:1.2.0'
-    implementation 'androidx.annotation:annotation:1.5.0'
+    implementation 'androidx.preference:preference-ktx:1.2.1'
+    implementation 'androidx.annotation:annotation:1.7.0'
     implementation 'com.android.volley:volley:1.2.1'
     implementation 'androidx.security:security-crypto-ktx:1.1.0-alpha03'
     implementation 'com.github.skydoves:colorpickerview:2.2.3'
 
     testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.robolectric:robolectric:4.7'
+    testImplementation 'org.robolectric:robolectric:4.9.2'
 }
