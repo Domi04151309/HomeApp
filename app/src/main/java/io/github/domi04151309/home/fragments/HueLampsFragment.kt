@@ -1,6 +1,5 @@
 package io.github.domi04151309.home.fragments
 
-import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CompoundButton
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -31,7 +29,6 @@ class HueLampsFragment :
     Fragment(R.layout.fragment_hue_lamps),
     RecyclerViewHelperInterface,
     HueAdvancedLampInterface {
-    private lateinit var c: Context
     private lateinit var lampData: HueRoomInterface
     private lateinit var hueAPI: HueAPI
     private lateinit var queue: RequestQueue
@@ -48,9 +45,8 @@ class HueLampsFragment :
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        c = context ?: throw IllegalStateException()
         lampData = context as HueRoomInterface
-        hueAPI = HueAPI(c, lampData.device.id)
+        hueAPI = HueAPI(requireContext(), lampData.device.id)
         queue = Volley.newRequestQueue(context)
 
         device = lampData.device
@@ -68,7 +64,7 @@ class HueLampsFragment :
             }
 
         val adapter = HueLampListAdapter(hueLampStateListener, this@HueLampsFragment)
-        recyclerView.layoutManager = LinearLayoutManager(c)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
 
         requestCallBack =
@@ -134,19 +130,27 @@ class HueLampsFragment :
     ) {
         id = view.findViewById<TextView>(R.id.hidden).text.toString()
         HueColorSheet(this).show(
-            (c as AppCompatActivity).supportFragmentManager,
+            requireActivity().supportFragmentManager,
             HueColorSheet::class.simpleName,
         )
     }
 
-    override fun onColorChanged(color: Int) {}
+    override fun onColorChanged(color: Int) {
+        // Do nothing.
+    }
 
-    override fun onBrightnessChanged(brightness: Int) {}
+    override fun onBrightnessChanged(brightness: Int) {
+        // Do nothing.
+    }
 
     override fun onHueSatChanged(
         hue: Int,
         sat: Int,
-    ) {}
+    ) {
+        // Do nothing.
+    }
 
-    override fun onCtChanged(ct: Int) {}
+    override fun onCtChanged(ct: Int) {
+        // Do nothing.
+    }
 }

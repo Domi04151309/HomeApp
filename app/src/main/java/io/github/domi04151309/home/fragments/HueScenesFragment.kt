@@ -1,6 +1,5 @@
 package io.github.domi04151309.home.fragments
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -42,7 +41,6 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes), RecyclerViewHe
     private var scenesRequest: JsonObjectRequest? = null
     private var selectedScene: CharSequence = ""
     private var selectedSceneName: CharSequence = ""
-    private lateinit var c: Context
     private lateinit var lampData: HueLampInterface
     private lateinit var hueAPI: HueAPI
     private lateinit var queue: RequestQueue
@@ -52,14 +50,13 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes), RecyclerViewHe
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        c = context ?: throw IllegalStateException()
         lampData = context as HueLampInterface
-        hueAPI = HueAPI(c, lampData.device.id)
+        hueAPI = HueAPI(requireContext(), lampData.device.id)
         queue = Volley.newRequestQueue(context)
 
         val recyclerView = super.onCreateView(inflater, container, savedInstanceState) as RecyclerView
         val adapter = HueSceneGridAdapter(this, this)
-        recyclerView.layoutManager = GridLayoutManager(c, 3)
+        recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
         recyclerView.adapter = adapter
 
         scenesRequest =
@@ -119,7 +116,12 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes), RecyclerViewHe
                                                 SceneGridItem(
                                                     name = scenes[i].second,
                                                     hidden = scenes[i].first,
-                                                    color = if (currentSceneValues.size > 0) currentSceneValues[0] else Color.WHITE,
+                                                    color =
+                                                        if (currentSceneValues.size > 0) {
+                                                            currentSceneValues[0]
+                                                        } else {
+                                                            Color.WHITE
+                                                        },
                                                 )
                                             completedRequests++
                                             if (completedRequests == scenes.size) {
@@ -155,7 +157,11 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes), RecyclerViewHe
                     }
                 },
                 { error ->
-                    Toast.makeText(c, Global.volleyError(c, error), Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        requireContext(),
+                        Global.volleyError(requireContext(), error),
+                        Toast.LENGTH_LONG,
+                    ).show()
                 },
             )
         queue.add(scenesRequest)
@@ -169,7 +175,7 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes), RecyclerViewHe
         val hiddenText = view.findViewById<TextView>(R.id.hidden).text.toString()
         if (hiddenText == "add") {
             startActivity(
-                Intent(c, HueSceneActivity::class.java).putExtra(
+                Intent(requireContext(), HueSceneActivity::class.java).putExtra(
                     "deviceId",
                     lampData.device.id,
                 ).putExtra("room", lampData.id),
@@ -187,14 +193,14 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes), RecyclerViewHe
         super.onCreateContextMenu(menu, v, menuInfo)
         selectedScene = v.findViewById<TextView>(R.id.hidden).text
         selectedSceneName = v.findViewById<TextView>(R.id.title).text
-        if (selectedScene != "add") MenuInflater(c).inflate(R.menu.activity_hue_lamp_context, menu)
+        if (selectedScene != "add") MenuInflater(requireContext()).inflate(R.menu.activity_hue_lamp_context, menu)
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
         return when (item.title) {
             resources.getString(R.string.str_edit) -> {
                 startActivity(
-                    Intent(c, HueSceneActivity::class.java)
+                    Intent(requireContext(), HueSceneActivity::class.java)
                         .putExtra("deviceId", lampData.device.id)
                         .putExtra("room", lampData.id)
                         .putExtra("scene", selectedScene),
@@ -202,7 +208,7 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes), RecyclerViewHe
                 true
             }
             resources.getString(R.string.str_delete) -> {
-                MaterialAlertDialogBuilder(c)
+                MaterialAlertDialogBuilder(requireContext())
                     .setTitle(R.string.str_delete)
                     .setMessage(R.string.hue_delete_scene)
                     .setPositiveButton(R.string.str_delete) { _, _ ->

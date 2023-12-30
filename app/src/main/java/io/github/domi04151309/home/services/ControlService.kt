@@ -90,6 +90,7 @@ class ControlService : ControlsProviderService() {
                                 result: String,
                                 shouldRefresh: Boolean,
                             ) {
+                                // Do nothing.
                             }
                         },
                     )
@@ -189,6 +190,7 @@ class ControlService : ControlsProviderService() {
                             result: String,
                             shouldRefresh: Boolean,
                         ) {
+                            // Do nothing.
                         }
                     },
                 )
@@ -202,9 +204,13 @@ class ControlService : ControlsProviderService() {
             updateSubscriber = subscriber
             subscriber.onSubscribe(
                 object : Flow.Subscription {
-                    override fun request(n: Long) {}
+                    override fun request(n: Long) {
+                        // Do nothing.
+                    }
 
-                    override fun cancel() {}
+                    override fun cancel() {
+                        // Do nothing.
+                    }
                 },
             )
             controlIds.forEach { id ->
@@ -233,6 +239,7 @@ class ControlService : ControlsProviderService() {
                             holder: UnifiedRequestCallback,
                             recyclerViewInterface: HomeRecyclerViewHelperInterface?,
                         ) {
+                            // Do nothing.
                         }
 
                         override fun onExecuted(

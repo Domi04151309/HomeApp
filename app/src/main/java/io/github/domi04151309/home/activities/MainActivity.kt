@@ -168,7 +168,9 @@ class MainActivity : AppCompatActivity() {
                 view: View,
                 data: ListViewItem,
                 state: Boolean,
-            ) {}
+            ) {
+                // Do nothing.
+            }
 
             override fun onItemClicked(
                 view: View,
@@ -233,6 +235,7 @@ class MainActivity : AppCompatActivity() {
                                 holder: UnifiedRequestCallback,
                                 recyclerViewInterface: HomeRecyclerViewHelperInterface?,
                             ) {
+                                // Do nothing.
                             }
 
                             override fun onExecuted(
@@ -258,6 +261,7 @@ class MainActivity : AppCompatActivity() {
                                                 result: String,
                                                 shouldRefresh: Boolean,
                                             ) {
+                                                // Do nothing.
                                             }
                                         },
                                     )
@@ -533,6 +537,7 @@ class MainActivity : AppCompatActivity() {
                                         result: String,
                                         shouldRefresh: Boolean,
                                     ) {
+                                        // Do nothing.
                                     }
                                 },
                             )

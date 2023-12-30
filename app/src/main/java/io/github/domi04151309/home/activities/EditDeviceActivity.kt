@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
@@ -93,14 +94,18 @@ class EditDeviceActivity : AppCompatActivity() {
 
         iconSpinner.addTextChangedListener(
             object : TextWatcher {
-                override fun afterTextChanged(s: Editable) {}
+                override fun afterTextChanged(s: Editable) {
+                    // Do nothing.
+                }
 
                 override fun beforeTextChanged(
                     s: CharSequence,
                     start: Int,
                     count: Int,
                     after: Int,
-                ) {}
+                ) {
+                    // Do nothing.
+                }
 
                 override fun onTextChanged(
                     s: CharSequence,
@@ -114,14 +119,18 @@ class EditDeviceActivity : AppCompatActivity() {
         )
         modeSpinner.addTextChangedListener(
             object : TextWatcher {
-                override fun afterTextChanged(s: Editable) {}
+                override fun afterTextChanged(s: Editable) {
+                    // Do nothing.
+                }
 
                 override fun beforeTextChanged(
                     s: CharSequence,
                     start: Int,
                     count: Int,
                     after: Int,
-                ) {}
+                ) {
+                    // Do nothing.
+                }
 
                 override fun onTextChanged(
                     s: CharSequence,
@@ -130,7 +139,12 @@ class EditDeviceActivity : AppCompatActivity() {
                     count: Int,
                 ) {
                     val string = s.toString()
-                    val specialVisibility = if (string == "Fritz! Auto-Login" || string == "Shelly Gen 1") View.VISIBLE else View.GONE
+                    val specialVisibility =
+                        if (string == "Fritz! Auto-Login" || string == "Shelly Gen 1") {
+                            View.VISIBLE
+                        } else {
+                            View.GONE
+                        }
                     val usernameVisibility = if (string == "Shelly Gen 1") View.VISIBLE else View.GONE
                     specialDivider.visibility = specialVisibility
                     specialSection.visibility = specialVisibility
@@ -162,14 +176,18 @@ class EditDeviceActivity : AppCompatActivity() {
         )
         nameBox.editText?.addTextChangedListener(
             object : TextWatcher {
-                override fun afterTextChanged(s: Editable) {}
+                override fun afterTextChanged(s: Editable) {
+                    // Do nothing.
+                }
 
                 override fun beforeTextChanged(
                     s: CharSequence,
                     start: Int,
                     count: Int,
                     after: Int,
-                ) {}
+                ) {
+                    // Do nothing.
+                }
 
                 override fun onTextChanged(
                     s: CharSequence,
@@ -227,6 +245,7 @@ class EditDeviceActivity : AppCompatActivity() {
                                     ),
                                 )
                             } catch (e: ActivityNotFoundException) {
+                                Log.w(EditDeviceActivity::class.simpleName, e)
                                 startActivity(
                                     Intent(
                                         Intent.ACTION_VIEW,
@@ -299,7 +318,13 @@ class EditDeviceActivity : AppCompatActivity() {
         }
 
         iconSpinner.setAdapter(IconSpinnerAdapter(resources.getStringArray(R.array.pref_icons)))
-        modeSpinner.setAdapter(ArrayAdapter(this, R.layout.dropdown_item, resources.getStringArray(R.array.pref_add_mode_array)))
+        modeSpinner.setAdapter(
+            ArrayAdapter(
+                this,
+                R.layout.dropdown_item,
+                resources.getStringArray(R.array.pref_add_mode_array),
+            ),
+        )
 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
             val name = nameBox.editText?.text.toString()

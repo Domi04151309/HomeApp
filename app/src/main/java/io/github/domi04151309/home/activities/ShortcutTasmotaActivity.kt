@@ -61,7 +61,7 @@ class ShortcutTasmotaActivity : AppCompatActivity(), RecyclerViewHelperInterface
     ) {
         if (deviceId == null) {
             deviceId = view.findViewById<TextView>(R.id.hidden).text.toString()
-            Tasmota(this, deviceId ?: throw IllegalStateException(), null).loadList(
+            Tasmota(this, deviceId ?: error("Impossible state."), null).loadList(
                 object : UnifiedAPI.CallbackInterface {
                     override fun onItemsLoaded(
                         holder: UnifiedRequestCallback,
@@ -87,11 +87,13 @@ class ShortcutTasmotaActivity : AppCompatActivity(), RecyclerViewHelperInterface
                     override fun onExecuted(
                         result: String,
                         shouldRefresh: Boolean,
-                    ) {}
+                    ) {
+                        // Do nothing.
+                    }
                 },
             )
         } else {
-            val device = Devices(this).getDeviceById(deviceId ?: throw IllegalStateException())
+            val device = Devices(this).getDeviceById(deviceId ?: error("Impossible state."))
             val lampName = view.findViewById<TextView>(R.id.title).text
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val shortcutManager = this.getSystemService(ShortcutManager::class.java)

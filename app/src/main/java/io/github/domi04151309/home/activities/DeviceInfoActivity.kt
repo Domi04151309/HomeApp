@@ -18,6 +18,7 @@ import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.helpers.Theme
 import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
 import org.json.JSONObject
+import java.util.Locale
 import java.util.concurrent.TimeUnit
 
 class DeviceInfoActivity : AppCompatActivity(), RecyclerViewHelperInterface {
@@ -55,7 +56,9 @@ class DeviceInfoActivity : AppCompatActivity(), RecyclerViewHelperInterface {
     override fun onItemClicked(
         view: View,
         position: Int,
-    ) {}
+    ) {
+        // Do nothing.
+    }
 
     private fun boolToString(bool: Boolean): String {
         return resources.getString(if (bool) R.string.str_on else R.string.str_off)
@@ -258,6 +261,7 @@ class DeviceInfoActivity : AppCompatActivity(), RecyclerViewHelperInterface {
                                         ?: JSONObject()
                                 ).optLong("uptime").run {
                                     String.format(
+                                        Locale.getDefault(),
                                         "%02d:%02d:%02d",
                                         TimeUnit.SECONDS.toHours(this),
                                         TimeUnit.SECONDS.toMinutes(this) -

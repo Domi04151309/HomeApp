@@ -46,7 +46,13 @@ class UPnPDiscovery : AsyncTask<Activity, UPnPDiscovery.OnDiscoveryListener, Voi
         mPort = 1900
     }
 
-    private constructor(activity: Activity, listener: OnDiscoveryListener, customQuery: String, address: String, port: Int) {
+    private constructor(
+        activity: Activity,
+        listener: OnDiscoveryListener,
+        customQuery: String,
+        address: String,
+        port: Int,
+    ) {
         mContext = activity.applicationContext
         mListener = listener
         mThreadsCount = 0
@@ -88,7 +94,6 @@ class UPnPDiscovery : AsyncTask<Activity, UPnPDiscovery.OnDiscoveryListener, Voi
                 curTime = System.currentTimeMillis()
             }
         } catch (e: IOException) {
-            e.printStackTrace()
             mListener.onError(e)
         } finally {
             socket?.close()

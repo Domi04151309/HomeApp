@@ -82,7 +82,9 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
             UPnPDiscovery.discoveryDevices(
                 this,
                 object : UPnPDiscovery.OnDiscoveryListener {
-                    override fun onStart() {}
+                    override fun onStart() {
+                        // Do nothing.
+                    }
 
                     override fun onFoundNewDevice(device: UPnPDevice) {
                         if (device.server.contains("IpBridge") && !addresses.contains(device.hostAddress)) {
@@ -123,7 +125,9 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
                         }
                     }
 
-                    override fun onFinish(devices: HashSet<UPnPDevice>) {}
+                    override fun onFinish(devices: HashSet<UPnPDevice>) {
+                        // Do nothing.
+                    }
 
                     override fun onError(e: Exception) {
                         Log.e("UPnPDiscovery", "Error: " + e.localizedMessage)
@@ -156,7 +160,9 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
                                     ListViewItem(
                                         title = serviceInfo.serviceName,
                                         summary = serviceInfo.host.hostAddress ?: "",
-                                        hidden = "Shelly Gen ${serviceInfo.attributes["gen"]?.decodeToString() ?: "1"}#Lamp",
+                                        hidden = "Shelly Gen ${
+                                            serviceInfo.attributes["gen"]?.decodeToString() ?: "1"
+                                        }#Lamp",
                                         icon = R.drawable.ic_device_lamp,
                                         state = devices.addressExists(serviceInfo.host.hostAddress ?: ""),
                                     ),
@@ -220,9 +226,13 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
                 }
             }
 
-            override fun onDiscoveryStarted(p0: String?) { }
+            override fun onDiscoveryStarted(p0: String?) {
+                // Do nothing.
+            }
 
-            override fun onDiscoveryStopped(p0: String?) { }
+            override fun onDiscoveryStopped(p0: String?) {
+                // Do nothing.
+            }
         }
 
         discoveryListenerHttp = DnsDiscoveryListener()

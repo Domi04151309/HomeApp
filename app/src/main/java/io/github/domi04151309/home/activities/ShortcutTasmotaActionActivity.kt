@@ -14,15 +14,16 @@ class ShortcutTasmotaActionActivity : AppCompatActivity() {
         if (intent.hasExtra("command") && intent.hasExtra("device")) {
             Tasmota(
                 this,
-                intent.getStringExtra("device") ?: throw IllegalStateException(),
+                intent.getStringExtra("device") ?: error("Impossible state."),
                 null,
             ).execute(
-                intent.getStringExtra("command") ?: throw IllegalStateException(),
+                intent.getStringExtra("command") ?: error("Impossible state."),
                 object : UnifiedAPI.CallbackInterface {
                     override fun onItemsLoaded(
                         holder: UnifiedRequestCallback,
                         recyclerViewInterface: HomeRecyclerViewHelperInterface?,
                     ) {
+                        // Do nothing.
                     }
 
                     override fun onExecuted(

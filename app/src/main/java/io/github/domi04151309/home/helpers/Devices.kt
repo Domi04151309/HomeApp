@@ -2,6 +2,7 @@ package io.github.domi04151309.home.helpers
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.preference.PreferenceManager
 import io.github.domi04151309.home.data.DeviceItem
 import org.json.JSONArray
@@ -30,6 +31,7 @@ class Devices(private val context: Context) {
                             ?: Global.DEFAULT_JSON,
                     )
                 } catch (e: JSONException) {
+                    Log.w(Devices::class.simpleName, e)
                     JSONObject(Global.DEFAULT_JSON)
                 }
         }

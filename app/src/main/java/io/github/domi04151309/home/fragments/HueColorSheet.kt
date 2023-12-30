@@ -27,8 +27,7 @@ class HueColorSheet(private val lampInterface: HueAdvancedLampInterface) : Botto
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        val c = context ?: throw IllegalStateException()
-        val hueAPI = HueAPI(c, lampInterface.device.id)
+        val hueAPI = HueAPI(requireContext(), lampInterface.device.id)
 
         val view = inflater.inflate(R.layout.fragment_hue_bri_color, container, false)
         val colorPickerView = view.findViewById<ColorPickerView>(R.id.colorPickerView)
@@ -46,7 +45,7 @@ class HueColorSheet(private val lampInterface: HueAdvancedLampInterface) : Botto
         val briViews = arrayOf<View>(briText, briBar)
 
         // Load colors
-        Volley.newRequestQueue(c)
+        Volley.newRequestQueue(requireContext())
             .add(
                 JsonObjectRequest(
                     Request.Method.GET,
@@ -97,7 +96,11 @@ class HueColorSheet(private val lampInterface: HueAdvancedLampInterface) : Botto
                         }
                     },
                     { error ->
-                        Toast.makeText(c, Global.volleyError(c, error), Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            requireContext(),
+                            Global.volleyError(requireContext(), error),
+                            Toast.LENGTH_LONG,
+                        ).show()
                     },
                 ),
             )

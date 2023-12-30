@@ -43,7 +43,11 @@ class TasmotaHelper(private val c: Context, private val tasmota: UnifiedAPI) {
                         JSONObject()
                             .put(
                                 "title",
-                                if (newTitle == "") c.resources.getString(R.string.tasmota_add_command_dialog_title_empty) else newTitle,
+                                if (newTitle == "") {
+                                    c.resources.getString(R.string.tasmota_add_command_dialog_title_empty)
+                                } else {
+                                    newTitle
+                                },
                             )
                             .put(
                                 "command",

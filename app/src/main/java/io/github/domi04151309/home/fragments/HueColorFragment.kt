@@ -1,7 +1,6 @@
 package io.github.domi04151309.home.fragments
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
@@ -27,7 +26,6 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
         private const val UPDATE_DELAY = 5000L
     }
 
-    private lateinit var c: Context
     private lateinit var lampInterface: HueRoomInterface
     private lateinit var hueAPI: HueAPI
 
@@ -37,13 +35,12 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        c = context ?: throw IllegalStateException()
         lampInterface = context as HueRoomInterface
-        hueAPI = HueAPI(c, lampInterface.device.id)
+        hueAPI = HueAPI(requireContext(), lampInterface.device.id)
 
         val view =
             super.onCreateView(inflater, container, savedInstanceState)
-                ?: throw IllegalStateException()
+                ?: error("View does not exist yet.")
         val colorPickerView = view.findViewById<ColorPickerView>(R.id.colorPickerView)
         val ctText = view.findViewById<TextView>(R.id.ctTxt)
         val ctBar = view.findViewById<Slider>(R.id.ctBar)

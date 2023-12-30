@@ -61,7 +61,7 @@ class ShortcutHueRoomActivity : AppCompatActivity(), RecyclerViewHelperInterface
     ) {
         if (deviceId == null) {
             deviceId = view.findViewById<TextView>(R.id.hidden).text.toString()
-            HueAPI(this, deviceId ?: throw IllegalStateException()).loadList(
+            HueAPI(this, deviceId ?: error("Impossible state.")).loadList(
                 object : UnifiedAPI.CallbackInterface {
                     override fun onItemsLoaded(
                         holder: UnifiedRequestCallback,
@@ -87,11 +87,13 @@ class ShortcutHueRoomActivity : AppCompatActivity(), RecyclerViewHelperInterface
                     override fun onExecuted(
                         result: String,
                         shouldRefresh: Boolean,
-                    ) {}
+                    ) {
+                        // Do nothing.
+                    }
                 },
             )
         } else {
-            val device = Devices(this).getDeviceById(deviceId ?: throw IllegalStateException())
+            val device = Devices(this).getDeviceById(deviceId ?: error("Impossible state."))
             val lampName = view.findViewById<TextView>(R.id.title).text
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val shortcutManager = this.getSystemService(ShortcutManager::class.java)

@@ -3,7 +3,6 @@ package io.github.domi04151309.home.activities
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.DownloadManager
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -37,7 +36,6 @@ import io.github.domi04151309.home.helpers.Theme
 class WebActivity : AppCompatActivity() {
     internal val nullParent: ViewGroup? = null
     internal var errorOccurred = false
-    internal var c: Context = this
     internal var valueCallback: ValueCallback<Array<Uri>>? = null
     private lateinit var webView: WebView
 
@@ -85,8 +83,10 @@ class WebActivity : AppCompatActivity() {
                     host: String,
                     realm: String,
                 ) {
-                    val dialogView = LayoutInflater.from(c).inflate(R.layout.dialog_web_authentication, nullParent, false)
-                    MaterialAlertDialogBuilder(c)
+                    val dialogView =
+                        LayoutInflater.from(this@WebActivity)
+                            .inflate(R.layout.dialog_web_authentication, nullParent, false)
+                    MaterialAlertDialogBuilder(this@WebActivity)
                         .setTitle(R.string.webView_authentication)
                         .setView(dialogView)
                         .setPositiveButton(android.R.string.ok) { _, _ ->

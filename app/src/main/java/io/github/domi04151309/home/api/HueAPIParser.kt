@@ -4,7 +4,6 @@ import android.content.res.Resources
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.data.ListViewItem
 import org.json.JSONObject
-import java.lang.IllegalStateException
 import java.util.TreeMap
 import kotlin.collections.ArrayList
 
@@ -23,13 +22,13 @@ class HueAPIParser(resources: Resources) : UnifiedAPI.Parser(resources) {
         }
         for (i in rooms.keys) listItems.add(
             parseGroupObj(
-                rooms[i] ?: throw IllegalStateException(),
+                rooms[i] ?: error("Room $i does not exist."),
                 false,
             ),
         )
         for (i in zones.keys) listItems.add(
             parseGroupObj(
-                zones[i] ?: throw IllegalStateException(),
+                zones[i] ?: error("Zone $i does not exist."),
                 true,
             ),
         )

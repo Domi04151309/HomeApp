@@ -2,6 +2,7 @@ package com._8rine.upnpdiscovery
 
 import android.util.Log
 import org.xmlpull.v1.XmlPullParser
+import org.xmlpull.v1.XmlPullParserException
 import org.xmlpull.v1.XmlPullParserFactory
 import java.io.ByteArrayInputStream
 import java.lang.Exception
@@ -35,7 +36,7 @@ class UPnPDevice internal constructor(val hostAddress: String, header: String) {
         descriptionXML = xml
         try {
             xmlParse(xml)
-        } catch (e: Exception) {
+        } catch (e: XmlPullParserException) {
             Log.e(UPnPDiscovery.TAG, e.toString())
         }
     }

@@ -112,7 +112,10 @@ internal object Global {
             return true
         }
 
-        val connectivityManager = context.getSystemService(AppCompatActivity.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager =
+            context.getSystemService(
+                AppCompatActivity.CONNECTIVITY_SERVICE,
+            ) as ConnectivityManager
         val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
         return if (capabilities != null) {
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||

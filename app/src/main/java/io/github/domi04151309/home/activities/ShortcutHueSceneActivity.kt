@@ -93,7 +93,9 @@ class ShortcutHueSceneActivity : AppCompatActivity(), RecyclerViewHelperInterfac
                     override fun onExecuted(
                         result: String,
                         shouldRefresh: Boolean,
-                    ) {}
+                    ) {
+                        // Do nothing.
+                    }
                 },
             )
         } else if (group == null) {
@@ -164,8 +166,8 @@ class ShortcutHueSceneActivity : AppCompatActivity(), RecyclerViewHelperInterfac
     }
 
     private val device: DeviceItem
-        get() = Devices(this).getDeviceById(deviceId ?: throw IllegalStateException())
+        get() = Devices(this).getDeviceById(deviceId ?: error("Device ID is null."))
 
     private val api: HueAPI
-        get() = HueAPI(this, deviceId ?: throw IllegalStateException())
+        get() = HueAPI(this, deviceId ?: error("Device ID is null."))
 }

@@ -66,6 +66,7 @@ class DevicesActivity : AppCompatActivity(), RecyclerViewHelperInterfaceAdvanced
                 viewHolder: RecyclerView.ViewHolder,
                 direction: Int,
             ) {
+                // Do nothing.
             }
 
             override fun clearView(

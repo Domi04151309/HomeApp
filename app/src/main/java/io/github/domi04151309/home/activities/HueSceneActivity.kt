@@ -178,14 +178,18 @@ class HueSceneActivity : AppCompatActivity(), SceneRecyclerViewHelperInterface, 
 
         nameBox.editText?.addTextChangedListener(
             object : TextWatcher {
-                override fun afterTextChanged(s: Editable) {}
+                override fun afterTextChanged(s: Editable) {
+                    // Do nothing.
+                }
 
                 override fun beforeTextChanged(
                     s: CharSequence,
                     start: Int,
                     count: Int,
                     after: Int,
-                ) {}
+                ) {
+                    // Do nothing.
+                }
 
                 override fun onTextChanged(
                     s: CharSequence,
@@ -205,7 +209,9 @@ class HueSceneActivity : AppCompatActivity(), SceneRecyclerViewHelperInterface, 
 
         briBar.addOnSliderTouchListener(
             object : Slider.OnSliderTouchListener {
-                override fun onStartTrackingTouch(slider: Slider) {}
+                override fun onStartTrackingTouch(slider: Slider) {
+                    // Do nothing.
+                }
 
                 override fun onStopTrackingTouch(slider: Slider) {
                     hueAPI.changeBrightnessOfGroup(groupId, slider.value.toInt())
@@ -238,7 +244,14 @@ class HueSceneActivity : AppCompatActivity(), SceneRecyclerViewHelperInterface, 
                     CustomJsonArrayRequest(
                         Request.Method.POST,
                         "$addressPrefix/scenes",
-                        JSONObject("{\"name\":\"$name\",\"recycle\":false,\"group\":\"$groupId\",\"type\":\"GroupScene\"}"),
+                        JSONObject(
+                            "{" +
+                                "\"name\":\"$name\"," +
+                                "\"recycle\":false," +
+                                "\"group\":\"$groupId\"," +
+                                "\"type\":\"GroupScene\"" +
+                                "}",
+                        ),
                         ::onSuccess,
                         ::onError,
                     )
