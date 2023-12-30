@@ -8,9 +8,8 @@ import io.github.domi04151309.home.fragments.HueLampsFragment
 import io.github.domi04151309.home.fragments.HueScenesFragment
 
 class HueDetailsTabAdapter(
-        activity: FragmentActivity
+    activity: FragmentActivity,
 ) : FragmentStateAdapter(activity) {
-
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> HueColorFragment()

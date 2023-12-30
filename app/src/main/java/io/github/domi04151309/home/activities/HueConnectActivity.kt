@@ -1,16 +1,16 @@
 package io.github.domi04151309.home.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.Volley
-import io.github.domi04151309.home.*
+import io.github.domi04151309.home.R
 import io.github.domi04151309.home.custom.CustomJsonArrayRequest
 import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.helpers.Global
@@ -19,7 +19,6 @@ import io.github.domi04151309.home.helpers.UpdateHandler
 import org.json.JSONObject
 
 class HueConnectActivity : AppCompatActivity() {
-
     private val updateHandler = UpdateHandler()
     private var success = false
     private lateinit var queue: RequestQueue
@@ -33,7 +32,9 @@ class HueConnectActivity : AppCompatActivity() {
         queue = Volley.newRequestQueue(this)
         val deviceId = intent.getStringExtra("deviceId") ?: ""
         val jsonRequestObject = JSONObject("{\"devicetype\":\"Home App#${android.os.Build.PRODUCT}\"}")
-        requestToRegisterUser = CustomJsonArrayRequest(Request.Method.POST, Devices(this).getDeviceById(deviceId).address + "api", jsonRequestObject,
+        requestToRegisterUser =
+            CustomJsonArrayRequest(
+                Request.Method.POST, Devices(this).getDeviceById(deviceId).address + "api", jsonRequestObject,
                 { response ->
                     val responseObject = response.getJSONObject(0)
                     if (responseObject.has("success") && !success) {
@@ -43,15 +44,15 @@ class HueConnectActivity : AppCompatActivity() {
                         startActivity(
                             Intent(this, MainActivity::class.java)
                                 .putExtra("device", deviceId)
-                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK),
                         )
                     }
                 },
                 { error ->
                     Toast.makeText(this, R.string.err, Toast.LENGTH_LONG).show()
                     Log.e(Global.LOG_TAG, error.toString())
-                }
-        )
+                },
+            )
 
         findViewById<Button>(R.id.cancel_btn).setOnClickListener {
             finish()

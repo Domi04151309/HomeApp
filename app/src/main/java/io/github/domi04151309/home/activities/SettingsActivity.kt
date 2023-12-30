@@ -1,25 +1,23 @@
 package io.github.domi04151309.home.activities
 
-import android.os.Bundle
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
+import android.os.Build
+import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
-import android.net.Uri
-import android.os.Build
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.helpers.Devices
-import io.github.domi04151309.home.helpers.P
 import io.github.domi04151309.home.helpers.Global
+import io.github.domi04151309.home.helpers.P
 import io.github.domi04151309.home.helpers.Theme
 
 class SettingsActivity : AppCompatActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         Theme.set(this)
         super.onCreate(savedInstanceState)
@@ -39,18 +37,21 @@ class SettingsActivity : AppCompatActivity() {
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(
-                prefsChangedListener
+                prefsChangedListener,
             )
         }
 
         override fun onDestroy() {
             super.onDestroy()
             preferenceManager.sharedPreferences?.unregisterOnSharedPreferenceChangeListener(
-                prefsChangedListener
+                prefsChangedListener,
             )
         }
 
-        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        override fun onCreatePreferences(
+            savedInstanceState: Bundle?,
+            rootKey: String?,
+        ) {
             addPreferencesFromResource(R.xml.pref_general)
             findPreference<Preference>(P.PREF_CONTROLS_AUTH)?.isVisible =
                 Build.VERSION.SDK_INT >= 33
@@ -84,7 +85,7 @@ class SettingsActivity : AppCompatActivity() {
                 val uri = "https://github.com/Domi04151309/HomeApp/wiki"
                 startActivity(
                     Intent(context, WebActivity::class.java).putExtra("URI", uri)
-                        .putExtra("title", resources.getString(R.string.pref_info_wiki))
+                        .putExtra("title", resources.getString(R.string.pref_info_wiki)),
                 )
                 true
             }
@@ -92,8 +93,8 @@ class SettingsActivity : AppCompatActivity() {
                 startActivity(
                     Intent(
                         Intent.ACTION_VIEW,
-                        Uri.parse("https://unsplash.com/photos/mx4mSkK9zeo")
-                    )
+                        Uri.parse("https://unsplash.com/photos/mx4mSkK9zeo"),
+                    ),
                 )
                 true
             }

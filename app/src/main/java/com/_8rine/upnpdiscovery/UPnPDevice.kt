@@ -1,9 +1,9 @@
 package com._8rine.upnpdiscovery
 
+import android.util.Log
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserFactory
 import java.io.ByteArrayInputStream
-import android.util.Log
 import java.lang.Exception
 
 class UPnPDevice internal constructor(val hostAddress: String, header: String) {
@@ -42,21 +42,24 @@ class UPnPDevice internal constructor(val hostAddress: String, header: String) {
 
     override fun toString(): String {
         return "FriendlyName: " + friendlyName + LINE_END +
-                "ModelName: " + modelName + LINE_END +
-                "HostAddress: " + hostAddress + LINE_END +
-                "Location: " + location + LINE_END +
-                "DeviceType: " + deviceType + LINE_END +
-                "PresentationURL: " + presentationURL + LINE_END +
-                "SerialNumber: " + serialNumber + LINE_END +
-                "ModelURL: " + modelURL + LINE_END +
-                "ModelNumber: " + modelNumber + LINE_END +
-                "Manufacturer: " + manufacturer + LINE_END +
-                "ManufacturerURL: " + manufacturerURL + LINE_END +
-                "UDN: " + udn + LINE_END +
-                "URLBase: " + urlBase
+            "ModelName: " + modelName + LINE_END +
+            "HostAddress: " + hostAddress + LINE_END +
+            "Location: " + location + LINE_END +
+            "DeviceType: " + deviceType + LINE_END +
+            "PresentationURL: " + presentationURL + LINE_END +
+            "SerialNumber: " + serialNumber + LINE_END +
+            "ModelURL: " + modelURL + LINE_END +
+            "ModelNumber: " + modelNumber + LINE_END +
+            "Manufacturer: " + manufacturer + LINE_END +
+            "ManufacturerURL: " + manufacturerURL + LINE_END +
+            "UDN: " + udn + LINE_END +
+            "URLBase: " + urlBase
     }
 
-    private fun parseHeader(mSearchAnswer: String, whatSearch: String): String {
+    private fun parseHeader(
+        mSearchAnswer: String,
+        whatSearch: String,
+    ): String {
         var result = ""
         var searchLinePos = mSearchAnswer.indexOf(whatSearch)
         if (searchLinePos != -1) {

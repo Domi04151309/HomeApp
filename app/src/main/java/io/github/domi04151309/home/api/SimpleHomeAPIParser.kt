@@ -7,7 +7,6 @@ import io.github.domi04151309.home.helpers.Global
 import org.json.JSONObject
 
 class SimpleHomeAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.Parser(resources, api) {
-
     override fun parseResponse(response: JSONObject): ArrayList<ListViewItem> {
         val listItems: ArrayList<ListViewItem> = ArrayList(response.length())
         val commands = response.optJSONObject("commands") ?: return listItems
@@ -16,13 +15,14 @@ class SimpleHomeAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.P
         for (i in commands.keys()) {
             currentObject = commands.getJSONObject(i)
             currentMode = currentObject.optString("mode", "action")
-            listItems += ListViewItem(
-                title = currentObject.optString("title"),
-                summary = currentObject.optString("summary"),
-                hidden = "$currentMode@$i",
-                icon = Global.getIcon(currentObject.optString("icon"), R.drawable.ic_do),
-                state = if (currentMode == "switch") currentObject.optBoolean("data", false) else null
-            )
+            listItems +=
+                ListViewItem(
+                    title = currentObject.optString("title"),
+                    summary = currentObject.optString("summary"),
+                    hidden = "$currentMode@$i",
+                    icon = Global.getIcon(currentObject.optString("icon"), R.drawable.ic_do),
+                    state = if (currentMode == "switch") currentObject.optBoolean("data", false) else null,
+                )
             if (currentMode == "switch") api?.needsRealTimeData = true
         }
         return listItems
@@ -35,10 +35,11 @@ class SimpleHomeAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.P
         for (i in commands.keys()) {
             currentObject = commands.getJSONObject(i)
             listItems +=
-                if (currentObject.optString("mode", "action") == "switch")
+                if (currentObject.optString("mode", "action") == "switch") {
                     currentObject.optBoolean("data", false)
-                else
+                } else {
                     null
+                }
         }
         return listItems
     }

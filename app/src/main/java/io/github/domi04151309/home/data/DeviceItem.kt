@@ -18,10 +18,12 @@ data class DeviceItem(val id: String) {
     companion object {
         fun formatAddress(address: String): String {
             var url = address
-            if (!(url.startsWith("https://") || url.startsWith("http://")))
+            if (!(url.startsWith("https://") || url.startsWith("http://"))) {
                 url = "http://$url"
-            if (!url.endsWith("/"))
+            }
+            if (!url.endsWith("/")) {
                 url += "/"
+            }
             return url
         }
     }

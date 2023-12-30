@@ -5,11 +5,10 @@ import io.github.domi04151309.home.R
 import io.github.domi04151309.home.data.ListViewItem
 import org.json.JSONObject
 import java.lang.IllegalStateException
-import java.util.*
+import java.util.TreeMap
 import kotlin.collections.ArrayList
 
 class HueAPIParser(resources: Resources) : UnifiedAPI.Parser(resources) {
-
     override fun parseResponse(response: JSONObject): ArrayList<ListViewItem> {
         val listItems: ArrayList<ListViewItem> = ArrayList(response.length())
         val rooms: TreeMap<String, Pair<String, JSONObject>> = TreeMap()
@@ -25,14 +24,14 @@ class HueAPIParser(resources: Resources) : UnifiedAPI.Parser(resources) {
         for (i in rooms.keys) listItems.add(
             parseGroupObj(
                 rooms[i] ?: throw IllegalStateException(),
-                false
-            )
+                false,
+            ),
         )
         for (i in zones.keys) listItems.add(
             parseGroupObj(
                 zones[i] ?: throw IllegalStateException(),
-                true
-            )
+                true,
+            ),
         )
         return listItems
     }
@@ -45,10 +44,12 @@ class HueAPIParser(resources: Resources) : UnifiedAPI.Parser(resources) {
         for (i in response.keys()) {
             currentObject = response.getJSONObject(i)
             when (currentObject.getString("type")) {
-                "Room" -> rooms[currentObject.getString("name")] =
-                    Pair(i, currentObject.optJSONObject("state")?.optBoolean("any_on"))
-                "Zone" -> zones[currentObject.getString("name")] =
-                    Pair(i, currentObject.optJSONObject("state")?.optBoolean("any_on"))
+                "Room" ->
+                    rooms[currentObject.getString("name")] =
+                        Pair(i, currentObject.optJSONObject("state")?.optBoolean("any_on"))
+                "Zone" ->
+                    zones[currentObject.getString("name")] =
+                        Pair(i, currentObject.optJSONObject("state")?.optBoolean("any_on"))
             }
         }
         for (i in rooms.keys) states.add(rooms[i]?.second)
@@ -56,13 +57,16 @@ class HueAPIParser(resources: Resources) : UnifiedAPI.Parser(resources) {
         return states
     }
 
-    private fun parseGroupObj(pair: Pair<String, JSONObject>, isZone: Boolean): ListViewItem {
+    private fun parseGroupObj(
+        pair: Pair<String, JSONObject>,
+        isZone: Boolean,
+    ): ListViewItem {
         return ListViewItem(
             title = pair.second.getString("name"),
             summary = resources.getString(R.string.hue_tap),
             hidden = pair.first,
             icon = if (isZone) R.drawable.ic_zone else R.drawable.ic_room,
-            state = pair.second.optJSONObject("state")?.optBoolean("any_on")
+            state = pair.second.optJSONObject("state")?.optBoolean("any_on"),
         )
     }
 }

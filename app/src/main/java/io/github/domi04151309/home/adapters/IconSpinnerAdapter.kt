@@ -3,14 +3,17 @@ package io.github.domi04151309.home.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.BaseAdapter
+import android.widget.Filter
+import android.widget.Filterable
+import android.widget.ImageView
+import android.widget.TextView
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.helpers.Global
 
 internal class IconSpinnerAdapter(
-        private var itemArray: Array<String>
+    private var itemArray: Array<String>,
 ) : BaseAdapter(), Filterable {
-
     override fun getCount(): Int {
         return itemArray.size
     }
@@ -27,9 +30,14 @@ internal class IconSpinnerAdapter(
         return ItemFilter()
     }
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val vi: View = convertView
-            ?: LayoutInflater.from(parent.context).inflate(R.layout.icon_dropdown_item, parent, false)
+    override fun getView(
+        position: Int,
+        convertView: View?,
+        parent: ViewGroup,
+    ): View {
+        val vi: View =
+            convertView
+                ?: LayoutInflater.from(parent.context).inflate(R.layout.icon_dropdown_item, parent, false)
         vi.findViewById<ImageView>(R.id.drawable).setImageResource(Global.getIcon(itemArray[position]))
         vi.findViewById<TextView>(R.id.title).text = itemArray[position]
         return vi
@@ -51,7 +59,10 @@ internal class IconSpinnerAdapter(
             return results
         }
 
-        override fun publishResults(constraint: CharSequence, results: FilterResults) {
+        override fun publishResults(
+            constraint: CharSequence,
+            results: FilterResults,
+        ) {
             itemArray = (results.values as Array<*>).filterIsInstance<String>().toTypedArray()
             notifyDataSetChanged()
         }

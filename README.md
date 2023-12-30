@@ -1,15 +1,10 @@
-![App Icon](https://raw.githubusercontent.com/Domi04151309/HomeApp/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png)
+![App Icon](https://raw.githubusercontent.com/Domi04151309/HomeApp/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp)
 # Home App for Android™
 HomeApp is a small and easy to use smart home app with a simple framework. The goal of this application is to make remote execution of predefined features as easy and user-friendly as possible to help you get started with smart home technology.
 
 <a href="https://f-droid.org/packages/io.github.domi04151309.home">
   <img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
   alt="Get it on F-Droid"
-  height="80"/>
-</a>
-<a href='https://play.google.com/store/apps/details?id=io.github.domi04151309.home'>
-  <img src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'
-  alt='Get it on Google Play'
   height="80"/>
 </a>
 

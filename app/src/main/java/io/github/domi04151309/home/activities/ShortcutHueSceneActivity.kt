@@ -22,7 +22,7 @@ import io.github.domi04151309.home.api.UnifiedAPI
 import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.data.SimpleListItem
 import io.github.domi04151309.home.data.UnifiedRequestCallback
-import io.github.domi04151309.home.helpers.*
+import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.Theme
 import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
@@ -30,7 +30,6 @@ import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
 import org.json.JSONObject
 
 class ShortcutHueSceneActivity : AppCompatActivity(), RecyclerViewHelperInterface {
-
     private var deviceId: String? = null
     private var group: String? = null
     private lateinit var recyclerView: RecyclerView
@@ -47,45 +46,55 @@ class ShortcutHueSceneActivity : AppCompatActivity(), RecyclerViewHelperInterfac
         var currentDevice: DeviceItem
         for (i in 0 until devices.length) {
             currentDevice = devices.getDeviceByIndex(i)
-            if (currentDevice.mode == "Hue API") listItems += SimpleListItem(
-                title = currentDevice.name,
-                summary = currentDevice.address,
-                hidden = currentDevice.id,
-                icon = currentDevice.iconId
-            )
+            if (currentDevice.mode == "Hue API") {
+                listItems +=
+                    SimpleListItem(
+                        title = currentDevice.name,
+                        summary = currentDevice.address,
+                        hidden = currentDevice.id,
+                        icon = currentDevice.iconId,
+                    )
+            }
         }
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = SimpleListAdapter(listItems, this)
     }
 
-    override fun onItemClicked(view: View, position: Int) {
+    override fun onItemClicked(
+        view: View,
+        position: Int,
+    ) {
         if (deviceId == null) {
             deviceId = view.findViewById<TextView>(R.id.hidden).text.toString()
             api.loadList(
                 object : UnifiedAPI.CallbackInterface {
                     override fun onItemsLoaded(
                         holder: UnifiedRequestCallback,
-                        recyclerViewInterface: HomeRecyclerViewHelperInterface?
+                        recyclerViewInterface: HomeRecyclerViewHelperInterface?,
                     ) {
                         if (holder.response != null) {
                             @Suppress("UNCHECKED_CAST")
-                            recyclerView.adapter = SimpleListAdapter(
-                                holder.response as ArrayList<SimpleListItem>,
-                                this@ShortcutHueSceneActivity
-                            )
+                            recyclerView.adapter =
+                                SimpleListAdapter(
+                                    holder.response as ArrayList<SimpleListItem>,
+                                    this@ShortcutHueSceneActivity,
+                                )
                         } else {
                             deviceId = null
                             Toast.makeText(
                                 this@ShortcutHueSceneActivity,
                                 holder.errorMessage,
-                                Toast.LENGTH_LONG
+                                Toast.LENGTH_LONG,
                             ).show()
                         }
                     }
 
-                    override fun onExecuted(result: String, shouldRefresh: Boolean) {}
-                }
+                    override fun onExecuted(
+                        result: String,
+                        shouldRefresh: Boolean,
+                    ) {}
+                },
             )
         } else if (group == null) {
             group = view.findViewById<TextView>(R.id.hidden).text.toString()
@@ -105,8 +114,8 @@ class ShortcutHueSceneActivity : AppCompatActivity(), RecyclerViewHelperInterfac
                                         currentObject.optString("name"),
                                         resources.getString(R.string.hue_tap),
                                         i,
-                                        R.drawable.ic_scene
-                                    )
+                                        R.drawable.ic_scene,
+                                    ),
                                 )
                             }
                         }
@@ -117,8 +126,8 @@ class ShortcutHueSceneActivity : AppCompatActivity(), RecyclerViewHelperInterfac
                         group = null
                         Toast.makeText(this, Global.volleyError(this, error), Toast.LENGTH_LONG)
                             .show()
-                    }
-                )
+                    },
+                ),
             )
         } else {
             val lampName = view.findViewById<TextView>(R.id.title).text
@@ -136,20 +145,21 @@ class ShortcutHueSceneActivity : AppCompatActivity(), RecyclerViewHelperInterfac
                                     Intent(this, ShortcutHueSceneActionActivity::class.java)
                                         .putExtra(
                                             "scene",
-                                            view.findViewById<TextView>(R.id.hidden).text
+                                            view.findViewById<TextView>(R.id.hidden).text,
                                         )
                                         .putExtra("group", group)
                                         .putExtra("device", device.id)
                                         .setAction(Intent.ACTION_MAIN)
-                                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK),
                                 )
-                                .build()
-                        )
+                                .build(),
+                        ),
                     )
                     finish()
                 }
-            } else
+            } else {
                 Toast.makeText(this, R.string.pref_add_shortcut_failed, Toast.LENGTH_LONG).show()
+            }
         }
     }
 

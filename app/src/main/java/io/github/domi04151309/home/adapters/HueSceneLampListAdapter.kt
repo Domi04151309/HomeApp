@@ -3,23 +3,22 @@ package io.github.domi04151309.home.adapters
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
-import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
-import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
-import io.github.domi04151309.home.R
 import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Switch
+import android.widget.TextView
 import androidx.core.widget.ImageViewCompat
+import androidx.recyclerview.widget.RecyclerView
+import io.github.domi04151309.home.R
 import io.github.domi04151309.home.data.SceneListItem
 import io.github.domi04151309.home.interfaces.SceneRecyclerViewHelperInterface
 
 class HueSceneLampListAdapter(
     private var items: ArrayList<SceneListItem>,
-    private var helperInterface: SceneRecyclerViewHelperInterface
+    private var helperInterface: SceneRecyclerViewHelperInterface,
 ) : RecyclerView.Adapter<HueSceneLampListAdapter.ViewHolder>() {
-
     lateinit var c: Context
 
     init {
@@ -32,18 +31,21 @@ class HueSceneLampListAdapter(
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
-        viewType: Int
+        viewType: Int,
     ): ViewHolder {
         c = parent.context
         return ViewHolder(
             LayoutInflater
                 .from(parent.context)
-                .inflate(R.layout.list_item, parent, false)
+                .inflate(R.layout.list_item, parent, false),
         )
     }
 
     @SuppressLint("SetTextI18n")
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: ViewHolder,
+        position: Int,
+    ) {
         val id = getItemId(position)
         holder.drawable.setImageResource(items[position].icon)
         holder.title.text = items[position].title
@@ -53,15 +55,17 @@ class HueSceneLampListAdapter(
         holder.stateSwitch.setOnCheckedChangeListener { compoundButton, b ->
             items[getPosFromId(id)].state = b
             holder.summary.text = generateSummary(items[getPosFromId(id)])
-            if (compoundButton.isPressed) helperInterface.onStateChanged(
-                holder.itemView,
-                items[getPosFromId(id)],
-                b
-            )
+            if (compoundButton.isPressed) {
+                helperInterface.onStateChanged(
+                    holder.itemView,
+                    items[getPosFromId(id)],
+                    b,
+                )
+            }
         }
         ImageViewCompat.setImageTintList(
             holder.drawable,
-            ColorStateList.valueOf(items[position].color)
+            ColorStateList.valueOf(items[position].color),
         )
         holder.itemView.setOnClickListener {
             helperInterface.onItemClicked(holder.itemView, items[getPosFromId(id)])
@@ -79,13 +83,19 @@ class HueSceneLampListAdapter(
         }
     }
 
-    fun updateBrightness(id: String, brightness: String) {
+    fun updateBrightness(
+        id: String,
+        brightness: String,
+    ) {
         val i = items.indexOfFirst { it.hidden == id }
         items[i].brightness = brightness
         if (items[i].state) notifyItemChanged(i)
     }
 
-    fun updateColor(id: String, color: Int) {
+    fun updateColor(
+        id: String,
+        color: Int,
+    ) {
         val i = items.indexOfFirst { it.hidden == id }
         items[i].color = color
         notifyItemChanged(i)
@@ -93,8 +103,8 @@ class HueSceneLampListAdapter(
 
     private fun generateSummary(item: SceneListItem): String {
         return c.resources.getString(if (item.state) R.string.str_on else R.string.str_off) +
-                " · " + c.resources.getString(R.string.hue_brightness) +
-                ": " + if (item.state) item.brightness else "0%"
+            " · " + c.resources.getString(R.string.hue_brightness) +
+            ": " + if (item.state) item.brightness else "0%"
     }
 
     private fun getPosFromId(id: Long): Int {

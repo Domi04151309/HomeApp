@@ -2,11 +2,8 @@ package io.github.domi04151309.home
 
 import android.content.res.Resources
 import io.github.domi04151309.home.api.ShellyAPIParser
-import org.hamcrest.CoreMatchers
-import org.hamcrest.CoreMatchers.*
-import org.hamcrest.MatcherAssert
-import org.hamcrest.MatcherAssert.*
-import org.junit.Assert
+import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.MatcherAssert.assertThat
 import org.json.JSONObject
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -38,7 +35,7 @@ class ShellyAPIParserTest {
         assertThat(listItems[num].title, `is`("27.95 W"))
         assertThat(
             listItems[num].summary,
-            `is`(resources.getString(R.string.shelly_powermeter_summary))
+            `is`(resources.getString(R.string.shelly_powermeter_summary)),
         )
         assertThat(listItems[num].state, `is`(null as Boolean?))
         assertThat(listItems[num].hidden, `is`(""))
@@ -106,7 +103,7 @@ class ShellyAPIParserTest {
         assertThat(listItems[num].title, `is`("23.0 °C"))
         assertThat(
             listItems[num].summary,
-            `is`(resources.getString(R.string.shelly_temperature_sensor_summary))
+            `is`(resources.getString(R.string.shelly_temperature_sensor_summary)),
         )
         assertThat(listItems[num].state, `is`(null as Boolean?))
         assertThat(listItems[num].hidden, `is`(""))
@@ -116,7 +113,7 @@ class ShellyAPIParserTest {
         assertThat(listItems[num].title, `is`("52.3%"))
         assertThat(
             listItems[num].summary,
-            `is`(resources.getString(R.string.shelly_humidity_sensor_summary))
+            `is`(resources.getString(R.string.shelly_humidity_sensor_summary)),
         )
         assertThat(listItems[num].state, `is`(null as Boolean?))
         assertThat(listItems[num].hidden, `is`(""))

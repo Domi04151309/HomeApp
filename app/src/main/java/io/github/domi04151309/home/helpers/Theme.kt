@@ -5,12 +5,11 @@ import android.app.ActivityManager
 import android.content.Context
 import android.content.res.Configuration
 import android.graphics.BitmapFactory
-import androidx.preference.PreferenceManager
 import androidx.core.content.ContextCompat
+import androidx.preference.PreferenceManager
 import io.github.domi04151309.home.R
 
 internal object Theme {
-
     fun set(context: Context) {
         when (PreferenceManager.getDefaultSharedPreferences(context).getString("theme", "light")) {
             "light" -> {
@@ -89,12 +88,16 @@ internal object Theme {
         }
     }
 
-    private fun recent(c: Context, color: Int) {
-        val taskDescription = ActivityManager.TaskDescription(
+    private fun recent(
+        c: Context,
+        color: Int,
+    ) {
+        val taskDescription =
+            ActivityManager.TaskDescription(
                 c.getString(R.string.app_name),
                 BitmapFactory.decodeResource(c.resources, R.mipmap.ic_launcher),
-                ContextCompat.getColor(c, color)
-        )
+                ContextCompat.getColor(c, color),
+            )
         (c as Activity).setTaskDescription(taskDescription)
     }
 }

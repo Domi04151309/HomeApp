@@ -2,11 +2,8 @@ package io.github.domi04151309.home
 
 import android.content.res.Resources
 import io.github.domi04151309.home.api.SimpleHomeAPIParser
-import org.hamcrest.CoreMatchers
-import org.hamcrest.CoreMatchers.*
-import org.hamcrest.MatcherAssert
-import org.hamcrest.MatcherAssert.*
-import org.junit.Assert
+import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.MatcherAssert.assertThat
 import org.json.JSONObject
 import org.junit.Test
 import org.junit.runner.RunWith

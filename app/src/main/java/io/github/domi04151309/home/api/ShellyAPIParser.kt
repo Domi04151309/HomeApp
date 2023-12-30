@@ -9,18 +9,27 @@ import org.json.JSONObject
 
 class ShellyAPIParser(resources: Resources, private val version: Int) :
     UnifiedAPI.Parser(resources) {
-
-    fun parseResponse(config: JSONObject, status: JSONObject): ArrayList<ListViewItem> {
-        return if (version == 1) parseResponseV1(config, status) else parseResponseV2(
-            config,
-            status
-        )
+    fun parseResponse(
+        config: JSONObject,
+        status: JSONObject,
+    ): ArrayList<ListViewItem> {
+        return if (version == 1) {
+            parseResponseV1(config, status)
+        } else {
+            parseResponseV2(
+                config,
+                status,
+            )
+        }
     }
 
-    private fun parseResponseV1(settings: JSONObject, status: JSONObject): ArrayList<ListViewItem> {
+    private fun parseResponseV1(
+        settings: JSONObject,
+        status: JSONObject,
+    ): ArrayList<ListViewItem> {
         val listItems = arrayListOf<ListViewItem>()
 
-        //switches
+        // switches
         val relays = settings.optJSONArray("relays") ?: JSONArray()
         var currentRelay: JSONObject
         var currentState: Boolean
@@ -29,61 +38,73 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
             currentRelay = relays.getJSONObject(relayId)
             currentState = currentRelay.getBoolean("ison")
 
-            listItems += ListViewItem(
-                title = nameOrDefault(
-                    if (currentRelay.isNull("name")) "" else currentRelay.optString("name"),
-                    relayId
-                ),
-                summary = resources.getString(
-                    if (currentState) R.string.switch_summary_on
-                    else R.string.switch_summary_off
-                ),
-                hidden = relayId.toString(),
-                state = currentState,
-                icon = Global.getIcon(currentRelay.optString("appliance_type"), R.drawable.ic_do)
-            )
-            //Shelly1 has the "user power constant" setting, but no actual meter
+            listItems +=
+                ListViewItem(
+                    title =
+                        nameOrDefault(
+                            if (currentRelay.isNull("name")) "" else currentRelay.optString("name"),
+                            relayId,
+                        ),
+                    summary =
+                        resources.getString(
+                            if (currentState) {
+                                R.string.switch_summary_on
+                            } else {
+                                R.string.switch_summary_off
+                            },
+                        ),
+                    hidden = relayId.toString(),
+                    state = currentState,
+                    icon = Global.getIcon(currentRelay.optString("appliance_type"), R.drawable.ic_do),
+                )
+            // Shelly1 has the "user power constant" setting, but no actual meter
             hideMeters = currentRelay.has("power")
         }
 
-        //power meters
+        // power meters
         val meters = if (hideMeters) JSONArray() else status.optJSONArray("meters") ?: JSONArray()
         var currentMeter: JSONObject
         for (meterId in 0 until meters.length()) {
             currentMeter = meters.getJSONObject(meterId)
-            listItems += ListViewItem(
-                title = "${currentMeter.getDouble("power")} W",
-                summary = resources.getString(R.string.shelly_powermeter_summary),
-                icon = R.drawable.ic_device_electricity
-            )
+            listItems +=
+                ListViewItem(
+                    title = "${currentMeter.getDouble("power")} W",
+                    summary = resources.getString(R.string.shelly_powermeter_summary),
+                    icon = R.drawable.ic_device_electricity,
+                )
         }
 
-        //external temperature sensors
+        // external temperature sensors
         val tempSensors = status.optJSONObject("ext_temperature") ?: JSONObject()
         for (sensorId in tempSensors.keys()) {
             val currentSensor = tempSensors.getJSONObject(sensorId)
-            listItems += ListViewItem(
-                title = "${currentSensor.getDouble("tC")} °C",
-                summary = resources.getString(R.string.shelly_temperature_sensor_summary),
-                icon = R.drawable.ic_device_thermometer
-            )
+            listItems +=
+                ListViewItem(
+                    title = "${currentSensor.getDouble("tC")} °C",
+                    summary = resources.getString(R.string.shelly_temperature_sensor_summary),
+                    icon = R.drawable.ic_device_thermometer,
+                )
         }
 
-        //external humidity sensors
+        // external humidity sensors
         val humSensors = status.optJSONObject("ext_humidity") ?: JSONObject()
         for (sensorId in humSensors.keys()) {
             val currentSensor = humSensors.getJSONObject(sensorId)
-            listItems += ListViewItem(
-                title = "${currentSensor.getDouble("hum")}%",
-                summary = resources.getString(R.string.shelly_humidity_sensor_summary),
-                icon = R.drawable.ic_device_hygrometer
-            )
+            listItems +=
+                ListViewItem(
+                    title = "${currentSensor.getDouble("hum")}%",
+                    summary = resources.getString(R.string.shelly_humidity_sensor_summary),
+                    icon = R.drawable.ic_device_hygrometer,
+                )
         }
 
         return listItems
     }
 
-    private fun parseResponseV2(config: JSONObject, status: JSONObject): ArrayList<ListViewItem> {
+    private fun parseResponseV2(
+        config: JSONObject,
+        status: JSONObject,
+    ): ArrayList<ListViewItem> {
         val listItems = arrayListOf<ListViewItem>()
         var currentId: Int
         var currentState: Boolean
@@ -93,58 +114,71 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
             currentId = properties.getInt("id")
             currentState = status.getJSONObject(switchKey).getBoolean("output")
 
-            listItems += ListViewItem(
-                title = nameOrDefault(
-                    if (properties.isNull("name")) "" else properties.getString("name"),
-                    currentId
-                ),
-                summary = resources.getString(
-                    if (currentState) R.string.switch_summary_on
-                    else R.string.switch_summary_off
-                ),
-                hidden = currentId.toString(),
-                state = currentState,
-                icon = Global.getIcon(
-                    config.optJSONObject("sys")?.optJSONObject("ui_data")
-                        ?.optJSONArray("consumption_types")?.getString(currentId) ?: "",
-                    R.drawable.ic_do
+            listItems +=
+                ListViewItem(
+                    title =
+                        nameOrDefault(
+                            if (properties.isNull("name")) "" else properties.getString("name"),
+                            currentId,
+                        ),
+                    summary =
+                        resources.getString(
+                            if (currentState) {
+                                R.string.switch_summary_on
+                            } else {
+                                R.string.switch_summary_off
+                            },
+                        ),
+                    hidden = currentId.toString(),
+                    state = currentState,
+                    icon =
+                        Global.getIcon(
+                            config.optJSONObject("sys")?.optJSONObject("ui_data")
+                                ?.optJSONArray("consumption_types")?.getString(currentId) ?: "",
+                            R.drawable.ic_do,
+                        ),
                 )
-            )
         }
         return listItems
     }
 
-    fun parseStates(config: JSONObject, status: JSONObject): ArrayList<Boolean?> {
+    fun parseStates(
+        config: JSONObject,
+        status: JSONObject,
+    ): ArrayList<Boolean?> {
         return if (version == 1) parseStatesV1(config, status) else parseStatesV2(config, status)
     }
 
-    private fun parseStatesV1(settings: JSONObject, status: JSONObject): ArrayList<Boolean?> {
+    private fun parseStatesV1(
+        settings: JSONObject,
+        status: JSONObject,
+    ): ArrayList<Boolean?> {
         val listItems = arrayListOf<Boolean?>()
 
-        //switches
+        // switches
         val relays = settings.optJSONArray("relays") ?: JSONArray()
         var currentRelay: JSONObject
         var hideMeters = false
         for (relayId in 0 until relays.length()) {
             currentRelay = relays.getJSONObject(relayId)
             listItems += currentRelay.getBoolean("ison")
-            //Shelly1 has the "user power constant" setting, but no actual meter
+            // Shelly1 has the "user power constant" setting, but no actual meter
             hideMeters = currentRelay.has("power")
         }
 
-        //power meters
+        // power meters
         val meters = if (hideMeters) JSONArray() else status.optJSONArray("meters") ?: JSONArray()
         for (meterId in 0 until meters.length()) {
             listItems += null
         }
 
-        //external temperature sensors
+        // external temperature sensors
         val tempSensors = status.optJSONObject("ext_temperature") ?: JSONObject()
         for (sensorId in tempSensors.keys()) {
             listItems += null
         }
 
-        //external humidity sensors
+        // external humidity sensors
         val humSensors = status.optJSONObject("ext_humidity") ?: JSONObject()
         for (sensorId in humSensors.keys()) {
             listItems += null
@@ -153,7 +187,10 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
         return listItems
     }
 
-    private fun parseStatesV2(config: JSONObject, status: JSONObject): ArrayList<Boolean?> {
+    private fun parseStatesV2(
+        config: JSONObject,
+        status: JSONObject,
+    ): ArrayList<Boolean?> {
         val listItems = arrayListOf<Boolean?>()
         for (switchKey in config.keys()) {
             if (!switchKey.startsWith("switch:")) continue
@@ -162,8 +199,14 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
         return listItems
     }
 
-    private fun nameOrDefault(name: String, id: Int): String {
-        return if (name.trim().isEmpty()) resources.getString(R.string.shelly_switch_title, id + 1)
-        else name
+    private fun nameOrDefault(
+        name: String,
+        id: Int,
+    ): String {
+        return if (name.trim().isEmpty()) {
+            resources.getString(R.string.shelly_switch_title, id + 1)
+        } else {
+            name
+        }
     }
 }

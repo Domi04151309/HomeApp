@@ -14,27 +14,43 @@ import com.android.volley.NoConnectionError
 import com.android.volley.ParseError
 import com.android.volley.TimeoutError
 import io.github.domi04151309.home.R
-import io.github.domi04151309.home.api.*
+import io.github.domi04151309.home.api.EspEasyAPI
+import io.github.domi04151309.home.api.HueAPI
+import io.github.domi04151309.home.api.ShellyAPI
+import io.github.domi04151309.home.api.SimpleHomeAPI
+import io.github.domi04151309.home.api.Tasmota
+import io.github.domi04151309.home.api.UnifiedAPI
 import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
 
 internal object Global {
-
     const val LOG_TAG: String = "HomeApp"
 
     const val DEFAULT_JSON: String = "{\"devices\":{}}"
-    val UNIFIED_MODES = arrayOf(
-        "ESP Easy", "Hue API", "Shelly Gen 1", "Shelly Gen 2", "SimpleHome API", "Tasmota"
-    )
-    val POWER_MENU_MODES = arrayOf(
-        "ESP Easy", "Hue API", "Shelly Gen 1", "Shelly Gen 2", "SimpleHome API", "Tasmota"
-    )
+    val UNIFIED_MODES =
+        arrayOf(
+            "ESP Easy",
+            "Hue API",
+            "Shelly Gen 1",
+            "Shelly Gen 2",
+            "SimpleHome API",
+            "Tasmota",
+        )
+    val POWER_MENU_MODES =
+        arrayOf(
+            "ESP Easy",
+            "Hue API",
+            "Shelly Gen 1",
+            "Shelly Gen 2",
+            "SimpleHome API",
+            "Tasmota",
+        )
 
     fun getCorrectAPI(
         context: Context,
         identifier: String,
         deviceId: String,
         recyclerViewInterface: HomeRecyclerViewHelperInterface? = null,
-        tasmotaHelperInterface: HomeRecyclerViewHelperInterface? = null
+        tasmotaHelperInterface: HomeRecyclerViewHelperInterface? = null,
     ): UnifiedAPI {
         return when (identifier) {
             "ESP Easy" -> EspEasyAPI(context, deviceId, recyclerViewInterface)
@@ -47,7 +63,10 @@ internal object Global {
         }
     }
 
-    fun getIcon(icon: String, default: Int = R.drawable.ic_warning): Int {
+    fun getIcon(
+        icon: String,
+        default: Int = R.drawable.ic_warning,
+    ): Int {
         return when (icon.lowercase()) {
             "christmas tree" -> R.drawable.ic_device_christmas_tree
             "clock" -> R.drawable.ic_device_clock
@@ -85,22 +104,29 @@ internal object Global {
         }
     }
 
-    fun checkNetwork(context: Context) : Boolean {
+    fun checkNetwork(context: Context): Boolean {
         if (
             !PreferenceManager.getDefaultSharedPreferences(context)
                 .getBoolean("safety_checks", true)
-        ) return true
+        ) {
+            return true
+        }
 
         val connectivityManager = context.getSystemService(AppCompatActivity.CONNECTIVITY_SERVICE) as ConnectivityManager
         val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
         return if (capabilities != null) {
-            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
-                    || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
-                    || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN)
-        } else true
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) ||
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN)
+        } else {
+            true
+        }
     }
 
-    fun volleyError(c: Context, error: java.lang.Exception): String {
+    fun volleyError(
+        c: Context,
+        error: java.lang.Exception,
+    ): String {
         Log.w(LOG_TAG, error)
         return when (error) {
             is TimeoutError, is NoConnectionError -> c.resources.getString(R.string.main_device_unavailable)
@@ -109,5 +135,4 @@ internal object Global {
             else -> c.resources.getString(R.string.main_device_unavailable)
         }
     }
-
 }

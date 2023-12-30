@@ -3,20 +3,23 @@ package io.github.domi04151309.home.adapters
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.util.Log
-import android.view.*
-import androidx.recyclerview.widget.RecyclerView
-import io.github.domi04151309.home.R
-import io.github.domi04151309.home.data.ListViewItem
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.view.animation.AnimationSet
 import android.view.animation.TranslateAnimation
-import android.widget.*
+import android.widget.ImageView
+import android.widget.Switch
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import io.github.domi04151309.home.R
+import io.github.domi04151309.home.data.ListViewItem
 import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
 
 class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapter<MainListAdapter.ViewHolder>() {
-
     private var items: ArrayList<ListViewItem> = arrayListOf()
     private var helperInterface: HomeRecyclerViewHelperInterface? = null
     private var animate: Boolean = true
@@ -32,16 +35,19 @@ class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapt
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
-        viewType: Int
+        viewType: Int,
     ): ViewHolder {
         return ViewHolder(
             LayoutInflater
                 .from(parent.context)
-                .inflate(R.layout.list_item, parent, false)
+                .inflate(R.layout.list_item, parent, false),
         )
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: ViewHolder,
+        position: Int,
+    ) {
         holder.drawable.setImageResource(items[position].icon)
         holder.title.text = items[position].title
         holder.summary.text = items[position].summary
@@ -51,11 +57,13 @@ class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapt
         if (items[position].state != null) {
             holder.stateSwitch.isChecked = items[position].state ?: false
             holder.stateSwitch.setOnCheckedChangeListener { compoundButton, b ->
-                if (compoundButton.isPressed) helperInterface?.onStateChanged(
-                    holder.itemView,
-                    items[getPosFromId(id)],
-                    b
-                )
+                if (compoundButton.isPressed) {
+                    helperInterface?.onStateChanged(
+                        holder.itemView,
+                        items[getPosFromId(id)],
+                        b,
+                    )
+                }
             }
         } else {
             holder.stateSwitch.visibility = View.GONE
@@ -83,7 +91,11 @@ class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapt
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateData(newItems: ArrayList<ListViewItem>, newHelperInterface: HomeRecyclerViewHelperInterface? = null, preferredAnimationState: Boolean? = null) {
+    fun updateData(
+        newItems: ArrayList<ListViewItem>,
+        newHelperInterface: HomeRecyclerViewHelperInterface? = null,
+        preferredAnimationState: Boolean? = null,
+    ) {
         offsets = IntArray(newItems.size) { 1 }
         if (newHelperInterface != null) {
             attachedTo.layoutManager?.scrollToPosition(0)
@@ -102,7 +114,11 @@ class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapt
         }
     }
 
-    fun updateSwitch(position: Int, state: Boolean, dynamicSummary: Boolean) {
+    fun updateSwitch(
+        position: Int,
+        state: Boolean,
+        dynamicSummary: Boolean,
+    ) {
         if (position > items.size - 1) {
             Log.w(Global.LOG_TAG, "The position $position with value $state is larger than the item count")
             return
@@ -115,10 +131,14 @@ class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapt
             } else {
                 viewHolder.stateSwitch.isChecked = state
                 if (dynamicSummary) {
-                    viewHolder.summary.text = attachedTo.context.resources.getString(
-                        if (state) R.string.switch_summary_on
-                        else R.string.switch_summary_off
-                    )
+                    viewHolder.summary.text =
+                        attachedTo.context.resources.getString(
+                            if (state) {
+                                R.string.switch_summary_on
+                            } else {
+                                R.string.switch_summary_off
+                            },
+                        )
                 }
             }
         }
@@ -128,7 +148,11 @@ class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapt
         return offsets.copyOfRange(0, pos).sum()
     }
 
-    fun updateDirectView(id: String, newItems: ArrayList<ListViewItem>, directViewPos: Int) {
+    fun updateDirectView(
+        id: String,
+        newItems: ArrayList<ListViewItem>,
+        directViewPos: Int,
+    ) {
         newItems.forEach { it.hidden = id + '@' + it.hidden }
 
         val correctOffset = getOffset(directViewPos)
@@ -162,10 +186,17 @@ class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapt
         firstAnimation.duration = 300
         set.addAnimation(firstAnimation)
 
-        val secondAnimation = TranslateAnimation(
-            Animation.RELATIVE_TO_SELF, -1.0f, Animation.RELATIVE_TO_SELF, 0.0f,
-            Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f
-        )
+        val secondAnimation =
+            TranslateAnimation(
+                Animation.RELATIVE_TO_SELF,
+                -1.0f,
+                Animation.RELATIVE_TO_SELF,
+                0.0f,
+                Animation.RELATIVE_TO_SELF,
+                0.0f,
+                Animation.RELATIVE_TO_SELF,
+                0.0f,
+            )
         secondAnimation.duration = 300
         set.addAnimation(secondAnimation)
 

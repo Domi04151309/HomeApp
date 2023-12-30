@@ -13,9 +13,8 @@ import org.json.JSONObject
 open class UnifiedAPI(
     protected val c: Context,
     val deviceId: String,
-    protected val recyclerViewInterface: HomeRecyclerViewHelperInterface?
+    protected val recyclerViewInterface: HomeRecyclerViewHelperInterface?,
 ) {
-
     companion object {
         private const val LIST_REQUEST_TIMEOUT = 1000
         private val listCache: MutableMap<String, Pair<Long, ArrayList<ListViewItem>>> = mutableMapOf()
@@ -24,14 +23,21 @@ open class UnifiedAPI(
     interface CallbackInterface {
         fun onItemsLoaded(
             holder: UnifiedRequestCallback,
-            recyclerViewInterface: HomeRecyclerViewHelperInterface?
+            recyclerViewInterface: HomeRecyclerViewHelperInterface?,
         )
 
-        fun onExecuted(result: String, shouldRefresh: Boolean = false)
+        fun onExecuted(
+            result: String,
+            shouldRefresh: Boolean = false,
+        )
     }
 
     interface RealTimeStatesCallback {
-        fun onStatesLoaded(states: ArrayList<Boolean?>, offset: Int, dynamicSummary: Boolean)
+        fun onStatesLoaded(
+            states: ArrayList<Boolean?>,
+            offset: Int,
+            dynamicSummary: Boolean,
+        )
     }
 
     var dynamicSummaries: Boolean = true
@@ -44,22 +50,37 @@ open class UnifiedAPI(
         listCache[deviceId] = Pair(System.currentTimeMillis(), items)
     }
 
-    open fun loadList(callback: CallbackInterface, extended: Boolean = false) {
+    open fun loadList(
+        callback: CallbackInterface,
+        extended: Boolean = false,
+    ) {
         if (System.currentTimeMillis() - (listCache[deviceId]?.first ?: 0) < LIST_REQUEST_TIMEOUT) {
             callback.onItemsLoaded(
                 UnifiedRequestCallback(listCache[deviceId]?.second, deviceId, ""),
-                recyclerViewInterface
+                recyclerViewInterface,
             )
             return
         }
     }
 
-    open fun loadStates(callback: RealTimeStatesCallback, offset: Int) {}
-    open fun execute(path: String, callback: CallbackInterface) {}
-    open fun changeSwitchState(id: String, state: Boolean) {}
+    open fun loadStates(
+        callback: RealTimeStatesCallback,
+        offset: Int,
+    ) {}
+
+    open fun execute(
+        path: String,
+        callback: CallbackInterface,
+    ) {}
+
+    open fun changeSwitchState(
+        id: String,
+        state: Boolean,
+    ) {}
 
     open class Parser(protected val resources: Resources, protected val api: UnifiedAPI? = null) {
         open fun parseResponse(response: JSONObject): ArrayList<ListViewItem> = arrayListOf()
+
         open fun parseStates(response: JSONObject): ArrayList<Boolean?> = arrayListOf()
     }
 }

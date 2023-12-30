@@ -2,11 +2,8 @@ package io.github.domi04151309.home
 
 import android.content.res.Resources
 import io.github.domi04151309.home.api.HueAPIParser
-import org.hamcrest.CoreMatchers
-import org.hamcrest.CoreMatchers.*
-import org.hamcrest.MatcherAssert
-import org.hamcrest.MatcherAssert.*
-import org.junit.Assert
+import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.MatcherAssert.assertThat
 import org.json.JSONObject
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -111,19 +108,20 @@ class HueAPIParserTest {
 
         val states = parser.parseStates(groupsJson)
         assertThat(
-            states, `is`(
+            states,
+            `is`(
                 arrayListOf(
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-        )
-            )
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                ),
+            ),
         )
     }
 }

@@ -7,11 +7,10 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 class EspEasyAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.Parser(resources, api) {
-
     override fun parseResponse(response: JSONObject): ArrayList<ListViewItem> {
         val listItems = arrayListOf<ListViewItem>()
 
-        //sensors
+        // sensors
         val sensors = response.optJSONArray("Sensors") ?: JSONArray()
         for (sensorId in 0 until sensors.length()) {
             val currentSensor = sensors.getJSONObject(sensorId)
@@ -30,7 +29,11 @@ class EspEasyAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.Pars
         return listItems
     }
 
-    private fun parseEnvironment(listItems: ArrayList<ListViewItem>, type: String, currentSensor: JSONObject)  {
+    private fun parseEnvironment(
+        listItems: ArrayList<ListViewItem>,
+        type: String,
+        currentSensor: JSONObject,
+    ) {
         var taskIcons = intArrayOf()
         when (type) {
             "Environment - BMx280" -> {
@@ -52,26 +55,32 @@ class EspEasyAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.Pars
             val currentTask = currentSensor.getJSONArray("TaskValues").getJSONObject(taskId)
             val currentValue = currentTask.getString("Value")
             if (!currentValue.equals("nan")) {
-                val suffix = when (taskIcons[taskId]) {
-                    R.drawable.ic_device_thermometer -> " °C"
-                    R.drawable.ic_device_hygrometer -> " %"
-                    R.drawable.ic_device_gauge -> " hPa"
-                    else -> ""
-                }
-                listItems += ListViewItem(
-                    title = currentValue + suffix,
-                    summary = taskName + ": " + currentTask.getString("Name"),
-                    icon = taskIcons[taskId]
-                )
+                val suffix =
+                    when (taskIcons[taskId]) {
+                        R.drawable.ic_device_thermometer -> " °C"
+                        R.drawable.ic_device_hygrometer -> " %"
+                        R.drawable.ic_device_gauge -> " hPa"
+                        else -> ""
+                    }
+                listItems +=
+                    ListViewItem(
+                        title = currentValue + suffix,
+                        summary = taskName + ": " + currentTask.getString("Name"),
+                        icon = taskIcons[taskId],
+                    )
             }
         }
     }
 
-    private fun parseSwitch(listItems: ArrayList<ListViewItem>, type: String, currentSensor: JSONObject) {
+    private fun parseSwitch(
+        listItems: ArrayList<ListViewItem>,
+        type: String,
+        currentSensor: JSONObject,
+    ) {
         when (type) {
             "Switch input - Switch" -> {
                 val currentState = currentSensor.getJSONArray("TaskValues").getJSONObject(0).getInt("Value") > 0
-                var taskName =currentSensor.getString("TaskName")
+                var taskName = currentSensor.getString("TaskName")
                 var gpioId = ""
                 val gpioFinder = Regex("~GPIO~([0-9]+)$")
                 val matchResult = gpioFinder.find(taskName)
@@ -79,16 +88,21 @@ class EspEasyAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.Pars
                     gpioId = matchResult.groupValues[1]
                     taskName = taskName.replace("~GPIO~$gpioId", "")
                 }
-                listItems += ListViewItem(
-                    title = taskName,
-                    summary = resources.getString(
-                        if (currentState) R.string.switch_summary_on
-                        else R.string.switch_summary_off
-                    ),
-                    hidden = gpioId,
-                    state = currentState,
-                    icon = R.drawable.ic_do
-                )
+                listItems +=
+                    ListViewItem(
+                        title = taskName,
+                        summary =
+                            resources.getString(
+                                if (currentState) {
+                                    R.string.switch_summary_on
+                                } else {
+                                    R.string.switch_summary_off
+                                },
+                            ),
+                        hidden = gpioId,
+                        state = currentState,
+                        icon = R.drawable.ic_do,
+                    )
                 api?.needsRealTimeData = true
             }
         }
@@ -97,7 +111,7 @@ class EspEasyAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.Pars
     override fun parseStates(response: JSONObject): ArrayList<Boolean?> {
         val listItems = arrayListOf<Boolean?>()
 
-        //sensors
+        // sensors
         val sensors = response.optJSONArray("Sensors") ?: JSONArray()
         for (sensorId in 0 until sensors.length()) {
             val currentSensor = sensors.getJSONObject(sensorId)
@@ -116,7 +130,11 @@ class EspEasyAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.Pars
         return listItems
     }
 
-    private fun parseEnvironmentStates(listItems: ArrayList<Boolean?>, type: String, currentSensor: JSONObject)  {
+    private fun parseEnvironmentStates(
+        listItems: ArrayList<Boolean?>,
+        type: String,
+        currentSensor: JSONObject,
+    ) {
         var tasks = 0
         when (type) {
             "Environment - BMx280" -> tasks += 3
@@ -130,11 +148,17 @@ class EspEasyAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.Pars
                     .getJSONObject(taskId)
                     .getString("Value")
                     .equals("nan")
-            ) listItems += null
+            ) {
+                listItems += null
+            }
         }
     }
 
-    private fun parseSwitchStates(listItems: ArrayList<Boolean?>, type: String, currentSensor: JSONObject) {
+    private fun parseSwitchStates(
+        listItems: ArrayList<Boolean?>,
+        type: String,
+        currentSensor: JSONObject,
+    ) {
         when (type) {
             "Switch input - Switch" -> {
                 listItems += currentSensor.getJSONArray("TaskValues").getJSONObject(0).getInt("Value") > 0

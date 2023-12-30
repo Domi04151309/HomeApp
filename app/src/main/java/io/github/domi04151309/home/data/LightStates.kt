@@ -4,18 +4,21 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 class LightStates {
-
     private val lights: MutableMap<String, Light> = mutableMapOf()
 
-    fun addLight(id: String, state: JSONObject) {
-        lights[id] = Light(
-            state.optBoolean("on"),
-            if (state.has("bri")) state.getInt("bri") else -1,
-            if (state.has("xy")) state.getJSONArray("xy") else null,
-            -1,
-            -1,
-            if (state.has("ct")) state.getInt("ct") else -1
-        )
+    fun addLight(
+        id: String,
+        state: JSONObject,
+    ) {
+        lights[id] =
+            Light(
+                state.optBoolean("on"),
+                if (state.has("bri")) state.getInt("bri") else -1,
+                if (state.has("xy")) state.getJSONArray("xy") else null,
+                -1,
+                -1,
+                if (state.has("ct")) state.getInt("ct") else -1,
+            )
     }
 
     fun setSceneBrightness(bri: Int) {
@@ -24,26 +27,41 @@ class LightStates {
         }
     }
 
-    fun setLightBrightness(id: String, bri: Int) {
+    fun setLightBrightness(
+        id: String,
+        bri: Int,
+    ) {
         lights[id]?.bri = bri
     }
 
-    fun setLightHue(id: String, hue: Int) {
+    fun setLightHue(
+        id: String,
+        hue: Int,
+    ) {
         lights[id]?.xy = null
         lights[id]?.hue = hue
     }
 
-    fun setLightSat(id: String, sat: Int) {
+    fun setLightSat(
+        id: String,
+        sat: Int,
+    ) {
         lights[id]?.xy = null
         lights[id]?.sat = sat
     }
 
-    fun setLightCt(id: String, ct: Int) {
+    fun setLightCt(
+        id: String,
+        ct: Int,
+    ) {
         lights[id]?.xy = null
         lights[id]?.ct = ct
     }
 
-    fun switchLight(id: String, on: Boolean) {
+    fun switchLight(
+        id: String,
+        on: Boolean,
+    ) {
         lights[id]?.on = on
     }
 
@@ -57,8 +75,9 @@ class LightStates {
             if (value.hue != -1 && value.sat != -1) {
                 light.put("hue", value.hue)
                 light.put("sat", value.sat)
+            } else if (value.ct != -1) {
+                light.put("ct", value.ct)
             }
-            else if (value.ct != -1) light.put("ct", value.ct)
             json.put(key, light)
         }
         return json.toString()
@@ -70,6 +89,6 @@ class LightStates {
         var xy: JSONArray? = null,
         var hue: Int = -1,
         var sat: Int = -1,
-        var ct: Int = -1
+        var ct: Int = -1,
     )
 }

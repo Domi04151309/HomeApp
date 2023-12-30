@@ -1,39 +1,44 @@
 package io.github.domi04151309.home.adapters
 
-import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import io.github.domi04151309.home.R
-import android.view.LayoutInflater
 import io.github.domi04151309.home.data.ListViewItem
 import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
 
 class DeviceDiscoveryListAdapter(
     private val items: ArrayList<ListViewItem>,
-    private val helperInterface: RecyclerViewHelperInterface
-    ) : RecyclerView.Adapter<DeviceDiscoveryListAdapter.ViewHolder>() {
-
+    private val helperInterface: RecyclerViewHelperInterface,
+) : RecyclerView.Adapter<DeviceDiscoveryListAdapter.ViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
-        viewType: Int
+        viewType: Int,
     ): ViewHolder {
         return ViewHolder(
             LayoutInflater
                 .from(parent.context)
-                .inflate(R.layout.list_item_device_discovery, parent, false)
+                .inflate(R.layout.list_item_device_discovery, parent, false),
         )
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: ViewHolder,
+        position: Int,
+    ) {
         holder.drawable.setImageResource(items[position].icon)
         holder.title.text = items[position].title
         holder.summary.text = items[position].summary
         holder.hidden.text = items[position].hidden
         holder.stateDrawable.setImageResource(
-            if (items[position].state == true) R.drawable.ic_done
-            else android.R.color.transparent
+            if (items[position].state == true) {
+                R.drawable.ic_done
+            } else {
+                android.R.color.transparent
+            },
         )
         holder.itemView.setOnClickListener { helperInterface.onItemClicked(holder.itemView, position) }
     }
@@ -42,18 +47,24 @@ class DeviceDiscoveryListAdapter(
         return items.size
     }
 
-    fun add(item: ListViewItem) : Int {
+    fun add(item: ListViewItem): Int {
         items.add(item)
         notifyItemInserted(items.size - 1)
         return items.size - 1
     }
 
-    fun changeState(i: Int, state: Boolean) {
+    fun changeState(
+        i: Int,
+        state: Boolean,
+    ) {
         items[i].state = state
         notifyItemChanged(i)
     }
 
-    fun changeTitle(i: Int, title: String) {
+    fun changeTitle(
+        i: Int,
+        title: String,
+    ) {
         items[i].title = title
         notifyItemChanged(i)
     }

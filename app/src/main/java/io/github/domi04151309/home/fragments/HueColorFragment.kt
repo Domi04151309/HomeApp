@@ -6,7 +6,10 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.google.android.material.slider.Slider
@@ -15,11 +18,11 @@ import com.skydoves.colorpickerview.listeners.ColorListener
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.api.HueAPI
 import io.github.domi04151309.home.data.LightStates
-import io.github.domi04151309.home.helpers.*
+import io.github.domi04151309.home.helpers.HueUtils
+import io.github.domi04151309.home.helpers.SliderUtils
 import io.github.domi04151309.home.interfaces.HueRoomInterface
 
 class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
-
     companion object {
         private const val UPDATE_DELAY = 5000L
     }
@@ -32,14 +35,15 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         c = context ?: throw IllegalStateException()
         lampInterface = context as HueRoomInterface
         hueAPI = HueAPI(c, lampInterface.device.id)
 
-        val view = super.onCreateView(inflater, container, savedInstanceState)
-            ?: throw IllegalStateException()
+        val view =
+            super.onCreateView(inflater, container, savedInstanceState)
+                ?: throw IllegalStateException()
         val colorPickerView = view.findViewById<ColorPickerView>(R.id.colorPickerView)
         val ctText = view.findViewById<TextView>(R.id.ctTxt)
         val ctBar = view.findViewById<Slider>(R.id.ctBar)
@@ -51,7 +55,7 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
         val ctViews = arrayOf<View>(ctText, ctBar)
         val hueSatViews = arrayOf<View>(colorPickerView, hueSatText, hueBar, satBar)
 
-        //Slider labels
+        // Slider labels
         ctBar.setLabelFormatter { value: Float ->
             HueUtils.ctToKelvin(value.toInt() + 153)
         }
@@ -62,29 +66,32 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
             HueUtils.satToPercent(value.toInt())
         }
 
-        //Slider tints
+        // Slider tints
         SliderUtils.setSliderGradient(
-            ctBar, intArrayOf(
+            ctBar,
+            intArrayOf(
                 Color.WHITE,
-                Color.parseColor("#FF8B16")
-            )
+                Color.parseColor("#FF8B16"),
+            ),
         )
         SliderUtils.setSliderGradient(
-            hueBar, intArrayOf(
+            hueBar,
+            intArrayOf(
                 Color.HSVToColor(floatArrayOf(0f, 1f, 1f)),
                 Color.HSVToColor(floatArrayOf(60f, 1f, 1f)),
                 Color.HSVToColor(floatArrayOf(120f, 1f, 1f)),
                 Color.HSVToColor(floatArrayOf(180f, 1f, 1f)),
                 Color.HSVToColor(floatArrayOf(240f, 1f, 1f)),
                 Color.HSVToColor(floatArrayOf(300f, 1f, 1f)),
-                Color.HSVToColor(floatArrayOf(360f, 1f, 1f))
-            )
+                Color.HSVToColor(floatArrayOf(360f, 1f, 1f)),
+            ),
         )
         SliderUtils.setSliderGradient(
-            satBar, intArrayOf(
+            satBar,
+            intArrayOf(
                 Color.WHITE,
-                Color.RED
-            )
+                Color.RED,
+            ),
         )
 
         ctBar.addOnChangeListener { _, value, fromUser ->
@@ -92,16 +99,18 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
                 lampInterface.onColorChanged(HueUtils.ctToRGB(value.toInt() + 153))
             }
         }
-        ctBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
-            override fun onStartTrackingTouch(slider: Slider) {
-                pauseUpdates()
-            }
+        ctBar.addOnSliderTouchListener(
+            object : Slider.OnSliderTouchListener {
+                override fun onStartTrackingTouch(slider: Slider) {
+                    pauseUpdates()
+                }
 
-            override fun onStopTrackingTouch(slider: Slider) {
-                hueAPI.changeColorTemperatureOfGroup(lampInterface.id, slider.value.toInt() + 153)
-                resumeUpdates()
-            }
-        })
+                override fun onStopTrackingTouch(slider: Slider) {
+                    hueAPI.changeColorTemperatureOfGroup(lampInterface.id, slider.value.toInt() + 153)
+                    resumeUpdates()
+                }
+            },
+        )
 
         hueBar.addOnChangeListener { _, value, fromUser ->
             if (fromUser) {
@@ -110,22 +119,25 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
                 lampInterface.onColorChanged(color)
             }
             SliderUtils.setSliderGradientNow(
-                satBar, intArrayOf(
+                satBar,
+                intArrayOf(
                     Color.WHITE,
-                    HueUtils.hueToRGB(value.toInt())
-                )
+                    HueUtils.hueToRGB(value.toInt()),
+                ),
             )
         }
-        hueBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
-            override fun onStartTrackingTouch(slider: Slider) {
-                pauseUpdates()
-            }
+        hueBar.addOnSliderTouchListener(
+            object : Slider.OnSliderTouchListener {
+                override fun onStartTrackingTouch(slider: Slider) {
+                    pauseUpdates()
+                }
 
-            override fun onStopTrackingTouch(slider: Slider) {
-                hueAPI.changeHueOfGroup(lampInterface.id, slider.value.toInt())
-                resumeUpdates()
-            }
-        })
+                override fun onStopTrackingTouch(slider: Slider) {
+                    hueAPI.changeHueOfGroup(lampInterface.id, slider.value.toInt())
+                    resumeUpdates()
+                }
+            },
+        )
 
         satBar.addOnChangeListener { _, value, fromUser ->
             if (fromUser) {
@@ -134,25 +146,29 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
                 lampInterface.onColorChanged(color)
             }
         }
-        satBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
-            override fun onStartTrackingTouch(slider: Slider) {
-                pauseUpdates()
-            }
+        satBar.addOnSliderTouchListener(
+            object : Slider.OnSliderTouchListener {
+                override fun onStartTrackingTouch(slider: Slider) {
+                    pauseUpdates()
+                }
 
-            override fun onStopTrackingTouch(slider: Slider) {
-                hueAPI.changeSaturationOfGroup(lampInterface.id, slider.value.toInt())
-                resumeUpdates()
-            }
-        })
+                override fun onStopTrackingTouch(slider: Slider) {
+                    hueAPI.changeSaturationOfGroup(lampInterface.id, slider.value.toInt())
+                    resumeUpdates()
+                }
+            },
+        )
 
-        colorPickerView.setColorListener(ColorListener { color, fromUser ->
-            if (fromUser) {
-                val hueSat = HueUtils.rgbToHueSat(color)
-                hueBar.value = hueSat[0].toFloat()
-                satBar.value = hueSat[1].toFloat()
-                lampInterface.onColorChanged(color)
-            }
-        })
+        colorPickerView.setColorListener(
+            ColorListener { color, fromUser ->
+                if (fromUser) {
+                    val hueSat = HueUtils.rgbToHueSat(color)
+                    hueBar.value = hueSat[0].toFloat()
+                    satBar.value = hueSat[1].toFloat()
+                    lampInterface.onColorChanged(color)
+                }
+            },
+        )
         colorPickerView.setOnTouchListener { innerView, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
                 pauseUpdates()
@@ -199,10 +215,10 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
                 colorPickerView.selectByHsvColor(
                     HueUtils.hueSatToRGB(
                         lampInterface.lampData.state.hue,
-                        lampInterface.lampData.state.sat
-                    )
+                        lampInterface.lampData.state.sat,
+                    ),
                 )
-            },200)
+            }, 200)
             updateFunction(lampInterface.lampData.state)
             lampInterface.lampData.addOnDataChangedListener(::updateFunction)
         }

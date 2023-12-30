@@ -9,32 +9,34 @@ import io.github.domi04151309.home.data.UnifiedRequestCallback
 import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
 
 class ShortcutTasmotaActionActivity : AppCompatActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (intent.hasExtra("command") && intent.hasExtra("device")) {
             Tasmota(
                 this,
                 intent.getStringExtra("device") ?: throw IllegalStateException(),
-                null
+                null,
             ).execute(
                 intent.getStringExtra("command") ?: throw IllegalStateException(),
                 object : UnifiedAPI.CallbackInterface {
                     override fun onItemsLoaded(
                         holder: UnifiedRequestCallback,
-                        recyclerViewInterface: HomeRecyclerViewHelperInterface?
+                        recyclerViewInterface: HomeRecyclerViewHelperInterface?,
                     ) {
                     }
 
-                    override fun onExecuted(result: String, shouldRefresh: Boolean) {
+                    override fun onExecuted(
+                        result: String,
+                        shouldRefresh: Boolean,
+                    ) {
                         Toast.makeText(
                             this@ShortcutTasmotaActionActivity,
                             result,
-                            Toast.LENGTH_LONG
+                            Toast.LENGTH_LONG,
                         ).show()
                     }
-
-                })
+                },
+            )
         }
         finish()
     }

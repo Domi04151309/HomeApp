@@ -11,7 +11,10 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.*
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.ImageViewCompat
@@ -28,13 +31,16 @@ import io.github.domi04151309.home.adapters.HueDetailsTabAdapter
 import io.github.domi04151309.home.api.HueAPI
 import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.data.LightStates
-import io.github.domi04151309.home.helpers.*
+import io.github.domi04151309.home.helpers.Devices
+import io.github.domi04151309.home.helpers.HueLightListener
+import io.github.domi04151309.home.helpers.HueUtils
+import io.github.domi04151309.home.helpers.SliderUtils
 import io.github.domi04151309.home.helpers.Theme
+import io.github.domi04151309.home.helpers.UpdateHandler
 import io.github.domi04151309.home.interfaces.HueRoomInterface
 import org.json.JSONArray
 
 class HueLampActivity : AppCompatActivity(), HueRoomInterface {
-
     override var addressPrefix: String = ""
     override var id: String = ""
     override var lights: JSONArray? = null
@@ -79,24 +85,28 @@ class HueLampActivity : AppCompatActivity(), HueRoomInterface {
         viewPager.isUserInputEnabled = false
         viewPager.adapter = HueDetailsTabAdapter(this)
 
-        //Slider labels
+        // Slider labels
         briBar.setLabelFormatter { value: Float ->
             HueUtils.briToPercent(value.toInt())
         }
 
-        //Lamp tint
+        // Lamp tint
         ImageViewCompat.setImageTintList(
             lampIcon,
-            ColorStateList.valueOf(Color.WHITE)
+            ColorStateList.valueOf(Color.WHITE),
         )
         lampData.addOnDataChangedListener {
             ImageViewCompat.setImageTintList(
                 lampIcon,
                 ColorStateList.valueOf(
-                    if (it.hue != -1 && it.sat != -1) HueUtils.hueSatToRGB(it.hue, it.sat)
-                    else if (it.ct != -1) HueUtils.ctToRGB(it.ct + 153)
-                    else Color.WHITE
-                )
+                    if (it.hue != -1 && it.sat != -1) {
+                        HueUtils.hueSatToRGB(it.hue, it.sat)
+                    } else if (it.ct != -1) {
+                        HueUtils.ctToRGB(it.ct + 153)
+                    } else {
+                        Color.WHITE
+                    },
+                ),
             )
         }
 
@@ -108,64 +118,73 @@ class HueLampActivity : AppCompatActivity(), HueRoomInterface {
             hueAPI.switchGroupByID(id, false)
         }
 
-        briBar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
-            override fun onStartTrackingTouch(slider: Slider) {
-                canReceiveRequest = false
-            }
-            override fun onStopTrackingTouch(slider: Slider) {
-                hueAPI.changeBrightnessOfGroup(id, slider.value.toInt())
-                canReceiveRequest = true
-            }
-        })
+        briBar.addOnSliderTouchListener(
+            object : Slider.OnSliderTouchListener {
+                override fun onStartTrackingTouch(slider: Slider) {
+                    canReceiveRequest = false
+                }
+
+                override fun onStopTrackingTouch(slider: Slider) {
+                    hueAPI.changeBrightnessOfGroup(id, slider.value.toInt())
+                    canReceiveRequest = true
+                }
+            },
+        )
 
         viewPager.setCurrentItem(1, false)
 
-        val tabIcons = arrayOf(
-            ResourcesCompat.getDrawable(resources, R.drawable.ic_color_palette, theme),
-            ResourcesCompat.getDrawable(resources, R.drawable.ic_scene_white, theme),
-            ResourcesCompat.getDrawable(resources, R.drawable.ic_device_lamp, theme)
-        )
+        val tabIcons =
+            arrayOf(
+                ResourcesCompat.getDrawable(resources, R.drawable.ic_color_palette, theme),
+                ResourcesCompat.getDrawable(resources, R.drawable.ic_scene_white, theme),
+                ResourcesCompat.getDrawable(resources, R.drawable.ic_device_lamp, theme),
+            )
         TabLayoutMediator(tabBar, viewPager) { tab, position ->
             tab.icon = tabIcons[position]
         }.attach()
 
-        updateDataRequest = JsonObjectRequest(Request.Method.GET, "$addressPrefix/groups/$id", null,
-            { response ->
-                lights = response.getJSONArray("lights")
-                lampName = response.getString("name")
-                nameTxt.text = lampName
-                val action = response.getJSONObject("action")
-                val light = LightStates.Light()
+        updateDataRequest =
+            JsonObjectRequest(
+                Request.Method.GET, "$addressPrefix/groups/$id", null,
+                { response ->
+                    lights = response.getJSONArray("lights")
+                    lampName = response.getString("name")
+                    nameTxt.text = lampName
+                    val action = response.getJSONObject("action")
+                    val light = LightStates.Light()
 
-                if (action.has("bri")) {
-                    SliderUtils.setProgress(briBar, action.getInt("bri"))
-                } else {
-                    findViewById<TextView>(R.id.briTxt).visibility = View.GONE
-                    briBar.visibility = View.GONE
-                }
-                light.ct =
-                    if (action.has("ct")) action.getInt("ct") - 153
-                    else -1
+                    if (action.has("bri")) {
+                        SliderUtils.setProgress(briBar, action.getInt("bri"))
+                    } else {
+                        findViewById<TextView>(R.id.briTxt).visibility = View.GONE
+                        briBar.visibility = View.GONE
+                    }
+                    light.ct =
+                        if (action.has("ct")) {
+                            action.getInt("ct") - 153
+                        } else {
+                            -1
+                        }
 
-                if (action.has("hue") && action.has("sat")) {
-                    light.hue = action.getInt("hue")
-                    light.sat = action.getInt("sat")
-                } else {
-                    light.hue = -1
-                    light.sat = -1
-                }
+                    if (action.has("hue") && action.has("sat")) {
+                        light.hue = action.getInt("hue")
+                        light.sat = action.getInt("sat")
+                    } else {
+                        light.hue = -1
+                        light.sat = -1
+                    }
 
-                light.on = response.getJSONObject("state").getBoolean("any_on")
-                briBar.isEnabled = light.on
+                    light.on = response.getJSONObject("state").getBoolean("any_on")
+                    briBar.isEnabled = light.on
 
-                lampData.state = light
-            },
-            {
-                canReceiveRequest = false
-                updateHandler.stop()
-                finish()
-            }
-        )
+                    lampData.state = light
+                },
+                {
+                    canReceiveRequest = false
+                    updateHandler.stop()
+                    finish()
+                },
+            )
         updateHandler.setUpdateFunction {
             if (canReceiveRequest && hueAPI.readyForRequest) {
                 queue.add(updateDataRequest)
@@ -191,7 +210,7 @@ class HueLampActivity : AppCompatActivity(), HueRoomInterface {
     override fun onColorChanged(color: Int) {
         ImageViewCompat.setImageTintList(
             lampIcon,
-            ColorStateList.valueOf(color)
+            ColorStateList.valueOf(color),
         )
     }
 
@@ -206,24 +225,27 @@ class HueLampActivity : AppCompatActivity(), HueRoomInterface {
                 val shortcutManager = this.getSystemService(ShortcutManager::class.java)
                 if (shortcutManager != null) {
                     if (shortcutManager.isRequestPinShortcutSupported) {
-                        val shortcut = ShortcutInfo.Builder(this, device.id + lampName)
-                            .setShortLabel(lampName)
-                            .setLongLabel(lampName)
-                            .setIcon(Icon.createWithResource(this, device.iconId))
-                            .setIntent(
-                                Intent(this, HueLampActivity::class.java)
-                                    .putExtra("id", id)
-                                    .putExtra("device", device.id)
-                                    .setAction(Intent.ACTION_MAIN)
-                                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                            )
-                            .build()
+                        val shortcut =
+                            ShortcutInfo.Builder(this, device.id + lampName)
+                                .setShortLabel(lampName)
+                                .setLongLabel(lampName)
+                                .setIcon(Icon.createWithResource(this, device.iconId))
+                                .setIntent(
+                                    Intent(this, HueLampActivity::class.java)
+                                        .putExtra("id", id)
+                                        .putExtra("device", device.id)
+                                        .setAction(Intent.ACTION_MAIN)
+                                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK),
+                                )
+                                .build()
                         shortcutManager.requestPinShortcut(shortcut, null)
-                    } else
+                    } else {
                         Toast.makeText(this, R.string.pref_add_shortcut_failed, Toast.LENGTH_LONG).show()
+                    }
                 }
-            } else
+            } else {
                 Toast.makeText(this, R.string.pref_add_shortcut_failed, Toast.LENGTH_LONG).show()
+            }
             true
         } else {
             super.onOptionsItemSelected(item)

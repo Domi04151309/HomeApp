@@ -3,7 +3,6 @@ package io.github.domi04151309.home.helpers
 import android.graphics.Color
 
 object HueUtils {
-
     fun ctToRGB(ct: Int): Int {
         require(!(ct < 153 || ct > 500)) { "Argument out of range" }
         return ColorUtils.temperatureToRGB((6500 - 12.968299711 * (ct - 153)).toInt())
@@ -14,7 +13,10 @@ object HueUtils {
         return "${(6500 - 12.968299711 * (ct - 153)).toInt()} K"
     }
 
-    fun hueSatToRGB(hue: Int, sat: Int): Int {
+    fun hueSatToRGB(
+        hue: Int,
+        sat: Int,
+    ): Int {
         require(!(hue > 65535 || sat > 254)) { "Argument out of range" }
         return Color.HSVToColor(floatArrayOf(hue * 0.005493248F, sat / 254F, 1F))
     }
@@ -47,7 +49,7 @@ object HueUtils {
         Color.colorToHSV(color, hsv)
         return intArrayOf(
             (hsv[0] / 0.0054932478).toInt(),
-            (hsv[1] * 254).toInt()
+            (hsv[1] * 254).toInt(),
         )
     }
 }

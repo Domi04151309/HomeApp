@@ -14,11 +14,10 @@ import java.net.DatagramPacket
 import java.net.DatagramSocket
 import java.net.InetAddress
 import java.net.InetSocketAddress
-import java.util.*
 
 class UPnPDiscovery : AsyncTask<Activity, UPnPDiscovery.OnDiscoveryListener, Void> {
-
     private val devices = HashSet<UPnPDevice>()
+
     @SuppressLint("StaticFieldLeak")
     private val mContext: Context
     private var mThreadsCount: Int = 0
@@ -30,8 +29,11 @@ class UPnPDiscovery : AsyncTask<Activity, UPnPDiscovery.OnDiscoveryListener, Voi
 
     interface OnDiscoveryListener {
         fun onStart()
+
         fun onFoundNewDevice(device: UPnPDevice)
+
         fun onFinish(devices: HashSet<UPnPDevice>)
+
         fun onError(e: Exception)
     }
 
@@ -85,7 +87,6 @@ class UPnPDiscovery : AsyncTask<Activity, UPnPDiscovery.OnDiscoveryListener, Voi
                 }
                 curTime = System.currentTimeMillis()
             }
-
         } catch (e: IOException) {
             e.printStackTrace()
             mListener.onError(e)
@@ -96,8 +97,14 @@ class UPnPDiscovery : AsyncTask<Activity, UPnPDiscovery.OnDiscoveryListener, Voi
         return null
     }
 
-    private fun getData(url: String, device: UPnPDevice) {
-        val stringRequest = StringRequest(Request.Method.GET, url,
+    private fun getData(
+        url: String,
+        device: UPnPDevice,
+    ) {
+        val stringRequest =
+            StringRequest(
+                Request.Method.GET,
+                url,
                 { response ->
                     device.update(response)
                     mListener.onFoundNewDevice(device)
@@ -106,21 +113,23 @@ class UPnPDiscovery : AsyncTask<Activity, UPnPDiscovery.OnDiscoveryListener, Voi
                     if (mThreadsCount == 0) {
                         mListener.onFinish(devices)
                     }
-                }, {
-            mThreadsCount--
-            Log.e(TAG, "URL: $url get content error!")
-        })
+                },
+                {
+                    mThreadsCount--
+                    Log.e(TAG, "URL: $url get content error!")
+                },
+            )
         stringRequest.tag = TAG + "SSDP description request"
         Volley.newRequestQueue(mContext).add(stringRequest)
     }
 
     companion object {
-
         internal val TAG: String = UPnPDiscovery::class.java.simpleName
 
         private const val DISCOVER_TIMEOUT = 1500
         private const val LINE_END = "\r\n"
-        private const val DEFAULT_QUERY = "M-SEARCH * HTTP/1.1" + LINE_END +
+        private const val DEFAULT_QUERY =
+            "M-SEARCH * HTTP/1.1" + LINE_END +
                 "HOST: 239.255.255.250:1900" + LINE_END +
                 "MAN: \"ssdp:discover\"" + LINE_END +
                 "MX: 1" + LINE_END +
@@ -128,7 +137,10 @@ class UPnPDiscovery : AsyncTask<Activity, UPnPDiscovery.OnDiscoveryListener, Voi
                 LINE_END
         private const val DEFAULT_ADDRESS = "239.255.255.250"
 
-        fun discoveryDevices(activity: Activity, listener: OnDiscoveryListener): Boolean {
+        fun discoveryDevices(
+            activity: Activity,
+            listener: OnDiscoveryListener,
+        ): Boolean {
             val discover = UPnPDiscovery(activity, listener)
             discover.execute()
             return try {
@@ -137,10 +149,15 @@ class UPnPDiscovery : AsyncTask<Activity, UPnPDiscovery.OnDiscoveryListener, Voi
             } catch (e: InterruptedException) {
                 false
             }
-
         }
 
-        fun discoveryDevices(activity: Activity, listener: OnDiscoveryListener, customQuery: String, address: String, port: Int): Boolean {
+        fun discoveryDevices(
+            activity: Activity,
+            listener: OnDiscoveryListener,
+            customQuery: String,
+            address: String,
+            port: Int,
+        ): Boolean {
             val discover = UPnPDiscovery(activity, listener, customQuery, address, port)
             discover.execute()
             return try {
@@ -149,8 +166,6 @@ class UPnPDiscovery : AsyncTask<Activity, UPnPDiscovery.OnDiscoveryListener, Voi
             } catch (e: InterruptedException) {
                 false
             }
-
         }
     }
-
 }

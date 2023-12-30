@@ -5,8 +5,7 @@ class ListViewItem(
     summary: String = "",
     hidden: String = "",
     icon: Int = 0,
-    var state: Boolean? = null
+    var state: Boolean? = null,
 ) : SimpleListItem(title, summary, hidden, icon) {
-    override fun toString(): String =
-        "title: $title, summary: $summary, hidden: $hidden, state: $state"
+    override fun toString(): String = "title: $title, summary: $summary, hidden: $hidden, state: $state"
 }

@@ -22,11 +22,10 @@ import io.github.domi04151309.home.helpers.SliderUtils
 import io.github.domi04151309.home.interfaces.HueAdvancedLampInterface
 
 class HueColorSheet(private val lampInterface: HueAdvancedLampInterface) : BottomSheetDialogFragment() {
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         val c = context ?: throw IllegalStateException()
         val hueAPI = HueAPI(c, lampInterface.device.id)
@@ -46,61 +45,64 @@ class HueColorSheet(private val lampInterface: HueAdvancedLampInterface) : Botto
         val hueSatViews = arrayOf<View>(colorPickerView, hueSatText, hueBar, satBar)
         val briViews = arrayOf<View>(briText, briBar)
 
-        //Load colors
+        // Load colors
         Volley.newRequestQueue(c)
-            .add(JsonObjectRequest(Request.Method.GET,
-                "${lampInterface.addressPrefix}/lights/${lampInterface.id}",
-                null,
-                { response ->
-                    val state = response.getJSONObject("state")
+            .add(
+                JsonObjectRequest(
+                    Request.Method.GET,
+                    "${lampInterface.addressPrefix}/lights/${lampInterface.id}",
+                    null,
+                    { response ->
+                        val state = response.getJSONObject("state")
 
-                    if (!state.has("ct")) {
-                        ctViews.forEach {
-                            it.visibility = View.GONE
+                        if (!state.has("ct")) {
+                            ctViews.forEach {
+                                it.visibility = View.GONE
+                            }
+                        } else {
+                            ctViews.forEach {
+                                it.visibility = View.VISIBLE
+                            }
+                            SliderUtils.setProgress(ctBar, state.getInt("ct") - 153)
                         }
-                    } else {
-                        ctViews.forEach {
-                            it.visibility = View.VISIBLE
-                        }
-                        SliderUtils.setProgress(ctBar, state.getInt("ct") - 153)
-                    }
-                    if (!state.has("hue") && !state.has("sat")) {
-                        hueSatViews.forEach {
-                            it.visibility = View.GONE
-                        }
-                    } else {
-                        hueSatViews.forEach {
-                            it.visibility = View.VISIBLE
-                        }
-                        colorPickerView.selectByHsvColor(
-                            HueUtils.hueSatToRGB(
-                                state.getInt("hue"),
-                                state.getInt("sat")
+                        if (!state.has("hue") && !state.has("sat")) {
+                            hueSatViews.forEach {
+                                it.visibility = View.GONE
+                            }
+                        } else {
+                            hueSatViews.forEach {
+                                it.visibility = View.VISIBLE
+                            }
+                            colorPickerView.selectByHsvColor(
+                                HueUtils.hueSatToRGB(
+                                    state.getInt("hue"),
+                                    state.getInt("sat"),
+                                ),
                             )
-                        )
-                        SliderUtils.setProgress(hueBar, state.getInt("hue"))
-                        SliderUtils.setProgress(satBar, state.getInt("sat"))
-                    }
-                    if (!state.has("bri")) {
-                        briViews.forEach {
-                            it.visibility = View.GONE
+                            SliderUtils.setProgress(hueBar, state.getInt("hue"))
+                            SliderUtils.setProgress(satBar, state.getInt("sat"))
                         }
-                    } else {
-                        briViews.forEach {
-                            it.visibility = View.VISIBLE
+                        if (!state.has("bri")) {
+                            briViews.forEach {
+                                it.visibility = View.GONE
+                            }
+                        } else {
+                            briViews.forEach {
+                                it.visibility = View.VISIBLE
+                            }
+                            SliderUtils.setProgress(briBar, state.getInt("bri"))
                         }
-                        SliderUtils.setProgress(briBar, state.getInt("bri"))
-                    }
-                    availableInputs.forEach {
-                        it.isEnabled = state.optBoolean("on")
-                    }
-                },
-                { error ->
-                    Toast.makeText(c, Global.volleyError(c, error), Toast.LENGTH_LONG).show()
-                }
-            ))
+                        availableInputs.forEach {
+                            it.isEnabled = state.optBoolean("on")
+                        }
+                    },
+                    { error ->
+                        Toast.makeText(c, Global.volleyError(c, error), Toast.LENGTH_LONG).show()
+                    },
+                ),
+            )
 
-        //Slider labels
+        // Slider labels
         ctBar.setLabelFormatter { value: Float ->
             HueUtils.ctToKelvin(value.toInt() + 153)
         }
@@ -114,29 +116,32 @@ class HueColorSheet(private val lampInterface: HueAdvancedLampInterface) : Botto
             HueUtils.briToPercent(value.toInt())
         }
 
-        //Slider tints
+        // Slider tints
         SliderUtils.setSliderGradient(
-            ctBar, intArrayOf(
+            ctBar,
+            intArrayOf(
                 Color.WHITE,
-                Color.parseColor("#FF8B16")
-            )
+                Color.parseColor("#FF8B16"),
+            ),
         )
         SliderUtils.setSliderGradient(
-            hueBar, intArrayOf(
+            hueBar,
+            intArrayOf(
                 Color.HSVToColor(floatArrayOf(0f, 1f, 1f)),
                 Color.HSVToColor(floatArrayOf(60f, 1f, 1f)),
                 Color.HSVToColor(floatArrayOf(120f, 1f, 1f)),
                 Color.HSVToColor(floatArrayOf(180f, 1f, 1f)),
                 Color.HSVToColor(floatArrayOf(240f, 1f, 1f)),
                 Color.HSVToColor(floatArrayOf(300f, 1f, 1f)),
-                Color.HSVToColor(floatArrayOf(360f, 1f, 1f))
-            )
+                Color.HSVToColor(floatArrayOf(360f, 1f, 1f)),
+            ),
         )
         SliderUtils.setSliderGradient(
-            satBar, intArrayOf(
+            satBar,
+            intArrayOf(
                 Color.WHITE,
-                Color.RED
-            )
+                Color.RED,
+            ),
         )
 
         ctBar.addOnChangeListener { _, value, fromUser ->
@@ -156,12 +161,13 @@ class HueColorSheet(private val lampInterface: HueAdvancedLampInterface) : Botto
                 lampInterface.onHueSatChanged(value.toInt(), satBar.value.toInt())
             }
             SliderUtils.setSliderGradientNow(
-                satBar, intArrayOf(
+                satBar,
+                intArrayOf(
                     Color.WHITE,
                     HueUtils.hueToRGB(
-                        value.toInt()
-                    )
-                )
+                        value.toInt(),
+                    ),
+                ),
             )
         }
 
@@ -175,17 +181,19 @@ class HueColorSheet(private val lampInterface: HueAdvancedLampInterface) : Botto
             }
         }
 
-        colorPickerView.setColorListener(ColorListener { color, fromUser ->
-            if (fromUser) {
-                val hueSat = HueUtils.rgbToHueSat(color)
-                hueAPI.changeHueSat(lampInterface.id, hueSat[0], hueSat[1])
-                hueBar.value = hueSat[0].toFloat()
-                satBar.value = hueSat[1].toFloat()
-                lampInterface.onColorChanged(color)
-                lampInterface.onColorChanged(color)
-                lampInterface.onHueSatChanged(hueSat[0], hueSat[1])
-            }
-        })
+        colorPickerView.setColorListener(
+            ColorListener { color, fromUser ->
+                if (fromUser) {
+                    val hueSat = HueUtils.rgbToHueSat(color)
+                    hueAPI.changeHueSat(lampInterface.id, hueSat[0], hueSat[1])
+                    hueBar.value = hueSat[0].toFloat()
+                    satBar.value = hueSat[1].toFloat()
+                    lampInterface.onColorChanged(color)
+                    lampInterface.onColorChanged(color)
+                    lampInterface.onHueSatChanged(hueSat[0], hueSat[1])
+                }
+            },
+        )
 
         briBar.addOnChangeListener { _, value, fromUser ->
             if (fromUser) hueAPI.changeBrightness(lampInterface.id, value.toInt())

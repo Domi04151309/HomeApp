@@ -20,7 +20,6 @@ import io.github.domi04151309.home.helpers.Theme
 import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
 
 class ShortcutDeviceActivity : AppCompatActivity(), RecyclerViewHelperInterface {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         Theme.set(this)
         super.onCreate(savedInstanceState)
@@ -32,19 +31,23 @@ class ShortcutDeviceActivity : AppCompatActivity(), RecyclerViewHelperInterface 
         var currentDevice: DeviceItem
         for (i in 0 until devices.length) {
             currentDevice = devices.getDeviceByIndex(i)
-            listItems += SimpleListItem(
-                title = currentDevice.name,
-                summary = currentDevice.address,
-                hidden = currentDevice.id,
-                icon = currentDevice.iconId
-            )
+            listItems +=
+                SimpleListItem(
+                    title = currentDevice.name,
+                    summary = currentDevice.address,
+                    hidden = currentDevice.id,
+                    icon = currentDevice.iconId,
+                )
         }
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = SimpleListAdapter(listItems, this)
     }
 
-    override fun onItemClicked(view: View, position: Int) {
+    override fun onItemClicked(
+        view: View,
+        position: Int,
+    ) {
         val device = Devices(this).getDeviceByIndex(position)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val shortcutManager = this.getSystemService(ShortcutManager::class.java)
@@ -53,25 +56,30 @@ class ShortcutDeviceActivity : AppCompatActivity(), RecyclerViewHelperInterface 
                     RESULT_OK,
                     shortcutManager.createShortcutResultIntent(
                         ShortcutInfo.Builder(this, device.id)
-                            .setShortLabel(device.name.ifEmpty {
-                                resources.getString(R.string.pref_add_name_empty)
-                            })
-                            .setLongLabel(device.name.ifEmpty {
-                                resources.getString(R.string.pref_add_name_empty)
-                            })
+                            .setShortLabel(
+                                device.name.ifEmpty {
+                                    resources.getString(R.string.pref_add_name_empty)
+                                },
+                            )
+                            .setLongLabel(
+                                device.name.ifEmpty {
+                                    resources.getString(R.string.pref_add_name_empty)
+                                },
+                            )
                             .setIcon(Icon.createWithResource(this, device.iconId))
                             .setIntent(
                                 Intent(this, MainActivity::class.java)
                                     .putExtra("device", device.id)
                                     .setAction(Intent.ACTION_MAIN)
-                                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK),
                             )
-                            .build()
-                    )
+                            .build(),
+                    ),
                 )
                 finish()
             }
-        } else
+        } else {
             Toast.makeText(this, R.string.pref_add_shortcut_failed, Toast.LENGTH_LONG).show()
+        }
     }
 }

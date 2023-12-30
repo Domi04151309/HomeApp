@@ -10,7 +10,6 @@ import org.json.JSONObject
 import java.util.Random
 
 class Devices(private val context: Context) {
-
     companion object {
         private const val ALLOWED_CHARACTERS = "0123456789abcdefghijklmnobqrstuvw"
         private var storedData: JSONObject? = null
@@ -20,18 +19,19 @@ class Devices(private val context: Context) {
         }
     }
 
-    private val _prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+    private val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
     private val data: JSONObject get() {
         if (storedData == null) {
-            storedData = try {
-                JSONObject(
-                    _prefs.getString("devices_json", Global.DEFAULT_JSON)
-                        ?: Global.DEFAULT_JSON
-                )
-            } catch (e: JSONException) {
-                JSONObject(Global.DEFAULT_JSON)
-            }
+            storedData =
+                try {
+                    JSONObject(
+                        preferences.getString("devices_json", Global.DEFAULT_JSON)
+                            ?: Global.DEFAULT_JSON,
+                    )
+                } catch (e: JSONException) {
+                    JSONObject(Global.DEFAULT_JSON)
+                }
         }
         return storedData!!
     }
@@ -87,8 +87,9 @@ class Devices(private val context: Context) {
     fun addressExists(address: String): Boolean {
         val formattedAddress = DeviceItem.formatAddress(address)
         for (i in devicesObject.keys()) {
-            if (devicesObject.getJSONObject(i).optString("address") == formattedAddress)
+            if (devicesObject.getJSONObject(i).optString("address") == formattedAddress) {
                 return true
+            }
         }
         return false
     }
@@ -101,13 +102,14 @@ class Devices(private val context: Context) {
 
     fun addDevice(device: DeviceItem) {
         if (!idExists(device.id)) deviceOrder.put(device.id)
-        val deviceObject = JSONObject()
-            .put("name", device.name)
-            .put("address", device.address)
-            .put("mode", device.mode)
-            .put("icon", device.iconName)
-            .put("hide", device.hide)
-            .put("direct_view", device.directView)
+        val deviceObject =
+            JSONObject()
+                .put("name", device.name)
+                .put("address", device.address)
+                .put("mode", device.mode)
+                .put("icon", device.iconName)
+                .put("hide", device.hide)
+                .put("direct_view", device.directView)
         devicesObject.put(device.id, deviceObject)
         saveChanges()
     }
@@ -124,15 +126,19 @@ class Devices(private val context: Context) {
         DeviceSecrets(context, id).deleteDeviceSecrets()
     }
 
-    fun moveDevice(from: Int, to: Int) {
-        val list = MutableList(deviceOrder.length()) {
-            deviceOrder.getString(it)
-        }
+    fun moveDevice(
+        from: Int,
+        to: Int,
+    ) {
+        val list =
+            MutableList(deviceOrder.length()) {
+                deviceOrder.getString(it)
+            }
         list.add(to, list.removeAt(from))
         data.put("order", JSONArray(list))
     }
 
     fun saveChanges() {
-        _prefs.edit().putString("devices_json", data.toString()).apply()
+        preferences.edit().putString("devices_json", data.toString()).apply()
     }
 }
