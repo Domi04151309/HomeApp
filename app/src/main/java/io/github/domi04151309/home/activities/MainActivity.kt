@@ -310,7 +310,7 @@ class MainActivity : AppCompatActivity() {
                     FrameLayout.LayoutParams.MATCH_PARENT,
                     FrameLayout.LayoutParams.MATCH_PARENT,
                 )
-            view.setTextAppearance(R.style.TextAppearance_AppCompat_Large)
+            view.setTextAppearance(androidx.appcompat.R.style.TextAppearance_AppCompat_Large)
             view.setTextColor(ContextCompat.getColor(this, android.R.color.white))
             view.gravity = Gravity.CENTER_VERTICAL
             view.ellipsize = TextUtils.TruncateAt.END
