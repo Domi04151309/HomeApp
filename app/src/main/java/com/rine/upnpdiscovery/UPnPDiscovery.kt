@@ -1,4 +1,4 @@
-package com._8rine.upnpdiscovery
+package com.rine.upnpdiscovery
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -15,6 +15,7 @@ import java.net.DatagramSocket
 import java.net.InetAddress
 import java.net.InetSocketAddress
 
+@Suppress("MagicNumber")
 class UPnPDiscovery : AsyncTask<Activity, UPnPDiscovery.OnDiscoveryListener, Void> {
     private val devices = HashSet<UPnPDevice>()
 

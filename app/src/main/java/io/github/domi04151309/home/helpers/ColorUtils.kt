@@ -4,6 +4,7 @@ import android.graphics.Color
 import kotlin.math.ln
 import kotlin.math.pow
 
+@Suppress("MagicNumber")
 object ColorUtils {
     private const val MAX: Double = 255.0
     private const val MIN: Double = 0.0

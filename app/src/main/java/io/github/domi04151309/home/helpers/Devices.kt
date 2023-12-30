@@ -13,6 +13,7 @@ import java.util.Random
 class Devices(private val context: Context) {
     companion object {
         private const val ALLOWED_CHARACTERS = "0123456789abcdefghijklmnobqrstuvw"
+        private const val ID_LENGTH = 8
         private var storedData: JSONObject? = null
 
         fun reloadFromPreferences() {
@@ -51,8 +52,8 @@ class Devices(private val context: Context) {
 
     private fun generateRandomId(): String {
         val random = Random()
-        val sb = StringBuilder(8)
-        for (i in 0 until 8)
+        val sb = StringBuilder(ID_LENGTH)
+        for (i in 0 until ID_LENGTH)
             sb.append(ALLOWED_CHARACTERS[random.nextInt(ALLOWED_CHARACTERS.length)])
         return sb.toString()
     }

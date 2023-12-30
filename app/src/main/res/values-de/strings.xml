@@ -19,7 +19,6 @@
 
     <string name="err">Etwas ist schiefgegangen</string>
     <string name="err_wrong_format">Falsches Format</string>
-    <string name="err_wrong_format_summary">Die JSON-Zeichenfolge erfüllt nicht die Voraussetzungen</string>
     <string name="err_missing_name">Geben Sie bitte einen Namen ein</string>
     <string name="err_missing_name_summary">Ein Name ist wichtig, damit sie Den Eintrag später wiedererkennen können</string>
     <string name="err_missing_address">Geben Sie bitte eine Adresse ein</string>
@@ -35,7 +34,6 @@
     <string name="hue_add_scene">Szene hinzufügen</string>
     <string name="hue_edit_scene">Szene bearbeiten</string>
     <string name="hue_new_scene">Neue Szene</string>
-    <string name="hue_rename_scene">Geben Sie bitte einen neuen Namen ein</string>
     <string name="hue_delete_scene">Sind Sie sich sicher, dass Sie diese Szene löschen möchten?</string>
     <string name="hue_bridge">Brücke</string>
     <string name="hue_bridge_name">Brückenname</string>
@@ -141,8 +139,6 @@
     <string name="device_config_info_status">Status</string>
 
     <string name="str_cancel">Abbrechen</string>
-    <string name="str_name">Name</string>
-    <string name="str_rename">Umbenennen</string>
     <string name="str_edit">Bearbeiten</string>
     <string name="str_delete">Löschen</string>
     <string name="str_show">Anzeigen</string>

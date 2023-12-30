@@ -31,10 +31,14 @@ import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.HueUtils
 import io.github.domi04151309.home.interfaces.HueLampInterface
 import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
+import org.json.JSONException
 import org.json.JSONObject
 
 class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes), RecyclerViewHelperInterface {
     companion object {
+        private const val SCENE_FRACTION_ESTIMATE = 4
+        private const val COLUMNS = 3
+
         var scenesChanged: Boolean = false
     }
 
@@ -56,7 +60,7 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes), RecyclerViewHe
 
         val recyclerView = super.onCreateView(inflater, container, savedInstanceState) as RecyclerView
         val adapter = HueSceneGridAdapter(this, this)
-        recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
+        recyclerView.layoutManager = GridLayoutManager(requireContext(), COLUMNS)
         recyclerView.adapter = adapter
 
         scenesRequest =
@@ -65,7 +69,10 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes), RecyclerViewHe
                 { response ->
                     try {
                         val gridItems: ArrayList<SceneGridItem> = ArrayList(response.length())
-                        val scenes: ArrayList<Pair<String, String>> = ArrayList(response.length() / 4)
+                        val scenes: ArrayList<Pair<String, String>> =
+                            ArrayList(
+                                response.length() / SCENE_FRACTION_ESTIMATE,
+                            )
                         var currentObject: JSONObject
                         for (i in response.keys()) {
                             currentObject = response.getJSONObject(i)
@@ -152,7 +159,7 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes), RecyclerViewHe
                                 ),
                             )
                         }
-                    } catch (e: Exception) {
+                    } catch (e: JSONException) {
                         Log.e(Global.LOG_TAG, e.toString())
                     }
                 },

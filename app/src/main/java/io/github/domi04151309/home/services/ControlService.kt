@@ -30,6 +30,10 @@ import java.util.function.Consumer
 
 @RequiresApi(Build.VERSION_CODES.R)
 class ControlService : ControlsProviderService() {
+    companion object {
+        private const val UPDATE_DELAY = 100L
+    }
+
     private var updateSubscriber: Flow.Subscriber<in Control>? = null
 
     override fun createPublisherForAllAvailable(): Flow.Publisher<Control> {
@@ -146,7 +150,7 @@ class ControlService : ControlsProviderService() {
                                                 .setStructure(resources.getString(R.string.app_name))
                                                 .setDeviceType(Global.getDeviceType(device.iconName))
                                                 .setStatus(Control.STATUS_OK)
-                                        if (Build.VERSION.SDK_INT >= 33) {
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                                             controlBuilder.setAuthRequired(
                                                 PreferenceManager.getDefaultSharedPreferences(this@ControlService)
                                                     .getBoolean(
@@ -254,7 +258,7 @@ class ControlService : ControlsProviderService() {
             consumer.accept(ControlAction.RESPONSE_OK)
             Handler(Looper.getMainLooper()).postDelayed({
                 loadStatefulControl(updateSubscriber, controlId)
-            }, 100)
+            }, UPDATE_DELAY)
         } else {
             consumer.accept(ControlAction.RESPONSE_FAIL)
         }

@@ -136,6 +136,7 @@ class EspEasyAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.Pars
         currentSensor: JSONObject,
     ) {
         var tasks = 0
+        @Suppress("MagicNumber")
         when (type) {
             "Environment - BMx280" -> tasks += 3
             "Environment - DHT11/12/22  SONOFF2301/7021" -> tasks += 2

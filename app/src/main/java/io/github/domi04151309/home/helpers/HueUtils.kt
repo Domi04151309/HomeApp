@@ -2,15 +2,25 @@ package io.github.domi04151309.home.helpers
 
 import android.graphics.Color
 
+@Suppress("MagicNumber")
 object HueUtils {
+    const val MIN_COLOR_TEMPERATURE = 153
+    const val MAX_BRIGHTNESS = 255
+
+    fun defaultColors(): IntArray =
+        IntArray(7) {
+                index ->
+            Color.HSVToColor(floatArrayOf(index * 60f, 1f, 1f))
+        }
+
     fun ctToRGB(ct: Int): Int {
-        require(!(ct < 153 || ct > 500)) { "Argument out of range" }
-        return ColorUtils.temperatureToRGB((6500 - 12.968299711 * (ct - 153)).toInt())
+        require(!(ct < MIN_COLOR_TEMPERATURE || ct > 500)) { "Argument out of range" }
+        return ColorUtils.temperatureToRGB((6500 - 12.968299711 * (ct - MIN_COLOR_TEMPERATURE)).toInt())
     }
 
     fun ctToKelvin(ct: Int): String {
-        require(!(ct < 153 || ct > 500)) { "Argument out of range" }
-        return "${(6500 - 12.968299711 * (ct - 153)).toInt()} K"
+        require(!(ct < MIN_COLOR_TEMPERATURE || ct > 500)) { "Argument out of range" }
+        return "${(6500 - 12.968299711 * (ct - MIN_COLOR_TEMPERATURE)).toInt()} K"
     }
 
     fun hueSatToRGB(

@@ -17,7 +17,6 @@
 
     <string name="err">Er is iets misgegaan</string>
     <string name="err_wrong_format">Onbekend formaat</string>
-    <string name="err_wrong_format_summary">De json-tekenreeks voldoet niet aan de vereisten</string>
     <string name="err_missing_name">Voer een naam in</string>
     <string name="err_missing_name_summary">Voer een naam in om het apparaat makkelijk te herkennen</string>
     <string name="err_missing_address">Voer een adres in</string>
@@ -31,7 +30,6 @@
     <string name="hue_hue_sat">Tint and verzadiging</string>
     <string name="hue_add_scene">Scène toevoegen</string>
     <string name="hue_new_scene">Nieuwe scène</string>
-    <string name="hue_rename_scene">Geef de scène een naam</string>
     <string name="hue_delete_scene">Weet je zeker dat je deze scène wilt verwijderen?</string>
 
     <string name="webView">Webweergave</string>
@@ -71,8 +69,6 @@
     <string name="placeholder">Bezig met laden</string>
 
     <string name="str_cancel">Annuleren</string>
-    <string name="str_name">Naam</string>
-    <string name="str_rename">Naam wijzigen</string>
     <string name="str_delete">Verwijderen</string>
     <string name="str_on">Aan</string>
     <string name="str_off">Uit</string>

@@ -54,7 +54,7 @@ class SettingsActivity : AppCompatActivity() {
         ) {
             addPreferencesFromResource(R.xml.pref_general)
             findPreference<Preference>(P.PREF_CONTROLS_AUTH)?.isVisible =
-                Build.VERSION.SDK_INT >= 33
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
             findPreference<Preference>("devices")?.setOnPreferenceClickListener {
                 startActivity(Intent(context, DevicesActivity::class.java))
                 true

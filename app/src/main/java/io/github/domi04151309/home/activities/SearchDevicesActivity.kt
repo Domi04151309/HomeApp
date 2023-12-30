@@ -11,10 +11,10 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com._8rine.upnpdiscovery.UPnPDevice
-import com._8rine.upnpdiscovery.UPnPDiscovery
 import com.android.volley.toolbox.Volley
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.rine.upnpdiscovery.UPnPDevice
+import com.rine.upnpdiscovery.UPnPDiscovery
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.adapters.DeviceDiscoveryListAdapter
 import io.github.domi04151309.home.api.ShellyAPI
@@ -251,6 +251,7 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
         }
     }
 
+    @Suppress("MagicNumber")
     private fun intToIp(address: Int): String {
         return (address and 0xFF).toString() + "." + (address shr 8 and 0xFF) + "." +
             (address shr 16 and 0xFF) + "." + (address shr 24 and 0xFF)

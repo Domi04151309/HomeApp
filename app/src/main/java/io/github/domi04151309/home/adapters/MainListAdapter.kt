@@ -20,6 +20,10 @@ import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
 
 class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapter<MainListAdapter.ViewHolder>() {
+    companion object {
+        private const val ANIMATION_DURATION = 300L
+    }
+
     private var items: ArrayList<ListViewItem> = arrayListOf()
     private var helperInterface: HomeRecyclerViewHelperInterface? = null
     private var animate: Boolean = true
@@ -183,7 +187,7 @@ class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapt
         val set = AnimationSet(true)
 
         val firstAnimation: Animation = AlphaAnimation(0.0f, 1.0f)
-        firstAnimation.duration = 300
+        firstAnimation.duration = ANIMATION_DURATION
         set.addAnimation(firstAnimation)
 
         val secondAnimation =
@@ -197,7 +201,7 @@ class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapt
                 Animation.RELATIVE_TO_SELF,
                 0.0f,
             )
-        secondAnimation.duration = 300
+        secondAnimation.duration = ANIMATION_DURATION
         set.addAnimation(secondAnimation)
 
         v.startAnimation(set)

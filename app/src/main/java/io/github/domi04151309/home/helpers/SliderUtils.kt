@@ -11,6 +11,11 @@ import android.view.animation.DecelerateInterpolator
 import com.google.android.material.slider.Slider
 
 object SliderUtils {
+    private const val CORNER_RADIUS = 16
+    private const val MARGIN_VERTICAL = 22
+    private const val MARGIN_HORIZONTAL = 14
+    private const val ANIMATION_DURATION = 300L
+
     private fun dpToPx(
         resources: Resources,
         dp: Int,
@@ -23,7 +28,7 @@ object SliderUtils {
         colors: IntArray,
     ) {
         val gradient = PaintDrawable()
-        gradient.setCornerRadius(dpToPx(view.resources, 16).toFloat())
+        gradient.setCornerRadius(dpToPx(view.resources, CORNER_RADIUS).toFloat())
         gradient.paint.shader =
             LinearGradient(
                 0f, 0f,
@@ -36,10 +41,10 @@ object SliderUtils {
         val layers = LayerDrawable(arrayOf(gradient))
         layers.setLayerInset(
             0,
-            dpToPx(view.resources, 14),
-            dpToPx(view.resources, 22),
-            dpToPx(view.resources, 14),
-            dpToPx(view.resources, 22),
+            dpToPx(view.resources, MARGIN_HORIZONTAL),
+            dpToPx(view.resources, MARGIN_VERTICAL),
+            dpToPx(view.resources, MARGIN_HORIZONTAL),
+            dpToPx(view.resources, MARGIN_VERTICAL),
         )
         view.background = layers
     }
@@ -58,7 +63,7 @@ object SliderUtils {
         value: Int,
     ) {
         val animation = ObjectAnimator.ofFloat(slider, "value", value.toFloat())
-        animation.duration = 300
+        animation.duration = ANIMATION_DURATION
         animation.interpolator = DecelerateInterpolator()
         animation.start()
     }

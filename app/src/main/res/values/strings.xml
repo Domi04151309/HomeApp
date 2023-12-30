@@ -19,7 +19,6 @@
 
     <string name="err">Something went wrong</string>
     <string name="err_wrong_format">Wrong format</string>
-    <string name="err_wrong_format_summary">The JSON string does not meet the requirements</string>
     <string name="err_missing_name">Please enter a name</string>
     <string name="err_missing_name_summary">A name is important so that you can recognize the entry later</string>
     <string name="err_missing_address">Please enter an address</string>
@@ -35,7 +34,6 @@
     <string name="hue_add_scene">Add Scene</string>
     <string name="hue_edit_scene">Edit Scene</string>
     <string name="hue_new_scene">New Scene</string>
-    <string name="hue_rename_scene">Please enter a new name</string>
     <string name="hue_delete_scene">Are you sure you want to delete this scene?</string>
     <string name="hue_bridge">Bridge</string>
     <string name="hue_bridge_name">Bridge Name</string>
@@ -144,8 +142,6 @@
     <string name="device_config_info_status">Status</string>
 
     <string name="str_cancel">Cancel</string>
-    <string name="str_name">Name</string>
-    <string name="str_rename">Rename</string>
     <string name="str_edit">Edit</string>
     <string name="str_delete">Delete</string>
     <string name="str_show">Show</string>

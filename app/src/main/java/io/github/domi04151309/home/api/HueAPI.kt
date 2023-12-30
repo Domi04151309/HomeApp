@@ -24,6 +24,10 @@ class HueAPI(
     deviceId: String,
     recyclerViewInterface: HomeRecyclerViewHelperInterface? = null,
 ) : UnifiedAPI(c, deviceId, recyclerViewInterface) {
+    companion object {
+        private const val UPDATE_DELAY = 100L
+    }
+
     private val parser = HueAPIParser(c.resources)
     var readyForRequest: Boolean = true
 
@@ -251,7 +255,7 @@ class HueAPI(
         if (readyForRequest) {
             readyForRequest = false
             queue.add(request)
-            Handler(Looper.getMainLooper()).postDelayed({ readyForRequest = true }, 100)
+            Handler(Looper.getMainLooper()).postDelayed({ readyForRequest = true }, UPDATE_DELAY)
         }
     }
 }

@@ -32,6 +32,7 @@ import io.github.domi04151309.home.helpers.ColorUtils
 import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.HueUtils
+import io.github.domi04151309.home.helpers.HueUtils.MAX_BRIGHTNESS
 import io.github.domi04151309.home.helpers.SliderUtils
 import io.github.domi04151309.home.helpers.Theme
 import io.github.domi04151309.home.interfaces.HueAdvancedLampInterface
@@ -268,7 +269,7 @@ class HueSceneActivity : AppCompatActivity(), SceneRecyclerViewHelperInterface, 
         val item = SceneListItem(title)
         item.state = state.optBoolean("on")
         item.hidden = id
-        item.brightness = HueUtils.briToPercent(state.optInt("bri", 255))
+        item.brightness = HueUtils.briToPercent(state.optInt("bri", MAX_BRIGHTNESS))
         item.color =
             if (state.has("xy")) {
                 val xyArray = state.getJSONArray("xy")

@@ -18,6 +18,7 @@ import io.github.domi04151309.home.R
 import io.github.domi04151309.home.api.HueAPI
 import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.HueUtils
+import io.github.domi04151309.home.helpers.HueUtils.MIN_COLOR_TEMPERATURE
 import io.github.domi04151309.home.helpers.SliderUtils
 import io.github.domi04151309.home.interfaces.HueAdvancedLampInterface
 
@@ -62,7 +63,7 @@ class HueColorSheet(private val lampInterface: HueAdvancedLampInterface) : Botto
                             ctViews.forEach {
                                 it.visibility = View.VISIBLE
                             }
-                            SliderUtils.setProgress(ctBar, state.getInt("ct") - 153)
+                            SliderUtils.setProgress(ctBar, state.getInt("ct") - MIN_COLOR_TEMPERATURE)
                         }
                         if (!state.has("hue") && !state.has("sat")) {
                             hueSatViews.forEach {
@@ -107,7 +108,7 @@ class HueColorSheet(private val lampInterface: HueAdvancedLampInterface) : Botto
 
         // Slider labels
         ctBar.setLabelFormatter { value: Float ->
-            HueUtils.ctToKelvin(value.toInt() + 153)
+            HueUtils.ctToKelvin(value.toInt() + MIN_COLOR_TEMPERATURE)
         }
         hueBar.setLabelFormatter { value: Float ->
             HueUtils.hueToDegree(value.toInt())
@@ -129,15 +130,7 @@ class HueColorSheet(private val lampInterface: HueAdvancedLampInterface) : Botto
         )
         SliderUtils.setSliderGradient(
             hueBar,
-            intArrayOf(
-                Color.HSVToColor(floatArrayOf(0f, 1f, 1f)),
-                Color.HSVToColor(floatArrayOf(60f, 1f, 1f)),
-                Color.HSVToColor(floatArrayOf(120f, 1f, 1f)),
-                Color.HSVToColor(floatArrayOf(180f, 1f, 1f)),
-                Color.HSVToColor(floatArrayOf(240f, 1f, 1f)),
-                Color.HSVToColor(floatArrayOf(300f, 1f, 1f)),
-                Color.HSVToColor(floatArrayOf(360f, 1f, 1f)),
-            ),
+            HueUtils.defaultColors(),
         )
         SliderUtils.setSliderGradient(
             satBar,
@@ -149,9 +142,9 @@ class HueColorSheet(private val lampInterface: HueAdvancedLampInterface) : Botto
 
         ctBar.addOnChangeListener { _, value, fromUser ->
             if (fromUser) {
-                hueAPI.changeColorTemperature(lampInterface.id, value.toInt() + 153)
-                lampInterface.onColorChanged(HueUtils.ctToRGB(value.toInt() + 153))
-                lampInterface.onCtChanged(value.toInt() + 153)
+                hueAPI.changeColorTemperature(lampInterface.id, value.toInt() + MIN_COLOR_TEMPERATURE)
+                lampInterface.onColorChanged(HueUtils.ctToRGB(value.toInt() + MIN_COLOR_TEMPERATURE))
+                lampInterface.onCtChanged(value.toInt() + MIN_COLOR_TEMPERATURE)
             }
         }
 

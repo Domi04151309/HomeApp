@@ -1,11 +1,10 @@
-package com._8rine.upnpdiscovery
+package com.rine.upnpdiscovery
 
 import android.util.Log
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import org.xmlpull.v1.XmlPullParserFactory
 import java.io.ByteArrayInputStream
-import java.lang.Exception
 
 class UPnPDevice internal constructor(val hostAddress: String, header: String) {
     internal val location: String

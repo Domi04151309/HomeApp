@@ -49,6 +49,9 @@ class MainActivity : AppCompatActivity() {
                 "Node-RED",
                 "Website",
             )
+        private const val TINY_DELAY = 100L
+        private const val COLUMN_COUNT_FRACTION = 240
+        private const val MAX_RESPONSE_LENGTH = 64
     }
 
     private var tasmotaPosition: Int = 0
@@ -439,8 +442,14 @@ class MainActivity : AppCompatActivity() {
     private fun numberOfRows(): Int {
         if (columns != null) return columns ?: 1
         val displayMetrics: DisplayMetrics = resources.displayMetrics
-        val horizontal: Int = ((displayMetrics.widthPixels / displayMetrics.density) / 240).toInt()
-        val vertical: Int = ((displayMetrics.heightPixels / displayMetrics.density) / 240).toInt()
+        val horizontal: Int =
+            (
+                (displayMetrics.widthPixels / displayMetrics.density) / COLUMN_COUNT_FRACTION
+            ).toInt()
+        val vertical: Int =
+            (
+                (displayMetrics.heightPixels / displayMetrics.density) / COLUMN_COUNT_FRACTION
+            ).toInt()
         return max(1, min(horizontal, vertical))
     }
 
@@ -520,7 +529,7 @@ class MainActivity : AppCompatActivity() {
                                     ) {
                                         if (holder.response != null) {
                                             Thread {
-                                                while (!updateHandler.running) Thread.sleep(10)
+                                                while (!updateHandler.running) Thread.sleep(TINY_DELAY)
                                                 runOnUiThread {
                                                     adapter.updateDirectView(
                                                         currentDevice.id,
@@ -580,7 +589,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     internal fun showExecutionResult(result: String) {
-        if (result.length < 64) {
+        if (result.length < MAX_RESPONSE_LENGTH) {
             Toast.makeText(this, result, Toast.LENGTH_LONG).show()
         } else {
             Snackbar

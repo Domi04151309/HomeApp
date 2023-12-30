@@ -34,6 +34,7 @@ import io.github.domi04151309.home.data.LightStates
 import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.helpers.HueLightListener
 import io.github.domi04151309.home.helpers.HueUtils
+import io.github.domi04151309.home.helpers.HueUtils.MIN_COLOR_TEMPERATURE
 import io.github.domi04151309.home.helpers.SliderUtils
 import io.github.domi04151309.home.helpers.Theme
 import io.github.domi04151309.home.helpers.UpdateHandler
@@ -102,7 +103,7 @@ class HueLampActivity : AppCompatActivity(), HueRoomInterface {
                     if (it.hue != -1 && it.sat != -1) {
                         HueUtils.hueSatToRGB(it.hue, it.sat)
                     } else if (it.ct != -1) {
-                        HueUtils.ctToRGB(it.ct + 153)
+                        HueUtils.ctToRGB(it.ct + MIN_COLOR_TEMPERATURE)
                     } else {
                         Color.WHITE
                     },
@@ -161,7 +162,7 @@ class HueLampActivity : AppCompatActivity(), HueRoomInterface {
                     }
                     light.ct =
                         if (action.has("ct")) {
-                            action.getInt("ct") - 153
+                            action.getInt("ct") - MIN_COLOR_TEMPERATURE
                         } else {
                             -1
                         }

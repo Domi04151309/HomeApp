@@ -18,11 +18,13 @@ import io.github.domi04151309.home.R
 import io.github.domi04151309.home.api.HueAPI
 import io.github.domi04151309.home.data.LightStates
 import io.github.domi04151309.home.helpers.HueUtils
+import io.github.domi04151309.home.helpers.HueUtils.MIN_COLOR_TEMPERATURE
 import io.github.domi04151309.home.helpers.SliderUtils
 import io.github.domi04151309.home.interfaces.HueRoomInterface
 
 class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
     companion object {
+        private const val LOADING_DELAY = 200L
         private const val UPDATE_DELAY = 5000L
     }
 
@@ -54,7 +56,7 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
 
         // Slider labels
         ctBar.setLabelFormatter { value: Float ->
-            HueUtils.ctToKelvin(value.toInt() + 153)
+            HueUtils.ctToKelvin(value.toInt() + MIN_COLOR_TEMPERATURE)
         }
         hueBar.setLabelFormatter { value: Float ->
             HueUtils.hueToDegree(value.toInt())
@@ -73,15 +75,7 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
         )
         SliderUtils.setSliderGradient(
             hueBar,
-            intArrayOf(
-                Color.HSVToColor(floatArrayOf(0f, 1f, 1f)),
-                Color.HSVToColor(floatArrayOf(60f, 1f, 1f)),
-                Color.HSVToColor(floatArrayOf(120f, 1f, 1f)),
-                Color.HSVToColor(floatArrayOf(180f, 1f, 1f)),
-                Color.HSVToColor(floatArrayOf(240f, 1f, 1f)),
-                Color.HSVToColor(floatArrayOf(300f, 1f, 1f)),
-                Color.HSVToColor(floatArrayOf(360f, 1f, 1f)),
-            ),
+            HueUtils.defaultColors(),
         )
         SliderUtils.setSliderGradient(
             satBar,
@@ -93,7 +87,7 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
 
         ctBar.addOnChangeListener { _, value, fromUser ->
             if (fromUser) {
-                lampInterface.onColorChanged(HueUtils.ctToRGB(value.toInt() + 153))
+                lampInterface.onColorChanged(HueUtils.ctToRGB(value.toInt() + MIN_COLOR_TEMPERATURE))
             }
         }
         ctBar.addOnSliderTouchListener(
@@ -103,7 +97,7 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
                 }
 
                 override fun onStopTrackingTouch(slider: Slider) {
-                    hueAPI.changeColorTemperatureOfGroup(lampInterface.id, slider.value.toInt() + 153)
+                    hueAPI.changeColorTemperatureOfGroup(lampInterface.id, slider.value.toInt() + MIN_COLOR_TEMPERATURE)
                     resumeUpdates()
                 }
             },
@@ -215,7 +209,7 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
                         lampInterface.lampData.state.sat,
                     ),
                 )
-            }, 200)
+            }, LOADING_DELAY)
             updateFunction(lampInterface.lampData.state)
             lampInterface.lampData.addOnDataChangedListener(::updateFunction)
         }

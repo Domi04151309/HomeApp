@@ -17,7 +17,6 @@
 
     <string name="err">Algo salió mal</string>
     <string name="err_wrong_format">Formato incorrecto</string>
-    <string name="err_wrong_format_summary">La cadena JSON no cumple los requisitos</string>
     <string name="err_missing_name">Por favor, introduzca un nombre</string>
     <string name="err_missing_name_summary">Un nombre es importante para reconocer la entrada más tarde</string>
     <string name="err_missing_address">Por favor, introduzca una dirección</string>
@@ -31,7 +30,6 @@
     <string name="hue_hue_sat">Tono y saturación</string>
     <string name="hue_add_scene">Añadir escenario</string>
     <string name="hue_new_scene">Nuevo escenario</string>
-    <string name="hue_rename_scene">Por favor, introduzca un nuevo nombre</string>
     <string name="hue_delete_scene">¿Estás seguro de que quieres borrar esta escena?</string>
     
     <string name="webView">Web View</string>
@@ -71,8 +69,6 @@
     <string name="placeholder">Cargando</string>
 
     <string name="str_cancel">Cancelar</string>
-    <string name="str_name">Nombre</string>
-    <string name="str_rename">Renombrar</string>
     <string name="str_delete">Borrar</string>
     <string name="str_on">Encendido</string>
     <string name="str_off">Apagado</string>

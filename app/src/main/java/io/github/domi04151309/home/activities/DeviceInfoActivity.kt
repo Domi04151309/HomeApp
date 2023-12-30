@@ -22,6 +22,10 @@ import java.util.Locale
 import java.util.concurrent.TimeUnit
 
 class DeviceInfoActivity : AppCompatActivity(), RecyclerViewHelperInterface {
+    companion object {
+        private const val TO_PERCENT = 100
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         Theme.set(this)
         super.onCreate(savedInstanceState)
@@ -64,6 +68,7 @@ class DeviceInfoActivity : AppCompatActivity(), RecyclerViewHelperInterface {
         return resources.getString(if (bool) R.string.str_on else R.string.str_off)
     }
 
+    @Suppress("MagicNumber")
     private fun rssiToPercent(rssi: Int): Int {
         return if (rssi <= -100) {
             0
@@ -283,14 +288,14 @@ class DeviceInfoActivity : AppCompatActivity(), RecyclerViewHelperInterface {
                             ),
                             SimpleListItem(
                                 (response.optJSONObject("sys") ?: JSONObject()).run {
-                                    "${(optInt("fs_free") / optInt("fs_size").toFloat() * 100).toInt()} %"
+                                    "${(optInt("fs_free") / optInt("fs_size").toFloat() * TO_PERCENT).toInt()} %"
                                 },
                                 resources.getString(R.string.shelly_storage),
                                 icon = R.drawable.ic_about_info,
                             ),
                             SimpleListItem(
                                 (response.optJSONObject("sys") ?: JSONObject()).run {
-                                    "${(optInt("ram_free") / optInt("ram_size").toFloat() * 100).toInt()} %"
+                                    "${(optInt("ram_free") / optInt("ram_size").toFloat() * TO_PERCENT).toInt()} %"
                                 },
                                 resources.getString(R.string.shelly_ram),
                                 icon = R.drawable.ic_about_info,
