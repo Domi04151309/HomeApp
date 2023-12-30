@@ -11,6 +11,7 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import android.net.Uri
 import android.os.Build
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.helpers.P
@@ -62,7 +63,7 @@ class SettingsActivity : AppCompatActivity() {
                 true
             }
             findPreference<Preference>("reset_json")?.setOnPreferenceClickListener {
-                AlertDialog.Builder(requireContext())
+                MaterialAlertDialogBuilder(requireContext())
                     .setTitle(R.string.pref_reset)
                     .setMessage(R.string.pref_reset_question)
                     .setPositiveButton(R.string.str_delete) { _, _ ->

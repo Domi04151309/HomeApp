@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.preference.PreferenceManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.api.UnifiedAPI
 import org.json.JSONArray
@@ -28,7 +29,7 @@ class TasmotaHelper(private val c: Context, private val tasmota: UnifiedAPI)  {
         val commandTxt = view.findViewById<EditText>(R.id.command)
         titleTxt.setText(arrayItem.optString("title"))
         commandTxt.setText(arrayItem.optString("command"))
-        AlertDialog.Builder(c)
+        MaterialAlertDialogBuilder(c)
             .setTitle(R.string.tasmota_add_command)
             .setView(view)
             .setPositiveButton(android.R.string.ok) { _, _ ->
@@ -52,7 +53,7 @@ class TasmotaHelper(private val c: Context, private val tasmota: UnifiedAPI)  {
         val commandTxt = view.findViewById<EditText>(R.id.command)
         titleTxt.setText(title)
         commandTxt.setText(command)
-        AlertDialog.Builder(c)
+        MaterialAlertDialogBuilder(c)
                 .setTitle(R.string.tasmota_add_command)
                 .setView(view)
                 .setPositiveButton(android.R.string.ok) { _, _ ->
@@ -79,7 +80,7 @@ class TasmotaHelper(private val c: Context, private val tasmota: UnifiedAPI)  {
     fun executeOnce(callback: UnifiedAPI.CallbackInterface) {
         val view = LayoutInflater.from(c).inflate(R.layout.dialog_tasmota_execute_once, nullParent, false)
         val command = view.findViewById<EditText>(R.id.command)
-        AlertDialog.Builder(c)
+        MaterialAlertDialogBuilder(c)
                 .setTitle(R.string.tasmota_execute_once)
                 .setView(view)
                 .setPositiveButton(android.R.string.ok) { _, _ ->

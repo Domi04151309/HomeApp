@@ -16,6 +16,7 @@ import com.android.volley.Request
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.slider.Slider
 import com.google.android.material.textfield.TextInputLayout
@@ -194,7 +195,7 @@ class HueSceneActivity : AppCompatActivity(), SceneRecyclerViewHelperInterface, 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
             val name = nameBox.editText?.text.toString()
             if (name == "") {
-                AlertDialog.Builder(this)
+                MaterialAlertDialogBuilder(this)
                     .setTitle(R.string.err_missing_name)
                     .setMessage(R.string.err_missing_name_summary)
                     .setPositiveButton(android.R.string.ok) { _, _ -> }

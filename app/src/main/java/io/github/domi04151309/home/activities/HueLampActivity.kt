@@ -29,7 +29,6 @@ import io.github.domi04151309.home.api.HueAPI
 import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.data.LightStates
 import io.github.domi04151309.home.helpers.*
-import io.github.domi04151309.home.helpers.Global.volleyError
 import io.github.domi04151309.home.helpers.Theme
 import io.github.domi04151309.home.interfaces.HueRoomInterface
 import org.json.JSONArray

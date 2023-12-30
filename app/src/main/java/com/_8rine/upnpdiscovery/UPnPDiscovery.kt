@@ -116,7 +116,7 @@ class UPnPDiscovery : AsyncTask<Activity, UPnPDiscovery.OnDiscoveryListener, Voi
 
     companion object {
 
-        internal val TAG = UPnPDiscovery::class.java.simpleName
+        internal val TAG: String = UPnPDiscovery::class.java.simpleName
 
         private const val DISCOVER_TIMEOUT = 1500
         private const val LINE_END = "\r\n"

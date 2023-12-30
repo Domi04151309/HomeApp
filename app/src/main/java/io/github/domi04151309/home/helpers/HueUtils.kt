@@ -16,17 +16,17 @@ object HueUtils {
 
     fun hueSatToRGB(hue: Int, sat: Int): Int {
         require(!(hue > 65535 || sat > 254)) { "Argument out of range" }
-        return Color.HSVToColor(floatArrayOf(hue * 0.0054932478F, sat / 254F, 1F))
+        return Color.HSVToColor(floatArrayOf(hue * 0.005493248F, sat / 254F, 1F))
     }
 
     fun hueToRGB(hue: Int): Int {
         require(hue <= 65535) { "Argument out of range" }
-        return Color.HSVToColor(floatArrayOf(hue * 0.0054932478F, 1F, 1F))
+        return Color.HSVToColor(floatArrayOf(hue * 0.005493248F, 1F, 1F))
     }
 
     fun hueToDegree(hue: Int): String {
         require(hue <= 65535) { "Argument out of range" }
-        return "${(hue * 0.0054932478F).toInt()}°"
+        return "${(hue * 0.005493248F).toInt()}°"
     }
 
     fun satToPercent(sat: Int): String {

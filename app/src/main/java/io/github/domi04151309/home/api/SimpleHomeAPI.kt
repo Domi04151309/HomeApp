@@ -8,6 +8,7 @@ import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import com.android.volley.*
 import com.android.volley.toolbox.JsonObjectRequest
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import io.github.domi04151309.home.helpers.Global.volleyError
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.data.UnifiedRequestCallback
@@ -70,7 +71,7 @@ class SimpleHomeAPI(
                 val nullParent: ViewGroup? = null
                 val view = LayoutInflater.from(c).inflate(R.layout.dialog_input, nullParent, false)
                 val input = view.findViewById<EditText>(R.id.input)
-                AlertDialog.Builder(c)
+                MaterialAlertDialogBuilder(c)
                     .setTitle(R.string.input_title)
                     .setView(view)
                     .setPositiveButton(R.string.str_send) { _, _ ->

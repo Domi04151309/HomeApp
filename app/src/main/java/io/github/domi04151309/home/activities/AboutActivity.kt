@@ -7,6 +7,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import io.github.domi04151309.home.BuildConfig
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.helpers.Theme
@@ -65,7 +66,7 @@ class AboutActivity : AppCompatActivity() {
                 true
             }
             findPreference<Preference>("icons")?.setOnPreferenceClickListener {
-                AlertDialog.Builder(requireContext())
+                MaterialAlertDialogBuilder(requireContext())
                     .setTitle(R.string.about_icons)
                     .setItems(resources.getStringArray(R.array.about_icons_array)) { _, which ->
                         startActivity(
@@ -84,7 +85,7 @@ class AboutActivity : AppCompatActivity() {
                 true
             }
             findPreference<Preference>("contributors")?.setOnPreferenceClickListener {
-                AlertDialog.Builder(requireContext())
+                MaterialAlertDialogBuilder(requireContext())
                     .setTitle(R.string.about_privacy)
                     .setMessage(R.string.about_privacy_desc)
                     .setPositiveButton(android.R.string.ok) { _, _ ->

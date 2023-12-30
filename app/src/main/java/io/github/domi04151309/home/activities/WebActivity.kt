@@ -22,6 +22,7 @@ import android.webkit.*
 import android.content.Intent
 import android.view.*
 import androidx.activity.result.contract.ActivityResultContracts
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class WebActivity : AppCompatActivity() {
 
@@ -65,7 +66,7 @@ class WebActivity : AppCompatActivity() {
 
             override fun onReceivedHttpAuthRequest(view: WebView, handler: HttpAuthHandler, host: String, realm: String) {
                 val dialogView = LayoutInflater.from(c).inflate(R.layout.dialog_web_authentication, nullParent, false)
-                AlertDialog.Builder(c)
+                MaterialAlertDialogBuilder(c)
                         .setTitle(R.string.webView_authentication)
                         .setView(dialogView)
                         .setPositiveButton(android.R.string.ok) { _, _ ->

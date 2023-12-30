@@ -2,6 +2,10 @@ package io.github.domi04151309.home
 
 import android.content.res.Resources
 import io.github.domi04151309.home.api.HueAPIParser
+import org.hamcrest.CoreMatchers
+import org.hamcrest.CoreMatchers.*
+import org.hamcrest.MatcherAssert
+import org.hamcrest.MatcherAssert.*
 import org.junit.Assert
 import org.json.JSONObject
 import org.junit.Test
@@ -19,7 +23,7 @@ class HueAPIParserTest {
         val groupsJson = JSONObject(Helpers.getFileContents("/hue/docs-groups.json"))
 
         val listItems = parser.parseResponse(groupsJson)
-        Assert.assertEquals(0, listItems.size)
+        assertThat(listItems.size, `is`(0))
     }
 
     @Test
@@ -27,7 +31,7 @@ class HueAPIParserTest {
         val groupsJson = JSONObject(Helpers.getFileContents("/hue/docs-groups.json"))
 
         val states = parser.parseStates(groupsJson)
-        Assert.assertEquals(arrayListOf<Boolean?>(), states)
+        assertThat(states, `is`(arrayListOf<Boolean?>()))
     }
 
     @Test
@@ -35,70 +39,70 @@ class HueAPIParserTest {
         val groupsJson = JSONObject(Helpers.getFileContents("/hue/home-groups.json"))
 
         val listItems = parser.parseResponse(groupsJson)
-        Assert.assertEquals(9, listItems.size)
+        assertThat(listItems.size, `is`(9))
 
         var num = 0
-        Assert.assertEquals("Bedroom", listItems[num].title)
-        Assert.assertEquals(resources.getString(R.string.hue_tap), listItems[num].summary)
-        Assert.assertEquals(false, listItems[num].state)
-        Assert.assertEquals("room#1", listItems[num].hidden)
-        Assert.assertEquals(R.drawable.ic_room, listItems[num].icon)
+        assertThat(listItems[num].title, `is`("Bedroom"))
+        assertThat(listItems[num].summary, `is`(resources.getString(R.string.hue_tap)))
+        assertThat(listItems[num].state, `is`(false))
+        assertThat(listItems[num].hidden, `is`("room#1"))
+        assertThat(listItems[num].icon, `is`(R.drawable.ic_room))
 
         num = 1
-        Assert.assertEquals("Hallway", listItems[num].title)
-        Assert.assertEquals(resources.getString(R.string.hue_tap), listItems[num].summary)
-        Assert.assertEquals(false, listItems[num].state)
-        Assert.assertEquals("room#5", listItems[num].hidden)
-        Assert.assertEquals(R.drawable.ic_room, listItems[num].icon)
+        assertThat(listItems[num].title, `is`("Hallway"))
+        assertThat(listItems[num].summary, `is`(resources.getString(R.string.hue_tap)))
+        assertThat(listItems[num].state, `is`(false))
+        assertThat(listItems[num].hidden, `is`("room#5"))
+        assertThat(listItems[num].icon, `is`(R.drawable.ic_room))
 
         num = 2
-        Assert.assertEquals("Kitchen", listItems[num].title)
-        Assert.assertEquals(resources.getString(R.string.hue_tap), listItems[num].summary)
-        Assert.assertEquals(false, listItems[num].state)
-        Assert.assertEquals("room#7", listItems[num].hidden)
-        Assert.assertEquals(R.drawable.ic_room, listItems[num].icon)
+        assertThat(listItems[num].title, `is`("Kitchen"))
+        assertThat(listItems[num].summary, `is`(resources.getString(R.string.hue_tap)))
+        assertThat(listItems[num].state, `is`(false))
+        assertThat(listItems[num].hidden, `is`("room#7"))
+        assertThat(listItems[num].icon, `is`(R.drawable.ic_room))
 
         num = 3
-        Assert.assertEquals("Living Room", listItems[num].title)
-        Assert.assertEquals(resources.getString(R.string.hue_tap), listItems[num].summary)
-        Assert.assertEquals(false, listItems[num].state)
-        Assert.assertEquals("room#2", listItems[num].hidden)
-        Assert.assertEquals(R.drawable.ic_room, listItems[num].icon)
+        assertThat(listItems[num].title, `is`("Living Room"))
+        assertThat(listItems[num].summary, `is`(resources.getString(R.string.hue_tap)))
+        assertThat(listItems[num].state, `is`(false))
+        assertThat(listItems[num].hidden, `is`("room#2"))
+        assertThat(listItems[num].icon, `is`(R.drawable.ic_room))
 
         num = 4
-        Assert.assertEquals("Office", listItems[num].title)
-        Assert.assertEquals(resources.getString(R.string.hue_tap), listItems[num].summary)
-        Assert.assertEquals(false, listItems[num].state)
-        Assert.assertEquals("room#6", listItems[num].hidden)
-        Assert.assertEquals(R.drawable.ic_room, listItems[num].icon)
+        assertThat(listItems[num].title, `is`("Office"))
+        assertThat(listItems[num].summary, `is`(resources.getString(R.string.hue_tap)))
+        assertThat(listItems[num].state, `is`(false))
+        assertThat(listItems[num].hidden, `is`("room#6"))
+        assertThat(listItems[num].icon, `is`(R.drawable.ic_room))
 
         num = 5
-        Assert.assertEquals("Unused", listItems[num].title)
-        Assert.assertEquals(resources.getString(R.string.hue_tap), listItems[num].summary)
-        Assert.assertEquals(false, listItems[num].state)
-        Assert.assertEquals("room#8", listItems[num].hidden)
-        Assert.assertEquals(R.drawable.ic_room, listItems[num].icon)
+        assertThat(listItems[num].title, `is`("Unused"))
+        assertThat(listItems[num].summary, `is`(resources.getString(R.string.hue_tap)))
+        assertThat(listItems[num].state, `is`(false))
+        assertThat(listItems[num].hidden, `is`("room#8"))
+        assertThat(listItems[num].icon, `is`(R.drawable.ic_room))
 
         num = 6
-        Assert.assertEquals("Kitchen Cabinets", listItems[num].title)
-        Assert.assertEquals(resources.getString(R.string.hue_tap), listItems[num].summary)
-        Assert.assertEquals(false, listItems[num].state)
-        Assert.assertEquals("zone#9", listItems[num].hidden)
-        Assert.assertEquals(R.drawable.ic_zone, listItems[num].icon)
+        assertThat(listItems[num].title, `is`("Kitchen Cabinets"))
+        assertThat(listItems[num].summary, `is`(resources.getString(R.string.hue_tap)))
+        assertThat(listItems[num].state, `is`(false))
+        assertThat(listItems[num].hidden, `is`("zone#9"))
+        assertThat(listItems[num].icon, `is`(R.drawable.ic_zone))
 
         num = 7
-        Assert.assertEquals("Kitchen Ceiling", listItems[num].title)
-        Assert.assertEquals(resources.getString(R.string.hue_tap), listItems[num].summary)
-        Assert.assertEquals(false, listItems[num].state)
-        Assert.assertEquals("zone#3", listItems[num].hidden)
-        Assert.assertEquals(R.drawable.ic_zone, listItems[num].icon)
+        assertThat(listItems[num].title, `is`("Kitchen Ceiling"))
+        assertThat(listItems[num].summary, `is`(resources.getString(R.string.hue_tap)))
+        assertThat(listItems[num].state, `is`(false))
+        assertThat(listItems[num].hidden, `is`("zone#3"))
+        assertThat(listItems[num].icon, `is`(R.drawable.ic_zone))
 
         num = 8
-        Assert.assertEquals("Living Room Ambient", listItems[num].title)
-        Assert.assertEquals(resources.getString(R.string.hue_tap), listItems[num].summary)
-        Assert.assertEquals(false, listItems[num].state)
-        Assert.assertEquals("zone#4", listItems[num].hidden)
-        Assert.assertEquals(R.drawable.ic_zone, listItems[num].icon)
+        assertThat(listItems[num].title, `is`("Living Room Ambient"))
+        assertThat(listItems[num].summary, `is`(resources.getString(R.string.hue_tap)))
+        assertThat(listItems[num].state, `is`(false))
+        assertThat(listItems[num].hidden, `is`("zone#4"))
+        assertThat(listItems[num].icon, `is`(R.drawable.ic_zone))
     }
 
     @Test
@@ -106,6 +110,20 @@ class HueAPIParserTest {
         val groupsJson = JSONObject(Helpers.getFileContents("/hue/home-groups.json"))
 
         val states = parser.parseStates(groupsJson)
-        Assert.assertEquals(arrayListOf(false, false, false, false, false, false, false, false, false), states)
+        assertThat(
+            states, `is`(
+                arrayListOf(
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+        )
+            )
+        )
     }
 }

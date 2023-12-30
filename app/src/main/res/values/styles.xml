@@ -60,6 +60,7 @@
         <item name="materialButtonStyle">@style/AppThemeButton</item>
         <item name="checkboxStyle">@style/AppThemeCheckbox</item>
         <item name="android:switchStyle">@style/AppThemeSwitch</item>
+        <item name="switchStyle">@style/AppThemeSwitch</item>
         <item name="bottomSheetDialogTheme">@style/AppThemeBottomSheetDialog</item>
         <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox</item>
         <item name="dialogCornerRadius">8dp</item>

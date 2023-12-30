@@ -15,6 +15,7 @@ import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.activities.HueSceneActivity
 import io.github.domi04151309.home.adapters.HueSceneGridAdapter
@@ -189,7 +190,7 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes), RecyclerViewHe
                 true
             }
             resources.getString(R.string.str_delete) -> {
-                AlertDialog.Builder(c)
+                MaterialAlertDialogBuilder(c)
                     .setTitle(R.string.str_delete)
                     .setMessage(R.string.hue_delete_scene)
                     .setPositiveButton(R.string.str_delete) { _, _ ->

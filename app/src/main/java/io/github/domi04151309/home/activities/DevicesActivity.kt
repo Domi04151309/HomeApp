@@ -9,6 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.adapters.DeviceListAdapter
 import io.github.domi04151309.home.data.DeviceItem
@@ -113,7 +114,7 @@ class DevicesActivity : AppCompatActivity(), RecyclerViewHelperInterfaceAdvanced
             )
         } else if (action == "add") {
             reset = true
-            AlertDialog.Builder(this)
+            MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.pref_add_method)
                 .setItems(resources.getStringArray(R.array.pref_add_method_array)) { _, which ->
                     if (which == 0) {

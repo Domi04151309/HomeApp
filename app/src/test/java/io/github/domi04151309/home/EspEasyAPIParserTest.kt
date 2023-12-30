@@ -2,6 +2,10 @@ package io.github.domi04151309.home
 
 import android.content.res.Resources
 import io.github.domi04151309.home.api.EspEasyAPIParser
+import org.hamcrest.CoreMatchers
+import org.hamcrest.CoreMatchers.*
+import org.hamcrest.MatcherAssert
+import org.hamcrest.MatcherAssert.*
 import org.junit.Assert
 import org.json.JSONObject
 import org.junit.Test
@@ -19,38 +23,38 @@ class EspEasyAPIParserTest {
         val infoJson = JSONObject(Helpers.getFileContents("/espeasy/espeasy-1.json"))
 
         val listItems = parser.parseResponse(infoJson)
-        Assert.assertEquals(4, listItems.size)
+        assertThat(listItems.size, `is`(4))
 
         //sensor 1: Temperature + Humidity
         var num = 0
-        Assert.assertEquals("24.7 °C", listItems[num].title)
-        Assert.assertEquals("DHT: Temperatur", listItems[num].summary)
-        Assert.assertEquals(null, listItems[num].state)
-        Assert.assertEquals("", listItems[num].hidden)
-        Assert.assertEquals(R.drawable.ic_device_thermometer, listItems[num].icon)
+        assertThat(listItems[num].title, `is`("24.7 °C"))
+        assertThat(listItems[num].summary, `is`("DHT: Temperatur"))
+        assertThat(listItems[num].state, `is`(null as Boolean?))
+        assertThat(listItems[num].hidden, `is`(""))
+        assertThat(listItems[num].icon, `is`(R.drawable.ic_device_thermometer))
 
         num++
-        Assert.assertEquals("39.5 %", listItems[num].title)
-        Assert.assertEquals("DHT: Feuchte", listItems[num].summary)
-        Assert.assertEquals(null, listItems[num].state)
-        Assert.assertEquals("", listItems[num].hidden)
-        Assert.assertEquals(R.drawable.ic_device_hygrometer, listItems[num].icon)
+        assertThat(listItems[num].title, `is`("39.5 %"))
+        assertThat(listItems[num].summary, `is`("DHT: Feuchte"))
+        assertThat(listItems[num].state, `is`(null as Boolean?))
+        assertThat(listItems[num].hidden, `is`(""))
+        assertThat(listItems[num].icon, `is`(R.drawable.ic_device_hygrometer))
 
         //sensor 2: Temperature only
         num++
-        Assert.assertEquals("0 °C", listItems[num].title)
-        Assert.assertEquals("DS: Temperatur", listItems[num].summary)
-        Assert.assertEquals(null, listItems[num].state)
-        Assert.assertEquals("", listItems[num].hidden)
-        Assert.assertEquals(R.drawable.ic_device_thermometer, listItems[num].icon)
+        assertThat(listItems[num].title, `is`("0 °C"))
+        assertThat(listItems[num].summary, `is`("DS: Temperatur"))
+        assertThat(listItems[num].state, `is`(null as Boolean?))
+        assertThat(listItems[num].hidden, `is`(""))
+        assertThat(listItems[num].icon, `is`(R.drawable.ic_device_thermometer))
 
         //sensor 3: Switch in off mode
         num++
-        Assert.assertEquals("Relais", listItems[num].title)
-        Assert.assertEquals(resources.getString(R.string.switch_summary_off), listItems[num].summary)
-        Assert.assertEquals(false, listItems[num].state)
-        Assert.assertEquals("12", listItems[num].hidden)
-        Assert.assertEquals(R.drawable.ic_do, listItems[num].icon)
+        assertThat(listItems[num].title, `is`("Relais"))
+        assertThat(listItems[num].summary, `is`(resources.getString(R.string.switch_summary_off)))
+        assertThat(listItems[num].state, `is`(false))
+        assertThat(listItems[num].hidden, `is`("12"))
+        assertThat(listItems[num].icon, `is`(R.drawable.ic_do))
     }
 
     @Test
@@ -58,7 +62,7 @@ class EspEasyAPIParserTest {
         val infoJson = JSONObject(Helpers.getFileContents("/espeasy/espeasy-1.json"))
 
         val states = parser.parseStates(infoJson)
-        Assert.assertEquals(arrayListOf(null, null, null, false), states)
+        assertThat(states, `is`(arrayListOf(null, null, null, false)))
     }
 
     @Test
@@ -66,7 +70,7 @@ class EspEasyAPIParserTest {
         val infoJson = JSONObject(Helpers.getFileContents("/espeasy/espeasy-disabledtasks.json"))
 
         val listItems = parser.parseResponse(infoJson)
-        Assert.assertEquals(0, listItems.size)
+        assertThat(listItems.size, `is`(0))
     }
 
     @Test
@@ -74,7 +78,7 @@ class EspEasyAPIParserTest {
         val infoJson = JSONObject(Helpers.getFileContents("/espeasy/espeasy-disabledtasks.json"))
 
         val states = parser.parseStates(infoJson)
-        Assert.assertEquals(arrayListOf<Boolean?>(), states)
+        assertThat(states, `is`(arrayListOf<Boolean?>()))
     }
 
     @Test
@@ -83,15 +87,15 @@ class EspEasyAPIParserTest {
 
         val listItems = parser.parseResponse(infoJson)
 
-        Assert.assertEquals(1, listItems.size)
+        assertThat(listItems.size, `is`(1))
 
         //first sensor value is humidity since temperature returns a "NaN" that we hidd
         val num = 0
-        Assert.assertEquals("39.5 %", listItems[num].title)
-        Assert.assertEquals("DHT: Feuchte", listItems[num].summary)
-        Assert.assertEquals(null, listItems[num].state)
-        Assert.assertEquals("", listItems[num].hidden)
-        Assert.assertEquals(R.drawable.ic_device_hygrometer, listItems[num].icon)
+        assertThat(listItems[num].title, `is`("39.5 %"))
+        assertThat(listItems[num].summary, `is`("DHT: Feuchte"))
+        assertThat(listItems[num].state, `is`(null as Boolean?))
+        assertThat(listItems[num].hidden, `is`(""))
+        assertThat(listItems[num].icon, `is`(R.drawable.ic_device_hygrometer))
     }
 
     @Test
@@ -99,7 +103,7 @@ class EspEasyAPIParserTest {
         val infoJson = JSONObject(Helpers.getFileContents("/espeasy/espeasy-nan.json"))
 
         val states = parser.parseStates(infoJson)
-        Assert.assertEquals(arrayListOf(null), states)
+        assertThat(states, `is`(arrayListOf(null)))
     }
 
     @Test
@@ -108,28 +112,28 @@ class EspEasyAPIParserTest {
 
         val listItems = parser.parseResponse(infoJson)
 
-        Assert.assertEquals(3, listItems.size)
+        assertThat(listItems.size, `is`(3))
         //sensor 1: Temperature + Humidity + Pressure
         var num = 0
-        Assert.assertEquals("30 °C", listItems[num].title)
-        Assert.assertEquals("BMP_HWR: Temp_BMP", listItems[num].summary)
-        Assert.assertEquals(null, listItems[num].state)
-        Assert.assertEquals("", listItems[num].hidden)
-        Assert.assertEquals(R.drawable.ic_device_thermometer, listItems[num].icon)
+        assertThat(listItems[num].title, `is`("30 °C"))
+        assertThat(listItems[num].summary, `is`("BMP_HWR: Temp_BMP"))
+        assertThat(listItems[num].state, `is`(null as Boolean?))
+        assertThat(listItems[num].hidden, `is`(""))
+        assertThat(listItems[num].icon, `is`(R.drawable.ic_device_thermometer))
 
         num++
-        Assert.assertEquals("0 %", listItems[num].title)
-        Assert.assertEquals("BMP_HWR: Feuchte_BMP", listItems[num].summary)
-        Assert.assertEquals(null, listItems[num].state)
-        Assert.assertEquals("", listItems[num].hidden)
-        Assert.assertEquals(R.drawable.ic_device_hygrometer, listItems[num].icon)
+        assertThat(listItems[num].title, `is`("0 %"))
+        assertThat(listItems[num].summary, `is`("BMP_HWR: Feuchte_BMP"))
+        assertThat(listItems[num].state, `is`(null as Boolean?))
+        assertThat(listItems[num].hidden, `is`(""))
+        assertThat(listItems[num].icon, `is`(R.drawable.ic_device_hygrometer))
 
         num++
-        Assert.assertEquals("1004 hPa", listItems[num].title)
-        Assert.assertEquals("BMP_HWR: Druck_BMP", listItems[num].summary)
-        Assert.assertEquals(null, listItems[num].state)
-        Assert.assertEquals("", listItems[num].hidden)
-        Assert.assertEquals(R.drawable.ic_device_gauge, listItems[num].icon)
+        assertThat(listItems[num].title, `is`("1004 hPa"))
+        assertThat(listItems[num].summary, `is`("BMP_HWR: Druck_BMP"))
+        assertThat(listItems[num].state, `is`(null as Boolean?))
+        assertThat(listItems[num].hidden, `is`(""))
+        assertThat(listItems[num].icon, `is`(R.drawable.ic_device_gauge))
     }
 
     @Test
@@ -137,6 +141,6 @@ class EspEasyAPIParserTest {
         val infoJson = JSONObject(Helpers.getFileContents("/espeasy/espeasy-pressure.json"))
 
         val states = parser.parseStates(infoJson)
-        Assert.assertEquals(arrayListOf(null, null, null), states)
+        assertThat(states, `is`(arrayListOf(null, null, null)))
     }
 }

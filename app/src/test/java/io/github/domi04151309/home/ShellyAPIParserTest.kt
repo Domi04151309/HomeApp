@@ -2,6 +2,10 @@ package io.github.domi04151309.home
 
 import android.content.res.Resources
 import io.github.domi04151309.home.api.ShellyAPIParser
+import org.hamcrest.CoreMatchers
+import org.hamcrest.CoreMatchers.*
+import org.hamcrest.MatcherAssert
+import org.hamcrest.MatcherAssert.*
 import org.junit.Assert
 import org.json.JSONObject
 import org.junit.Test
@@ -21,21 +25,24 @@ class ShellyAPIParserTest {
         val statusJson = JSONObject(Helpers.getFileContents("/shelly/shellyplug1-status.json"))
 
         val listItems = parserV1.parseResponse(settingsJson, statusJson)
-        Assert.assertEquals(2, listItems.size)
+        assertThat(listItems.size, `is`(2))
 
         var num = 0
-        Assert.assertEquals("Wohnzimmer Gartenfenster", listItems[num].title)
-        Assert.assertEquals(resources.getString(R.string.switch_summary_on), listItems[num].summary)
-        Assert.assertEquals(true, listItems[num].state)
-        Assert.assertEquals("0", listItems[num].hidden)
-        Assert.assertEquals(R.drawable.ic_do, listItems[num].icon)
+        assertThat(listItems[num].title, `is`("Wohnzimmer Gartenfenster"))
+        assertThat(listItems[num].summary, `is`(resources.getString(R.string.switch_summary_on)))
+        assertThat(listItems[num].state, `is`(true))
+        assertThat(listItems[num].hidden, `is`("0"))
+        assertThat(listItems[num].icon, `is`(R.drawable.ic_do))
 
         num = 1
-        Assert.assertEquals("27.95 W", listItems[num].title)
-        Assert.assertEquals(resources.getString(R.string.shelly_powermeter_summary), listItems[num].summary)
-        Assert.assertEquals(null, listItems[num].state)
-        Assert.assertEquals("", listItems[num].hidden)
-        Assert.assertEquals(R.drawable.ic_device_electricity, listItems[num].icon)
+        assertThat(listItems[num].title, `is`("27.95 W"))
+        assertThat(
+            listItems[num].summary,
+            `is`(resources.getString(R.string.shelly_powermeter_summary))
+        )
+        assertThat(listItems[num].state, `is`(null as Boolean?))
+        assertThat(listItems[num].hidden, `is`(""))
+        assertThat(listItems[num].icon, `is`(R.drawable.ic_device_electricity))
     }
 
     @Test
@@ -44,7 +51,7 @@ class ShellyAPIParserTest {
         val statusJson = JSONObject(Helpers.getFileContents("/shelly/shellyplug1-status.json"))
 
         val states = parserV1.parseStates(settingsJson, statusJson)
-        Assert.assertEquals(arrayListOf(true, null), states)
+        assertThat(states, `is`(arrayListOf(true, null)))
     }
 
     @Test
@@ -53,31 +60,31 @@ class ShellyAPIParserTest {
         val statusJson = JSONObject(Helpers.getFileContents("/shelly/shellyplug1-icons-status.json"))
 
         val listItems = parserV1.parseResponse(settingsJson, statusJson)
-        Assert.assertEquals(6, listItems.size)
+        assertThat(listItems.size, `is`(6))
 
         var num = 0
-        Assert.assertEquals("Deckenlampe", listItems[num].title)
-        Assert.assertEquals(R.drawable.ic_device_lamp, listItems[num].icon)
+        assertThat(listItems[num].title, `is`("Deckenlampe"))
+        assertThat(listItems[num].icon, `is`(R.drawable.ic_device_lamp))
 
         num = 1
-        Assert.assertEquals("Steckdose", listItems[num].title)
-        Assert.assertEquals(R.drawable.ic_device_socket, listItems[num].icon)
+        assertThat(listItems[num].title, `is`("Steckdose"))
+        assertThat(listItems[num].icon, `is`(R.drawable.ic_device_socket))
 
         num = 2
-        Assert.assertEquals("Radiator", listItems[num].title)
-        Assert.assertEquals(R.drawable.ic_device_thermometer, listItems[num].icon)
+        assertThat(listItems[num].title, `is`("Radiator"))
+        assertThat(listItems[num].icon, `is`(R.drawable.ic_device_thermometer))
 
         num = 3
-        Assert.assertEquals("Stereoanlage", listItems[num].title)
-        Assert.assertEquals(R.drawable.ic_device_speaker, listItems[num].icon)
+        assertThat(listItems[num].title, `is`("Stereoanlage"))
+        assertThat(listItems[num].icon, `is`(R.drawable.ic_device_speaker))
 
         num = 4
-        Assert.assertEquals("Tannenbaum (en)", listItems[num].title)
-        Assert.assertEquals(R.drawable.ic_device_christmas_tree, listItems[num].icon)
+        assertThat(listItems[num].title, `is`("Tannenbaum (en)"))
+        assertThat(listItems[num].icon, `is`(R.drawable.ic_device_christmas_tree))
 
         num = 5
-        Assert.assertEquals("Schwibbogen", listItems[num].title)
-        Assert.assertEquals(R.drawable.ic_device_schwibbogen, listItems[num].icon)
+        assertThat(listItems[num].title, `is`("Schwibbogen"))
+        assertThat(listItems[num].icon, `is`(R.drawable.ic_device_schwibbogen))
     }
 
     @Test
@@ -86,28 +93,34 @@ class ShellyAPIParserTest {
         val statusJson = JSONObject(Helpers.getFileContents("/shelly/shelly1-status.json"))
 
         val listItems = parserV1.parseResponse(settingsJson, statusJson)
-        Assert.assertEquals(3, listItems.size)
+        assertThat(listItems.size, `is`(3))
 
         var num = 0
-        Assert.assertEquals(resources.getString(R.string.shelly_switch_title, 1), listItems[num].title)
-        Assert.assertEquals(resources.getString(R.string.switch_summary_off), listItems[num].summary)
-        Assert.assertEquals(false, listItems[num].state)
-        Assert.assertEquals("0", listItems[num].hidden)
-        Assert.assertEquals(R.drawable.ic_do, listItems[num].icon)
+        assertThat(listItems[num].title, `is`(resources.getString(R.string.shelly_switch_title, 1)))
+        assertThat(listItems[num].summary, `is`(resources.getString(R.string.switch_summary_off)))
+        assertThat(listItems[num].state, `is`(false))
+        assertThat(listItems[num].hidden, `is`("0"))
+        assertThat(listItems[num].icon, `is`(R.drawable.ic_do))
 
         num++
-        Assert.assertEquals("23.0 °C", listItems[num].title)
-        Assert.assertEquals(resources.getString(R.string.shelly_temperature_sensor_summary), listItems[num].summary)
-        Assert.assertEquals(null, listItems[num].state)
-        Assert.assertEquals("", listItems[num].hidden)
-        Assert.assertEquals(R.drawable.ic_device_thermometer, listItems[num].icon)
+        assertThat(listItems[num].title, `is`("23.0 °C"))
+        assertThat(
+            listItems[num].summary,
+            `is`(resources.getString(R.string.shelly_temperature_sensor_summary))
+        )
+        assertThat(listItems[num].state, `is`(null as Boolean?))
+        assertThat(listItems[num].hidden, `is`(""))
+        assertThat(listItems[num].icon, `is`(R.drawable.ic_device_thermometer))
 
         num++
-        Assert.assertEquals("52.3%", listItems[num].title)
-        Assert.assertEquals(resources.getString(R.string.shelly_humidity_sensor_summary), listItems[num].summary)
-        Assert.assertEquals(null, listItems[num].state)
-        Assert.assertEquals("", listItems[num].hidden)
-        Assert.assertEquals(R.drawable.ic_device_hygrometer, listItems[num].icon)
+        assertThat(listItems[num].title, `is`("52.3%"))
+        assertThat(
+            listItems[num].summary,
+            `is`(resources.getString(R.string.shelly_humidity_sensor_summary))
+        )
+        assertThat(listItems[num].state, `is`(null as Boolean?))
+        assertThat(listItems[num].hidden, `is`(""))
+        assertThat(listItems[num].icon, `is`(R.drawable.ic_device_hygrometer))
     }
 
     @Test
@@ -116,7 +129,7 @@ class ShellyAPIParserTest {
         val statusJson = JSONObject(Helpers.getFileContents("/shelly/shelly1-status.json"))
 
         val states = parserV1.parseStates(settingsJson, statusJson)
-        Assert.assertEquals(arrayListOf(false, null, null), states)
+        assertThat(states, `is`(arrayListOf(false, null, null)))
     }
 
     @Test
@@ -125,14 +138,14 @@ class ShellyAPIParserTest {
         val statusJson = JSONObject(Helpers.getFileContents("/shelly/shelly-plus-1-Shelly.GetStatus.json"))
 
         val listItems = parserV2.parseResponse(configJson, statusJson)
-        Assert.assertEquals(1, listItems.size)
+        assertThat(listItems.size, `is`(1))
 
         val num = 0
-        Assert.assertEquals("Kamin", listItems[num].title)
-        Assert.assertEquals(resources.getString(R.string.switch_summary_on), listItems[num].summary)
-        Assert.assertEquals(true, listItems[num].state)
-        Assert.assertEquals("0", listItems[num].hidden)
-        Assert.assertEquals(R.drawable.ic_device_lamp, listItems[num].icon)
+        assertThat(listItems[num].title, `is`("Kamin"))
+        assertThat(listItems[num].summary, `is`(resources.getString(R.string.switch_summary_on)))
+        assertThat(listItems[num].state, `is`(true))
+        assertThat(listItems[num].hidden, `is`("0"))
+        assertThat(listItems[num].icon, `is`(R.drawable.ic_device_lamp))
     }
 
     @Test
@@ -141,6 +154,6 @@ class ShellyAPIParserTest {
         val statusJson = JSONObject(Helpers.getFileContents("/shelly/shelly-plus-1-Shelly.GetStatus.json"))
 
         val states = parserV2.parseStates(configJson, statusJson)
-        Assert.assertEquals(arrayListOf(true), states)
+        assertThat(states, `is`(arrayListOf(true)))
     }
 }

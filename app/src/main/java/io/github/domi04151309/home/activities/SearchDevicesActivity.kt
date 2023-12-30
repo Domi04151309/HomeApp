@@ -15,6 +15,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.toolbox.Volley
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.adapters.DeviceDiscoveryListAdapter
 import io.github.domi04151309.home.data.DeviceItem
@@ -212,7 +213,7 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
         val name = view.findViewById<TextView>(R.id.title).text.toString()
         val hidden =  view.findViewById<TextView>(R.id.hidden).text.toString()
         if (hidden != "") {
-            AlertDialog.Builder(this)
+            MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.pref_add_dialog)
                 .setMessage(resources.getString(R.string.pref_add_dialog_message, name))
                 .setPositiveButton(R.string.str_add) { _, _ ->

@@ -16,6 +16,7 @@ import android.graphics.drawable.Icon
 import android.net.Uri
 import android.text.TextWatcher
 import android.text.Editable
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputLayout
 import io.github.domi04151309.home.R
@@ -203,7 +204,7 @@ class EditDeviceActivity : AppCompatActivity() {
             }
 
             findViewById<Button>(R.id.deleteBtn).setOnClickListener {
-                AlertDialog.Builder(this)
+                MaterialAlertDialogBuilder(this)
                         .setTitle(R.string.str_delete)
                         .setMessage(R.string.pref_delete_device_question)
                         .setPositiveButton(R.string.str_delete) { _, _ ->
@@ -226,14 +227,14 @@ class EditDeviceActivity : AppCompatActivity() {
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
             val name = nameBox.editText?.text.toString()
             if (name == "") {
-                AlertDialog.Builder(this)
+                MaterialAlertDialogBuilder(this)
                         .setTitle(R.string.err_missing_name)
                         .setMessage(R.string.err_missing_name_summary)
                         .setPositiveButton(android.R.string.ok) { _, _ -> }
                         .show()
                 return@setOnClickListener
             } else if (addressBox.editText?.text.toString() == "") {
-                AlertDialog.Builder(this)
+                MaterialAlertDialogBuilder(this)
                         .setTitle(R.string.err_missing_address)
                         .setMessage(R.string.err_missing_address_summary)
                         .setPositiveButton(android.R.string.ok) { _, _ -> }

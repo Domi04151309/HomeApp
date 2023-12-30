@@ -29,6 +29,7 @@ import kotlin.math.min
 import android.view.animation.AnimationUtils
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class MainActivity : AppCompatActivity() {
 
@@ -322,7 +323,7 @@ class MainActivity : AppCompatActivity() {
                 true
             }
             resources.getString(R.string.str_delete) -> {
-                AlertDialog.Builder(this)
+                MaterialAlertDialogBuilder(this)
                     .setTitle(R.string.str_delete)
                     .setMessage(R.string.tasmota_delete_command)
                     .setPositiveButton(R.string.str_delete) { _, _ ->
@@ -507,7 +508,7 @@ class MainActivity : AppCompatActivity() {
                     Snackbar.LENGTH_LONG
                 )
                 .setAction(R.string.str_show) {
-                    AlertDialog.Builder(this)
+                    MaterialAlertDialogBuilder(this)
                         .setTitle(R.string.main_execution_completed)
                         .setMessage(result)
                         .setPositiveButton(android.R.string.ok) { _, _ -> }
