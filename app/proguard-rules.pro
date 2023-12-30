@@ -24,3 +24,4 @@
 # This is generated automatically by the Android Gradle plugin.
 -dontwarn com.google.errorprone.annotations.Immutable
 -dontwarn javax.annotation.concurrent.GuardedBy
+-dontwarn javax.annotation.Nullable
