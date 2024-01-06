@@ -74,7 +74,7 @@ class Tasmota(
         }
 
         updateCache(listItems)
-        callback.onItemsLoaded(UnifiedRequestCallback(listItems, deviceId, ""), recyclerViewInterface)
+        callback.onItemsLoaded(UnifiedRequestCallback(listItems, deviceId), recyclerViewInterface)
     }
 
     override fun execute(

@@ -15,9 +15,7 @@ class LightStates {
                 state.optBoolean("on"),
                 if (state.has("bri")) state.getInt("bri") else -1,
                 if (state.has("xy")) state.getJSONArray("xy") else null,
-                -1,
-                -1,
-                if (state.has("ct")) state.getInt("ct") else -1,
+                ct = if (state.has("ct")) state.getInt("ct") else -1,
             )
     }
 

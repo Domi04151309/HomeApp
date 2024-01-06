@@ -38,8 +38,6 @@
 
     <string name="pref">Instellingen</string>
     <string name="pref_general">Algemeen</string>
-    <string name="pref_theme">Thema wijzigen</string>
-    <string name="pref_theme_summary">Pas het uiterlijk van de app aan</string>
     <string name="pref_devices">Apparaten</string>
     <string name="pref_edit">Apparaatlijst bewerken</string>
     <string name="pref_edit_summary">Bewerk de lijst met apparaten</string>
@@ -76,12 +74,6 @@
     <string name="about">Over</string>
     <string name="about_summary">Over de app</string>
 
-    <string-array name="pref_theme_array">
-        <item>Licht thema</item>
-        <item>Donker thema</item>
-        <item>Zwart thema</item>
-        <item>Systeemthema</item>
-    </string-array>
     <string-array name="pref_add_method_array">
         <item>Apparaat toevoegen middels adres</item>
         <item>Zoeken naar compatibele apparaten (experimenteel)</item>

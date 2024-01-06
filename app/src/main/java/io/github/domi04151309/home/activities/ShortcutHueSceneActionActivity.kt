@@ -11,7 +11,6 @@ class ShortcutHueSceneActionActivity : AppCompatActivity() {
             HueAPI(
                 this,
                 intent.getStringExtra("device") ?: error("Impossible state."),
-                null,
             ).activateSceneOfGroup(
                 intent.getStringExtra("group") ?: error("Impossible state."),
                 intent.getStringExtra("scene") ?: error("Impossible state."),

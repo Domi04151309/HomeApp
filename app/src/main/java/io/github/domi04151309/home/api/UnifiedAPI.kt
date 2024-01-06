@@ -56,7 +56,7 @@ open class UnifiedAPI(
     ) {
         if (System.currentTimeMillis() - (listCache[deviceId]?.first ?: 0) < LIST_REQUEST_TIMEOUT) {
             callback.onItemsLoaded(
-                UnifiedRequestCallback(listCache[deviceId]?.second, deviceId, ""),
+                UnifiedRequestCallback(listCache[deviceId]?.second, deviceId),
                 recyclerViewInterface,
             )
             return

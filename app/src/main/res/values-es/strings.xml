@@ -38,8 +38,6 @@
     
     <string name="pref">Ajustes</string>
     <string name="pref_general">Ajustes generales</string>
-    <string name="pref_theme">Cambiar tema</string>
-    <string name="pref_theme_summary">Cambia el aspecto de la aplicación</string>
     <string name="pref_devices">Dispositivos</string>
     <string name="pref_edit">Editar lista de dispositivos</string>
     <string name="pref_edit_summary">Editar la lista de dispositivos</string>
@@ -76,12 +74,6 @@
     <string name="about">Acerca de</string>
     <string name="about_summary">Sobre la aplicación</string>
 
-    <string-array name="pref_theme_array">
-        <item>Tema claro</item>
-        <item>Tema oscuro</item>
-        <item>Tema negro</item>
-        <item>Tema del sistema</item>
-    </string-array>
     <string-array name="pref_add_method_array">
       <item>Añadir dispositivo por dirección</item>
       <item>Búsqueda de dispositivos compatibles (experimental)</item>

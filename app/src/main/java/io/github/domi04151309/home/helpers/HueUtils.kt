@@ -4,8 +4,8 @@ import android.graphics.Color
 
 @Suppress("MagicNumber")
 object HueUtils {
-    const val MIN_COLOR_TEMPERATURE = 153
-    const val MAX_BRIGHTNESS = 255
+    const val MIN_COLOR_TEMPERATURE: Int = 153
+    const val MAX_BRIGHTNESS: Int = 255
 
     fun defaultColors(): IntArray =
         IntArray(7) {

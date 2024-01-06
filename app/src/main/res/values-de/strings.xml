@@ -82,8 +82,6 @@
 
     <string name="pref">Einstellungen</string>
     <string name="pref_general">Generelle Einstellungen</string>
-    <string name="pref_theme">Thema ändern</string>
-    <string name="pref_theme_summary">Ändert das Aussehen der App</string>
     <string name="pref_columns">Spaltenanzahl</string>
     <string name="pref_columns_summary">Ändert die Anzahl der Spalten der Hauptliste</string>
     <string name="pref_devices">Geräte</string>
@@ -167,12 +165,6 @@
     <string name="about_libraries">Bibliotheken</string>
     <string name="about_libraries_desc">Eine Liste aller verwendeten Bibliotheken</string>
 
-    <string-array name="pref_theme_array">
-        <item>Helles Thema</item>
-        <item>Dunkles Thema</item>
-        <item>Schwarzes Thema</item>
-        <item>System Thema benutzen</item>
-    </string-array>
     <string-array name="pref_columns_array">
         <item>Auto</item>
         <item>Eins</item>

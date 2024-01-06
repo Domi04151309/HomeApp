@@ -1,11 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="colorPrimary">#fff</color>
-    <color name="colorPrimaryDark">#121212</color>
-    <color name="colorPrimaryBlack">#000</color>
-    <color name="colorAccent">#2962FF</color>
-    <color name="dividerLight">#14000000</color>
-    <color name="dividerDark">#14ffffff</color>
-    <color name="navigationBarColor">#000001</color>
-    <color name="gray">#212121</color>
-</resources>
+<resources></resources>
