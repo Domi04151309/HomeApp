@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.github.domi04151309.home.R
@@ -20,16 +19,14 @@ import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.data.SimpleListItem
 import io.github.domi04151309.home.data.UnifiedRequestCallback
 import io.github.domi04151309.home.helpers.Devices
-import io.github.domi04151309.home.helpers.Theme
 import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
 import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
 
-class ShortcutTasmotaActivity : AppCompatActivity(), RecyclerViewHelperInterface {
+class ShortcutTasmotaActivity : BaseActivity(), RecyclerViewHelperInterface {
     private var deviceId: String? = null
     private lateinit var recyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Theme.set(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_devices)
 

@@ -7,10 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.Switch
 import android.widget.TextView
 import androidx.core.widget.ImageViewCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.materialswitch.MaterialSwitch
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.data.SceneListItem
 import io.github.domi04151309.home.interfaces.SceneRecyclerViewHelperInterface
@@ -116,6 +116,6 @@ class HueSceneLampListAdapter(
         val title: TextView = view.findViewById(R.id.title)
         val summary: TextView = view.findViewById(R.id.summary)
         val hidden: TextView = view.findViewById(R.id.hidden)
-        val stateSwitch: Switch = view.findViewById(R.id.state)
+        val stateSwitch: MaterialSwitch = view.findViewById(R.id.state)
     }
 }

@@ -15,7 +15,6 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.ImageViewCompat
 import androidx.viewpager2.widget.ViewPager2
@@ -36,12 +35,11 @@ import io.github.domi04151309.home.helpers.HueLightListener
 import io.github.domi04151309.home.helpers.HueUtils
 import io.github.domi04151309.home.helpers.HueUtils.MIN_COLOR_TEMPERATURE
 import io.github.domi04151309.home.helpers.SliderUtils
-import io.github.domi04151309.home.helpers.Theme
 import io.github.domi04151309.home.helpers.UpdateHandler
 import io.github.domi04151309.home.interfaces.HueRoomInterface
 import org.json.JSONArray
 
-class HueLampActivity : AppCompatActivity(), HueRoomInterface {
+class HueLampActivity : BaseActivity(), HueRoomInterface {
     override var addressPrefix: String = ""
     override var id: String = ""
     override var lights: JSONArray? = null
@@ -56,7 +54,6 @@ class HueLampActivity : AppCompatActivity(), HueRoomInterface {
     private lateinit var lampIcon: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Theme.set(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hue_lamp)
 

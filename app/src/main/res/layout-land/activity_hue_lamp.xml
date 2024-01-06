@@ -16,7 +16,8 @@
     <View
         android:layout_width="1dp"
         android:layout_height="match_parent"
-        android:background="?attr/dividerColor" />
+        android:alpha="?android:attr/disabledAlpha"
+        android:background="?android:attr/textColorSecondary" />
 
     <FrameLayout
         android:layout_width="match_parent"

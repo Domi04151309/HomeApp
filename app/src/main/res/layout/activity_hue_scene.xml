@@ -38,7 +38,8 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="@dimen/dialog_item_margin"
-            android:background="?attr/dividerColor" />
+            android:alpha="?android:attr/disabledAlpha"
+            android:background="?android:attr/textColorSecondary" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -77,7 +78,8 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="?attr/dividerColor" />
+            android:alpha="?android:attr/disabledAlpha"
+            android:background="?android:attr/textColorSecondary" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"

@@ -10,7 +10,8 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="?attr/dividerColor" />
+        android:alpha="?android:attr/disabledAlpha"
+        android:background="?android:attr/textColorSecondary" />
 
     <FrameLayout
         android:layout_width="match_parent"

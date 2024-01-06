@@ -33,6 +33,7 @@
         android:contentDescription="@string/hue_connect" />
 
     <Button
+        style="@style/Widget.Material3.Button.TextButton"
         android:id="@+id/cancel_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

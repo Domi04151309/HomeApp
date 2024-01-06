@@ -26,14 +26,12 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.helpers.DeviceSecrets
-import io.github.domi04151309.home.helpers.Theme
 
-class WebActivity : AppCompatActivity() {
+class WebActivity : BaseActivity() {
     internal val nullParent: ViewGroup? = null
     internal var errorOccurred = false
     internal var valueCallback: ValueCallback<Array<Uri>>? = null
@@ -41,7 +39,6 @@ class WebActivity : AppCompatActivity() {
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
-        Theme.set(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_web)
 

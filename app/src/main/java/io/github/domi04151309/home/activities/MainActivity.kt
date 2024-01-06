@@ -17,12 +17,12 @@ import android.widget.TextSwitcher
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.addCallback
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import io.github.domi04151309.home.R
@@ -35,13 +35,12 @@ import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.Global.checkNetwork
 import io.github.domi04151309.home.helpers.P
 import io.github.domi04151309.home.helpers.TasmotaHelper
-import io.github.domi04151309.home.helpers.Theme
 import io.github.domi04151309.home.helpers.UpdateHandler
 import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
 import kotlin.math.max
 import kotlin.math.min
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
     companion object {
         private val WEB_MODES =
             arrayOf(
@@ -289,9 +288,10 @@ class MainActivity : AppCompatActivity() {
      * Activity methods
      */
     override fun onCreate(savedInstanceState: Bundle?) {
-        Theme.setNoActionBar(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        window.statusBarColor = SurfaceColors.SURFACE_0.getColor(this)
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         devices = Devices(this)

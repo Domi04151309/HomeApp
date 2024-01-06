@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
 import com.android.volley.Request
 import com.android.volley.RequestQueue
@@ -14,18 +13,16 @@ import io.github.domi04151309.home.R
 import io.github.domi04151309.home.custom.CustomJsonArrayRequest
 import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.helpers.Global
-import io.github.domi04151309.home.helpers.Theme
 import io.github.domi04151309.home.helpers.UpdateHandler
 import org.json.JSONObject
 
-class HueConnectActivity : AppCompatActivity() {
+class HueConnectActivity : BaseActivity() {
     private val updateHandler = UpdateHandler()
     private var success = false
     private lateinit var queue: RequestQueue
     private lateinit var requestToRegisterUser: CustomJsonArrayRequest
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Theme.setNoActionBar(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hue_connect)
 

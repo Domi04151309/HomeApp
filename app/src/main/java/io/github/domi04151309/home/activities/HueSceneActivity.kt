@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
@@ -34,13 +33,12 @@ import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.HueUtils
 import io.github.domi04151309.home.helpers.HueUtils.MAX_BRIGHTNESS
 import io.github.domi04151309.home.helpers.SliderUtils
-import io.github.domi04151309.home.helpers.Theme
 import io.github.domi04151309.home.interfaces.HueAdvancedLampInterface
 import io.github.domi04151309.home.interfaces.SceneRecyclerViewHelperInterface
 import org.json.JSONArray
 import org.json.JSONObject
 
-class HueSceneActivity : AppCompatActivity(), SceneRecyclerViewHelperInterface, HueAdvancedLampInterface {
+class HueSceneActivity : BaseActivity(), SceneRecyclerViewHelperInterface, HueAdvancedLampInterface {
     private var editing: Boolean = false
     private val lightStates: LightStates = LightStates()
     private lateinit var hueAPI: HueAPI
@@ -52,7 +50,6 @@ class HueSceneActivity : AppCompatActivity(), SceneRecyclerViewHelperInterface, 
     override lateinit var addressPrefix: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Theme.set(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hue_scene)
 

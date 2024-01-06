@@ -3,22 +3,20 @@ package io.github.domi04151309.home.activities
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import io.github.domi04151309.home.BuildConfig
 import io.github.domi04151309.home.R
-import io.github.domi04151309.home.helpers.Theme
 
-class AboutActivity : AppCompatActivity() {
+class AboutActivity : BaseActivity() {
     companion object {
-        internal const val GITHUB_REPOSITORY: String = "Domi04151309/HomeApp"
-        private const val REPOSITORY_URL: String = "https://github.com/$GITHUB_REPOSITORY"
+        private const val REPOSITORY: String = "Domi04151309/HomeApp"
+        private const val BRANCH: String = "master"
+        private const val REPOSITORY_URL: String = "https://github.com/$REPOSITORY"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Theme.set(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
         supportFragmentManager
@@ -28,6 +26,56 @@ class AboutActivity : AppCompatActivity() {
     }
 
     class GeneralPreferenceFragment : PreferenceFragmentCompat() {
+        @Suppress("SameReturnValue")
+        private fun onIconsClicked(): Boolean {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.about_icons)
+                .setItems(resources.getStringArray(R.array.about_icons_array)) { _, which ->
+                    startActivity(
+                        Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse(
+                                when (which) {
+                                    0 -> "https://icons8.com/"
+                                    1 -> "https://fonts.google.com/icons?selected=Material+Icons"
+                                    else -> "about:blank"
+                                },
+                            ),
+                        ),
+                    )
+                }
+                .show()
+            return true
+        }
+
+        @Suppress("SameReturnValue")
+        private fun onExternalClicked(link: String): Boolean {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.about_privacy)
+                .setMessage(R.string.about_privacy_desc)
+                .setPositiveButton(android.R.string.ok) { _, _ ->
+                    startActivity(
+                        Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse(link),
+                        ),
+                    )
+                }
+                .setNegativeButton(android.R.string.cancel) { _, _ -> }
+                .setNeutralButton(R.string.about_privacy_policy) { _, _ ->
+                    startActivity(
+                        Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse(
+                                "https://docs.github.com/en/github/site-policy/github-privacy-statement",
+                            ),
+                        ),
+                    )
+                }
+                .show()
+            return true
+        }
+
         override fun onCreatePreferences(
             savedInstanceState: Bundle?,
             rootKey: String?,
@@ -41,71 +89,23 @@ class AboutActivity : AppCompatActivity() {
                         BuildConfig.VERSION_CODE,
                     )
                 setOnPreferenceClickListener {
-                    startActivity(
-                        Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse("$REPOSITORY_URL/releases"),
-                        ),
-                    )
-                    true
+                    onExternalClicked("$REPOSITORY_URL/releases")
                 }
             }
             findPreference<Preference>("github")?.apply {
                 summary = REPOSITORY_URL
                 setOnPreferenceClickListener {
-                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(REPOSITORY_URL)))
-                    true
+                    onExternalClicked(REPOSITORY_URL)
                 }
             }
             findPreference<Preference>("license")?.setOnPreferenceClickListener {
-                startActivity(
-                    Intent(
-                        Intent.ACTION_VIEW,
-                        Uri.parse("$REPOSITORY_URL/blob/master/LICENSE"),
-                    ),
-                )
-                true
+                onExternalClicked("$REPOSITORY_URL/blob/$BRANCH/LICENSE")
             }
             findPreference<Preference>("icons")?.setOnPreferenceClickListener {
-                MaterialAlertDialogBuilder(requireContext())
-                    .setTitle(R.string.about_icons)
-                    .setItems(resources.getStringArray(R.array.about_icons_array)) { _, which ->
-                        startActivity(
-                            Intent(
-                                Intent.ACTION_VIEW,
-                                Uri.parse(
-                                    when (which) {
-                                        0 -> "https://icons8.com/"
-                                        1 -> "https://fonts.google.com/icons?selected=Material+Icons"
-                                        else -> "about:blank"
-                                    },
-                                ),
-                            ),
-                        )
-                    }
-                    .show()
-                true
+                onIconsClicked()
             }
             findPreference<Preference>("contributors")?.setOnPreferenceClickListener {
-                MaterialAlertDialogBuilder(requireContext())
-                    .setTitle(R.string.about_privacy)
-                    .setMessage(R.string.about_privacy_desc)
-                    .setPositiveButton(android.R.string.ok) { _, _ ->
-                        startActivity(Intent(requireContext(), ContributorActivity::class.java))
-                    }
-                    .setNegativeButton(android.R.string.cancel) { _, _ -> }
-                    .setNeutralButton(R.string.about_privacy_policy) { _, _ ->
-                        startActivity(
-                            Intent(
-                                Intent.ACTION_VIEW,
-                                Uri.parse(
-                                    "https://docs.github.com/en/github/site-policy/github-privacy-statement",
-                                ),
-                            ),
-                        )
-                    }
-                    .show()
-                true
+                onExternalClicked("$REPOSITORY_URL/graphs/contributors")
             }
             findPreference<Preference>("libraries")?.setOnPreferenceClickListener {
                 startActivity(Intent(requireContext(), LibraryActivity::class.java))

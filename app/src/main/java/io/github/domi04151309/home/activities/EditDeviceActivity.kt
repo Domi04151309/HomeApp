@@ -20,7 +20,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputLayout
@@ -30,9 +29,8 @@ import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.helpers.DeviceSecrets
 import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.helpers.Global
-import io.github.domi04151309.home.helpers.Theme
 
-class EditDeviceActivity : AppCompatActivity() {
+class EditDeviceActivity : BaseActivity() {
     companion object {
         private val SUPPORTS_DIRECT_VIEW =
             arrayOf(
@@ -59,7 +57,6 @@ class EditDeviceActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Theme.set(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_device)
 

@@ -1,16 +1,13 @@
 package io.github.domi04151309.home.activities
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import io.github.domi04151309.home.R
-import io.github.domi04151309.home.helpers.Theme
 
-class LibraryActivity : AppCompatActivity() {
+class LibraryActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        Theme.set(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
         supportFragmentManager
@@ -26,7 +23,10 @@ class LibraryActivity : AppCompatActivity() {
         ) {
             addPreferencesFromResource(R.xml.pref_about_list)
             preferenceScreen.removeAll()
-            resources.getStringArray(R.array.about_libraries).forEach {
+            val libraries = resources.getStringArray(R.array.about_libraries)
+            val licenses = resources.getStringArray(R.array.about_libraries_licenses)
+            if (libraries.size != licenses.size) error("Library array size does not match license array size.")
+            for (index in libraries.indices) {
                 preferenceScreen.addPreference(
                     Preference(requireContext()).apply {
                         icon =
@@ -35,7 +35,8 @@ class LibraryActivity : AppCompatActivity() {
                                 R.drawable.ic_about_library,
                                 requireContext().theme,
                             )
-                        title = it
+                        title = libraries[index]
+                        summary = licenses[index]
                     },
                 )
             }

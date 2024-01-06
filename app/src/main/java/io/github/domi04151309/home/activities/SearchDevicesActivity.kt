@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.toolbox.Volley
@@ -21,12 +20,11 @@ import io.github.domi04151309.home.api.ShellyAPI
 import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.data.ListViewItem
 import io.github.domi04151309.home.helpers.Devices
-import io.github.domi04151309.home.helpers.Theme
 import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
 import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.atomic.AtomicBoolean
 
-class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
+class SearchDevicesActivity : BaseActivity(), RecyclerViewHelperInterface {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: DeviceDiscoveryListAdapter
     private lateinit var devices: Devices
@@ -38,7 +36,6 @@ class SearchDevicesActivity : AppCompatActivity(), RecyclerViewHelperInterface {
     private var pendingNsdServices = ConcurrentLinkedQueue<NsdServiceInfo>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Theme.set(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_devices)
 

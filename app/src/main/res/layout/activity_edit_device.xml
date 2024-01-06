@@ -53,7 +53,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="@dimen/dialog_item_margin"
-                android:background="?attr/dividerColor" />
+                android:alpha="?android:attr/disabledAlpha"
+                android:background="?android:attr/textColorSecondary" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -127,7 +128,8 @@
                 android:id="@+id/specialDivider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="?attr/dividerColor" />
+                android:alpha="?android:attr/disabledAlpha"
+                android:background="?android:attr/textColorSecondary" />
 
             <LinearLayout
                 android:id="@+id/specialSection"
@@ -169,7 +171,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="?attr/dividerColor" />
+                android:alpha="?android:attr/disabledAlpha"
+                android:background="?android:attr/textColorSecondary" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -195,7 +198,8 @@
                 android:id="@+id/editDivider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="?attr/dividerColor" />
+                android:alpha="?android:attr/disabledAlpha"
+                android:background="?android:attr/textColorSecondary" />
 
             <LinearLayout
                 android:id="@+id/editSection"
@@ -206,43 +210,47 @@
                 android:paddingVertical="@dimen/list_padding_vertical">
 
                 <Button
+                    style="@style/Widget.Material3.Button.TextButton"
                     android:id="@+id/infoBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="@dimen/list_button_padding_horizontal"
                     android:text="@string/device_config_info"
                     android:textAlignment="textStart"
                     android:textColor="?android:attr/textColorPrimary"
+                    app:iconTint="?android:attr/textColorSecondary"
                     app:icon="@drawable/ic_info"/>
 
                 <Button
+                    style="@style/Widget.Material3.Button.TextButton"
                     android:id="@+id/configBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="@dimen/list_button_padding_horizontal"
                     android:text="@string/pref_device_config"
                     android:textAlignment="textStart"
                     android:textColor="?android:attr/textColorPrimary"
+                    app:iconTint="?android:attr/textColorSecondary"
                     app:icon="@drawable/ic_settings"/>
 
                 <Button
+                    style="@style/Widget.Material3.Button.TextButton"
                     android:id="@+id/shortcutBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="@dimen/list_button_padding_horizontal"
                     android:text="@string/pref_add_shortcut"
                     android:textAlignment="textStart"
                     android:textColor="?android:attr/textColorPrimary"
+                    app:iconTint="?android:attr/textColorSecondary"
                     app:icon="@drawable/ic_add"/>
 
                 <Button
+                    style="@style/Widget.Material3.Button.TextButton"
                     android:id="@+id/deleteBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="@dimen/list_button_padding_horizontal"
                     android:text="@string/str_delete"
                     android:textAlignment="textStart"
                     android:textColor="?android:attr/textColorPrimary"
+                    app:iconTint="?android:attr/textColorSecondary"
                     app:icon="@drawable/ic_delete"/>
             </LinearLayout>
         </LinearLayout>

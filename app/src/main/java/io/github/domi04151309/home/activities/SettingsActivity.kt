@@ -6,7 +6,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
@@ -15,11 +14,9 @@ import io.github.domi04151309.home.R
 import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.P
-import io.github.domi04151309.home.helpers.Theme
 
-class SettingsActivity : AppCompatActivity() {
+class SettingsActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        Theme.set(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
         supportFragmentManager

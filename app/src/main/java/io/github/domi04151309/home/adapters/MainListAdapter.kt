@@ -11,9 +11,9 @@ import android.view.animation.Animation
 import android.view.animation.AnimationSet
 import android.view.animation.TranslateAnimation
 import android.widget.ImageView
-import android.widget.Switch
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.materialswitch.MaterialSwitch
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.data.ListViewItem
 import io.github.domi04151309.home.helpers.Global
@@ -212,6 +212,6 @@ class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapt
         val title: TextView = view.findViewById(R.id.title)
         val summary: TextView = view.findViewById(R.id.summary)
         val hidden: TextView = view.findViewById(R.id.hidden)
-        val stateSwitch: Switch = view.findViewById(R.id.state)
+        val stateSwitch: MaterialSwitch = view.findViewById(R.id.state)
     }
 }

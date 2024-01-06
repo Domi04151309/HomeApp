@@ -2,7 +2,6 @@ package io.github.domi04151309.home.activities
 
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
@@ -15,19 +14,17 @@ import io.github.domi04151309.home.api.HueAPI
 import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.data.SimpleListItem
 import io.github.domi04151309.home.helpers.Devices
-import io.github.domi04151309.home.helpers.Theme
 import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
 import org.json.JSONObject
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
-class DeviceInfoActivity : AppCompatActivity(), RecyclerViewHelperInterface {
+class DeviceInfoActivity : BaseActivity(), RecyclerViewHelperInterface {
     companion object {
         private const val TO_PERCENT = 100
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Theme.set(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_devices)
 

@@ -5,15 +5,6 @@
 
         <ListPreference
             app:defaultValue="auto"
-            app:entries="@array/pref_theme_array"
-            app:entryValues="@array/pref_theme_array_values"
-            app:key="theme"
-            app:summary="@string/pref_theme_summary"
-            app:title="@string/pref_theme"
-            app:iconSpaceReserved="false" />
-
-        <ListPreference
-            app:defaultValue="auto"
             app:entries="@array/pref_columns_array"
             app:entryValues="@array/pref_columns_array_values"
             app:key="columns"

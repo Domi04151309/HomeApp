@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,10 +13,9 @@ import io.github.domi04151309.home.adapters.DeviceListAdapter
 import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.data.SimpleListItem
 import io.github.domi04151309.home.helpers.Devices
-import io.github.domi04151309.home.helpers.Theme
 import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterfaceAdvanced
 
-class DevicesActivity : AppCompatActivity(), RecyclerViewHelperInterfaceAdvanced {
+class DevicesActivity : BaseActivity(), RecyclerViewHelperInterfaceAdvanced {
     private var reset = true
     private lateinit var devices: Devices
     private lateinit var recyclerView: RecyclerView
@@ -79,7 +77,6 @@ class DevicesActivity : AppCompatActivity(), RecyclerViewHelperInterfaceAdvanced
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Theme.set(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_devices)
 
