@@ -39,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:textAppearance="@android:style/TextAppearance.Material.Medium"
+            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
             android:textColor="?android:attr/textColorPrimary"
             android:text="@string/webView_error" />
 
@@ -49,7 +49,7 @@
             android:layout_margin="@dimen/dialog_item_margin"
             android:layout_below="@id/titleTxt"
             android:layout_centerHorizontal="true"
-            android:textAppearance="@android:style/TextAppearance.Material.Small"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
             android:text="@string/webView_error_summary" />
     </RelativeLayout>
 </merge>

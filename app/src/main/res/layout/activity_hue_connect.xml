@@ -14,7 +14,7 @@
         android:text="@string/hue_connect"
         android:textAlignment="center"
         android:padding="?dialogPreferredPadding"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        android:textAppearance="@style/TextAppearance.Material3.TitleLarge" />
 
     <TextView
         android:layout_width="match_parent"
@@ -22,7 +22,7 @@
         android:text="@string/hue_press_button"
         android:textAlignment="center"
         android:padding="?dialogPreferredPadding"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        android:textAppearance="@style/TextAppearance.Material3.TitleMedium" />
 
     <ImageView
         android:layout_width="match_parent"

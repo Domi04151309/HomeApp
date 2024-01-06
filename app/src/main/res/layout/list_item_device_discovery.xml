@@ -31,7 +31,7 @@
                     android:ellipsize="marquee"
                     android:fadingEdge="horizontal"
                     android:singleLine="true"
-                    android:textAppearance="@android:style/TextAppearance.Material.Medium"
+                    android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textIsSelectable="false" />
 
@@ -40,7 +40,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:maxLines="4"
-                    android:textAppearance="@android:style/TextAppearance.Material.Small"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                     android:textIsSelectable="false" />
 
                 <TextView

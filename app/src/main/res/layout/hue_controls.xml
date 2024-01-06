@@ -37,7 +37,7 @@
         android:layout_marginTop="@dimen/dialog_item_margin"
         android:text="@string/placeholder"
         android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        android:textAppearance="@style/TextAppearance.Material3.TitleLarge" />
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="wrap_content"

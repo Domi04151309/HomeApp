@@ -25,8 +25,7 @@
         android:ellipsize="marquee"
         android:fadingEdge="horizontal"
         android:singleLine="true"
-        android:textAppearance="@android:style/TextAppearance.Material.Medium"
-        android:textColor="?android:attr/textColorPrimary"
+        android:textAppearance="?attr/textAppearanceSubtitle1"
         android:textIsSelectable="false" />
 
 </LinearLayout>

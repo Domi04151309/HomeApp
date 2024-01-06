@@ -10,7 +10,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
-import android.widget.ImageButton
 import android.widget.ImageSwitcher
 import android.widget.ImageView
 import android.widget.TextSwitcher
@@ -21,6 +20,7 @@ import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -342,8 +342,14 @@ class MainActivity : BaseActivity() {
             startActivityAndReset(Intent(this, DevicesActivity::class.java))
         }
 
-        findViewById<ImageButton>(R.id.menu_icon).setOnClickListener {
-            startActivityAndReset(Intent(this, SettingsActivity::class.java))
+        findViewById<MaterialToolbar>(R.id.toolbar).setOnMenuItemClickListener {
+            startActivity(
+                Intent(
+                    this@MainActivity,
+                    SettingsActivity::class.java,
+                ),
+            )
+            true
         }
 
         // Handle shortcut
