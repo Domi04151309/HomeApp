@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
+import com.android.volley.Response
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
@@ -38,7 +39,12 @@ import io.github.domi04151309.home.interfaces.SceneRecyclerViewHelperInterface
 import org.json.JSONArray
 import org.json.JSONObject
 
-class HueSceneActivity : BaseActivity(), SceneRecyclerViewHelperInterface, HueAdvancedLampInterface {
+class HueSceneActivity :
+    BaseActivity(),
+    SceneRecyclerViewHelperInterface,
+    HueAdvancedLampInterface,
+    Response.Listener<JSONArray>,
+    Response.ErrorListener {
     private var editing: Boolean = false
     private val lightStates: LightStates = LightStates()
     private lateinit var hueAPI: HueAPI
@@ -122,11 +128,11 @@ class HueSceneActivity : BaseActivity(), SceneRecyclerViewHelperInterface, HueAd
                                     listItems.sortBy { it.title }
                                     adapter.notifyDataSetChanged()
                                 },
-                                ::onError,
+                                this,
                             ),
                         )
                     },
-                    ::onError,
+                    this,
                 ),
             )
         } else {
@@ -165,11 +171,11 @@ class HueSceneActivity : BaseActivity(), SceneRecyclerViewHelperInterface, HueAd
                                     listItems.sortBy { it.title }
                                     adapter.notifyDataSetChanged()
                                 },
-                                ::onError,
+                                this,
                             ),
                         )
                     },
-                    ::onError,
+                    this,
                 ),
             )
         }
@@ -235,8 +241,8 @@ class HueSceneActivity : BaseActivity(), SceneRecyclerViewHelperInterface, HueAd
                         Request.Method.PUT,
                         "$addressPrefix/scenes/$sceneId",
                         JSONObject("{\"name\":\"$name\",\"lightstates\":$lightStates}"),
-                        ::onSuccess,
-                        ::onError,
+                        this,
+                        this,
                     )
                 } else {
                     CustomJsonArrayRequest(
@@ -250,8 +256,8 @@ class HueSceneActivity : BaseActivity(), SceneRecyclerViewHelperInterface, HueAd
                                 "\"type\":\"GroupScene\"" +
                                 "}",
                         ),
-                        ::onSuccess,
-                        ::onError,
+                        this,
+                        this,
                     )
                 },
             )
@@ -284,12 +290,12 @@ class HueSceneActivity : BaseActivity(), SceneRecyclerViewHelperInterface, HueAd
         return item
     }
 
-    private fun onSuccess(response: JSONArray) {
+    override fun onResponse(response: JSONArray) {
         HueScenesFragment.scenesChanged = true
         finish()
     }
 
-    private fun onError(error: VolleyError) {
+    override fun onErrorResponse(error: VolleyError) {
         Toast.makeText(this, Global.volleyError(this, error), Toast.LENGTH_LONG).show()
         Log.e(Global.LOG_TAG, error.toString())
     }

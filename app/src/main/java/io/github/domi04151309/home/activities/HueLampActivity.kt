@@ -217,36 +217,32 @@ class HueLampActivity : BaseActivity(), HueRoomInterface {
         return true
     }
 
+    @Suppress("ReturnCount")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return if (item.itemId == R.id.action_add_shortcut) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val shortcutManager = this.getSystemService(ShortcutManager::class.java)
-                if (shortcutManager != null) {
-                    if (shortcutManager.isRequestPinShortcutSupported) {
-                        val shortcut =
-                            ShortcutInfo.Builder(this, device.id + lampName)
-                                .setShortLabel(lampName)
-                                .setLongLabel(lampName)
-                                .setIcon(Icon.createWithResource(this, device.iconId))
-                                .setIntent(
-                                    Intent(this, HueLampActivity::class.java)
-                                        .putExtra("id", id)
-                                        .putExtra("device", device.id)
-                                        .setAction(Intent.ACTION_MAIN)
-                                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK),
-                                )
-                                .build()
-                        shortcutManager.requestPinShortcut(shortcut, null)
-                    } else {
-                        Toast.makeText(this, R.string.pref_add_shortcut_failed, Toast.LENGTH_LONG).show()
-                    }
-                }
-            } else {
+        if (item.itemId != R.id.action_add_shortcut) return super.onOptionsItemSelected(item)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val shortcutManager = getSystemService(ShortcutManager::class.java) ?: return true
+            if (!shortcutManager.isRequestPinShortcutSupported) {
                 Toast.makeText(this, R.string.pref_add_shortcut_failed, Toast.LENGTH_LONG).show()
+                return true
             }
-            true
+            val shortcut =
+                ShortcutInfo.Builder(this, device.id + lampName)
+                    .setShortLabel(lampName)
+                    .setLongLabel(lampName)
+                    .setIcon(Icon.createWithResource(this, device.iconId))
+                    .setIntent(
+                        Intent(this, HueLampActivity::class.java)
+                            .putExtra("id", id)
+                            .putExtra("device", device.id)
+                            .setAction(Intent.ACTION_MAIN)
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK),
+                    )
+                    .build()
+            shortcutManager.requestPinShortcut(shortcut, null)
         } else {
-            super.onOptionsItemSelected(item)
+            Toast.makeText(this, R.string.pref_add_shortcut_failed, Toast.LENGTH_LONG).show()
         }
+        return true
     }
 }

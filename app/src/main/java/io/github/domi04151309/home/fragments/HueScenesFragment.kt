@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
 import com.android.volley.RequestQueue
+import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -34,7 +35,10 @@ import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
 import org.json.JSONException
 import org.json.JSONObject
 
-class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes), RecyclerViewHelperInterface {
+class HueScenesFragment :
+    Fragment(R.layout.fragment_hue_scenes),
+    RecyclerViewHelperInterface,
+    Response.Listener<JSONObject> {
     companion object {
         private const val SCENE_FRACTION_ESTIMATE = 4
         private const val COLUMNS = 3
@@ -48,6 +52,7 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes), RecyclerViewHe
     private lateinit var lampData: HueLampInterface
     private lateinit var hueAPI: HueAPI
     private lateinit var queue: RequestQueue
+    private lateinit var adapter: HueSceneGridAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,120 +64,129 @@ class HueScenesFragment : Fragment(R.layout.fragment_hue_scenes), RecyclerViewHe
         queue = Volley.newRequestQueue(context)
 
         val recyclerView = super.onCreateView(inflater, container, savedInstanceState) as RecyclerView
-        val adapter = HueSceneGridAdapter(this, this)
+        adapter = HueSceneGridAdapter(this, this)
         recyclerView.layoutManager = GridLayoutManager(requireContext(), COLUMNS)
         recyclerView.adapter = adapter
 
         scenesRequest =
             JsonObjectRequest(
                 Request.Method.GET, lampData.addressPrefix + "/scenes/", null,
-                { response ->
-                    try {
-                        val gridItems: ArrayList<SceneGridItem> = ArrayList(response.length())
-                        val scenes: ArrayList<Pair<String, String>> =
-                            ArrayList(
-                                response.length() / SCENE_FRACTION_ESTIMATE,
-                            )
-                        var currentObject: JSONObject
-                        for (i in response.keys()) {
-                            currentObject = response.getJSONObject(i)
-                            if (currentObject.optString("group") == lampData.id) {
-                                scenes.add(Pair(i, currentObject.getString("name")))
-                            }
-                        }
-                        if (scenes.size > 0) {
-                            var completedRequests = 0
-                            for (i in 0 until scenes.size) {
-                                queue.add(
-                                    JsonObjectRequest(
-                                        Request.Method.GET,
-                                        lampData.addressPrefix + "/scenes/" + scenes[i].first,
-                                        null,
-                                        { sceneResponse ->
-                                            val states = sceneResponse.getJSONObject("lightstates")
-                                            val currentSceneValues = ArrayList<Int>(states.length())
-                                            var lampObject: JSONObject
-                                            for (j in states.keys()) {
-                                                lampObject = states.getJSONObject(j)
-                                                if (lampObject.getBoolean("on")) {
-                                                    if (lampObject.has("hue") && lampObject.has("sat")) {
-                                                        currentSceneValues.clear()
-                                                        currentSceneValues.add(
-                                                            HueUtils.hueSatToRGB(
-                                                                lampObject.getInt("hue"),
-                                                                lampObject.getInt("sat"),
-                                                            ),
-                                                        )
-                                                    } else if (lampObject.has("xy")) {
-                                                        val xyArray = lampObject.getJSONArray("xy")
-                                                        currentSceneValues.clear()
-                                                        currentSceneValues.add(
-                                                            ColorUtils.xyToRGB(
-                                                                xyArray.getDouble(0),
-                                                                xyArray.getDouble(1),
-                                                            ),
-                                                        )
-                                                    } else if (lampObject.has("ct")) {
-                                                        currentSceneValues.add(
-                                                            HueUtils.ctToRGB(lampObject.getInt("ct")),
-                                                        )
-                                                    }
-                                                }
-                                            }
-                                            gridItems +=
-                                                SceneGridItem(
-                                                    name = scenes[i].second,
-                                                    hidden = scenes[i].first,
-                                                    color =
-                                                        if (currentSceneValues.size > 0) {
-                                                            currentSceneValues[0]
-                                                        } else {
-                                                            Color.WHITE
-                                                        },
-                                                )
-                                            completedRequests++
-                                            if (completedRequests == scenes.size) {
-                                                val sortedItems =
-                                                    gridItems.sortedWith(compareBy { it.color })
-                                                        .toMutableList()
-                                                sortedItems +=
-                                                    SceneGridItem(
-                                                        name = resources.getString(R.string.hue_add_scene),
-                                                        hidden = "add",
-                                                    )
-                                                adapter.updateData(sortedItems)
-                                            }
-                                        },
-                                        { error ->
-                                            Log.e(Global.LOG_TAG, error.toString())
-                                        },
-                                    ),
-                                )
-                            }
-                        } else {
-                            adapter.updateData(
-                                mutableListOf(
-                                    SceneGridItem(
-                                        name = resources.getString(R.string.hue_add_scene),
-                                        hidden = "add",
-                                    ),
-                                ),
-                            )
-                        }
-                    } catch (e: JSONException) {
-                        Log.e(Global.LOG_TAG, e.toString())
-                    }
-                },
-                { error ->
-                    Toast.makeText(
-                        requireContext(),
-                        Global.volleyError(requireContext(), error),
-                        Toast.LENGTH_LONG,
-                    ).show()
-                },
-            )
+                this,
+            ) { error ->
+                Toast.makeText(
+                    requireContext(),
+                    Global.volleyError(requireContext(), error),
+                    Toast.LENGTH_LONG,
+                ).show()
+            }
         queue.add(scenesRequest)
         return recyclerView
+    }
+
+    override fun onResponse(response: JSONObject) {
+        try {
+            val gridItems: ArrayList<SceneGridItem> = ArrayList(response.length())
+            val scenes: ArrayList<Pair<String, String>> = getScenes(response)
+            if (scenes.size > 0) {
+                var completedRequests = 0
+                for (i in 0 until scenes.size) {
+                    queue.add(
+                        JsonObjectRequest(
+                            Request.Method.GET,
+                            lampData.addressPrefix + "/scenes/" + scenes[i].first,
+                            null,
+                            { sceneResponse ->
+                                gridItems +=
+                                    SceneGridItem(
+                                        name = scenes[i].second,
+                                        hidden = scenes[i].first,
+                                        color = getSceneColor(sceneResponse),
+                                    )
+                                completedRequests++
+                                if (completedRequests == scenes.size) {
+                                    val sortedItems =
+                                        gridItems.sortedWith(compareBy { it.color })
+                                            .toMutableList()
+                                    sortedItems +=
+                                        SceneGridItem(
+                                            name = resources.getString(R.string.hue_add_scene),
+                                            hidden = "add",
+                                        )
+                                    adapter.updateData(sortedItems)
+                                }
+                            },
+                            { error ->
+                                Log.e(Global.LOG_TAG, error.toString())
+                            },
+                        ),
+                    )
+                }
+            } else {
+                adapter.updateData(
+                    mutableListOf(
+                        SceneGridItem(
+                            name = resources.getString(R.string.hue_add_scene),
+                            hidden = "add",
+                        ),
+                    ),
+                )
+            }
+        } catch (e: JSONException) {
+            Log.e(Global.LOG_TAG, e.toString())
+        }
+    }
+
+    private fun getScenes(response: JSONObject): ArrayList<Pair<String, String>> {
+        val scenes: ArrayList<Pair<String, String>> =
+            ArrayList(
+                response.length() / SCENE_FRACTION_ESTIMATE,
+            )
+        var currentObject: JSONObject
+        for (i in response.keys()) {
+            currentObject = response.getJSONObject(i)
+            if (currentObject.optString("group") == lampData.id) {
+                scenes.add(Pair(i, currentObject.getString("name")))
+            }
+        }
+        return scenes
+    }
+
+    private fun getSceneColor(response: JSONObject): Int {
+        val states = response.getJSONObject("lightstates")
+        val currentSceneValues = ArrayList<Int>(states.length())
+        var lampObject: JSONObject
+        for (j in states.keys()) {
+            lampObject = states.getJSONObject(j)
+            if (lampObject.getBoolean("on")) {
+                if (lampObject.has("hue") && lampObject.has("sat")) {
+                    currentSceneValues.clear()
+                    currentSceneValues.add(
+                        HueUtils.hueSatToRGB(
+                            lampObject.getInt("hue"),
+                            lampObject.getInt("sat"),
+                        ),
+                    )
+                } else if (lampObject.has("xy")) {
+                    val xyArray = lampObject.getJSONArray("xy")
+                    currentSceneValues.clear()
+                    currentSceneValues.add(
+                        ColorUtils.xyToRGB(
+                            xyArray.getDouble(0),
+                            xyArray.getDouble(1),
+                        ),
+                    )
+                } else if (lampObject.has("ct")) {
+                    currentSceneValues.add(
+                        HueUtils.ctToRGB(lampObject.getInt("ct")),
+                    )
+                }
+            }
+        }
+        return if (currentSceneValues.size > 0) {
+            currentSceneValues[0]
+        } else {
+            Color.WHITE
+        }
     }
 
     override fun onItemClicked(

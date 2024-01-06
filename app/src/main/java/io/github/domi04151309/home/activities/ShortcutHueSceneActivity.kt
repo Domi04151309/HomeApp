@@ -58,107 +58,119 @@ class ShortcutHueSceneActivity : BaseActivity(), RecyclerViewHelperInterface {
         recyclerView.adapter = SimpleListAdapter(listItems, this)
     }
 
+    private fun loadDevice(view: View) {
+        deviceId = view.findViewById<TextView>(R.id.hidden).text.toString()
+        api.loadList(
+            object : UnifiedAPI.CallbackInterface {
+                override fun onItemsLoaded(
+                    holder: UnifiedRequestCallback,
+                    recyclerViewInterface: HomeRecyclerViewHelperInterface?,
+                ) {
+                    if (holder.response != null) {
+                        @Suppress("UNCHECKED_CAST")
+                        recyclerView.adapter =
+                            SimpleListAdapter(
+                                holder.response as ArrayList<SimpleListItem>,
+                                this@ShortcutHueSceneActivity,
+                            )
+                    } else {
+                        deviceId = null
+                        Toast.makeText(
+                            this@ShortcutHueSceneActivity,
+                            holder.errorMessage,
+                            Toast.LENGTH_LONG,
+                        ).show()
+                    }
+                }
+
+                override fun onExecuted(
+                    result: String,
+                    shouldRefresh: Boolean,
+                ) {
+                    // Do nothing.
+                }
+            },
+        )
+    }
+
+    private fun loadGroup(view: View) {
+        group = view.findViewById<TextView>(R.id.hidden).text.toString()
+        Volley.newRequestQueue(this).add(
+            JsonObjectRequest(
+                Request.Method.GET,
+                device.address + "api/" + api.getUsername() + "/scenes/",
+                null,
+                { response ->
+                    val listItems: ArrayList<SimpleListItem> = ArrayList(response.length() / 2)
+                    var currentObject: JSONObject
+                    for (i in response.keys()) {
+                        currentObject = response.getJSONObject(i)
+                        if (currentObject.optString("group") == group) {
+                            listItems.add(
+                                SimpleListItem(
+                                    currentObject.optString("name"),
+                                    resources.getString(R.string.hue_tap),
+                                    i,
+                                    R.drawable.ic_scene,
+                                ),
+                            )
+                        }
+                    }
+                    listItems.sortBy { it.title }
+                    recyclerView.adapter = SimpleListAdapter(listItems, this)
+                },
+                { error ->
+                    group = null
+                    Toast.makeText(this, Global.volleyError(this, error), Toast.LENGTH_LONG)
+                        .show()
+                },
+            ),
+        )
+    }
+
+    private fun createShortcut(view: View) {
+        val lampName = view.findViewById<TextView>(R.id.title).text
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val shortcutManager = this.getSystemService(ShortcutManager::class.java)
+            if (shortcutManager != null) {
+                setResult(
+                    RESULT_OK,
+                    shortcutManager.createShortcutResultIntent(
+                        ShortcutInfo.Builder(this, device.id + lampName)
+                            .setShortLabel(view.findViewById<TextView>(R.id.title).text)
+                            .setLongLabel(view.findViewById<TextView>(R.id.title).text)
+                            .setIcon(Icon.createWithResource(this, device.iconId))
+                            .setIntent(
+                                Intent(this, ShortcutHueSceneActionActivity::class.java)
+                                    .putExtra(
+                                        "scene",
+                                        view.findViewById<TextView>(R.id.hidden).text,
+                                    )
+                                    .putExtra("group", group)
+                                    .putExtra("device", device.id)
+                                    .setAction(Intent.ACTION_MAIN)
+                                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK),
+                            )
+                            .build(),
+                    ),
+                )
+                finish()
+            }
+        } else {
+            Toast.makeText(this, R.string.pref_add_shortcut_failed, Toast.LENGTH_LONG).show()
+        }
+    }
+
     override fun onItemClicked(
         view: View,
         position: Int,
     ) {
         if (deviceId == null) {
-            deviceId = view.findViewById<TextView>(R.id.hidden).text.toString()
-            api.loadList(
-                object : UnifiedAPI.CallbackInterface {
-                    override fun onItemsLoaded(
-                        holder: UnifiedRequestCallback,
-                        recyclerViewInterface: HomeRecyclerViewHelperInterface?,
-                    ) {
-                        if (holder.response != null) {
-                            @Suppress("UNCHECKED_CAST")
-                            recyclerView.adapter =
-                                SimpleListAdapter(
-                                    holder.response as ArrayList<SimpleListItem>,
-                                    this@ShortcutHueSceneActivity,
-                                )
-                        } else {
-                            deviceId = null
-                            Toast.makeText(
-                                this@ShortcutHueSceneActivity,
-                                holder.errorMessage,
-                                Toast.LENGTH_LONG,
-                            ).show()
-                        }
-                    }
-
-                    override fun onExecuted(
-                        result: String,
-                        shouldRefresh: Boolean,
-                    ) {
-                        // Do nothing.
-                    }
-                },
-            )
+            loadDevice(view)
         } else if (group == null) {
-            group = view.findViewById<TextView>(R.id.hidden).text.toString()
-            Volley.newRequestQueue(this).add(
-                JsonObjectRequest(
-                    Request.Method.GET,
-                    device.address + "api/" + api.getUsername() + "/scenes/",
-                    null,
-                    { response ->
-                        val listItems: ArrayList<SimpleListItem> = ArrayList(response.length() / 2)
-                        var currentObject: JSONObject
-                        for (i in response.keys()) {
-                            currentObject = response.getJSONObject(i)
-                            if (currentObject.optString("group") == group) {
-                                listItems.add(
-                                    SimpleListItem(
-                                        currentObject.optString("name"),
-                                        resources.getString(R.string.hue_tap),
-                                        i,
-                                        R.drawable.ic_scene,
-                                    ),
-                                )
-                            }
-                        }
-                        listItems.sortBy { it.title }
-                        recyclerView.adapter = SimpleListAdapter(listItems, this)
-                    },
-                    { error ->
-                        group = null
-                        Toast.makeText(this, Global.volleyError(this, error), Toast.LENGTH_LONG)
-                            .show()
-                    },
-                ),
-            )
+            loadGroup(view)
         } else {
-            val lampName = view.findViewById<TextView>(R.id.title).text
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val shortcutManager = this.getSystemService(ShortcutManager::class.java)
-                if (shortcutManager != null) {
-                    setResult(
-                        RESULT_OK,
-                        shortcutManager.createShortcutResultIntent(
-                            ShortcutInfo.Builder(this, device.id + lampName)
-                                .setShortLabel(view.findViewById<TextView>(R.id.title).text)
-                                .setLongLabel(view.findViewById<TextView>(R.id.title).text)
-                                .setIcon(Icon.createWithResource(this, device.iconId))
-                                .setIntent(
-                                    Intent(this, ShortcutHueSceneActionActivity::class.java)
-                                        .putExtra(
-                                            "scene",
-                                            view.findViewById<TextView>(R.id.hidden).text,
-                                        )
-                                        .putExtra("group", group)
-                                        .putExtra("device", device.id)
-                                        .setAction(Intent.ACTION_MAIN)
-                                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK),
-                                )
-                                .build(),
-                        ),
-                    )
-                    finish()
-                }
-            } else {
-                Toast.makeText(this, R.string.pref_add_shortcut_failed, Toast.LENGTH_LONG).show()
-            }
+            createShortcut(view)
         }
     }
 

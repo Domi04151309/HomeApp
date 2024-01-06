@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import com.android.volley.Request
+import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -21,8 +22,20 @@ import io.github.domi04151309.home.helpers.HueUtils
 import io.github.domi04151309.home.helpers.HueUtils.MIN_COLOR_TEMPERATURE
 import io.github.domi04151309.home.helpers.SliderUtils
 import io.github.domi04151309.home.interfaces.HueAdvancedLampInterface
+import org.json.JSONObject
 
-class HueColorSheet(private val lampInterface: HueAdvancedLampInterface) : BottomSheetDialogFragment() {
+class HueColorSheet(private val lampInterface: HueAdvancedLampInterface) :
+    BottomSheetDialogFragment(),
+    Response.Listener<JSONObject> {
+    private lateinit var colorPickerView: ColorPickerView
+    private lateinit var ctText: TextView
+    private lateinit var ctBar: Slider
+    private lateinit var hueSatText: TextView
+    private lateinit var hueBar: Slider
+    private lateinit var satBar: Slider
+    private lateinit var briText: TextView
+    private lateinit var briBar: Slider
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -31,103 +44,95 @@ class HueColorSheet(private val lampInterface: HueAdvancedLampInterface) : Botto
         val hueAPI = HueAPI(requireContext(), lampInterface.device.id)
 
         val view = inflater.inflate(R.layout.fragment_hue_bri_color, container, false)
-        val colorPickerView = view.findViewById<ColorPickerView>(R.id.colorPickerView)
-        val ctText = view.findViewById<TextView>(R.id.ctTxt)
-        val ctBar = view.findViewById<Slider>(R.id.ctBar)
-        val hueSatText = view.findViewById<TextView>(R.id.hueSatTxt)
-        val hueBar = view.findViewById<Slider>(R.id.hueBar)
-        val satBar = view.findViewById<Slider>(R.id.satBar)
-        val briText = view.findViewById<TextView>(R.id.briTxt)
-        val briBar = view.findViewById<Slider>(R.id.briBar)
+        colorPickerView = view.findViewById(R.id.colorPickerView)
+        ctText = view.findViewById(R.id.ctTxt)
+        ctBar = view.findViewById(R.id.ctBar)
+        hueSatText = view.findViewById(R.id.hueSatTxt)
+        hueBar = view.findViewById(R.id.hueBar)
+        satBar = view.findViewById(R.id.satBar)
+        briText = view.findViewById(R.id.briTxt)
+        briBar = view.findViewById(R.id.briBar)
 
-        val availableInputs = arrayOf<View>(colorPickerView, hueBar, satBar, ctBar, briBar)
-        val ctViews = arrayOf<View>(ctText, ctBar)
-        val hueSatViews = arrayOf<View>(colorPickerView, hueSatText, hueBar, satBar)
-        val briViews = arrayOf<View>(briText, briBar)
-
-        // Load colors
         Volley.newRequestQueue(requireContext())
             .add(
                 JsonObjectRequest(
                     Request.Method.GET,
                     "${lampInterface.addressPrefix}/lights/${lampInterface.id}",
                     null,
-                    { response ->
-                        val state = response.getJSONObject("state")
-
-                        if (!state.has("ct")) {
-                            ctViews.forEach {
-                                it.visibility = View.GONE
-                            }
-                        } else {
-                            ctViews.forEach {
-                                it.visibility = View.VISIBLE
-                            }
-                            SliderUtils.setProgress(ctBar, state.getInt("ct") - MIN_COLOR_TEMPERATURE)
-                        }
-                        if (!state.has("hue") && !state.has("sat")) {
-                            hueSatViews.forEach {
-                                it.visibility = View.GONE
-                            }
-                        } else {
-                            hueSatViews.forEach {
-                                it.visibility = View.VISIBLE
-                            }
-                            colorPickerView.selectByHsvColor(
-                                HueUtils.hueSatToRGB(
-                                    state.getInt("hue"),
-                                    state.getInt("sat"),
-                                ),
-                            )
-                            SliderUtils.setProgress(hueBar, state.getInt("hue"))
-                            SliderUtils.setProgress(satBar, state.getInt("sat"))
-                        }
-                        if (!state.has("bri")) {
-                            briViews.forEach {
-                                it.visibility = View.GONE
-                            }
-                        } else {
-                            briViews.forEach {
-                                it.visibility = View.VISIBLE
-                            }
-                            SliderUtils.setProgress(briBar, state.getInt("bri"))
-                        }
-                        availableInputs.forEach {
-                            it.isEnabled = state.optBoolean("on")
-                        }
-                    },
-                    { error ->
-                        Toast.makeText(
-                            requireContext(),
-                            Global.volleyError(requireContext(), error),
-                            Toast.LENGTH_LONG,
-                        ).show()
-                    },
-                ),
+                    this,
+                ) { error ->
+                    Toast.makeText(
+                        requireContext(),
+                        Global.volleyError(requireContext(), error),
+                        Toast.LENGTH_LONG,
+                    ).show()
+                },
             )
 
-        // Slider labels
-        ctBar.setLabelFormatter { value: Float ->
-            HueUtils.ctToKelvin(value.toInt() + MIN_COLOR_TEMPERATURE)
+        setupColorControls(hueAPI)
+        setupTemperatureControls(hueAPI)
+        setupBrightnessControls(hueAPI)
+
+        return view
+    }
+
+    override fun onResponse(response: JSONObject) {
+        val availableInputs = arrayOf(colorPickerView, hueBar, satBar, ctBar, briBar)
+        val ctViews = arrayOf(ctText, ctBar)
+        val hueSatViews = arrayOf(colorPickerView, hueSatText, hueBar, satBar)
+        val briViews = arrayOf(briText, briBar)
+        val state = response.getJSONObject("state")
+
+        if (!state.has("ct")) {
+            ctViews.forEach {
+                it.visibility = View.GONE
+            }
+        } else {
+            ctViews.forEach {
+                it.visibility = View.VISIBLE
+            }
+            SliderUtils.setProgress(ctBar, state.getInt("ct") - MIN_COLOR_TEMPERATURE)
         }
+        if (!state.has("hue") && !state.has("sat")) {
+            hueSatViews.forEach {
+                it.visibility = View.GONE
+            }
+        } else {
+            hueSatViews.forEach {
+                it.visibility = View.VISIBLE
+            }
+            colorPickerView.selectByHsvColor(
+                HueUtils.hueSatToRGB(
+                    state.getInt("hue"),
+                    state.getInt("sat"),
+                ),
+            )
+            SliderUtils.setProgress(hueBar, state.getInt("hue"))
+            SliderUtils.setProgress(satBar, state.getInt("sat"))
+        }
+        if (!state.has("bri")) {
+            briViews.forEach {
+                it.visibility = View.GONE
+            }
+        } else {
+            briViews.forEach {
+                it.visibility = View.VISIBLE
+            }
+            SliderUtils.setProgress(briBar, state.getInt("bri"))
+        }
+        availableInputs.forEach {
+            it.isEnabled = state.optBoolean("on")
+        }
+    }
+
+    private fun setupColorControls(hueAPI: HueAPI) {
         hueBar.setLabelFormatter { value: Float ->
             HueUtils.hueToDegree(value.toInt())
         }
         satBar.setLabelFormatter { value: Float ->
             HueUtils.satToPercent(value.toInt())
         }
-        briBar.setLabelFormatter { value: Float ->
-            HueUtils.briToPercent(value.toInt())
-        }
 
-        // Slider tints
-        SliderUtils.setSliderGradient(
-            ctBar,
-            intArrayOf(
-                Color.WHITE,
-                Color.parseColor("#FF8B16"),
-            ),
-        )
         SliderUtils.setSliderGradient(
             hueBar,
             HueUtils.defaultColors(),
@@ -139,14 +144,6 @@ class HueColorSheet(private val lampInterface: HueAdvancedLampInterface) : Botto
                 Color.RED,
             ),
         )
-
-        ctBar.addOnChangeListener { _, value, fromUser ->
-            if (fromUser) {
-                hueAPI.changeColorTemperature(lampInterface.id, value.toInt() + MIN_COLOR_TEMPERATURE)
-                lampInterface.onColorChanged(HueUtils.ctToRGB(value.toInt() + MIN_COLOR_TEMPERATURE))
-                lampInterface.onCtChanged(value.toInt() + MIN_COLOR_TEMPERATURE)
-            }
-        }
 
         hueBar.addOnChangeListener { _, value, fromUser ->
             if (fromUser) {
@@ -190,12 +187,38 @@ class HueColorSheet(private val lampInterface: HueAdvancedLampInterface) : Botto
                 }
             },
         )
+    }
+
+    private fun setupTemperatureControls(hueAPI: HueAPI) {
+        ctBar.setLabelFormatter { value: Float ->
+            HueUtils.ctToKelvin(value.toInt() + MIN_COLOR_TEMPERATURE)
+        }
+
+        SliderUtils.setSliderGradient(
+            ctBar,
+            intArrayOf(
+                Color.WHITE,
+                Color.parseColor("#FF8B16"),
+            ),
+        )
+
+        ctBar.addOnChangeListener { _, value, fromUser ->
+            if (fromUser) {
+                hueAPI.changeColorTemperature(lampInterface.id, value.toInt() + MIN_COLOR_TEMPERATURE)
+                lampInterface.onColorChanged(HueUtils.ctToRGB(value.toInt() + MIN_COLOR_TEMPERATURE))
+                lampInterface.onCtChanged(value.toInt() + MIN_COLOR_TEMPERATURE)
+            }
+        }
+    }
+
+    private fun setupBrightnessControls(hueAPI: HueAPI) {
+        briBar.setLabelFormatter { value: Float ->
+            HueUtils.briToPercent(value.toInt())
+        }
 
         briBar.addOnChangeListener { _, value, fromUser ->
             if (fromUser) hueAPI.changeBrightness(lampInterface.id, value.toInt())
             lampInterface.onBrightnessChanged(value.toInt())
         }
-
-        return view
     }
 }

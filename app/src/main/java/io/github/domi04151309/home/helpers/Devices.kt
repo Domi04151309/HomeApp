@@ -10,6 +10,7 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.util.Random
 
+@Suppress("TooManyFunctions")
 class Devices(private val context: Context) {
     companion object {
         private const val ALLOWED_CHARACTERS = "0123456789abcdefghijklmnobqrstuvw"

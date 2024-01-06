@@ -63,6 +63,7 @@ internal object Global {
         }
     }
 
+    @Suppress("CyclomaticComplexMethod")
     fun getIcon(
         icon: String,
         default: Int = R.drawable.ic_warning,

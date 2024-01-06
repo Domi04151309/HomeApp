@@ -19,6 +19,7 @@ import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
 import org.json.JSONArray
 import org.json.JSONObject
 
+@Suppress("TooManyFunctions")
 class HueAPI(
     c: Context,
     deviceId: String,

@@ -19,6 +19,7 @@ import io.github.domi04151309.home.data.ListViewItem
 import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
 
+@Suppress("TooManyFunctions")
 class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapter<MainListAdapter.ViewHolder>() {
     companion object {
         private const val ANIMATION_DURATION = 300L

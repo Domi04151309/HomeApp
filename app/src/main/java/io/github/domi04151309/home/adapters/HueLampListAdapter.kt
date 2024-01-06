@@ -69,34 +69,35 @@ class HueLampListAdapter(
             items = newItems
             colors = newColors
             notifyDataSetChanged()
-        } else {
-            val changed = arrayListOf<Int>()
-            for (i in 0 until items.size) {
-                if (items[i].hidden != newItems[i].hidden) {
-                    changed.add(i)
-                } else {
-                    val holder = (recyclerView.findViewHolderForAdapterPosition(i) ?: return) as ViewHolder
-                    if (items[i].state != newItems[i].state) {
-                        holder.stateSwitch.isChecked = newItems[i].state ?: false
-                    }
-                    if (colors[i] != newColors[i]) {
-                        val context = holder.itemView.context
-                        val finalDrawable =
-                            LayerDrawable(
-                                arrayOf(
-                                    ContextCompat.getDrawable(context, R.drawable.ic_hue_lamp_base),
-                                    ContextCompat.getDrawable(context, R.drawable.ic_hue_lamp_color),
-                                ),
-                            )
-                        finalDrawable.getDrawable(1).setTint(newColors[i])
-                        holder.drawable.setImageDrawable(finalDrawable)
-                    }
+            return
+        }
+
+        val changed = arrayListOf<Int>()
+        for (i in 0 until items.size) {
+            if (items[i].hidden != newItems[i].hidden) {
+                changed.add(i)
+            } else {
+                val holder = (recyclerView.findViewHolderForAdapterPosition(i) ?: return) as ViewHolder
+                if (items[i].state != newItems[i].state) {
+                    holder.stateSwitch.isChecked = newItems[i].state ?: false
+                }
+                if (colors[i] != newColors[i]) {
+                    val context = holder.itemView.context
+                    val finalDrawable =
+                        LayerDrawable(
+                            arrayOf(
+                                ContextCompat.getDrawable(context, R.drawable.ic_hue_lamp_base),
+                                ContextCompat.getDrawable(context, R.drawable.ic_hue_lamp_color),
+                            ),
+                        )
+                    finalDrawable.getDrawable(1).setTint(newColors[i])
+                    holder.drawable.setImageDrawable(finalDrawable)
                 }
             }
-            items = newItems
-            colors = newColors
-            changed.forEach(::notifyItemChanged)
         }
+        items = newItems
+        colors = newColors
+        changed.forEach(::notifyItemChanged)
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
