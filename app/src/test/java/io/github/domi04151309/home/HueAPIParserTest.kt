@@ -28,7 +28,7 @@ class HueAPIParserTest {
         val groupsJson = JSONObject(Helpers.getFileContents("/hue/docs-groups.json"))
 
         val states = parser.parseStates(groupsJson)
-        assertThat(states, `is`(arrayListOf<Boolean?>()))
+        assertThat(states, `is`(listOf()))
     }
 
     @Test
@@ -110,7 +110,7 @@ class HueAPIParserTest {
         assertThat(
             states,
             `is`(
-                arrayListOf(
+                listOf(
                     false,
                     false,
                     false,

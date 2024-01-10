@@ -27,7 +27,7 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
         settings: JSONObject,
         status: JSONObject,
     ): List<ListViewItem> {
-        val listItems = arrayListOf<ListViewItem>()
+        val listItems = mutableListOf<ListViewItem>()
         listItems.addAll(parseSwitchesAndMetersV1(settings, status))
         listItems.addAll(parseTemperatureSensorsV1(settings))
         listItems.addAll(parseHumiditySensorsV1(settings))
@@ -38,7 +38,7 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
         settings: JSONObject,
         status: JSONObject,
     ): List<ListViewItem> {
-        val listItems = arrayListOf<ListViewItem>()
+        val listItems = mutableListOf<ListViewItem>()
 
         // switches
         val relays = settings.optJSONArray("relays") ?: JSONArray()
@@ -89,7 +89,7 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
     }
 
     private fun parseTemperatureSensorsV1(status: JSONObject): List<ListViewItem> {
-        val listItems = arrayListOf<ListViewItem>()
+        val listItems = mutableListOf<ListViewItem>()
         val tempSensors = status.optJSONObject("ext_temperature") ?: JSONObject()
         for (sensorId in tempSensors.keys()) {
             val currentSensor = tempSensors.getJSONObject(sensorId)
@@ -104,7 +104,7 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
     }
 
     private fun parseHumiditySensorsV1(status: JSONObject): List<ListViewItem> {
-        val listItems = arrayListOf<ListViewItem>()
+        val listItems = mutableListOf<ListViewItem>()
         val humSensors = status.optJSONObject("ext_humidity") ?: JSONObject()
         for (sensorId in humSensors.keys()) {
             val currentSensor = humSensors.getJSONObject(sensorId)
@@ -122,7 +122,7 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
         config: JSONObject,
         status: JSONObject,
     ): List<ListViewItem> {
-        val listItems = arrayListOf<ListViewItem>()
+        val listItems = mutableListOf<ListViewItem>()
         var currentId: Int
         var currentState: Boolean
         for (switchKey in config.keys()) {
@@ -170,7 +170,7 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
         settings: JSONObject,
         status: JSONObject,
     ): List<Boolean?> {
-        val listItems = arrayListOf<Boolean?>()
+        val listItems = mutableListOf<Boolean?>()
 
         // switches
         val relays = settings.optJSONArray("relays") ?: JSONArray()
@@ -208,7 +208,7 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
         config: JSONObject,
         status: JSONObject,
     ): List<Boolean?> {
-        val listItems = arrayListOf<Boolean?>()
+        val listItems = mutableListOf<Boolean?>()
         for (switchKey in config.keys()) {
             if (!switchKey.startsWith("switch:")) continue
             listItems += status.getJSONObject(switchKey).getBoolean("output")

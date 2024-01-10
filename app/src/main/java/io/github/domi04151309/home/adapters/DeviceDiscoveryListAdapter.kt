@@ -11,7 +11,7 @@ import io.github.domi04151309.home.data.ListViewItem
 import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
 
 class DeviceDiscoveryListAdapter(
-    private val items: ArrayList<ListViewItem>,
+    private val items: MutableList<ListViewItem>,
     private val helperInterface: RecyclerViewHelperInterface,
 ) : RecyclerView.Adapter<DeviceDiscoveryListAdapter.ViewHolder>() {
     override fun onCreateViewHolder(

@@ -19,8 +19,8 @@ class HueLampListAdapter(
     private val stateListener: CompoundButton.OnCheckedChangeListener,
     private val helperInterface: RecyclerViewHelperInterface,
 ) : RecyclerView.Adapter<HueLampListAdapter.ViewHolder>() {
-    private var items: List<ListViewItem> = arrayListOf()
-    private var colors: List<Int> = arrayListOf()
+    private var items: List<ListViewItem> = mutableListOf()
+    private var colors: List<Int> = mutableListOf()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -72,7 +72,7 @@ class HueLampListAdapter(
             return
         }
 
-        val changed = arrayListOf<Int>()
+        val changed = mutableListOf<Int>()
         for (i in 0 until items.size) {
             if (items[i].hidden != newItems[i].hidden) {
                 changed.add(i)

@@ -254,7 +254,7 @@ class MainActivity : BaseActivity() {
                                             ) {
                                                 adapter.updateDirectView(
                                                     deviceId,
-                                                    holder.response ?: arrayListOf(),
+                                                    holder.response ?: listOf(),
                                                     adapter.getDirectViewPos(deviceId),
                                                 )
                                             }

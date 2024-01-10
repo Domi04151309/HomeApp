@@ -44,7 +44,7 @@ class ControlService : ControlsProviderService() {
                 return@Publisher
             }
             val devices = Devices(this)
-            val relevantDevices = arrayListOf<DeviceItem>()
+            val relevantDevices = mutableListOf<DeviceItem>()
             for (i in 0 until devices.length) {
                 val currentDevice = devices.getDeviceByIndex(i)
                 if (

@@ -3,7 +3,7 @@ package io.github.domi04151309.home.helpers
 import io.github.domi04151309.home.data.LightStates
 
 class HueLightListener {
-    private var listeners = arrayListOf<(data: LightStates.Light) -> Unit>()
+    private var listeners = mutableListOf<(data: LightStates.Light) -> Unit>()
     var state: LightStates.Light = LightStates.Light()
         set(value) {
             if (value != field) {

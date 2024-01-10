@@ -65,7 +65,7 @@ class HueSceneGridAdapter(
             items = newItems
             notifyDataSetChanged()
         } else {
-            val changed = arrayListOf<Int>()
+            val changed = mutableListOf<Int>()
             for (i in items.indices) {
                 if (items[i] != newItems[i]) changed.add(i)
             }

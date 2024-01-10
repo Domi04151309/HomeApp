@@ -8,7 +8,7 @@ import org.json.JSONObject
 
 class EspEasyAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.Parser(resources, api) {
     override fun parseResponse(response: JSONObject): List<ListViewItem> {
-        val listItems = arrayListOf<ListViewItem>()
+        val listItems = mutableListOf<ListViewItem>()
 
         // sensors
         val sensors = response.optJSONArray("Sensors") ?: JSONArray()
@@ -33,7 +33,7 @@ class EspEasyAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.Pars
         type: String,
         currentSensor: JSONObject,
     ): List<ListViewItem> {
-        val listItems = arrayListOf<ListViewItem>()
+        val listItems = mutableListOf<ListViewItem>()
         var taskIcons = intArrayOf()
         when (type) {
             "Environment - BMx280" -> {
@@ -77,7 +77,7 @@ class EspEasyAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.Pars
         type: String,
         currentSensor: JSONObject,
     ): List<ListViewItem> {
-        val listItems = arrayListOf<ListViewItem>()
+        val listItems = mutableListOf<ListViewItem>()
         when (type) {
             "Switch input - Switch" -> {
                 val currentState = currentSensor.getJSONArray("TaskValues").getJSONObject(0).getInt("Value") > 0
@@ -111,7 +111,7 @@ class EspEasyAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.Pars
     }
 
     override fun parseStates(response: JSONObject): List<Boolean?> {
-        val listItems = arrayListOf<Boolean?>()
+        val listItems = mutableListOf<Boolean?>()
 
         // sensors
         val sensors = response.optJSONArray("Sensors") ?: JSONArray()
@@ -136,7 +136,7 @@ class EspEasyAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.Pars
         type: String,
         currentSensor: JSONObject,
     ): List<Boolean?> {
-        val listItems = arrayListOf<Boolean?>()
+        val listItems = mutableListOf<Boolean?>()
         var tasks = 0
         @Suppress("MagicNumber")
         when (type) {
@@ -162,7 +162,7 @@ class EspEasyAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.Pars
         type: String,
         currentSensor: JSONObject,
     ): List<Boolean?> {
-        val listItems = arrayListOf<Boolean?>()
+        val listItems = mutableListOf<Boolean?>()
         when (type) {
             "Switch input - Switch" -> {
                 listItems += currentSensor.getJSONArray("TaskValues").getJSONObject(0).getInt("Value") > 0

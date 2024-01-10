@@ -42,7 +42,7 @@ class SearchDevicesActivity : BaseActivity(), RecyclerViewHelperInterface {
         recyclerView = findViewById(R.id.recyclerView)
         adapter =
             DeviceDiscoveryListAdapter(
-                arrayListOf(
+                mutableListOf(
                     ListViewItem(
                         title = resources.getString(R.string.pref_add_search),
                         summary = resources.getString(R.string.pref_add_search_summary),

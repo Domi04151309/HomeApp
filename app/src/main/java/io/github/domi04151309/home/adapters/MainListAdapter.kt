@@ -25,7 +25,7 @@ class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapt
         private const val ANIMATION_DURATION = 300L
     }
 
-    private var items: ArrayList<ListViewItem> = arrayListOf()
+    private var items: MutableList<ListViewItem> = mutableListOf()
     private var helperInterface: HomeRecyclerViewHelperInterface? = null
     private var animate: Boolean = true
     private var offsets: IntArray = intArrayOf()
@@ -111,7 +111,7 @@ class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapt
             notifyDataSetChanged()
         } else {
             animate = preferredAnimationState ?: false
-            val changed = arrayListOf<Int>()
+            val changed = mutableListOf<Int>()
             items.clear()
             for (i in 0 until items.size) {
                 if (items[i] != newItems[i]) changed.add(i)

@@ -48,7 +48,7 @@ class ShellyAPIParserTest {
         val statusJson = JSONObject(Helpers.getFileContents("/shelly/shellyplug1-status.json"))
 
         val states = parserV1.parseStates(settingsJson, statusJson)
-        assertThat(states, `is`(arrayListOf(true, null)))
+        assertThat(states, `is`(listOf(true, null)))
     }
 
     @Test
@@ -126,7 +126,7 @@ class ShellyAPIParserTest {
         val statusJson = JSONObject(Helpers.getFileContents("/shelly/shelly1-status.json"))
 
         val states = parserV1.parseStates(settingsJson, statusJson)
-        assertThat(states, `is`(arrayListOf(false, null, null)))
+        assertThat(states, `is`(listOf(false, null, null)))
     }
 
     @Test
@@ -151,6 +151,6 @@ class ShellyAPIParserTest {
         val statusJson = JSONObject(Helpers.getFileContents("/shelly/shelly-plus-1-Shelly.GetStatus.json"))
 
         val states = parserV2.parseStates(configJson, statusJson)
-        assertThat(states, `is`(arrayListOf(true)))
+        assertThat(states, `is`(listOf(true)))
     }
 }

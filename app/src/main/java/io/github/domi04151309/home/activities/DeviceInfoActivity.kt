@@ -38,7 +38,7 @@ class DeviceInfoActivity : BaseActivity(), RecyclerViewHelperInterface {
         val device = devices.getDeviceById(id)
         val queue = Volley.newRequestQueue(this)
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-        val items = arrayListOf<SimpleListItem>()
+        val items = mutableListOf<SimpleListItem>()
         recyclerView.layoutManager = LinearLayoutManager(this)
         items.add(
             SimpleListItem(
@@ -194,7 +194,7 @@ class DeviceInfoActivity : BaseActivity(), RecyclerViewHelperInterface {
     private fun showHueInfo(
         device: DeviceItem,
         queue: RequestQueue,
-        items: ArrayList<SimpleListItem>,
+        items: MutableList<SimpleListItem>,
         recyclerView: RecyclerView,
     ) {
         val hueAPI = HueAPI(this, device.id)
@@ -311,7 +311,7 @@ class DeviceInfoActivity : BaseActivity(), RecyclerViewHelperInterface {
     private fun showShelly2Info(
         device: DeviceItem,
         queue: RequestQueue,
-        items: ArrayList<SimpleListItem>,
+        items: MutableList<SimpleListItem>,
         recyclerView: RecyclerView,
     ) {
         queue.add(

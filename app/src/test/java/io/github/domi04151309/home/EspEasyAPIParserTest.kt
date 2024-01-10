@@ -59,7 +59,7 @@ class EspEasyAPIParserTest {
         val infoJson = JSONObject(Helpers.getFileContents("/espeasy/espeasy-1.json"))
 
         val states = parser.parseStates(infoJson)
-        assertThat(states, `is`(arrayListOf(null, null, null, false)))
+        assertThat(states, `is`(listOf(null, null, null, false)))
     }
 
     @Test
@@ -75,7 +75,7 @@ class EspEasyAPIParserTest {
         val infoJson = JSONObject(Helpers.getFileContents("/espeasy/espeasy-disabledtasks.json"))
 
         val states = parser.parseStates(infoJson)
-        assertThat(states, `is`(arrayListOf<Boolean?>()))
+        assertThat(states, `is`(listOf()))
     }
 
     @Test
@@ -100,7 +100,7 @@ class EspEasyAPIParserTest {
         val infoJson = JSONObject(Helpers.getFileContents("/espeasy/espeasy-nan.json"))
 
         val states = parser.parseStates(infoJson)
-        assertThat(states, `is`(arrayListOf(null)))
+        assertThat(states, `is`(listOf(null)))
     }
 
     @Test
@@ -138,6 +138,6 @@ class EspEasyAPIParserTest {
         val infoJson = JSONObject(Helpers.getFileContents("/espeasy/espeasy-pressure.json"))
 
         val states = parser.parseStates(infoJson)
-        assertThat(states, `is`(arrayListOf(null, null, null)))
+        assertThat(states, `is`(listOf(null, null, null)))
     }
 }

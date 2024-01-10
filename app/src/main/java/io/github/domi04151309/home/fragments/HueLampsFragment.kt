@@ -73,8 +73,8 @@ class HueLampsFragment :
                     if (response != null) {
                         var currentObject: JSONObject
                         var currentState: JSONObject
-                        val listItems: ArrayList<ListViewItem> = arrayListOf()
-                        val colorArray: ArrayList<Int> = arrayListOf()
+                        val listItems: MutableList<ListViewItem> = mutableListOf()
+                        val colorArray: MutableList<Int> = mutableListOf()
                         for (i in response.keys()) {
                             currentObject = response.optJSONObject(i) ?: JSONObject()
                             currentState = currentObject.optJSONObject("state") ?: JSONObject()

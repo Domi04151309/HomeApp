@@ -49,7 +49,7 @@ class HueSceneActivity :
     Response.ErrorListener {
     private var editing = false
     private val lightStates = LightStates()
-    private val listItems = arrayListOf<SceneListItem>()
+    private val listItems = mutableListOf<SceneListItem>()
     private var groupId = "0"
     private var sceneId = ""
     private var defaultText = ""

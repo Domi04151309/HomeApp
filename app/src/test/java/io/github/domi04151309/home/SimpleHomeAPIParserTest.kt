@@ -42,7 +42,7 @@ class SimpleHomeAPIParserTest {
         val commandsJson = JSONObject(Helpers.getFileContents("/simplehome/temperature-sensor-commands.json"))
 
         val states = parser.parseStates(commandsJson)
-        assertThat(states, `is`(arrayListOf(null, null)))
+        assertThat(states, `is`(listOf(null, null)))
     }
 
     @Test
@@ -93,6 +93,6 @@ class SimpleHomeAPIParserTest {
         val commandsJson = JSONObject(Helpers.getFileContents("/simplehome/test-server-commands.json"))
 
         val states = parser.parseStates(commandsJson)
-        assertThat(states, `is`(arrayListOf(null, null, null, true, null)))
+        assertThat(states, `is`(listOf(null, null, null, true, null)))
     }
 }
