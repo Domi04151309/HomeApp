@@ -11,6 +11,7 @@ import com.android.volley.toolbox.Volley
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.adapters.SimpleListAdapter
 import io.github.domi04151309.home.api.HueAPI
+import io.github.domi04151309.home.api.HueAPIParser
 import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.data.SimpleListItem
 import io.github.domi04151309.home.helpers.Devices
@@ -19,6 +20,7 @@ import org.json.JSONObject
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
+@Suppress("TooManyFunctions")
 class DeviceInfoActivity : BaseActivity(), RecyclerViewHelperInterface {
     companion object {
         private const val TO_PERCENT = 100
@@ -95,102 +97,6 @@ class DeviceInfoActivity : BaseActivity(), RecyclerViewHelperInterface {
                 ),
         )
 
-    private fun parseHueConfig(response: JSONObject) =
-        listOf(
-            SimpleListItem(summary = resources.getString(R.string.hue_bridge)),
-            SimpleListItem(
-                response.optString("name"),
-                resources.getString(R.string.hue_bridge_name),
-                icon = R.drawable.ic_about_info,
-            ),
-            SimpleListItem(
-                response.optString("modelid"),
-                resources.getString(R.string.hue_bridge_model),
-                icon = R.drawable.ic_about_info,
-            ),
-            SimpleListItem(
-                response.optString("bridgeid"),
-                resources.getString(R.string.hue_bridge_id),
-                icon = R.drawable.ic_about_info,
-            ),
-            SimpleListItem(
-                response.optString("swversion"),
-                resources.getString(R.string.hue_bridge_software),
-                icon = R.drawable.ic_about_info,
-            ),
-            SimpleListItem(
-                response.optString("zigbeechannel"),
-                resources.getString(R.string.hue_bridge_zigbee),
-                icon = R.drawable.ic_about_info,
-            ),
-            SimpleListItem(
-                response.optString("timezone"),
-                resources.getString(R.string.hue_bridge_time_zone),
-                icon = R.drawable.ic_about_info,
-            ),
-        )
-
-    private fun parseHueSensors(response: JSONObject): List<SimpleListItem> {
-        val sensorItems = mutableListOf<SimpleListItem>()
-        for (i in response.keys()) {
-            val current = response.optJSONObject(i) ?: JSONObject()
-            val config = current.optJSONObject("config") ?: JSONObject()
-            if (config.has("battery")) {
-                sensorItems.add(
-                    SimpleListItem(
-                        current.optString("name"),
-                        config.optString("battery") + "%",
-                        icon =
-                            if (config.optBoolean("reachable")) {
-                                R.drawable.ic_device_raspberry_pi
-                            } else {
-                                R.drawable.ic_warning
-                            },
-                    ),
-                )
-            }
-        }
-        val items = mutableListOf(SimpleListItem(summary = resources.getString(R.string.hue_controls)))
-        items.addAll(sensorItems.sortedBy { it.title })
-        return items
-    }
-
-    private fun parseHueLights(response: JSONObject): List<SimpleListItem> {
-        val lightItems = mutableListOf<SimpleListItem>()
-        for (i in response.keys()) {
-            val current =
-                response.optJSONObject(i)
-                    ?: JSONObject()
-            val state =
-                current.optJSONObject("state") ?: JSONObject()
-            lightItems.add(
-                SimpleListItem(
-                    current.optString("name"),
-                    (
-                        if (state.optBoolean("on")) {
-                            resources.getString(
-                                R.string.str_on,
-                            )
-                        } else {
-                            resources.getString(R.string.str_off)
-                        }
-                    ) +
-                        " · " +
-                        current.optString("productname"),
-                    icon =
-                        if (state.optBoolean("reachable")) {
-                            R.drawable.ic_device_lamp
-                        } else {
-                            R.drawable.ic_warning
-                        },
-                ),
-            )
-        }
-        val items = mutableListOf(SimpleListItem(summary = resources.getString(R.string.hue_lights)))
-        items.addAll(lightItems.sortedBy { it.title })
-        return items
-    }
-
     private fun showHueInfo(
         device: DeviceItem,
         queue: RequestQueue,
@@ -206,7 +112,7 @@ class DeviceInfoActivity : BaseActivity(), RecyclerViewHelperInterface {
                 "$addressPrefix/config",
                 null,
                 { response ->
-                    items.addAll(parseHueConfig(response))
+                    items.addAll(HueAPIParser.parseHueConfig(resources, response))
 
                     queue.add(
                         JsonObjectRequest(
@@ -214,7 +120,7 @@ class DeviceInfoActivity : BaseActivity(), RecyclerViewHelperInterface {
                             "$addressPrefix/sensors",
                             null,
                             { innerResponse ->
-                                items.addAll(parseHueSensors(innerResponse))
+                                items.addAll(HueAPIParser.parseHueSensors(resources, innerResponse))
 
                                 queue.add(
                                     JsonObjectRequest(
@@ -222,7 +128,7 @@ class DeviceInfoActivity : BaseActivity(), RecyclerViewHelperInterface {
                                         "$addressPrefix/lights",
                                         null,
                                         { innerInnerResponse ->
-                                            items.addAll(parseHueLights(innerInnerResponse))
+                                            items.addAll(HueAPIParser.parseHueLights(resources, innerInnerResponse))
                                             recyclerView.adapter = SimpleListAdapter(items, this)
                                         },
                                         { },
