@@ -28,6 +28,7 @@ import com.google.android.material.snackbar.Snackbar
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.adapters.MainListAdapter
 import io.github.domi04151309.home.api.UnifiedAPI
+import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.data.ListViewItem
 import io.github.domi04151309.home.data.UnifiedRequestCallback
 import io.github.domi04151309.home.helpers.Devices
@@ -40,6 +41,7 @@ import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
 import kotlin.math.max
 import kotlin.math.min
 
+@Suppress("TooManyFunctions")
 class MainActivity : BaseActivity() {
     companion object {
         private val WEB_MODES =
@@ -64,12 +66,6 @@ class MainActivity : BaseActivity() {
     private lateinit var deviceIcon: ImageSwitcher
     private lateinit var deviceName: TextSwitcher
     private lateinit var fab: FloatingActionButton
-
-    private var themeId = ""
-
-    private fun getThemeId(): String =
-        PreferenceManager.getDefaultSharedPreferences(this)
-            .getString(P.PREF_THEME, P.PREF_THEME_DEFAULT) ?: P.PREF_THEME_DEFAULT
 
     private var columns: Int? = null
 
@@ -298,41 +294,9 @@ class MainActivity : BaseActivity() {
         deviceIcon = findViewById(R.id.deviceIcon)
         deviceName = findViewById(R.id.deviceName)
         fab = findViewById(R.id.fab)
-        themeId = getThemeId()
         columns = getColumns()
 
-        deviceIcon.setFactory {
-            val view = ImageView(this@MainActivity)
-            view.layoutParams =
-                FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.MATCH_PARENT,
-                    FrameLayout.LayoutParams.MATCH_PARENT,
-                )
-            view
-        }
-        deviceName.setFactory {
-            val view = TextView(this@MainActivity)
-            view.layoutParams =
-                FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.MATCH_PARENT,
-                    FrameLayout.LayoutParams.MATCH_PARENT,
-                )
-            view.setTextAppearance(androidx.appcompat.R.style.TextAppearance_AppCompat_Large)
-            view.setTextColor(ContextCompat.getColor(this, android.R.color.white))
-            view.gravity = Gravity.CENTER_VERTICAL
-            view.ellipsize = TextUtils.TruncateAt.END
-            view.maxLines = 1
-            view
-        }
-
-        val inAnimation = AnimationUtils.loadAnimation(this, android.R.anim.fade_in)
-        val outAnimation = AnimationUtils.loadAnimation(this, android.R.anim.fade_out)
-        inAnimation.duration /= 2
-        outAnimation.duration /= 2
-        deviceIcon.inAnimation = inAnimation
-        deviceIcon.outAnimation = outAnimation
-        deviceName.inAnimation = inAnimation
-        deviceName.outAnimation = outAnimation
+        setupHeader()
 
         adapter = MainListAdapter(recyclerView)
         recyclerView.layoutManager = GridLayoutManager(this, numberOfRows())
@@ -383,6 +347,41 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    private fun setupHeader() {
+        deviceIcon.setFactory {
+            val view = ImageView(this@MainActivity)
+            view.layoutParams =
+                FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT,
+                    FrameLayout.LayoutParams.MATCH_PARENT,
+                )
+            view
+        }
+        deviceName.setFactory {
+            val view = TextView(this@MainActivity)
+            view.layoutParams =
+                FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT,
+                    FrameLayout.LayoutParams.MATCH_PARENT,
+                )
+            view.setTextAppearance(androidx.appcompat.R.style.TextAppearance_AppCompat_Large)
+            view.setTextColor(ContextCompat.getColor(this, android.R.color.white))
+            view.gravity = Gravity.CENTER_VERTICAL
+            view.ellipsize = TextUtils.TruncateAt.END
+            view.maxLines = 1
+            view
+        }
+
+        val inAnimation = AnimationUtils.loadAnimation(this, android.R.anim.fade_in)
+        val outAnimation = AnimationUtils.loadAnimation(this, android.R.anim.fade_out)
+        inAnimation.duration /= 2
+        outAnimation.duration /= 2
+        deviceIcon.inAnimation = inAnimation
+        deviceIcon.outAnimation = outAnimation
+        deviceName.inAnimation = inAnimation
+        deviceName.outAnimation = outAnimation
+    }
+
     override fun onCreateContextMenu(
         menu: ContextMenu?,
         v: View?,
@@ -420,10 +419,6 @@ class MainActivity : BaseActivity() {
 
     override fun onStart() {
         super.onStart()
-        if (getThemeId() != themeId) {
-            themeId = getThemeId()
-            recreate()
-        }
         if (getColumns() != columns) {
             columns = getColumns()
             recreate()
@@ -503,11 +498,49 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    private fun onDirectView(
+        currentDevice: DeviceItem,
+        position: Int,
+        registeredForUpdates: HashMap<Int, UnifiedAPI?>,
+    ) {
+        val api = Global.getCorrectAPI(this, currentDevice.mode, currentDevice.id)
+        api.loadList(
+            object : UnifiedAPI.CallbackInterface {
+                override fun onItemsLoaded(
+                    holder: UnifiedRequestCallback,
+                    recyclerViewInterface: HomeRecyclerViewHelperInterface?,
+                ) {
+                    if (holder.response != null) {
+                        Thread {
+                            while (!updateHandler.running) Thread.sleep(TINY_DELAY)
+                            runOnUiThread {
+                                adapter.updateDirectView(
+                                    currentDevice.id,
+                                    holder.response,
+                                    position,
+                                )
+                            }
+                            registeredForUpdates[position] = api
+                        }.start()
+                    }
+                }
+
+                override fun onExecuted(
+                    result: String,
+                    shouldRefresh: Boolean,
+                ) {
+                    // Do nothing.
+                }
+            },
+        )
+    }
+
     internal fun loadDeviceList() {
         updateHandler.stop()
         val registeredForUpdates: HashMap<Int, UnifiedAPI?> = hashMapOf()
         val listItems: ArrayList<ListViewItem> = ArrayList(devices.length)
         listItems.ensureCapacity(devices.length)
+
         if (devices.length == 0) {
             listItems +=
                 ListViewItem(
@@ -515,60 +548,29 @@ class MainActivity : BaseActivity() {
                     summary = resources.getString(R.string.main_no_devices_summary),
                     icon = R.drawable.ic_info,
                 )
-        } else {
-            var actualPosition = 0
-            for (i in 0 until devices.length) {
-                val currentDevice = devices.getDeviceByIndex(i)
-                if (!currentDevice.hide) {
-                    if (
-                        currentDevice.directView &&
-                        Global.UNIFIED_MODES.contains(currentDevice.mode) &&
-                        checkNetwork(this)
-                    ) {
-                        actualPosition.let {
-                            val api = Global.getCorrectAPI(this, currentDevice.mode, currentDevice.id)
-                            api.loadList(
-                                object : UnifiedAPI.CallbackInterface {
-                                    override fun onItemsLoaded(
-                                        holder: UnifiedRequestCallback,
-                                        recyclerViewInterface: HomeRecyclerViewHelperInterface?,
-                                    ) {
-                                        if (holder.response != null) {
-                                            Thread {
-                                                while (!updateHandler.running) Thread.sleep(TINY_DELAY)
-                                                runOnUiThread {
-                                                    adapter.updateDirectView(
-                                                        currentDevice.id,
-                                                        holder.response,
-                                                        it,
-                                                    )
-                                                }
-                                                registeredForUpdates[it] = api
-                                            }.start()
-                                        }
-                                    }
-
-                                    override fun onExecuted(
-                                        result: String,
-                                        shouldRefresh: Boolean,
-                                    ) {
-                                        // Do nothing.
-                                    }
-                                },
-                            )
-                        }
-                    }
-                    listItems +=
-                        ListViewItem(
-                            title = currentDevice.name,
-                            summary = resources.getString(R.string.main_tap_to_connect),
-                            hidden = currentDevice.id,
-                            icon = currentDevice.iconId,
-                        )
-                    actualPosition++
+        }
+        var actualPosition = 0
+        for (i in 0 until devices.length) {
+            val currentDevice = devices.getDeviceByIndex(i)
+            if (!currentDevice.hide) {
+                if (
+                    currentDevice.directView &&
+                    Global.UNIFIED_MODES.contains(currentDevice.mode) &&
+                    checkNetwork(this)
+                ) {
+                    onDirectView(currentDevice, actualPosition, registeredForUpdates)
                 }
+                listItems +=
+                    ListViewItem(
+                        title = currentDevice.name,
+                        summary = resources.getString(R.string.main_tap_to_connect),
+                        hidden = currentDevice.id,
+                        icon = currentDevice.iconId,
+                    )
+                actualPosition++
             }
         }
+
         adapter.updateData(listItems, mainHelperInterface)
         deviceIcon.setImageResource(R.drawable.ic_home_white)
         deviceName.setText(resources.getString(R.string.main_device_name))
