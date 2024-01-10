@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
+import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
@@ -39,16 +40,24 @@ import io.github.domi04151309.home.interfaces.SceneRecyclerViewHelperInterface
 import org.json.JSONArray
 import org.json.JSONObject
 
+@Suppress("TooManyFunctions")
 class HueSceneActivity :
     BaseActivity(),
     SceneRecyclerViewHelperInterface,
     HueAdvancedLampInterface,
     Response.Listener<JSONArray>,
     Response.ErrorListener {
-    private var editing: Boolean = false
-    private val lightStates: LightStates = LightStates()
+    private var editing = false
+    private val lightStates = LightStates()
+    private val listItems = arrayListOf<SceneListItem>()
+    private var groupId = "0"
+    private var sceneId = ""
+    private var defaultText = ""
     private lateinit var hueAPI: HueAPI
     private lateinit var adapter: HueSceneLampListAdapter
+    private lateinit var queue: RequestQueue
+    private lateinit var nameBox: TextInputLayout
+    private lateinit var briBar: Slider
 
     override var id: String = ""
     override var canReceiveRequest: Boolean = true
@@ -59,125 +68,33 @@ class HueSceneActivity :
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hue_scene)
 
+        val nameTxt = findViewById<TextView>(R.id.nameTxt)
+
         device = Devices(this).getDeviceById(intent.getStringExtra("deviceId") ?: "")
         hueAPI = HueAPI(this, device.id)
         addressPrefix = device.address +
             "api/" + hueAPI.getUsername()
-        val queue = Volley.newRequestQueue(this)
-        val listItems: ArrayList<SceneListItem> = arrayListOf()
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-        val nameTxt = findViewById<TextView>(R.id.nameTxt)
-        val nameBox = findViewById<TextInputLayout>(R.id.nameBox)
-        val briBar = findViewById<Slider>(R.id.briBar)
+        queue = Volley.newRequestQueue(this)
+        nameBox = findViewById(R.id.nameBox)
+        briBar = findViewById(R.id.briBar)
 
         editing = intent.hasExtra("scene")
         adapter = HueSceneLampListAdapter(listItems, this)
-        val groupId = intent.getStringExtra("room") ?: "0"
-        val sceneId = intent.getStringExtra("scene") ?: ""
-        lateinit var defaultText: String
-        lateinit var lightIDs: JSONArray
+        groupId = intent.getStringExtra("room") ?: "0"
+        sceneId = intent.getStringExtra("scene") ?: ""
 
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = adapter
+        findViewById<RecyclerView>(R.id.recyclerView).apply {
+            layoutManager = LinearLayoutManager(this@HueSceneActivity)
+            adapter = this@HueSceneActivity.adapter
+        }
         briBar.setLabelFormatter { value: Float ->
             HueUtils.briToPercent(value.toInt())
         }
 
         if (editing) {
-            supportActionBar?.setTitle(R.string.hue_edit_scene)
-            defaultText = resources.getString(R.string.hue_scene)
-            hueAPI.activateSceneOfGroup(groupId, sceneId)
-            queue.add(
-                JsonObjectRequest(
-                    Request.Method.GET,
-                    "$addressPrefix/scenes/$sceneId",
-                    null,
-                    { response ->
-                        queue.add(
-                            JsonObjectRequest(
-                                Request.Method.GET,
-                                "$addressPrefix/lights",
-                                null,
-                                { secondResponse ->
-                                    nameBox.editText?.setText(response.optString("name"))
-                                    lightIDs = response.optJSONArray("lights") ?: JSONArray()
-                                    val lights =
-                                        response.optJSONObject("lightstates") ?: JSONObject()
-                                    var lightObj: JSONObject
-                                    val brightness = Array(2) { 0 }
-                                    for (i in lights.keys()) {
-                                        lightObj = lights.getJSONObject(i)
-                                        lightStates.addLight(i, lightObj)
-                                        listItems +=
-                                            generateListItem(
-                                                i,
-                                                (secondResponse.optJSONObject(i) ?: JSONObject())
-                                                    .optString("name"),
-                                                lightObj,
-                                            )
-                                        if (lightObj.has("bri")) {
-                                            brightness[0] += lightObj.getInt("bri")
-                                            brightness[1]++
-                                        }
-                                    }
-
-                                    SliderUtils.setProgress(
-                                        briBar,
-                                        if (brightness[1] > 0) brightness[0] / brightness[1] else 0,
-                                    )
-                                    listItems.sortBy { it.title }
-                                    adapter.notifyDataSetChanged()
-                                },
-                                this,
-                            ),
-                        )
-                    },
-                    this,
-                ),
-            )
+            onEditScene()
         } else {
-            supportActionBar?.setTitle(R.string.hue_add_scene)
-            defaultText = resources.getString(R.string.hue_new_scene)
-            queue.add(
-                JsonObjectRequest(
-                    Request.Method.GET,
-                    "$addressPrefix/groups/$groupId",
-                    null,
-                    { response ->
-                        lightIDs = response.getJSONArray("lights")
-                        SliderUtils.setProgress(
-                            briBar,
-                            (response.optJSONObject("action") ?: JSONObject()).optInt("bri"),
-                        )
-                        queue.add(
-                            JsonObjectRequest(
-                                Request.Method.GET,
-                                "$addressPrefix/lights",
-                                null,
-                                { secondResponse ->
-                                    var lightObj: JSONObject
-                                    for (i in 0 until lightIDs.length()) {
-                                        lightObj =
-                                            secondResponse.getJSONObject(lightIDs.getString(i))
-                                        val state = lightObj.getJSONObject("state")
-                                        listItems +=
-                                            generateListItem(
-                                                lightIDs.getString(i),
-                                                lightObj.getString("name"),
-                                                state,
-                                            )
-                                    }
-
-                                    listItems.sortBy { it.title }
-                                    adapter.notifyDataSetChanged()
-                                },
-                                this,
-                            ),
-                        )
-                    },
-                    this,
-                ),
-            )
+            onCreateScene()
         }
 
         nameBox.editText?.addTextChangedListener(
@@ -226,42 +143,106 @@ class HueSceneActivity :
         )
 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
-            val name = nameBox.editText?.text.toString()
-            if (name == "") {
-                MaterialAlertDialogBuilder(this)
-                    .setTitle(R.string.err_missing_name)
-                    .setMessage(R.string.err_missing_name_summary)
-                    .setPositiveButton(android.R.string.ok) { _, _ -> }
-                    .show()
-                return@setOnClickListener
-            }
-            queue.add(
-                if (editing) {
-                    CustomJsonArrayRequest(
-                        Request.Method.PUT,
-                        "$addressPrefix/scenes/$sceneId",
-                        JSONObject("{\"name\":\"$name\",\"lightstates\":$lightStates}"),
-                        this,
-                        this,
-                    )
-                } else {
-                    CustomJsonArrayRequest(
-                        Request.Method.POST,
-                        "$addressPrefix/scenes",
-                        JSONObject(
-                            "{" +
-                                "\"name\":\"$name\"," +
-                                "\"recycle\":false," +
-                                "\"group\":\"$groupId\"," +
-                                "\"type\":\"GroupScene\"" +
-                                "}",
+            onFloatingActionButtnClicked()
+        }
+    }
+
+    private fun onEditScene() {
+        supportActionBar?.setTitle(R.string.hue_edit_scene)
+        defaultText = resources.getString(R.string.hue_scene)
+        hueAPI.activateSceneOfGroup(groupId, sceneId)
+        queue.add(
+            JsonObjectRequest(
+                Request.Method.GET,
+                "$addressPrefix/scenes/$sceneId",
+                null,
+                { response ->
+                    queue.add(
+                        JsonObjectRequest(
+                            Request.Method.GET,
+                            "$addressPrefix/lights",
+                            null,
+                            { secondResponse ->
+                                nameBox.editText?.setText(response.optString("name"))
+                                val lights =
+                                    response.optJSONObject("lightstates") ?: JSONObject()
+                                var lightObj: JSONObject
+                                val brightness = Array(2) { 0 }
+                                for (i in lights.keys()) {
+                                    lightObj = lights.getJSONObject(i)
+                                    lightStates.addLight(i, lightObj)
+                                    listItems +=
+                                        generateListItem(
+                                            i,
+                                            (secondResponse.optJSONObject(i) ?: JSONObject())
+                                                .optString("name"),
+                                            lightObj,
+                                        )
+                                    if (lightObj.has("bri")) {
+                                        brightness[0] += lightObj.getInt("bri")
+                                        brightness[1]++
+                                    }
+                                }
+
+                                SliderUtils.setProgress(
+                                    briBar,
+                                    if (brightness[1] > 0) brightness[0] / brightness[1] else 0,
+                                )
+                                listItems.sortBy { it.title }
+                                adapter.notifyDataSetChanged()
+                            },
+                            this,
                         ),
-                        this,
-                        this,
                     )
                 },
-            )
-        }
+                this,
+            ),
+        )
+    }
+
+    private fun onCreateScene() {
+        supportActionBar?.setTitle(R.string.hue_add_scene)
+        defaultText = resources.getString(R.string.hue_new_scene)
+        queue.add(
+            JsonObjectRequest(
+                Request.Method.GET,
+                "$addressPrefix/groups/$groupId",
+                null,
+                { response ->
+                    val lightIDs = response.getJSONArray("lights")
+                    SliderUtils.setProgress(
+                        briBar,
+                        (response.optJSONObject("action") ?: JSONObject()).optInt("bri"),
+                    )
+                    queue.add(
+                        JsonObjectRequest(
+                            Request.Method.GET,
+                            "$addressPrefix/lights",
+                            null,
+                            { secondResponse ->
+                                var lightObj: JSONObject
+                                for (i in 0 until lightIDs.length()) {
+                                    lightObj =
+                                        secondResponse.getJSONObject(lightIDs.getString(i))
+                                    val state = lightObj.getJSONObject("state")
+                                    listItems +=
+                                        generateListItem(
+                                            lightIDs.getString(i),
+                                            lightObj.getString("name"),
+                                            state,
+                                        )
+                                }
+
+                                listItems.sortBy { it.title }
+                                adapter.notifyDataSetChanged()
+                            },
+                            this,
+                        ),
+                    )
+                },
+                this,
+            ),
+        )
     }
 
     private fun generateListItem(
@@ -288,6 +269,44 @@ class HueSceneActivity :
                 Color.parseColor("#FFFFFF")
             }
         return item
+    }
+
+    private fun onFloatingActionButtnClicked() {
+        val name = nameBox.editText?.text.toString()
+        if (name == "") {
+            MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.err_missing_name)
+                .setMessage(R.string.err_missing_name_summary)
+                .setPositiveButton(android.R.string.ok) { _, _ -> }
+                .show()
+            return
+        }
+        queue.add(
+            if (editing) {
+                CustomJsonArrayRequest(
+                    Request.Method.PUT,
+                    "$addressPrefix/scenes/$sceneId",
+                    JSONObject("{\"name\":\"$name\",\"lightstates\":$lightStates}"),
+                    this,
+                    this,
+                )
+            } else {
+                CustomJsonArrayRequest(
+                    Request.Method.POST,
+                    "$addressPrefix/scenes",
+                    JSONObject(
+                        "{" +
+                            "\"name\":\"$name\"," +
+                            "\"recycle\":false," +
+                            "\"group\":\"$groupId\"," +
+                            "\"type\":\"GroupScene\"" +
+                            "}",
+                    ),
+                    this,
+                    this,
+                )
+            },
+        )
     }
 
     override fun onResponse(response: JSONArray) {
