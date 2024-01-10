@@ -31,104 +31,108 @@ class ShellyAPI(
         super.loadList(callback, extended)
         val jsonObjectRequest =
             when (version) {
-                1 ->
-                    JsonObjectRequestAuth(
-                        Request.Method.GET,
-                        url + "settings",
-                        secrets,
-                        null,
-                        { settingsResponse ->
-                            queue.add(
-                                JsonObjectRequestAuth(
-                                    Request.Method.GET,
-                                    url + "status",
-                                    secrets,
-                                    null,
-                                    { statusResponse ->
-                                        val listItems = parser.parseResponse(settingsResponse, statusResponse)
-                                        updateCache(listItems)
-                                        callback.onItemsLoaded(
-                                            UnifiedRequestCallback(
-                                                listItems,
-                                                deviceId,
-                                            ),
-                                            recyclerViewInterface,
-                                        )
-                                    },
-                                    { error ->
-                                        callback.onItemsLoaded(
-                                            UnifiedRequestCallback(
-                                                null,
-                                                deviceId,
-                                                Global.volleyError(c, error),
-                                            ),
-                                            null,
-                                        )
-                                    },
-                                ),
-                            )
-                        },
-                        { error ->
-                            callback.onItemsLoaded(
-                                UnifiedRequestCallback(
-                                    null,
-                                    deviceId,
-                                    Global.volleyError(c, error),
-                                ),
-                                null,
-                            )
-                        },
-                    )
-                2 ->
-                    JsonObjectRequest(
-                        Request.Method.GET,
-                        url + "rpc/Shelly.GetConfig",
-                        null,
-                        { configResponse ->
-                            queue.add(
-                                JsonObjectRequest(
-                                    Request.Method.GET,
-                                    url + "rpc/Shelly.GetStatus",
-                                    null,
-                                    { statusResponse ->
-                                        val listItems = parser.parseResponse(configResponse, statusResponse)
-                                        updateCache(listItems)
-                                        callback.onItemsLoaded(
-                                            UnifiedRequestCallback(
-                                                listItems,
-                                                deviceId,
-                                            ),
-                                            recyclerViewInterface,
-                                        )
-                                    },
-                                    { error ->
-                                        callback.onItemsLoaded(
-                                            UnifiedRequestCallback(
-                                                null,
-                                                deviceId,
-                                                Global.volleyError(c, error),
-                                            ),
-                                            null,
-                                        )
-                                    },
-                                ),
-                            )
-                        },
-                        { error ->
-                            callback.onItemsLoaded(
-                                UnifiedRequestCallback(
-                                    null,
-                                    deviceId,
-                                    Global.volleyError(c, error),
-                                ),
-                                null,
-                            )
-                        },
-                    )
+                1 -> listRequestV1(callback)
+                2 -> listRequestV2(callback)
                 else -> null
             }
         queue.add(jsonObjectRequest)
     }
+
+    private fun listRequestV1(callback: CallbackInterface) =
+        JsonObjectRequestAuth(
+            Request.Method.GET,
+            url + "settings",
+            secrets,
+            null,
+            { settingsResponse ->
+                queue.add(
+                    JsonObjectRequestAuth(
+                        Request.Method.GET,
+                        url + "status",
+                        secrets,
+                        null,
+                        { statusResponse ->
+                            val listItems = parser.parseResponse(settingsResponse, statusResponse)
+                            updateCache(listItems)
+                            callback.onItemsLoaded(
+                                UnifiedRequestCallback(
+                                    listItems,
+                                    deviceId,
+                                ),
+                                recyclerViewInterface,
+                            )
+                        },
+                        { error ->
+                            callback.onItemsLoaded(
+                                UnifiedRequestCallback(
+                                    null,
+                                    deviceId,
+                                    Global.volleyError(c, error),
+                                ),
+                                null,
+                            )
+                        },
+                    ),
+                )
+            },
+            { error ->
+                callback.onItemsLoaded(
+                    UnifiedRequestCallback(
+                        null,
+                        deviceId,
+                        Global.volleyError(c, error),
+                    ),
+                    null,
+                )
+            },
+        )
+
+    private fun listRequestV2(callback: CallbackInterface) =
+        JsonObjectRequest(
+            Request.Method.GET,
+            url + "rpc/Shelly.GetConfig",
+            null,
+            { configResponse ->
+                queue.add(
+                    JsonObjectRequest(
+                        Request.Method.GET,
+                        url + "rpc/Shelly.GetStatus",
+                        null,
+                        { statusResponse ->
+                            val listItems = parser.parseResponse(configResponse, statusResponse)
+                            updateCache(listItems)
+                            callback.onItemsLoaded(
+                                UnifiedRequestCallback(
+                                    listItems,
+                                    deviceId,
+                                ),
+                                recyclerViewInterface,
+                            )
+                        },
+                        { error ->
+                            callback.onItemsLoaded(
+                                UnifiedRequestCallback(
+                                    null,
+                                    deviceId,
+                                    Global.volleyError(c, error),
+                                ),
+                                null,
+                            )
+                        },
+                    ),
+                )
+            },
+            { error ->
+                callback.onItemsLoaded(
+                    UnifiedRequestCallback(
+                        null,
+                        deviceId,
+                        Global.volleyError(c, error),
+                    ),
+                    null,
+                )
+            },
+        )
 
     override fun loadStates(
         callback: RealTimeStatesCallback,
