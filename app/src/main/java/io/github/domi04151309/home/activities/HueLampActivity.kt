@@ -23,7 +23,6 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.slider.Slider
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.adapters.HueDetailsTabAdapter
@@ -46,12 +45,17 @@ class HueLampActivity : BaseActivity(), HueRoomInterface {
     override var canReceiveRequest: Boolean = false
     override var lampData: HueLightListener = HueLightListener()
     override lateinit var device: DeviceItem
+
     private var lampName: String = ""
     private var updateDataRequest: JsonObjectRequest? = null
     private var updateHandler: UpdateHandler = UpdateHandler()
+
     private lateinit var hueAPI: HueAPI
     private lateinit var queue: RequestQueue
     private lateinit var lampIcon: ImageView
+    private lateinit var nameText: TextView
+    private lateinit var brightnessText: TextView
+    private lateinit var brightnessBar: Slider
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,16 +79,38 @@ class HueLampActivity : BaseActivity(), HueRoomInterface {
         queue = Volley.newRequestQueue(this)
         title = device.name
         lampIcon = findViewById(R.id.lampIcon)
-        val nameTxt = findViewById<TextView>(R.id.nameTxt)
-        val briBar = findViewById<Slider>(R.id.briBar)
-        val tabBar = findViewById<TabLayout>(R.id.tabBar)
-        val viewPager = findViewById<ViewPager2>(R.id.viewPager)
+        nameText = findViewById(R.id.nameTxt)
+        brightnessText = findViewById(R.id.briTxt)
+        brightnessBar = findViewById(R.id.briBar)
 
+        setupViews()
+
+        val viewPager = findViewById<ViewPager2>(R.id.viewPager)
         viewPager.isUserInputEnabled = false
         viewPager.adapter = HueDetailsTabAdapter(this)
+        viewPager.setCurrentItem(1, false)
 
+        val tabIcons =
+            arrayOf(
+                ResourcesCompat.getDrawable(resources, R.drawable.ic_color_palette, theme),
+                ResourcesCompat.getDrawable(resources, R.drawable.ic_scene_white, theme),
+                ResourcesCompat.getDrawable(resources, R.drawable.ic_device_lamp, theme),
+            )
+        TabLayoutMediator(findViewById(R.id.tabBar), viewPager) { tab, position ->
+            tab.icon = tabIcons[position]
+        }.attach()
+
+        updateDataRequest = getUpdateRequest()
+        updateHandler.setUpdateFunction {
+            if (canReceiveRequest && hueAPI.readyForRequest) {
+                queue.add(updateDataRequest)
+            }
+        }
+    }
+
+    private fun setupViews() {
         // Slider labels
-        briBar.setLabelFormatter { value: Float ->
+        brightnessBar.setLabelFormatter { value: Float ->
             HueUtils.briToPercent(value.toInt())
         }
 
@@ -116,7 +142,7 @@ class HueLampActivity : BaseActivity(), HueRoomInterface {
             hueAPI.switchGroupByID(id, false)
         }
 
-        briBar.addOnSliderTouchListener(
+        brightnessBar.addOnSliderTouchListener(
             object : Slider.OnSliderTouchListener {
                 override fun onStartTrackingTouch(slider: Slider) {
                     canReceiveRequest = false
@@ -128,67 +154,52 @@ class HueLampActivity : BaseActivity(), HueRoomInterface {
                 }
             },
         )
-
-        viewPager.setCurrentItem(1, false)
-
-        val tabIcons =
-            arrayOf(
-                ResourcesCompat.getDrawable(resources, R.drawable.ic_color_palette, theme),
-                ResourcesCompat.getDrawable(resources, R.drawable.ic_scene_white, theme),
-                ResourcesCompat.getDrawable(resources, R.drawable.ic_device_lamp, theme),
-            )
-        TabLayoutMediator(tabBar, viewPager) { tab, position ->
-            tab.icon = tabIcons[position]
-        }.attach()
-
-        updateDataRequest =
-            JsonObjectRequest(
-                Request.Method.GET, "$addressPrefix/groups/$id", null,
-                { response ->
-                    lights = response.getJSONArray("lights")
-                    lampName = response.getString("name")
-                    nameTxt.text = lampName
-                    val action = response.getJSONObject("action")
-                    val light = LightStates.Light()
-
-                    if (action.has("bri")) {
-                        SliderUtils.setProgress(briBar, action.getInt("bri"))
-                    } else {
-                        findViewById<TextView>(R.id.briTxt).visibility = View.GONE
-                        briBar.visibility = View.GONE
-                    }
-                    light.ct =
-                        if (action.has("ct")) {
-                            action.getInt("ct") - MIN_COLOR_TEMPERATURE
-                        } else {
-                            -1
-                        }
-
-                    if (action.has("hue") && action.has("sat")) {
-                        light.hue = action.getInt("hue")
-                        light.sat = action.getInt("sat")
-                    } else {
-                        light.hue = -1
-                        light.sat = -1
-                    }
-
-                    light.on = response.getJSONObject("state").getBoolean("any_on")
-                    briBar.isEnabled = light.on
-
-                    lampData.state = light
-                },
-                {
-                    canReceiveRequest = false
-                    updateHandler.stop()
-                    finish()
-                },
-            )
-        updateHandler.setUpdateFunction {
-            if (canReceiveRequest && hueAPI.readyForRequest) {
-                queue.add(updateDataRequest)
-            }
-        }
     }
+
+    private fun getUpdateRequest() =
+        JsonObjectRequest(
+            Request.Method.GET,
+            "$addressPrefix/groups/$id",
+            null,
+            { response ->
+                lights = response.getJSONArray("lights")
+                lampName = response.getString("name")
+                nameText.text = lampName
+                val action = response.getJSONObject("action")
+                val light = LightStates.Light()
+
+                if (action.has("bri")) {
+                    SliderUtils.setProgress(brightnessBar, action.getInt("bri"))
+                } else {
+                    brightnessText.visibility = View.GONE
+                    brightnessBar.visibility = View.GONE
+                }
+                light.ct =
+                    if (action.has("ct")) {
+                        action.getInt("ct") - MIN_COLOR_TEMPERATURE
+                    } else {
+                        -1
+                    }
+
+                if (action.has("hue") && action.has("sat")) {
+                    light.hue = action.getInt("hue")
+                    light.sat = action.getInt("sat")
+                } else {
+                    light.hue = -1
+                    light.sat = -1
+                }
+
+                light.on = response.getJSONObject("state").getBoolean("any_on")
+                brightnessBar.isEnabled = light.on
+
+                lampData.state = light
+            },
+            {
+                canReceiveRequest = false
+                updateHandler.stop()
+                finish()
+            },
+        )
 
     override fun onStart() {
         super.onStart()
