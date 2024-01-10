@@ -28,6 +28,17 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
         status: JSONObject,
     ): ArrayList<ListViewItem> {
         val listItems = arrayListOf<ListViewItem>()
+        listItems.addAll(parseSwitchesAndMetersV1(settings, status))
+        listItems.addAll(parseTemperatureSensorsV1(settings))
+        listItems.addAll(parseHumiditySensorsV1(settings))
+        return listItems
+    }
+
+    private fun parseSwitchesAndMetersV1(
+        settings: JSONObject,
+        status: JSONObject,
+    ): List<ListViewItem> {
+        val listItems = arrayListOf<ListViewItem>()
 
         // switches
         val relays = settings.optJSONArray("relays") ?: JSONArray()
@@ -74,7 +85,11 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
                 )
         }
 
-        // external temperature sensors
+        return listItems
+    }
+
+    private fun parseTemperatureSensorsV1(status: JSONObject): List<ListViewItem> {
+        val listItems = arrayListOf<ListViewItem>()
         val tempSensors = status.optJSONObject("ext_temperature") ?: JSONObject()
         for (sensorId in tempSensors.keys()) {
             val currentSensor = tempSensors.getJSONObject(sensorId)
@@ -85,8 +100,11 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
                     icon = R.drawable.ic_device_thermometer,
                 )
         }
+        return listItems
+    }
 
-        // external humidity sensors
+    private fun parseHumiditySensorsV1(status: JSONObject): List<ListViewItem> {
+        val listItems = arrayListOf<ListViewItem>()
         val humSensors = status.optJSONObject("ext_humidity") ?: JSONObject()
         for (sensorId in humSensors.keys()) {
             val currentSensor = humSensors.getJSONObject(sensorId)
@@ -97,7 +115,6 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
                     icon = R.drawable.ic_device_hygrometer,
                 )
         }
-
         return listItems
     }
 
