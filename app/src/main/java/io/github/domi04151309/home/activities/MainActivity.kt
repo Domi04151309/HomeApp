@@ -145,7 +145,7 @@ class MainActivity : BaseActivity() {
     private val unifiedRealTimeStatesCallback =
         object : UnifiedAPI.RealTimeStatesCallback {
             override fun onStatesLoaded(
-                states: ArrayList<Boolean?>,
+                states: List<Boolean?>,
                 offset: Int,
                 dynamicSummary: Boolean,
             ) {

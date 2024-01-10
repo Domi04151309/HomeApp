@@ -16,7 +16,7 @@ import io.github.domi04151309.home.data.SceneListItem
 import io.github.domi04151309.home.interfaces.SceneRecyclerViewHelperInterface
 
 class HueSceneLampListAdapter(
-    private var items: ArrayList<SceneListItem>,
+    private var items: List<SceneListItem>,
     private var helperInterface: SceneRecyclerViewHelperInterface,
 ) : RecyclerView.Adapter<HueSceneLampListAdapter.ViewHolder>() {
     lateinit var c: Context

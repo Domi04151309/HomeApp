@@ -97,7 +97,7 @@ class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapt
 
     @SuppressLint("NotifyDataSetChanged")
     fun updateData(
-        newItems: ArrayList<ListViewItem>,
+        newItems: List<ListViewItem>,
         newHelperInterface: HomeRecyclerViewHelperInterface? = null,
         preferredAnimationState: Boolean? = null,
     ) {
@@ -105,16 +105,18 @@ class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapt
         if (newHelperInterface != null) {
             attachedTo.layoutManager?.scrollToPosition(0)
             animate = preferredAnimationState ?: true
-            items = newItems
+            items.clear()
+            items.addAll(newItems)
             helperInterface = newHelperInterface
             notifyDataSetChanged()
         } else {
             animate = preferredAnimationState ?: false
             val changed = arrayListOf<Int>()
+            items.clear()
             for (i in 0 until items.size) {
                 if (items[i] != newItems[i]) changed.add(i)
+                items.add(newItems[i])
             }
-            items = newItems
             changed.forEach(::notifyItemChanged)
         }
     }
@@ -155,7 +157,7 @@ class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapt
 
     fun updateDirectView(
         id: String,
-        newItems: ArrayList<ListViewItem>,
+        newItems: List<ListViewItem>,
         directViewPos: Int,
     ) {
         newItems.forEach { it.hidden = id + '@' + it.hidden }

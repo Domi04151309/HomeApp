@@ -8,7 +8,7 @@ import java.util.TreeMap
 import kotlin.collections.ArrayList
 
 class HueAPIParser(resources: Resources) : UnifiedAPI.Parser(resources) {
-    override fun parseResponse(response: JSONObject): ArrayList<ListViewItem> {
+    override fun parseResponse(response: JSONObject): List<ListViewItem> {
         val listItems: ArrayList<ListViewItem> = ArrayList(response.length())
         val rooms: TreeMap<String, Pair<String, JSONObject>> = TreeMap()
         val zones: TreeMap<String, Pair<String, JSONObject>> = TreeMap()
@@ -35,7 +35,7 @@ class HueAPIParser(resources: Resources) : UnifiedAPI.Parser(resources) {
         return listItems
     }
 
-    override fun parseStates(response: JSONObject): ArrayList<Boolean?> {
+    override fun parseStates(response: JSONObject): List<Boolean?> {
         val states: ArrayList<Boolean?> = ArrayList(response.length())
         val rooms: TreeMap<String, Pair<String, Boolean?>> = TreeMap()
         val zones: TreeMap<String, Pair<String, Boolean?>> = TreeMap()

@@ -19,8 +19,8 @@ class HueLampListAdapter(
     private val stateListener: CompoundButton.OnCheckedChangeListener,
     private val helperInterface: RecyclerViewHelperInterface,
 ) : RecyclerView.Adapter<HueLampListAdapter.ViewHolder>() {
-    private var items: ArrayList<ListViewItem> = arrayListOf()
-    private var colors: ArrayList<Int> = arrayListOf()
+    private var items: List<ListViewItem> = arrayListOf()
+    private var colors: List<Int> = arrayListOf()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -62,8 +62,8 @@ class HueLampListAdapter(
     @SuppressLint("NotifyDataSetChanged")
     fun updateData(
         recyclerView: RecyclerView,
-        newItems: ArrayList<ListViewItem>,
-        newColors: ArrayList<Int>,
+        newItems: List<ListViewItem>,
+        newColors: List<Int>,
     ) {
         if (newItems.size != items.size) {
             items = newItems

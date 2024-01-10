@@ -86,7 +86,7 @@ class HueScenesFragment :
     override fun onResponse(response: JSONObject) {
         try {
             val gridItems: ArrayList<SceneGridItem> = ArrayList(response.length())
-            val scenes: ArrayList<Pair<String, String>> = getScenes(response)
+            val scenes: List<Pair<String, String>> = getScenes(response)
             if (scenes.size > 0) {
                 var completedRequests = 0
                 for (i in 0 until scenes.size) {
@@ -136,7 +136,7 @@ class HueScenesFragment :
         }
     }
 
-    private fun getScenes(response: JSONObject): ArrayList<Pair<String, String>> {
+    private fun getScenes(response: JSONObject): List<Pair<String, String>> {
         val scenes: ArrayList<Pair<String, String>> =
             ArrayList(
                 response.length() / SCENE_FRACTION_ESTIMATE,

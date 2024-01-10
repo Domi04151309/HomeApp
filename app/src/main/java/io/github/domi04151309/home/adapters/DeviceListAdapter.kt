@@ -13,7 +13,7 @@ import io.github.domi04151309.home.data.SimpleListItem
 import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterfaceAdvanced
 
 class DeviceListAdapter(
-    private val items: ArrayList<SimpleListItem>,
+    private val items: List<SimpleListItem>,
     private val helperInterface: RecyclerViewHelperInterfaceAdvanced,
 ) : RecyclerView.Adapter<DeviceListAdapter.ViewHolder>() {
     override fun onCreateViewHolder(

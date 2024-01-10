@@ -7,7 +7,7 @@ import io.github.domi04151309.home.helpers.Global
 import org.json.JSONObject
 
 class SimpleHomeAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.Parser(resources, api) {
-    override fun parseResponse(response: JSONObject): ArrayList<ListViewItem> {
+    override fun parseResponse(response: JSONObject): List<ListViewItem> {
         val listItems: ArrayList<ListViewItem> = ArrayList(response.length())
         val commands = response.optJSONObject("commands") ?: return listItems
         var currentObject: JSONObject
@@ -28,7 +28,7 @@ class SimpleHomeAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.P
         return listItems
     }
 
-    override fun parseStates(response: JSONObject): ArrayList<Boolean?> {
+    override fun parseStates(response: JSONObject): List<Boolean?> {
         val listItems: ArrayList<Boolean?> = ArrayList(response.length())
         val commands = response.optJSONObject("commands") ?: return listItems
         var currentObject: JSONObject

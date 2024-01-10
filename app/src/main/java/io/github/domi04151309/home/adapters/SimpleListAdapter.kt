@@ -12,7 +12,7 @@ import io.github.domi04151309.home.data.SimpleListItem
 import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
 
 class SimpleListAdapter(
-    private val items: ArrayList<SimpleListItem>,
+    private val items: List<SimpleListItem>,
     private val helperInterface: RecyclerViewHelperInterface,
 ) : RecyclerView.Adapter<SimpleListAdapter.ViewHolder>() {
     override fun onCreateViewHolder(

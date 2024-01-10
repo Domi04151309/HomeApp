@@ -12,7 +12,7 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
     fun parseResponse(
         config: JSONObject,
         status: JSONObject,
-    ): ArrayList<ListViewItem> {
+    ): List<ListViewItem> {
         return if (version == 1) {
             parseResponseV1(config, status)
         } else {
@@ -26,7 +26,7 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
     private fun parseResponseV1(
         settings: JSONObject,
         status: JSONObject,
-    ): ArrayList<ListViewItem> {
+    ): List<ListViewItem> {
         val listItems = arrayListOf<ListViewItem>()
         listItems.addAll(parseSwitchesAndMetersV1(settings, status))
         listItems.addAll(parseTemperatureSensorsV1(settings))
@@ -121,7 +121,7 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
     private fun parseResponseV2(
         config: JSONObject,
         status: JSONObject,
-    ): ArrayList<ListViewItem> {
+    ): List<ListViewItem> {
         val listItems = arrayListOf<ListViewItem>()
         var currentId: Int
         var currentState: Boolean
@@ -162,14 +162,14 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
     fun parseStates(
         config: JSONObject,
         status: JSONObject,
-    ): ArrayList<Boolean?> {
+    ): List<Boolean?> {
         return if (version == 1) parseStatesV1(config, status) else parseStatesV2(config, status)
     }
 
     private fun parseStatesV1(
         settings: JSONObject,
         status: JSONObject,
-    ): ArrayList<Boolean?> {
+    ): List<Boolean?> {
         val listItems = arrayListOf<Boolean?>()
 
         // switches
@@ -207,7 +207,7 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
     private fun parseStatesV2(
         config: JSONObject,
         status: JSONObject,
-    ): ArrayList<Boolean?> {
+    ): List<Boolean?> {
         val listItems = arrayListOf<Boolean?>()
         for (switchKey in config.keys()) {
             if (!switchKey.startsWith("switch:")) continue

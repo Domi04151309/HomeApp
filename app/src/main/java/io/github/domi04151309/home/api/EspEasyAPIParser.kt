@@ -7,7 +7,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 class EspEasyAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.Parser(resources, api) {
-    override fun parseResponse(response: JSONObject): ArrayList<ListViewItem> {
+    override fun parseResponse(response: JSONObject): List<ListViewItem> {
         val listItems = arrayListOf<ListViewItem>()
 
         // sensors
@@ -20,9 +20,9 @@ class EspEasyAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.Pars
 
             val type = currentSensor.optString("Type")
             if (type.startsWith("Environment")) {
-                parseEnvironment(listItems, type, currentSensor)
+                listItems.addAll(parseEnvironment(type, currentSensor))
             } else if (type.startsWith("Switch")) {
-                parseSwitch(listItems, type, currentSensor)
+                listItems.addAll(parseSwitch(type, currentSensor))
             }
         }
 
@@ -30,10 +30,10 @@ class EspEasyAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.Pars
     }
 
     private fun parseEnvironment(
-        listItems: ArrayList<ListViewItem>,
         type: String,
         currentSensor: JSONObject,
-    ) {
+    ): List<ListViewItem> {
+        val listItems = arrayListOf<ListViewItem>()
         var taskIcons = intArrayOf()
         when (type) {
             "Environment - BMx280" -> {
@@ -70,13 +70,14 @@ class EspEasyAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.Pars
                     )
             }
         }
+        return listItems
     }
 
     private fun parseSwitch(
-        listItems: ArrayList<ListViewItem>,
         type: String,
         currentSensor: JSONObject,
-    ) {
+    ): List<ListViewItem> {
+        val listItems = arrayListOf<ListViewItem>()
         when (type) {
             "Switch input - Switch" -> {
                 val currentState = currentSensor.getJSONArray("TaskValues").getJSONObject(0).getInt("Value") > 0
@@ -106,9 +107,10 @@ class EspEasyAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.Pars
                 api?.needsRealTimeData = true
             }
         }
+        return listItems
     }
 
-    override fun parseStates(response: JSONObject): ArrayList<Boolean?> {
+    override fun parseStates(response: JSONObject): List<Boolean?> {
         val listItems = arrayListOf<Boolean?>()
 
         // sensors
@@ -121,9 +123,9 @@ class EspEasyAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.Pars
 
             val type = currentSensor.optString("Type")
             if (type.startsWith("Environment")) {
-                parseEnvironmentStates(listItems, type, currentSensor)
+                listItems.addAll(parseEnvironmentStates(type, currentSensor))
             } else if (type.startsWith("Switch")) {
-                parseSwitchStates(listItems, type, currentSensor)
+                listItems.addAll(parseSwitchStates(type, currentSensor))
             }
         }
 
@@ -131,10 +133,10 @@ class EspEasyAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.Pars
     }
 
     private fun parseEnvironmentStates(
-        listItems: ArrayList<Boolean?>,
         type: String,
         currentSensor: JSONObject,
-    ) {
+    ): List<Boolean?> {
+        val listItems = arrayListOf<Boolean?>()
         var tasks = 0
         @Suppress("MagicNumber")
         when (type) {
@@ -153,17 +155,19 @@ class EspEasyAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.Pars
                 listItems += null
             }
         }
+        return listItems
     }
 
     private fun parseSwitchStates(
-        listItems: ArrayList<Boolean?>,
         type: String,
         currentSensor: JSONObject,
-    ) {
+    ): List<Boolean?> {
+        val listItems = arrayListOf<Boolean?>()
         when (type) {
             "Switch input - Switch" -> {
                 listItems += currentSensor.getJSONArray("TaskValues").getJSONObject(0).getInt("Value") > 0
             }
         }
+        return listItems
     }
 }

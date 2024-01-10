@@ -70,7 +70,7 @@ class ShortcutHueSceneActivity : BaseActivity(), RecyclerViewHelperInterface {
                         @Suppress("UNCHECKED_CAST")
                         recyclerView.adapter =
                             SimpleListAdapter(
-                                holder.response as ArrayList<SimpleListItem>,
+                                holder.response as List<SimpleListItem>,
                                 this@ShortcutHueSceneActivity,
                             )
                     } else {

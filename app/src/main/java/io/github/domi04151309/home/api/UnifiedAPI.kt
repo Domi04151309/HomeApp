@@ -17,7 +17,7 @@ open class UnifiedAPI(
 ) {
     companion object {
         private const val LIST_REQUEST_TIMEOUT = 1000
-        private val listCache: MutableMap<String, Pair<Long, ArrayList<ListViewItem>>> = mutableMapOf()
+        private val listCache: MutableMap<String, Pair<Long, List<ListViewItem>>> = mutableMapOf()
     }
 
     interface CallbackInterface {
@@ -34,7 +34,7 @@ open class UnifiedAPI(
 
     interface RealTimeStatesCallback {
         fun onStatesLoaded(
-            states: ArrayList<Boolean?>,
+            states: List<Boolean?>,
             offset: Int,
             dynamicSummary: Boolean,
         )
@@ -46,7 +46,7 @@ open class UnifiedAPI(
     protected val url: String = Devices(c).getDeviceById(deviceId).address
     protected val queue: RequestQueue = Volley.newRequestQueue(c)
 
-    protected fun updateCache(items: ArrayList<ListViewItem>) {
+    protected fun updateCache(items: List<ListViewItem>) {
         listCache[deviceId] = Pair(System.currentTimeMillis(), items)
     }
 
@@ -79,8 +79,8 @@ open class UnifiedAPI(
     ) {}
 
     open class Parser(protected val resources: Resources, protected val api: UnifiedAPI? = null) {
-        open fun parseResponse(response: JSONObject): ArrayList<ListViewItem> = arrayListOf()
+        open fun parseResponse(response: JSONObject): List<ListViewItem> = listOf()
 
-        open fun parseStates(response: JSONObject): ArrayList<Boolean?> = arrayListOf()
+        open fun parseStates(response: JSONObject): List<Boolean?> = listOf()
     }
 }
