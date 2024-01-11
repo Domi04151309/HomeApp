@@ -42,63 +42,63 @@ class HueAPIParserTest {
         assertThat(listItems[num].title, `is`("Bedroom"))
         assertThat(listItems[num].summary, `is`(resources.getString(R.string.hue_tap)))
         assertThat(listItems[num].state, `is`(false))
-        assertThat(listItems[num].hidden, `is`("room#1"))
+        assertThat(listItems[num].hidden, `is`("1"))
         assertThat(listItems[num].icon, `is`(R.drawable.ic_room))
 
         num = 1
         assertThat(listItems[num].title, `is`("Hallway"))
         assertThat(listItems[num].summary, `is`(resources.getString(R.string.hue_tap)))
         assertThat(listItems[num].state, `is`(false))
-        assertThat(listItems[num].hidden, `is`("room#5"))
+        assertThat(listItems[num].hidden, `is`("5"))
         assertThat(listItems[num].icon, `is`(R.drawable.ic_room))
 
         num = 2
         assertThat(listItems[num].title, `is`("Kitchen"))
         assertThat(listItems[num].summary, `is`(resources.getString(R.string.hue_tap)))
         assertThat(listItems[num].state, `is`(false))
-        assertThat(listItems[num].hidden, `is`("room#7"))
+        assertThat(listItems[num].hidden, `is`("7"))
         assertThat(listItems[num].icon, `is`(R.drawable.ic_room))
 
         num = 3
         assertThat(listItems[num].title, `is`("Living Room"))
         assertThat(listItems[num].summary, `is`(resources.getString(R.string.hue_tap)))
         assertThat(listItems[num].state, `is`(false))
-        assertThat(listItems[num].hidden, `is`("room#2"))
+        assertThat(listItems[num].hidden, `is`("2"))
         assertThat(listItems[num].icon, `is`(R.drawable.ic_room))
 
         num = 4
         assertThat(listItems[num].title, `is`("Office"))
         assertThat(listItems[num].summary, `is`(resources.getString(R.string.hue_tap)))
         assertThat(listItems[num].state, `is`(false))
-        assertThat(listItems[num].hidden, `is`("room#6"))
+        assertThat(listItems[num].hidden, `is`("6"))
         assertThat(listItems[num].icon, `is`(R.drawable.ic_room))
 
         num = 5
         assertThat(listItems[num].title, `is`("Unused"))
         assertThat(listItems[num].summary, `is`(resources.getString(R.string.hue_tap)))
         assertThat(listItems[num].state, `is`(false))
-        assertThat(listItems[num].hidden, `is`("room#8"))
+        assertThat(listItems[num].hidden, `is`("8"))
         assertThat(listItems[num].icon, `is`(R.drawable.ic_room))
 
         num = 6
         assertThat(listItems[num].title, `is`("Kitchen Cabinets"))
         assertThat(listItems[num].summary, `is`(resources.getString(R.string.hue_tap)))
         assertThat(listItems[num].state, `is`(false))
-        assertThat(listItems[num].hidden, `is`("zone#9"))
+        assertThat(listItems[num].hidden, `is`("9"))
         assertThat(listItems[num].icon, `is`(R.drawable.ic_zone))
 
         num = 7
         assertThat(listItems[num].title, `is`("Kitchen Ceiling"))
         assertThat(listItems[num].summary, `is`(resources.getString(R.string.hue_tap)))
         assertThat(listItems[num].state, `is`(false))
-        assertThat(listItems[num].hidden, `is`("zone#3"))
+        assertThat(listItems[num].hidden, `is`("3"))
         assertThat(listItems[num].icon, `is`(R.drawable.ic_zone))
 
         num = 8
         assertThat(listItems[num].title, `is`("Living Room Ambient"))
         assertThat(listItems[num].summary, `is`(resources.getString(R.string.hue_tap)))
         assertThat(listItems[num].state, `is`(false))
-        assertThat(listItems[num].hidden, `is`("zone#4"))
+        assertThat(listItems[num].hidden, `is`("4"))
         assertThat(listItems[num].icon, `is`(R.drawable.ic_zone))
     }
 

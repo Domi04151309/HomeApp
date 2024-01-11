@@ -29,8 +29,8 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
     ): List<ListViewItem> {
         val listItems = mutableListOf<ListViewItem>()
         listItems.addAll(parseSwitchesAndMetersV1(settings, status))
-        listItems.addAll(parseTemperatureSensorsV1(settings))
-        listItems.addAll(parseHumiditySensorsV1(settings))
+        listItems.addAll(parseTemperatureSensorsV1(status))
+        listItems.addAll(parseHumiditySensorsV1(status))
         return listItems
     }
 
