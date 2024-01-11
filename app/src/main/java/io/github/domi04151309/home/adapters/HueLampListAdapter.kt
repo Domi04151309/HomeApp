@@ -73,7 +73,7 @@ class HueLampListAdapter(
         }
 
         val changed = mutableListOf<Int>()
-        for (i in 0 until items.size) {
+        for (i in items.indices) {
             if (items[i].hidden != newItems[i].hidden) {
                 changed.add(i)
             } else {

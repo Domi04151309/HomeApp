@@ -1,7 +1,6 @@
 package io.github.domi04151309.home.activities
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -26,25 +25,6 @@ class SettingsActivity : BaseActivity() {
     }
 
     class GeneralPreferenceFragment : PreferenceFragmentCompat() {
-        private val prefsChangedListener =
-            SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-                if (key == P.PREF_THEME) requireActivity().recreate()
-            }
-
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(
-                prefsChangedListener,
-            )
-        }
-
-        override fun onDestroy() {
-            super.onDestroy()
-            preferenceManager.sharedPreferences?.unregisterOnSharedPreferenceChangeListener(
-                prefsChangedListener,
-            )
-        }
-
         override fun onCreatePreferences(
             savedInstanceState: Bundle?,
             rootKey: String?,

@@ -145,7 +145,7 @@ class MainActivity : BaseActivity() {
                 offset: Int,
                 dynamicSummary: Boolean,
             ) {
-                for (i in 0 until states.size) {
+                for (i in states.indices) {
                     if (states[i] != null) {
                         adapter.updateSwitch(
                             i + offset,

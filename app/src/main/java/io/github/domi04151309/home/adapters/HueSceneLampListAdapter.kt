@@ -77,7 +77,7 @@ class HueSceneLampListAdapter(
     }
 
     fun changeSceneBrightness(brightness: String) {
-        for (i in 0 until items.size) {
+        for (i in items.indices) {
             items[i].brightness = brightness
             if (items[i].state) notifyItemChanged(i)
         }

@@ -87,9 +87,9 @@ class HueScenesFragment :
         try {
             val gridItems: ArrayList<SceneGridItem> = ArrayList(response.length())
             val scenes: List<Pair<String, String>> = getScenes(response)
-            if (scenes.size > 0) {
+            if (scenes.isNotEmpty()) {
                 var completedRequests = 0
-                for (i in 0 until scenes.size) {
+                for (i in scenes.indices) {
                     queue.add(
                         JsonObjectRequest(
                             Request.Method.GET,
