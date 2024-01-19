@@ -12,10 +12,6 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 class TasmotaHelper(private val c: Context, private val tasmota: UnifiedAPI) {
-    companion object {
-        const val EMPTY_ARRAY: String = "[]"
-    }
-
     private val prefs = PreferenceManager.getDefaultSharedPreferences(c)
     private val nullParent: ViewGroup? = null
 
@@ -138,5 +134,9 @@ class TasmotaHelper(private val c: Context, private val tasmota: UnifiedAPI) {
             }
             .setNegativeButton(android.R.string.cancel) { _, _ -> }
             .show()
+    }
+
+    companion object {
+        const val EMPTY_ARRAY: String = "[]"
     }
 }

@@ -23,11 +23,6 @@ import io.github.domi04151309.home.helpers.SliderUtils
 import io.github.domi04151309.home.interfaces.HueRoomInterface
 
 class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
-    companion object {
-        private const val LOADING_DELAY = 200L
-        private const val UPDATE_DELAY = 5000L
-    }
-
     private lateinit var lampInterface: HueRoomInterface
     private lateinit var hueAPI: HueAPI
     private lateinit var colorPickerView: ColorPickerView
@@ -235,5 +230,10 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
                 hueAPI.changeColorTemperatureOfGroup(lampInterface.id, slider.value.toInt() + MIN_COLOR_TEMPERATURE)
             },
         )
+    }
+
+    companion object {
+        private const val LOADING_DELAY = 200L
+        private const val UPDATE_DELAY = 5000L
     }
 }

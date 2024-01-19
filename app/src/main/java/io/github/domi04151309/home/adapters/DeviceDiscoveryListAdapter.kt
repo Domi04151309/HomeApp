@@ -17,13 +17,12 @@ class DeviceDiscoveryListAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
-    ): ViewHolder {
-        return ViewHolder(
+    ): ViewHolder =
+        ViewHolder(
             LayoutInflater
                 .from(parent.context)
                 .inflate(R.layout.list_item_device_discovery, parent, false),
         )
-    }
 
     override fun onBindViewHolder(
         holder: ViewHolder,
@@ -43,9 +42,7 @@ class DeviceDiscoveryListAdapter(
         holder.itemView.setOnClickListener { helperInterface.onItemClicked(holder.itemView, position) }
     }
 
-    override fun getItemCount(): Int {
-        return items.size
-    }
+    override fun getItemCount(): Int = items.size
 
     fun add(item: ListViewItem): Int {
         items.add(item)

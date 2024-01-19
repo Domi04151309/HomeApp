@@ -25,13 +25,12 @@ class HueLampListAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
-    ): ViewHolder {
-        return ViewHolder(
+    ): ViewHolder =
+        ViewHolder(
             LayoutInflater
                 .from(parent.context)
                 .inflate(R.layout.list_item, parent, false),
         )
-    }
 
     override fun onBindViewHolder(
         holder: ViewHolder,
@@ -55,9 +54,7 @@ class HueLampListAdapter(
         holder.itemView.setOnClickListener { helperInterface.onItemClicked(holder.itemView, position) }
     }
 
-    override fun getItemCount(): Int {
-        return items.size
-    }
+    override fun getItemCount(): Int = items.size
 
     @SuppressLint("NotifyDataSetChanged")
     fun updateData(

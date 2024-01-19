@@ -75,7 +75,7 @@ class EspEasyAPI(
         id: String,
         state: Boolean,
     ) {
-        val switchUrl = url + "control?cmd=GPIO," + id + "," + (if (state) "1" else "0")
+        val switchUrl = url + "control?cmd=GPIO," + id + "," + if (state) "1" else "0"
         val jsonObjectRequest =
             JsonObjectRequest(
                 switchUrl,

@@ -43,18 +43,6 @@ import kotlin.math.min
 
 @Suppress("TooManyFunctions")
 class MainActivity : BaseActivity() {
-    companion object {
-        private val WEB_MODES =
-            arrayOf(
-                "Fritz! Auto-Login",
-                "Node-RED",
-                "Website",
-            )
-        private const val TINY_DELAY = 100L
-        private const val COLUMN_COUNT_FRACTION = 240
-        private const val MAX_RESPONSE_LENGTH = 64
-    }
-
     private var tasmotaPosition: Int = 0
     private var shouldReset: Boolean = false
     private val updateHandler = UpdateHandler()
@@ -68,12 +56,6 @@ class MainActivity : BaseActivity() {
     private lateinit var fab: FloatingActionButton
 
     private var columns: Int? = null
-
-    private fun getColumns(): Int? =
-        (
-            PreferenceManager.getDefaultSharedPreferences(this)
-                .getString(P.PREF_COLUMNS, P.PREF_COLUMNS_DEFAULT) ?: P.PREF_COLUMNS_DEFAULT
-        ).toIntOrNull()
 
     /*
      * Unified callbacks
@@ -280,6 +262,13 @@ class MainActivity : BaseActivity() {
             }
         }
 
+    private fun getColumns(): Int? =
+        (
+            PreferenceManager.getDefaultSharedPreferences(this)
+                .getString(P.PREF_COLUMNS, P.PREF_COLUMNS_DEFAULT)
+                ?: P.PREF_COLUMNS_DEFAULT
+        ).toIntOrNull()
+
     /*
      * Activity methods
      */
@@ -413,7 +402,9 @@ class MainActivity : BaseActivity() {
                     .show()
                 true
             }
-            else -> super.onContextItemSelected(item)
+            else -> {
+                super.onContextItemSelected(item)
+            }
         }
     }
 
@@ -445,11 +436,11 @@ class MainActivity : BaseActivity() {
         val displayMetrics: DisplayMetrics = resources.displayMetrics
         val horizontal: Int =
             (
-                (displayMetrics.widthPixels / displayMetrics.density) / COLUMN_COUNT_FRACTION
+                displayMetrics.widthPixels / displayMetrics.density / COLUMN_COUNT_FRACTION
             ).toInt()
         val vertical: Int =
             (
-                (displayMetrics.heightPixels / displayMetrics.density) / COLUMN_COUNT_FRACTION
+                displayMetrics.heightPixels / displayMetrics.density / COLUMN_COUNT_FRACTION
             ).toInt()
         return max(1, min(horizontal, vertical))
     }
@@ -612,7 +603,20 @@ class MainActivity : BaseActivity() {
                         .setMessage(result)
                         .setPositiveButton(android.R.string.ok) { _, _ -> }
                         .show()
-                }.show()
+                }
+                .show()
         }
+    }
+
+    companion object {
+        private val WEB_MODES =
+            arrayOf(
+                "Fritz! Auto-Login",
+                "Node-RED",
+                "Website",
+            )
+        private const val TINY_DELAY = 100L
+        private const val COLUMN_COUNT_FRACTION = 240
+        private const val MAX_RESPONSE_LENGTH = 64
     }
 }

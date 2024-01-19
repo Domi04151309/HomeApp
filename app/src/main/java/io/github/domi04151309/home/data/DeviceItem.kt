@@ -2,18 +2,19 @@ package io.github.domi04151309.home.data
 
 import io.github.domi04151309.home.helpers.Global
 
-data class DeviceItem(val id: String) {
-    var name: String = "Device"
+class DeviceItem(
+    val id: String,
+    val name: String = "Device",
+    val mode: String = "Default",
+    val iconName: String = "Lamp",
+    val hide: Boolean = false,
+    val directView: Boolean = false,
+) {
     var address: String = "http://127.0.0.1/"
         set(value) {
             field = formatAddress(value)
         }
-    var mode: String = "Default"
-    var iconName: String = "Lamp"
     val iconId: Int get() = Global.getIcon(iconName)
-
-    var hide: Boolean = false
-    var directView: Boolean = false
 
     companion object {
         fun formatAddress(address: String): String {

@@ -211,12 +211,11 @@ class WebActivity : BaseActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return if (item.itemId == R.id.action_open) {
+        if (item.itemId == R.id.action_open) {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(webView.url)))
-            true
-        } else {
-            super.onOptionsItemSelected(item)
+            return true
         }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onKeyDown(

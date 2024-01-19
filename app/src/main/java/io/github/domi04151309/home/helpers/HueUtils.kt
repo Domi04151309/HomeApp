@@ -27,17 +27,17 @@ object HueUtils {
         hue: Int,
         sat: Int,
     ): Int {
-        require(!(hue > 65535 || sat > 254)) { "Argument out of range" }
+        require(!(hue > 65_535 || sat > 254)) { "Argument out of range" }
         return Color.HSVToColor(floatArrayOf(hue * 0.005493248F, sat / 254F, 1F))
     }
 
     fun hueToRGB(hue: Int): Int {
-        require(hue <= 65535) { "Argument out of range" }
+        require(hue <= 65_535) { "Argument out of range" }
         return Color.HSVToColor(floatArrayOf(hue * 0.005493248F, 1F, 1F))
     }
 
     fun hueToDegree(hue: Int): String {
-        require(hue <= 65535) { "Argument out of range" }
+        require(hue <= 65_535) { "Argument out of range" }
         return "${(hue * 0.005493248F).toInt()}°"
     }
 
@@ -46,13 +46,12 @@ object HueUtils {
         return "${(sat / 254F * 100).toInt()}%"
     }
 
-    fun briToPercent(bri: Int): String {
-        return when {
+    fun briToPercent(bri: Int): String =
+        when {
             bri < 1 -> "0%"
             bri > 254 -> "100%"
             else -> "${(bri / 254F * 100).toInt()}%"
         }
-    }
 
     fun rgbToHueSat(color: Int): IntArray {
         val hsv = FloatArray(3)

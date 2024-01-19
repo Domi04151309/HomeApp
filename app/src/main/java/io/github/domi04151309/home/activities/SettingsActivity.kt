@@ -46,7 +46,8 @@ class SettingsActivity : BaseActivity() {
                     .setMessage(R.string.pref_reset_question)
                     .setPositiveButton(R.string.str_delete) { _, _ ->
                         PreferenceManager.getDefaultSharedPreferences(requireContext()).edit()
-                            .putString("devices_json", Global.DEFAULT_JSON).apply()
+                            .putString("devices_json", Global.DEFAULT_JSON)
+                            .apply()
                         Toast.makeText(context, R.string.pref_reset_toast, Toast.LENGTH_LONG).show()
                         Devices.reloadFromPreferences()
                     }

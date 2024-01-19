@@ -18,13 +18,12 @@ class SimpleListAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
-    ): ViewHolder {
-        return ViewHolder(
+    ): ViewHolder =
+        ViewHolder(
             LayoutInflater
                 .from(parent.context)
                 .inflate(R.layout.list_item_simple, parent, false),
         )
-    }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(
@@ -38,9 +37,7 @@ class SimpleListAdapter(
         holder.itemView.setOnClickListener { helperInterface.onItemClicked(holder.itemView, position) }
     }
 
-    override fun getItemCount(): Int {
-        return items.size
-    }
+    override fun getItemCount(): Int = items.size
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val drawable: ImageView = view.findViewById(R.id.drawable)

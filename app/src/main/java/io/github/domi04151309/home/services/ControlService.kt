@@ -30,17 +30,14 @@ import java.util.function.Consumer
 
 @RequiresApi(Build.VERSION_CODES.R)
 class ControlService : ControlsProviderService() {
-    companion object {
-        private const val UPDATE_DELAY = 100L
-    }
-
     private var updateSubscriber: Flow.Subscriber<in Control>? = null
 
-    override fun createPublisherForAllAvailable(): Flow.Publisher<Control> {
-        return Flow.Publisher { subscriber ->
+    override fun createPublisherForAllAvailable(): Flow.Publisher<Control> =
+        Flow.Publisher { subscriber ->
             updateSubscriber = subscriber
             if (!Global.checkNetwork(this)) {
                 subscriber.onComplete()
+                @Suppress("LabeledExpression")
                 return@Publisher
             }
             val devices = Devices(this)
@@ -100,14 +97,13 @@ class ControlService : ControlsProviderService() {
                     )
             }
         }
-    }
 
     internal fun getUnreachableControl(
         id: String,
         device: DeviceItem,
         pi: PendingIntent,
-    ): Control {
-        return Control.StatefulBuilder(id, pi)
+    ): Control =
+        Control.StatefulBuilder(id, pi)
             .setTitle(device.name)
             .setZone(device.name)
             .setStructure(resources.getString(R.string.app_name))
@@ -115,7 +111,6 @@ class ControlService : ControlsProviderService() {
             .setStatus(Control.STATUS_DISABLED)
             .setStatusText(resources.getString(R.string.str_unreachable))
             .build()
-    }
 
     private fun loadStatefulControl(
         subscriber: Flow.Subscriber<in Control>?,
@@ -203,8 +198,8 @@ class ControlService : ControlsProviderService() {
         }
     }
 
-    override fun createPublisherFor(controlIds: MutableList<String>): Flow.Publisher<Control> {
-        return Flow.Publisher { subscriber ->
+    override fun createPublisherFor(controlIds: MutableList<String>): Flow.Publisher<Control> =
+        Flow.Publisher { subscriber ->
             updateSubscriber = subscriber
             subscriber.onSubscribe(
                 object : Flow.Subscription {
@@ -221,7 +216,6 @@ class ControlService : ControlsProviderService() {
                 loadStatefulControl(subscriber, id)
             }
         }
-    }
 
     override fun performControlAction(
         controlId: String,
@@ -262,5 +256,9 @@ class ControlService : ControlsProviderService() {
         } else {
             consumer.accept(ControlAction.RESPONSE_FAIL)
         }
+    }
+
+    companion object {
+        private const val UPDATE_DELAY = 100L
     }
 }

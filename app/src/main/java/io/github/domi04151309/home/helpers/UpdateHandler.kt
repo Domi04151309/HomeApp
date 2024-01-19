@@ -4,10 +4,6 @@ import android.os.Handler
 import android.os.Looper
 
 class UpdateHandler : Handler(Looper.getMainLooper()) {
-    companion object {
-        private const val UPDATE_DELAY = 1000L
-    }
-
     var running: Boolean = false
         private set
 
@@ -28,5 +24,9 @@ class UpdateHandler : Handler(Looper.getMainLooper()) {
     fun stop() {
         running = false
         removeCallbacksAndMessages(null)
+    }
+
+    companion object {
+        private const val UPDATE_DELAY = 1000L
     }
 }

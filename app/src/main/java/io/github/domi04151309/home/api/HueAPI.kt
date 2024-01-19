@@ -25,10 +25,6 @@ class HueAPI(
     deviceId: String,
     recyclerViewInterface: HomeRecyclerViewHelperInterface? = null,
 ) : UnifiedAPI(c, deviceId, recyclerViewInterface) {
-    companion object {
-        private const val UPDATE_DELAY = 100L
-    }
-
     private val parser = HueAPIParser(c.resources)
     var readyForRequest: Boolean = true
 
@@ -41,9 +37,10 @@ class HueAPI(
         fun onLightsLoaded(response: JSONObject?)
     }
 
-    fun getUsername(): String {
-        return PreferenceManager.getDefaultSharedPreferences(c).getString(deviceId, "") ?: ""
-    }
+    fun getUsername(): String =
+        PreferenceManager.getDefaultSharedPreferences(c)
+            .getString(deviceId, "")
+            ?: ""
 
     // For unified API
     override fun loadList(
@@ -188,7 +185,7 @@ class HueAPI(
         hue: Int,
         sat: Int,
     ) {
-        putObject("/lights/$lightID/state", "{\"hue\":$hue, \"sat\":$sat}")
+        putObject("/lights/$lightID/state", """{ "hue": $hue, "sat": $sat }""")
     }
 
     fun switchGroupByID(
@@ -231,14 +228,14 @@ class HueAPI(
         hue: Int,
         sat: Int,
     ) {
-        putObject("/groups/$groupID/action", "{\"hue\":$hue, \"sat\":$sat}")
+        putObject("/groups/$groupID/action", """{ "hue": $hue, "sat": $sat }""")
     }
 
     fun activateSceneOfGroup(
         groupID: String,
         scene: String,
     ) {
-        putObject("/groups/$groupID/action", "{\"scene\":$scene}")
+        putObject("/groups/$groupID/action", """{ "scene": $scene }""")
     }
 
     private fun putObject(
@@ -258,5 +255,9 @@ class HueAPI(
             queue.add(request)
             Handler(Looper.getMainLooper()).postDelayed({ readyForRequest = true }, UPDATE_DELAY)
         }
+    }
+
+    companion object {
+        private const val UPDATE_DELAY = 100L
     }
 }

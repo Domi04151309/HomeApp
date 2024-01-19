@@ -22,10 +22,6 @@ import java.util.concurrent.TimeUnit
 
 @Suppress("TooManyFunctions")
 class DeviceInfoActivity : BaseActivity(), RecyclerViewHelperInterface {
-    companion object {
-        private const val TO_PERCENT = 100
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_devices)
@@ -63,20 +59,20 @@ class DeviceInfoActivity : BaseActivity(), RecyclerViewHelperInterface {
         // Do nothing.
     }
 
-    private fun boolToString(bool: Boolean): String {
-        return resources.getString(if (bool) R.string.str_on else R.string.str_off)
-    }
+    private fun boolToString(bool: Boolean): String =
+        resources.getString(
+            if (bool) R.string.str_on else R.string.str_off,
+        )
 
     @Suppress("MagicNumber")
-    private fun rssiToPercent(rssi: Int): Int {
-        return if (rssi <= -100) {
+    private fun rssiToPercent(rssi: Int): Int =
+        if (rssi <= -100) {
             0
         } else if (rssi >= -50) {
             100
         } else {
             2 * (rssi + 100)
         }
-    }
 
     private fun formatUptime(uptime: Long) =
         String.format(
@@ -232,5 +228,9 @@ class DeviceInfoActivity : BaseActivity(), RecyclerViewHelperInterface {
                 { },
             ),
         )
+    }
+
+    companion object {
+        private const val TO_PERCENT = 100
     }
 }

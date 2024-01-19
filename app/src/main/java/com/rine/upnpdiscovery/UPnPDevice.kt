@@ -40,8 +40,8 @@ class UPnPDevice internal constructor(val hostAddress: String, header: String) {
         }
     }
 
-    override fun toString(): String {
-        return "FriendlyName: " + friendlyName + LINE_END +
+    override fun toString(): String =
+        "FriendlyName: " + friendlyName + LINE_END +
             "ModelName: " + modelName + LINE_END +
             "HostAddress: " + hostAddress + LINE_END +
             "Location: " + location + LINE_END +
@@ -54,7 +54,6 @@ class UPnPDevice internal constructor(val hostAddress: String, header: String) {
             "ManufacturerURL: " + manufacturerURL + LINE_END +
             "UDN: " + udn + LINE_END +
             "URLBase: " + urlBase
-    }
 
     private fun parseHeader(
         mSearchAnswer: String,

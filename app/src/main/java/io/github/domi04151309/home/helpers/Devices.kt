@@ -12,17 +12,9 @@ import java.util.Random
 
 @Suppress("TooManyFunctions")
 class Devices(private val context: Context) {
-    companion object {
-        private const val ALLOWED_CHARACTERS = "0123456789abcdefghijklmnobqrstuvw"
-        private const val ID_LENGTH = 8
-        private var storedData: JSONObject? = null
-
-        fun reloadFromPreferences() {
-            storedData = null
-        }
-    }
-
     private val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+
+    val length: Int get() = deviceOrder.length()
 
     private val data: JSONObject get() {
         if (storedData == null) {
@@ -40,9 +32,7 @@ class Devices(private val context: Context) {
         return storedData!!
     }
 
-    private val devicesObject: JSONObject get() {
-        return data.optJSONObject("devices") ?: JSONObject()
-    }
+    private val devicesObject: JSONObject get() = data.optJSONObject("devices") ?: JSONObject()
 
     private val deviceOrder: JSONArray get() {
         if (!data.has("order")) {
@@ -53,40 +43,33 @@ class Devices(private val context: Context) {
 
     private fun generateRandomId(): String {
         val random = Random()
-        val sb = StringBuilder(ID_LENGTH)
-        for (i in 0 until ID_LENGTH)
-            sb.append(ALLOWED_CHARACTERS[random.nextInt(ALLOWED_CHARACTERS.length)])
-        return sb.toString()
+        val builder = StringBuilder(ID_LENGTH)
+        for (index in 0 until ID_LENGTH) {
+            builder.append(ALLOWED_CHARACTERS[random.nextInt(ALLOWED_CHARACTERS.length)])
+        }
+        return builder.toString()
     }
 
     private fun convertToDeviceItem(id: String): DeviceItem {
         val json = devicesObject.optJSONObject(id) ?: JSONObject()
-        val device = DeviceItem(id)
-        device.name = json.optString("name")
+        val device =
+            DeviceItem(
+                id,
+                json.optString("name"),
+                json.optString("mode"),
+                json.optString("icon"),
+                json.optBoolean("hide", false),
+                json.optBoolean("direct_view", false),
+            )
         device.address = json.optString("address")
-        device.mode = json.optString("mode")
-        device.iconName = json.optString("icon")
-        device.hide = json.optBoolean("hide", false)
-        device.directView = json.optBoolean("direct_view", false)
         return device
     }
 
-    fun getDeviceById(id: String): DeviceItem {
-        return convertToDeviceItem(id)
-    }
+    fun getDeviceById(id: String): DeviceItem = convertToDeviceItem(id)
 
-    fun getDeviceByIndex(index: Int): DeviceItem {
-        val id = deviceOrder.getString(index)
-        return convertToDeviceItem(id)
-    }
+    fun getDeviceByIndex(index: Int): DeviceItem = convertToDeviceItem(deviceOrder.getString(index))
 
-    val length: Int get() {
-        return deviceOrder.length()
-    }
-
-    fun idExists(id: String): Boolean {
-        return devicesObject.has(id)
-    }
+    fun idExists(id: String): Boolean = devicesObject.has(id)
 
     fun addressExists(address: String): Boolean {
         val formattedAddress = DeviceItem.formatAddress(address)
@@ -144,5 +127,15 @@ class Devices(private val context: Context) {
 
     fun saveChanges() {
         preferences.edit().putString("devices_json", data.toString()).apply()
+    }
+
+    companion object {
+        private const val ALLOWED_CHARACTERS = "0123456789abcdefghijklmnobqrstuvw"
+        private const val ID_LENGTH = 8
+        private var storedData: JSONObject? = null
+
+        fun reloadFromPreferences() {
+            storedData = null
+        }
     }
 }

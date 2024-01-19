@@ -19,9 +19,7 @@ object SliderUtils {
     private fun dpToPx(
         resources: Resources,
         dp: Int,
-    ): Int {
-        return (dp * resources.displayMetrics.density).toInt()
-    }
+    ): Int = (dp * resources.displayMetrics.density).toInt()
 
     fun setSliderGradientNow(
         view: View,

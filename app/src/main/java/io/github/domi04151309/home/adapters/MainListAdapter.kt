@@ -21,10 +21,6 @@ import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
 
 @Suppress("TooManyFunctions")
 class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapter<MainListAdapter.ViewHolder>() {
-    companion object {
-        private const val ANIMATION_DURATION = 300L
-    }
-
     private var items: MutableList<ListViewItem> = mutableListOf()
     private var helperInterface: HomeRecyclerViewHelperInterface? = null
     private var animate: Boolean = true
@@ -34,20 +30,20 @@ class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapt
         setHasStableIds(true)
     }
 
-    override fun getItemId(position: Int): Long {
-        return (position.toString() + '#' + items[position].hidden).hashCode().toLong()
-    }
+    override fun getItemId(position: Int): Long =
+        (position.toString() + '#' + items[position].hidden)
+            .hashCode()
+            .toLong()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
-    ): ViewHolder {
-        return ViewHolder(
+    ): ViewHolder =
+        ViewHolder(
             LayoutInflater
                 .from(parent.context)
                 .inflate(R.layout.list_item, parent, false),
         )
-    }
 
     override fun onBindViewHolder(
         holder: ViewHolder,
@@ -86,9 +82,7 @@ class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapt
         super.onViewRecycled(holder)
     }
 
-    override fun getItemCount(): Int {
-        return items.size
-    }
+    override fun getItemCount(): Int = items.size
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
@@ -151,9 +145,7 @@ class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapt
         }
     }
 
-    fun getOffset(pos: Int): Int {
-        return offsets.copyOfRange(0, pos).sum()
-    }
+    fun getOffset(pos: Int): Int = offsets.copyOfRange(0, pos).sum()
 
     fun updateDirectView(
         id: String,
@@ -173,9 +165,7 @@ class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapt
         notifyItemRangeInserted(correctOffset, newItems.size)
     }
 
-    private fun getPosFromId(id: Long): Int {
-        return items.indices.indexOfFirst { getItemId(it) == id }
-    }
+    private fun getPosFromId(id: Long): Int = items.indices.indexOfFirst { getItemId(it) == id }
 
     fun getDirectViewPos(deviceId: String): Int {
         var currentPos = 0
@@ -216,5 +206,9 @@ class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapt
         val summary: TextView = view.findViewById(R.id.summary)
         val hidden: TextView = view.findViewById(R.id.hidden)
         val stateSwitch: MaterialSwitch = view.findViewById(R.id.state)
+    }
+
+    companion object {
+        private const val ANIMATION_DURATION = 300L
     }
 }

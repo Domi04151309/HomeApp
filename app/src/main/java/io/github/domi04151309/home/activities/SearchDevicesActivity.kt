@@ -133,7 +133,7 @@ class SearchDevicesActivity : BaseActivity(), RecyclerViewHelperInterface {
             )
         }.start()
 
-        nsdManager = (getSystemService(NSD_SERVICE) as NsdManager)
+        nsdManager = getSystemService(NSD_SERVICE) as NsdManager
         resolveListener =
             object : NsdManager.ResolveListener {
                 override fun onServiceResolved(serviceInfo: NsdServiceInfo) {
@@ -249,10 +249,9 @@ class SearchDevicesActivity : BaseActivity(), RecyclerViewHelperInterface {
     }
 
     @Suppress("MagicNumber")
-    private fun intToIp(address: Int): String {
-        return (address and 0xFF).toString() + "." + (address shr 8 and 0xFF) + "." +
+    private fun intToIp(address: Int): String =
+        (address and 0xFF).toString() + "." + (address shr 8 and 0xFF) + "." +
             (address shr 16 and 0xFF) + "." + (address shr 24 and 0xFF)
-    }
 
     override fun onItemClicked(
         view: View,
@@ -265,11 +264,14 @@ class SearchDevicesActivity : BaseActivity(), RecyclerViewHelperInterface {
                 .setTitle(R.string.pref_add_dialog)
                 .setMessage(resources.getString(R.string.pref_add_dialog_message, name))
                 .setPositiveButton(R.string.str_add) { _, _ ->
-                    val newItem = DeviceItem(devices.generateNewId())
-                    newItem.name = name
+                    val newItem =
+                        DeviceItem(
+                            devices.generateNewId(),
+                            name,
+                            hidden.substring(0, hidden.indexOf('#')),
+                            hidden.substring(hidden.lastIndexOf('#') + 1),
+                        )
                     newItem.address = view.findViewById<TextView>(R.id.summary).text.toString()
-                    newItem.mode = hidden.substring(0, hidden.indexOf('#'))
-                    newItem.iconName = hidden.substring(hidden.lastIndexOf('#') + 1)
                     devices.addDevice(newItem)
                     adapter.changeState(position, true)
                 }

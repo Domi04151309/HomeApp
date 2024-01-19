@@ -199,7 +199,7 @@ class ShellyAPI(
         id: String,
         state: Boolean,
     ) {
-        val requestUrl = url + "relay/$id?turn=" + (if (state) "on" else "off")
+        val requestUrl = url + "relay/$id?turn=" + if (state) "on" else "off"
         val jsonObjectRequest =
             when (version) {
                 1 ->
@@ -226,20 +226,19 @@ class ShellyAPI(
 
     companion object {
         /**
-         * Detect the name of the shelly device during discovery
+         * Detect the name of the shelly device during discovery.
          */
         fun loadName(
             url: String,
             version: Int,
             listener: Response.Listener<String>,
-        ): JsonObjectRequest {
-            return JsonObjectRequest(
-                url + (if (version == 1) "settings" else "shelly"),
+        ): JsonObjectRequest =
+            JsonObjectRequest(
+                url + if (version == 1) "settings" else "shelly",
                 { statusResponse ->
                     listener.onResponse(if (statusResponse.isNull("name")) "" else statusResponse.optString("name"))
                 },
                 {},
             )
-        }
     }
 }
