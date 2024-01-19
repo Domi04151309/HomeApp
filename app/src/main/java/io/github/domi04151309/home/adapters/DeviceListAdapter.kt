@@ -19,13 +19,12 @@ class DeviceListAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
-    ): ViewHolder {
-        return ViewHolder(
+    ): ViewHolder =
+        ViewHolder(
             LayoutInflater
                 .from(parent.context)
                 .inflate(R.layout.list_item_devices, parent, false),
         )
-    }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(
@@ -44,14 +43,12 @@ class DeviceListAdapter(
                 if (event.actionMasked == MotionEvent.ACTION_DOWN) {
                     helperInterface.onItemHandleTouched(holder)
                 }
-                return@setOnTouchListener view.performClick()
+                view.performClick()
             }
         }
     }
 
-    override fun getItemCount(): Int {
-        return items.size
-    }
+    override fun getItemCount(): Int = items.size
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val drawable: ImageView = view.findViewById(R.id.drawable)

@@ -28,7 +28,7 @@ class HueConnectActivity : BaseActivity() {
 
         queue = Volley.newRequestQueue(this)
         val deviceId = intent.getStringExtra("deviceId") ?: ""
-        val jsonRequestObject = JSONObject("{\"devicetype\":\"Home App#${android.os.Build.PRODUCT}\"}")
+        val jsonRequestObject = JSONObject("""{ "devicetype": "Home App#${android.os.Build.PRODUCT}" }""")
         requestToRegisterUser =
             CustomJsonArrayRequest(
                 Request.Method.POST, Devices(this).getDeviceById(deviceId).address + "api", jsonRequestObject,

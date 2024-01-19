@@ -15,11 +15,6 @@ open class UnifiedAPI(
     val deviceId: String,
     protected val recyclerViewInterface: HomeRecyclerViewHelperInterface?,
 ) {
-    companion object {
-        private const val LIST_REQUEST_TIMEOUT = 1000
-        private val listCache: MutableMap<String, Pair<Long, List<ListViewItem>>> = mutableMapOf()
-    }
-
     interface CallbackInterface {
         fun onItemsLoaded(
             holder: UnifiedRequestCallback,
@@ -82,5 +77,10 @@ open class UnifiedAPI(
         open fun parseResponse(response: JSONObject): List<ListViewItem> = listOf()
 
         open fun parseStates(response: JSONObject): List<Boolean?> = listOf()
+    }
+
+    companion object {
+        private const val LIST_REQUEST_TIMEOUT = 1000
+        private val listCache: MutableMap<String, Pair<Long, List<ListViewItem>>> = mutableMapOf()
     }
 }

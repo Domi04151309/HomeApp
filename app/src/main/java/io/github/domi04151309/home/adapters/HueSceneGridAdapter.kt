@@ -23,13 +23,12 @@ class HueSceneGridAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
-    ): ViewHolder {
-        return ViewHolder(
+    ): ViewHolder =
+        ViewHolder(
             LayoutInflater
                 .from(parent.context)
                 .inflate(R.layout.grid_item, parent, false),
         )
-    }
 
     override fun onBindViewHolder(
         holder: ViewHolder,
@@ -55,9 +54,7 @@ class HueSceneGridAdapter(
         holder.itemView.setOnCreateContextMenuListener(contextMenuListener)
     }
 
-    override fun getItemCount(): Int {
-        return items.size
-    }
+    override fun getItemCount(): Int = items.size
 
     @SuppressLint("NotifyDataSetChanged")
     fun updateData(newItems: MutableList<SceneGridItem>) {

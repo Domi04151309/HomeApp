@@ -18,8 +18,8 @@ class CustomJsonArrayRequest(
     listener: Response.Listener<JSONArray>,
     errorListener: Response.ErrorListener,
 ) : JsonRequest<JSONArray>(method, url, jsonRequest?.toString(), listener, errorListener) {
-    override fun parseNetworkResponse(response: NetworkResponse): Response<JSONArray> {
-        return try {
+    override fun parseNetworkResponse(response: NetworkResponse): Response<JSONArray> =
+        try {
             val jsonString = String(response.data, Charset.forName(HttpHeaderParser.parseCharset(response.headers)))
             Response.success(
                 JSONArray(jsonString),
@@ -30,5 +30,4 @@ class CustomJsonArrayRequest(
         } catch (e: JSONException) {
             Response.error(ParseError(e))
         }
-    }
 }

@@ -51,8 +51,8 @@ internal object Global {
         deviceId: String,
         recyclerViewInterface: HomeRecyclerViewHelperInterface? = null,
         tasmotaHelperInterface: HomeRecyclerViewHelperInterface? = null,
-    ): UnifiedAPI {
-        return when (identifier) {
+    ): UnifiedAPI =
+        when (identifier) {
             "ESP Easy" -> EspEasyAPI(context, deviceId, recyclerViewInterface)
             "Hue API" -> HueAPI(context, deviceId, recyclerViewInterface)
             "SimpleHome API" -> SimpleHomeAPI(context, deviceId, recyclerViewInterface)
@@ -61,14 +61,13 @@ internal object Global {
             "Shelly Gen 2" -> ShellyAPI(context, deviceId, recyclerViewInterface, 2)
             else -> UnifiedAPI(context, deviceId, recyclerViewInterface)
         }
-    }
 
     @Suppress("CyclomaticComplexMethod")
     fun getIcon(
         icon: String,
         default: Int = R.drawable.ic_warning,
-    ): Int {
-        return when (icon.lowercase()) {
+    ): Int =
+        when (icon.lowercase()) {
             "christmas tree" -> R.drawable.ic_device_christmas_tree
             "clock" -> R.drawable.ic_device_clock
             "display" -> R.drawable.ic_device_display
@@ -90,11 +89,10 @@ internal object Global {
             "webcam" -> R.drawable.ic_device_webcam
             else -> default
         }
-    }
 
     @RequiresApi(Build.VERSION_CODES.R)
-    fun getDeviceType(icon: String): Int {
-        return when (icon.lowercase()) {
+    fun getDeviceType(icon: String): Int =
+        when (icon.lowercase()) {
             "christmas tree", "electricity", "schwibbogen", "socket" -> DeviceTypes.TYPE_OUTLET
             "display", "display alt" -> DeviceTypes.TYPE_DISPLAY
             "gauge", "heating", "thermometer" -> DeviceTypes.TYPE_AC_HEATER
@@ -103,7 +101,6 @@ internal object Global {
             "webcam" -> DeviceTypes.TYPE_CAMERA
             else -> DeviceTypes.TYPE_UNKNOWN
         }
-    }
 
     fun checkNetwork(context: Context): Boolean {
         if (

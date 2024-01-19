@@ -26,17 +26,14 @@ class DevicesActivity : BaseActivity(), RecyclerViewHelperInterfaceAdvanced {
             override fun getMovementFlags(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
-            ): Int {
-                return if (viewHolder.adapterPosition == (
-                        recyclerView.adapter?.itemCount
-                            ?: -1
-                    ) - 1
+            ): Int =
+                if (
+                    viewHolder.adapterPosition == (recyclerView.adapter?.itemCount ?: -1) - 1
                 ) {
                     makeMovementFlags(0, 0)
                 } else {
                     makeMovementFlags(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0)
                 }
-            }
 
             override fun onMove(
                 recyclerView: RecyclerView,
@@ -56,9 +53,7 @@ class DevicesActivity : BaseActivity(), RecyclerViewHelperInterfaceAdvanced {
                 }
             }
 
-            override fun isLongPressDragEnabled(): Boolean {
-                return true
-            }
+            override fun isLongPressDragEnabled(): Boolean = true
 
             override fun onSwiped(
                 viewHolder: RecyclerView.ViewHolder,

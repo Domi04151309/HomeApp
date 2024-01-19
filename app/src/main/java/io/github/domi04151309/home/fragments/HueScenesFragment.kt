@@ -39,13 +39,6 @@ class HueScenesFragment :
     Fragment(R.layout.fragment_hue_scenes),
     RecyclerViewHelperInterface,
     Response.Listener<JSONObject> {
-    companion object {
-        private const val SCENE_FRACTION_ESTIMATE = 4
-        private const val COLUMNS = 3
-
-        var scenesChanged: Boolean = false
-    }
-
     private var scenesRequest: JsonObjectRequest? = null
     private var selectedScene: CharSequence = ""
     private var selectedSceneName: CharSequence = ""
@@ -217,8 +210,8 @@ class HueScenesFragment :
         if (selectedScene != "add") MenuInflater(requireContext()).inflate(R.menu.activity_hue_lamp_context, menu)
     }
 
-    override fun onContextItemSelected(item: MenuItem): Boolean {
-        return when (item.title) {
+    override fun onContextItemSelected(item: MenuItem): Boolean =
+        when (item.title) {
             resources.getString(R.string.str_edit) -> {
                 startActivity(
                     Intent(requireContext(), HueSceneActivity::class.java)
@@ -251,7 +244,6 @@ class HueScenesFragment :
                 super.onContextItemSelected(item)
             }
         }
-    }
 
     override fun onStart() {
         super.onStart()
@@ -259,5 +251,12 @@ class HueScenesFragment :
             scenesChanged = false
             queue.add(scenesRequest)
         }
+    }
+
+    companion object {
+        private const val SCENE_FRACTION_ESTIMATE = 4
+        private const val COLUMNS = 3
+
+        var scenesChanged: Boolean = false
     }
 }

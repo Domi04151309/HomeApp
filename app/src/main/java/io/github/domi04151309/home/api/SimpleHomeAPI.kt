@@ -132,7 +132,7 @@ class SimpleHomeAPI(
         val jsonObjectRequest =
             JsonObjectRequest(
                 Request.Method.GET,
-                url + id.substring(id.lastIndexOf('@') + 1) + "?input=" + (if (state) 1 else 0),
+                url + id.substring(id.lastIndexOf('@') + 1) + "?input=" + if (state) 1 else 0,
                 null,
                 { },
                 { e -> Log.e(Global.LOG_TAG, e.toString()) },

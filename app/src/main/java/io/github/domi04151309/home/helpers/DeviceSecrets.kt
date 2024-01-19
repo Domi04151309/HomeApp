@@ -7,10 +7,6 @@ import androidx.security.crypto.MasterKey
 import org.json.JSONObject
 
 class DeviceSecrets(context: Context, private val id: String) {
-    companion object {
-        private const val DEFAULT_JSON = "{\"username\": \"\", \"password\": \"\"}"
-    }
-
     private val masterKeyAlias =
         MasterKey.Builder(context, MasterKey.DEFAULT_MASTER_KEY_ALIAS)
             .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
@@ -31,6 +27,18 @@ class DeviceSecrets(context: Context, private val id: String) {
                 ?: DEFAULT_JSON,
         )
 
+    var username: String
+        get() = secrets.optString("username")
+        set(value) {
+            secrets.put("username", value)
+        }
+
+    var password: String
+        get() = secrets.optString("password")
+        set(value) {
+            secrets.put("password", value)
+        }
+
     fun updateDeviceSecrets() {
         preferences.edit().putString(id, secrets.toString()).apply()
     }
@@ -39,19 +47,7 @@ class DeviceSecrets(context: Context, private val id: String) {
         preferences.edit().remove(id).apply()
     }
 
-    var username: String
-        get() {
-            return secrets.optString("username")
-        }
-        set(value) {
-            secrets.put("username", value)
-        }
-
-    var password: String
-        get() {
-            return secrets.optString("password")
-        }
-        set(value) {
-            secrets.put("password", value)
-        }
+    companion object {
+        private const val DEFAULT_JSON = """{ "username": "", "password": "" }"""
+    }
 }

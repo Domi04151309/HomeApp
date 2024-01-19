@@ -249,12 +249,12 @@ class HueSceneActivity :
         id: String,
         title: String,
         state: JSONObject,
-    ): SceneListItem {
-        val item = SceneListItem(title)
-        item.state = state.optBoolean("on")
-        item.hidden = id
-        item.brightness = HueUtils.briToPercent(state.optInt("bri", MAX_BRIGHTNESS))
-        item.color =
+    ): SceneListItem =
+        SceneListItem(
+            title,
+            id,
+            state.optBoolean("on"),
+            HueUtils.briToPercent(state.optInt("bri", MAX_BRIGHTNESS)),
             if (state.has("xy")) {
                 val xyArray = state.getJSONArray("xy")
                 ColorUtils.xyToRGB(
@@ -267,9 +267,8 @@ class HueSceneActivity :
                 HueUtils.ctToRGB(state.getInt("ct"))
             } else {
                 Color.parseColor("#FFFFFF")
-            }
-        return item
-    }
+            },
+        )
 
     private fun onFloatingActionButtnClicked() {
         val name = nameBox.editText?.text.toString()
@@ -286,7 +285,7 @@ class HueSceneActivity :
                 CustomJsonArrayRequest(
                     Request.Method.PUT,
                     "$addressPrefix/scenes/$sceneId",
-                    JSONObject("{\"name\":\"$name\",\"lightstates\":$lightStates}"),
+                    JSONObject("""{ "name": "$name", "lightstates": $lightStates }"""),
                     this,
                     this,
                 )
@@ -295,12 +294,7 @@ class HueSceneActivity :
                     Request.Method.POST,
                     "$addressPrefix/scenes",
                     JSONObject(
-                        "{" +
-                            "\"name\":\"$name\"," +
-                            "\"recycle\":false," +
-                            "\"group\":\"$groupId\"," +
-                            "\"type\":\"GroupScene\"" +
-                            "}",
+                        """{ "name": "$name", "recycle": false, "group": "$groupId", "type": "GroupScene" }""",
                     ),
                     this,
                     this,

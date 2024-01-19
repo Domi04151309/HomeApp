@@ -32,6 +32,12 @@ class ShortcutHueSceneActivity : BaseActivity(), RecyclerViewHelperInterface {
     private var group: String? = null
     private lateinit var recyclerView: RecyclerView
 
+    private val device: DeviceItem
+        get() = Devices(this).getDeviceById(deviceId ?: error("Device ID is null."))
+
+    private val api: HueAPI
+        get() = HueAPI(this, deviceId ?: error("Device ID is null."))
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_devices)
@@ -172,10 +178,4 @@ class ShortcutHueSceneActivity : BaseActivity(), RecyclerViewHelperInterface {
             createShortcut(view)
         }
     }
-
-    private val device: DeviceItem
-        get() = Devices(this).getDeviceById(deviceId ?: error("Device ID is null."))
-
-    private val api: HueAPI
-        get() = HueAPI(this, deviceId ?: error("Device ID is null."))
 }

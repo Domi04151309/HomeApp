@@ -81,7 +81,7 @@ class LightStates {
         return json.toString()
     }
 
-    data class Light(
+    class Light(
         var on: Boolean = false,
         var bri: Int = -1,
         var xy: JSONArray? = null,

@@ -12,16 +12,12 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
     fun parseResponse(
         config: JSONObject,
         status: JSONObject,
-    ): List<ListViewItem> {
-        return if (version == 1) {
+    ): List<ListViewItem> =
+        if (version == 1) {
             parseResponseV1(config, status)
         } else {
-            parseResponseV2(
-                config,
-                status,
-            )
+            parseResponseV2(config, status)
         }
-    }
 
     private fun parseResponseV1(
         settings: JSONObject,
@@ -151,7 +147,9 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
                     icon =
                         Global.getIcon(
                             config.optJSONObject("sys")?.optJSONObject("ui_data")
-                                ?.optJSONArray("consumption_types")?.getString(currentId) ?: "",
+                                ?.optJSONArray("consumption_types")
+                                ?.getString(currentId)
+                                ?: "",
                             R.drawable.ic_do,
                         ),
                 )
@@ -162,9 +160,7 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
     fun parseStates(
         config: JSONObject,
         status: JSONObject,
-    ): List<Boolean?> {
-        return if (version == 1) parseStatesV1(config, status) else parseStatesV2(config, status)
-    }
+    ): List<Boolean?> = if (version == 1) parseStatesV1(config, status) else parseStatesV2(config, status)
 
     private fun parseStatesV1(
         settings: JSONObject,
@@ -219,11 +215,10 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
     private fun nameOrDefault(
         name: String,
         id: Int,
-    ): String {
-        return if (name.trim().isEmpty()) {
+    ): String =
+        if (name.trim().isEmpty()) {
             resources.getString(R.string.shelly_switch_title, id + 1)
         } else {
             name
         }
-    }
 }

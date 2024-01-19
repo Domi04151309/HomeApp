@@ -14,21 +14,13 @@ import io.github.domi04151309.home.helpers.Global
 internal class IconSpinnerAdapter(
     private var itemArray: Array<String>,
 ) : BaseAdapter(), Filterable {
-    override fun getCount(): Int {
-        return itemArray.size
-    }
+    override fun getCount(): Int = itemArray.size
 
-    override fun getItem(position: Int): String {
-        return itemArray[position]
-    }
+    override fun getItem(position: Int): String = itemArray[position]
 
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
-    }
+    override fun getItemId(position: Int): Long = position.toLong()
 
-    override fun getFilter(): Filter {
-        return ItemFilter()
-    }
+    override fun getFilter(): Filter = ItemFilter()
 
     override fun getView(
         position: Int,

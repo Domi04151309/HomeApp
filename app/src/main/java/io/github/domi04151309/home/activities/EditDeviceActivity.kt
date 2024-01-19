@@ -31,31 +31,6 @@ import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.helpers.Global
 
 class EditDeviceActivity : BaseActivity() {
-    companion object {
-        private val SUPPORTS_DIRECT_VIEW =
-            arrayOf(
-                "ESP Easy",
-                "Hue API",
-                "Shelly Gen 1",
-                "Shelly Gen 2",
-                "SimpleHome API",
-                "Tasmota",
-            )
-        private val HAS_CONFIG =
-            arrayOf(
-                "Hue API",
-                "ESP Easy",
-                "Node-RED",
-                "Shelly Gen 1",
-                "Shelly Gen 2",
-            )
-        private val HAS_INFO =
-            arrayOf(
-                "Hue API",
-                "Shelly Gen 2",
-            )
-    }
-
     private lateinit var devices: Devices
     private lateinit var deviceId: String
     private lateinit var deviceSecrets: DeviceSecrets
@@ -106,7 +81,7 @@ class EditDeviceActivity : BaseActivity() {
         configButton = findViewById(R.id.configBtn)
         infoButton = findViewById(R.id.infoBtn)
 
-        findViewById<TextView>(R.id.idTxt).text = (resources.getString(R.string.pref_add_id, deviceId))
+        findViewById<TextView>(R.id.idTxt).text = resources.getString(R.string.pref_add_id, deviceId)
 
         iconSpinner.addTextChangedListener(
             object : TextWatcher {
@@ -388,13 +363,16 @@ class EditDeviceActivity : BaseActivity() {
                 addressBox.editText?.text.toString()
             }
 
-        val newItem = DeviceItem(deviceId)
-        newItem.name = name
+        val newItem =
+            DeviceItem(
+                deviceId,
+                name,
+                modeSpinner.text.toString(),
+                iconSpinner.text.toString(),
+                configHide.isChecked,
+                configDirectView.isChecked,
+            )
         newItem.address = tempAddress
-        newItem.mode = modeSpinner.text.toString()
-        newItem.iconName = iconSpinner.text.toString()
-        newItem.hide = configHide.isChecked
-        newItem.directView = configDirectView.isChecked
         devices.addDevice(newItem)
         deviceSecrets.username = usernameBox.editText?.text.toString()
         deviceSecrets.password = passwordBox.editText?.text.toString()
@@ -409,5 +387,30 @@ class EditDeviceActivity : BaseActivity() {
             result += ":1880/"
         }
         return result
+    }
+
+    companion object {
+        private val SUPPORTS_DIRECT_VIEW =
+            arrayOf(
+                "ESP Easy",
+                "Hue API",
+                "Shelly Gen 1",
+                "Shelly Gen 2",
+                "SimpleHome API",
+                "Tasmota",
+            )
+        private val HAS_CONFIG =
+            arrayOf(
+                "Hue API",
+                "ESP Easy",
+                "Node-RED",
+                "Shelly Gen 1",
+                "Shelly Gen 2",
+            )
+        private val HAS_INFO =
+            arrayOf(
+                "Hue API",
+                "Shelly Gen 2",
+            )
     }
 }

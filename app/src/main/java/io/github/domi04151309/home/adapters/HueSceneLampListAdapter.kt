@@ -1,8 +1,8 @@
 package io.github.domi04151309.home.adapters
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.res.ColorStateList
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,27 +19,24 @@ class HueSceneLampListAdapter(
     private var items: List<SceneListItem>,
     private var helperInterface: SceneRecyclerViewHelperInterface,
 ) : RecyclerView.Adapter<HueSceneLampListAdapter.ViewHolder>() {
-    lateinit var c: Context
-
     init {
         setHasStableIds(true)
     }
 
-    override fun getItemId(position: Int): Long {
-        return (position.toString() + '#' + items[position].hidden).hashCode().toLong()
-    }
+    override fun getItemId(position: Int): Long =
+        (position.toString() + '#' + items[position].hidden)
+            .hashCode()
+            .toLong()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
-    ): ViewHolder {
-        c = parent.context
-        return ViewHolder(
+    ): ViewHolder =
+        ViewHolder(
             LayoutInflater
                 .from(parent.context)
                 .inflate(R.layout.list_item, parent, false),
         )
-    }
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(
@@ -47,14 +44,14 @@ class HueSceneLampListAdapter(
         position: Int,
     ) {
         val id = getItemId(position)
-        holder.drawable.setImageResource(items[position].icon)
+        holder.drawable.setImageResource(R.drawable.ic_circle)
         holder.title.text = items[position].title
-        holder.summary.text = generateSummary(items[position])
+        holder.summary.text = generateSummary(holder.itemView.resources, items[position])
         holder.hidden.text = items[position].hidden
         holder.stateSwitch.isChecked = items[position].state
         holder.stateSwitch.setOnCheckedChangeListener { compoundButton, b ->
             items[getPosFromId(id)].state = b
-            holder.summary.text = generateSummary(items[getPosFromId(id)])
+            holder.summary.text = generateSummary(holder.itemView.resources, items[getPosFromId(id)])
             if (compoundButton.isPressed) {
                 helperInterface.onStateChanged(
                     holder.itemView,
@@ -72,9 +69,7 @@ class HueSceneLampListAdapter(
         }
     }
 
-    override fun getItemCount(): Int {
-        return items.size
-    }
+    override fun getItemCount(): Int = items.size
 
     fun changeSceneBrightness(brightness: String) {
         for (i in items.indices) {
@@ -101,15 +96,17 @@ class HueSceneLampListAdapter(
         notifyItemChanged(i)
     }
 
-    private fun generateSummary(item: SceneListItem): String {
-        return c.resources.getString(if (item.state) R.string.str_on else R.string.str_off) +
-            " · " + c.resources.getString(R.string.hue_brightness) +
+    private fun generateSummary(
+        resources: Resources,
+        item: SceneListItem,
+    ): String =
+        resources.getString(
+            if (item.state) R.string.str_on else R.string.str_off,
+        ) +
+            " · " + resources.getString(R.string.hue_brightness) +
             ": " + if (item.state) item.brightness else "0%"
-    }
 
-    private fun getPosFromId(id: Long): Int {
-        return items.indices.indexOfFirst { getItemId(it) == id }
-    }
+    private fun getPosFromId(id: Long): Int = items.indices.indexOfFirst { getItemId(it) == id }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val drawable: ImageView = view.findViewById(R.id.drawable)
