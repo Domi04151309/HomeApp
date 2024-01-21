@@ -25,6 +25,7 @@ import android.webkit.WebViewClient
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -32,10 +33,11 @@ import io.github.domi04151309.home.R
 import io.github.domi04151309.home.helpers.DeviceSecrets
 
 class WebActivity : BaseActivity() {
-    internal val nullParent: ViewGroup? = null
+    private val nullParent: ViewGroup? = null
     internal var errorOccurred = false
-    internal var valueCallback: ValueCallback<Array<Uri>>? = null
+    private var valueCallback: ValueCallback<Array<Uri>>? = null
     private lateinit var webView: WebView
+    private lateinit var resultLauncher: ActivityResultLauncher<Intent>
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,20 +82,7 @@ class WebActivity : BaseActivity() {
                     host: String,
                     realm: String,
                 ) {
-                    val dialogView =
-                        LayoutInflater.from(this@WebActivity)
-                            .inflate(R.layout.dialog_web_authentication, nullParent, false)
-                    MaterialAlertDialogBuilder(this@WebActivity)
-                        .setTitle(R.string.webView_authentication)
-                        .setView(dialogView)
-                        .setPositiveButton(android.R.string.ok) { _, _ ->
-                            handler.proceed(
-                                dialogView.findViewById<EditText>(R.id.username).text.toString(),
-                                dialogView.findViewById<EditText>(R.id.password).text.toString(),
-                            )
-                        }
-                        .setNegativeButton(android.R.string.cancel) { _, _ -> }
-                        .show()
+                    onAuthRequest(handler)
                 }
 
                 override fun onReceivedError(
@@ -108,15 +97,17 @@ class WebActivity : BaseActivity() {
                 }
             }
 
-        val resultLauncher =
+        resultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == RESULT_OK) {
                     val path = result.data?.data
-                    if (path == null) {
-                        valueCallback?.onReceiveValue(arrayOf())
-                    } else {
-                        valueCallback?.onReceiveValue(arrayOf(path))
-                    }
+                    valueCallback?.onReceiveValue(
+                        if (path == null) {
+                            arrayOf()
+                        } else {
+                            arrayOf(path)
+                        },
+                    )
                 }
             }
 
@@ -126,54 +117,80 @@ class WebActivity : BaseActivity() {
                     webView: WebView?,
                     filePathCallback: ValueCallback<Array<Uri>>?,
                     fileChooserParams: FileChooserParams?,
-                ): Boolean {
-                    valueCallback = filePathCallback
-
-                    val contentSelectionIntent = Intent(Intent.ACTION_GET_CONTENT)
-                    contentSelectionIntent.addCategory(Intent.CATEGORY_OPENABLE)
-                    contentSelectionIntent.type = "*/*"
-
-                    resultLauncher.launch(
-                        Intent(Intent.ACTION_CHOOSER)
-                            .putExtra(Intent.EXTRA_INTENT, contentSelectionIntent)
-                            .putExtra(Intent.EXTRA_TITLE, "Image Chooser"),
-                    )
-                    return true
-                }
+                ): Boolean = showFileChooser(filePathCallback)
             }
 
         webView.setDownloadListener { url, _, _, _, _ ->
-            if (ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                ) != PackageManager.PERMISSION_GRANTED ||
-                ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    ),
-                    1,
-                )
-            }
-
-            val uri = Uri.parse(url)
-            val request = DownloadManager.Request(uri)
-            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-            request.setDestinationInExternalPublicDir(
-                Environment.DIRECTORY_DOWNLOADS,
-                uri.lastPathSegment,
-            )
-            (getSystemService(DOWNLOAD_SERVICE) as DownloadManager).enqueue(request)
+            onDownload(url)
         }
 
         webView.loadUrl(intent.getStringExtra("URI") ?: ABOUT_BLANK)
         title = intent.getStringExtra("title")
+    }
+
+    internal fun onAuthRequest(handler: HttpAuthHandler) {
+        val dialogView =
+            LayoutInflater.from(this)
+                .inflate(R.layout.dialog_web_authentication, nullParent, false)
+        MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.webView_authentication)
+            .setView(dialogView)
+            .setPositiveButton(android.R.string.ok) { _, _ ->
+                handler.proceed(
+                    dialogView.findViewById<EditText>(R.id.username).text.toString(),
+                    dialogView.findViewById<EditText>(R.id.password).text.toString(),
+                )
+            }
+            .setNegativeButton(android.R.string.cancel) { _, _ -> }
+            .show()
+    }
+
+    internal fun showFileChooser(filePathCallback: ValueCallback<Array<Uri>>?): Boolean {
+        valueCallback = filePathCallback
+        resultLauncher.launch(
+            Intent(Intent.ACTION_CHOOSER)
+                .putExtra(
+                    Intent.EXTRA_INTENT,
+                    Intent(Intent.ACTION_GET_CONTENT).apply {
+                        addCategory(Intent.CATEGORY_OPENABLE)
+                        type = "*/*"
+                    },
+                )
+                .putExtra(Intent.EXTRA_TITLE, "Image Chooser"),
+        )
+        return true
+    }
+
+    private fun onDownload(url: String) {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+            ) != PackageManager.PERMISSION_GRANTED ||
+            ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                ),
+                1,
+            )
+        }
+
+        val uri = Uri.parse(url)
+        (getSystemService(DOWNLOAD_SERVICE) as DownloadManager).enqueue(
+            DownloadManager.Request(uri).apply {
+                setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                setDestinationInExternalPublicDir(
+                    Environment.DIRECTORY_DOWNLOADS,
+                    uri.lastPathSegment,
+                )
+            },
+        )
     }
 
     internal fun injectCSS(webView: WebView) {
