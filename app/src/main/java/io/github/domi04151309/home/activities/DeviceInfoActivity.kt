@@ -15,6 +15,7 @@ import io.github.domi04151309.home.api.HueAPIParser
 import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.data.SimpleListItem
 import io.github.domi04151309.home.helpers.Devices
+import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
 import org.json.JSONObject
 import java.util.Locale
@@ -27,7 +28,7 @@ class DeviceInfoActivity : BaseActivity(), RecyclerViewHelperInterface {
         setContentView(R.layout.activity_devices)
 
         val devices = Devices(this)
-        val id = intent.getStringExtra("device") ?: ""
+        val id = intent.getStringExtra(Devices.INTENT_EXTRA_DEVICE) ?: ""
         if (!devices.idExists(id)) {
             finish()
             return
@@ -47,8 +48,8 @@ class DeviceInfoActivity : BaseActivity(), RecyclerViewHelperInterface {
         )
 
         when (device.mode) {
-            "Hue API" -> showHueInfo(device, queue, items, recyclerView)
-            "Shelly Gen 2" -> showShelly2Info(device, queue, items, recyclerView)
+            Global.HUE_API -> showHueInfo(device, queue, items, recyclerView)
+            Global.SHELLY_GEN_2 -> showShelly2Info(device, queue, items, recyclerView)
         }
     }
 

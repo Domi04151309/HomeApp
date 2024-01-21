@@ -306,8 +306,8 @@ class MainActivity : BaseActivity() {
         }
 
         // Handle shortcut
-        if (intent.hasExtra("device")) {
-            val deviceId = intent.getStringExtra("device") ?: ""
+        if (intent.hasExtra(Devices.INTENT_EXTRA_DEVICE)) {
+            val deviceId = intent.getStringExtra(Devices.INTENT_EXTRA_DEVICE) ?: ""
             if (devices.idExists(deviceId)) {
                 if (checkNetwork(this)) {
                     val device = devices.getDeviceById(deviceId)
@@ -454,14 +454,14 @@ class MainActivity : BaseActivity() {
                         .putExtra("title", deviceObj.name)
 
                 when (deviceObj.mode) {
-                    "Fritz! Auto-Login" -> {
+                    Global.FRITZ_AUTO_LOGIN -> {
                         intent.putExtra("URI", deviceObj.address)
                         intent.putExtra("fritz_auto_login", deviceObj.id)
                     }
-                    "Node-RED" -> {
+                    Global.NODE_RED -> {
                         intent.putExtra("URI", deviceObj.address + "ui/")
                     }
-                    "Website" -> {
+                    Global.WEBSITE -> {
                         intent.putExtra("URI", deviceObj.address)
                     }
                 }
@@ -611,9 +611,9 @@ class MainActivity : BaseActivity() {
     companion object {
         private val WEB_MODES =
             arrayOf(
-                "Fritz! Auto-Login",
-                "Node-RED",
-                "Website",
+                Global.FRITZ_AUTO_LOGIN,
+                Global.NODE_RED,
+                Global.WEBSITE,
             )
         private const val TINY_DELAY = 100L
         private const val COLUMN_COUNT_FRACTION = 240

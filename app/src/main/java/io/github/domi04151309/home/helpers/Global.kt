@@ -26,23 +26,32 @@ internal object Global {
     const val LOG_TAG: String = "HomeApp"
 
     const val DEFAULT_JSON: String = "{\"devices\":{}}"
+    const val ESP_EASY = "ESP Easy"
+    const val HUE_API = "Hue API"
+    const val SHELLY_GEN_1 = "Shelly Gen 1"
+    const val SHELLY_GEN_2 = "Shelly Gen 2"
+    const val SIMPLE_HOME_API = "SimpleHome API"
+    const val TASMOTA = "Tasmota"
+    const val NODE_RED = "Node-RED"
+    const val WEBSITE = "Website"
+    const val FRITZ_AUTO_LOGIN = "Fritz! Auto-Login"
     val UNIFIED_MODES =
         arrayOf(
-            "ESP Easy",
-            "Hue API",
-            "Shelly Gen 1",
-            "Shelly Gen 2",
-            "SimpleHome API",
-            "Tasmota",
+            ESP_EASY,
+            HUE_API,
+            SHELLY_GEN_1,
+            SHELLY_GEN_2,
+            SIMPLE_HOME_API,
+            TASMOTA,
         )
     val POWER_MENU_MODES =
         arrayOf(
-            "ESP Easy",
-            "Hue API",
-            "Shelly Gen 1",
-            "Shelly Gen 2",
-            "SimpleHome API",
-            "Tasmota",
+            ESP_EASY,
+            HUE_API,
+            SHELLY_GEN_1,
+            SHELLY_GEN_2,
+            SIMPLE_HOME_API,
+            TASMOTA,
         )
 
     fun getCorrectAPI(
@@ -53,12 +62,12 @@ internal object Global {
         tasmotaHelperInterface: HomeRecyclerViewHelperInterface? = null,
     ): UnifiedAPI =
         when (identifier) {
-            "ESP Easy" -> EspEasyAPI(context, deviceId, recyclerViewInterface)
-            "Hue API" -> HueAPI(context, deviceId, recyclerViewInterface)
-            "SimpleHome API" -> SimpleHomeAPI(context, deviceId, recyclerViewInterface)
-            "Tasmota" -> Tasmota(context, deviceId, tasmotaHelperInterface ?: recyclerViewInterface)
-            "Shelly Gen 1" -> ShellyAPI(context, deviceId, recyclerViewInterface, 1)
-            "Shelly Gen 2" -> ShellyAPI(context, deviceId, recyclerViewInterface, 2)
+            ESP_EASY -> EspEasyAPI(context, deviceId, recyclerViewInterface)
+            HUE_API -> HueAPI(context, deviceId, recyclerViewInterface)
+            SIMPLE_HOME_API -> SimpleHomeAPI(context, deviceId, recyclerViewInterface)
+            TASMOTA -> Tasmota(context, deviceId, tasmotaHelperInterface ?: recyclerViewInterface)
+            SHELLY_GEN_1 -> ShellyAPI(context, deviceId, recyclerViewInterface, 1)
+            SHELLY_GEN_2 -> ShellyAPI(context, deviceId, recyclerViewInterface, 2)
             else -> UnifiedAPI(context, deviceId, recyclerViewInterface)
         }
 

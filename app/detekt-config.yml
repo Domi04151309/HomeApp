@@ -158,7 +158,7 @@ complexity:
   ReplaceSafeCallChainWithRun:
     active: true
   StringLiteralDuplication:
-    active: false
+    active: true
     excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/jsTest/**', '**/iosTest/**']
     threshold: 3
     ignoreAnnotation: true
@@ -323,7 +323,7 @@ naming:
     active: true
     forbiddenName: []
   FunctionMaxLength:
-    active: false
+    active: true
     maximumFunctionNameLength: 30
   FunctionMinLength:
     active: true

@@ -41,7 +41,7 @@ class ShellyAPI(
     private fun listRequestV1(callback: CallbackInterface) =
         JsonObjectRequestAuth(
             Request.Method.GET,
-            url + "settings",
+            url + SETTINGS,
             secrets,
             null,
             { settingsResponse ->
@@ -143,7 +143,7 @@ class ShellyAPI(
                 1 ->
                     JsonObjectRequestAuth(
                         Request.Method.GET,
-                        url + "settings",
+                        url + SETTINGS,
                         secrets,
                         null,
                         { settingsResponse ->
@@ -225,6 +225,8 @@ class ShellyAPI(
     }
 
     companion object {
+        private const val SETTINGS = "settings"
+
         /**
          * Detect the name of the shelly device during discovery.
          */
@@ -234,7 +236,7 @@ class ShellyAPI(
             listener: Response.Listener<String>,
         ): JsonObjectRequest =
             JsonObjectRequest(
-                url + if (version == 1) "settings" else "shelly",
+                url + if (version == 1) SETTINGS else "shelly",
                 { statusResponse ->
                     listener.onResponse(if (statusResponse.isNull("name")) "" else statusResponse.optString("name"))
                 },

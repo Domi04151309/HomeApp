@@ -66,7 +66,7 @@ class ShortcutDeviceActivity : BaseActivity(), RecyclerViewHelperInterface {
                             .setIcon(Icon.createWithResource(this, device.iconId))
                             .setIntent(
                                 Intent(this, MainActivity::class.java)
-                                    .putExtra("device", device.id)
+                                    .putExtra(Devices.INTENT_EXTRA_DEVICE, device.id)
                                     .setAction(Intent.ACTION_MAIN)
                                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK),
                             )

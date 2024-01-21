@@ -14,7 +14,7 @@ class EspEasyAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.Pars
         val sensors = response.optJSONArray("Sensors") ?: JSONArray()
         for (sensorId in 0 until sensors.length()) {
             val currentSensor = sensors.getJSONObject(sensorId)
-            if (currentSensor.optString("TaskEnabled", "false").equals("false")) {
+            if (currentSensor.optString("TaskEnabled", FALSE).equals(FALSE)) {
                 continue
             }
 
@@ -52,8 +52,8 @@ class EspEasyAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.Pars
 
         val taskName = currentSensor.getString("TaskName")
         for (taskId in taskIcons.indices) {
-            val currentTask = currentSensor.getJSONArray("TaskValues").getJSONObject(taskId)
-            val currentValue = currentTask.getString("Value")
+            val currentTask = currentSensor.getJSONArray(TASK_VALUES).getJSONObject(taskId)
+            val currentValue = currentTask.getString(VALUE)
             if (!currentValue.equals("nan")) {
                 val suffix =
                     when (taskIcons[taskId]) {
@@ -80,7 +80,7 @@ class EspEasyAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.Pars
         val listItems = mutableListOf<ListViewItem>()
         when (type) {
             "Switch input - Switch" -> {
-                val currentState = currentSensor.getJSONArray("TaskValues").getJSONObject(0).getInt("Value") > 0
+                val currentState = currentSensor.getJSONArray(TASK_VALUES).getJSONObject(0).getInt(VALUE) > 0
                 var taskName = currentSensor.getString("TaskName")
                 var gpioId = ""
                 val gpioFinder = Regex("~GPIO~([0-9]+)$")
@@ -117,7 +117,7 @@ class EspEasyAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.Pars
         val sensors = response.optJSONArray("Sensors") ?: JSONArray()
         for (sensorId in 0 until sensors.length()) {
             val currentSensor = sensors.getJSONObject(sensorId)
-            if (currentSensor.optString("TaskEnabled", "false").equals("false")) {
+            if (currentSensor.optString("TaskEnabled", FALSE).equals(FALSE)) {
                 continue
             }
 
@@ -147,9 +147,9 @@ class EspEasyAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.Pars
 
         for (taskId in 0 until tasks) {
             if (
-                !currentSensor.getJSONArray("TaskValues")
+                !currentSensor.getJSONArray(TASK_VALUES)
                     .getJSONObject(taskId)
-                    .getString("Value")
+                    .getString(VALUE)
                     .equals("nan")
             ) {
                 listItems += null
@@ -165,9 +165,15 @@ class EspEasyAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.Pars
         val listItems = mutableListOf<Boolean?>()
         when (type) {
             "Switch input - Switch" -> {
-                listItems += currentSensor.getJSONArray("TaskValues").getJSONObject(0).getInt("Value") > 0
+                listItems += currentSensor.getJSONArray(TASK_VALUES).getJSONObject(0).getInt(VALUE) > 0
             }
         }
         return listItems
+    }
+
+    companion object {
+        private const val FALSE = "false"
+        private const val TASK_VALUES = "TaskValues"
+        private const val VALUE = "Value"
     }
 }

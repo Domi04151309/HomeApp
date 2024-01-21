@@ -24,8 +24,8 @@ class TasmotaHelper(private val c: Context, private val tasmota: UnifiedAPI) {
         val view = LayoutInflater.from(c).inflate(R.layout.dialog_tasmota_add, nullParent, false)
         val titleTxt = view.findViewById<EditText>(R.id.title)
         val commandTxt = view.findViewById<EditText>(R.id.command)
-        titleTxt.setText(arrayItem.optString("title"))
-        commandTxt.setText(arrayItem.optString("command"))
+        titleTxt.setText(arrayItem.optString(TITLE))
+        commandTxt.setText(arrayItem.optString(COMMAND))
         MaterialAlertDialogBuilder(c)
             .setTitle(R.string.tasmota_add_command)
             .setView(view)
@@ -38,7 +38,7 @@ class TasmotaHelper(private val c: Context, private val tasmota: UnifiedAPI) {
                     array.put(
                         JSONObject()
                             .put(
-                                "title",
+                                TITLE,
                                 if (newTitle == "") {
                                     c.resources.getString(R.string.tasmota_add_command_dialog_title_empty)
                                 } else {
@@ -46,7 +46,7 @@ class TasmotaHelper(private val c: Context, private val tasmota: UnifiedAPI) {
                                 },
                             )
                             .put(
-                                "command",
+                                COMMAND,
                                 if (newCommand == "") {
                                     c.resources.getString(
                                         R.string.tasmota_add_command_dialog_command_empty,
@@ -86,7 +86,7 @@ class TasmotaHelper(private val c: Context, private val tasmota: UnifiedAPI) {
                     ).put(
                         JSONObject()
                             .put(
-                                "title",
+                                TITLE,
                                 if (newTitle == "") {
                                     c.resources.getString(
                                         R.string.tasmota_add_command_dialog_title_empty,
@@ -96,7 +96,7 @@ class TasmotaHelper(private val c: Context, private val tasmota: UnifiedAPI) {
                                 },
                             )
                             .put(
-                                "command",
+                                COMMAND,
                                 if (newCommand == "") {
                                     c.resources.getString(
                                         R.string.tasmota_add_command_dialog_command_empty,
@@ -138,5 +138,7 @@ class TasmotaHelper(private val c: Context, private val tasmota: UnifiedAPI) {
 
     companion object {
         const val EMPTY_ARRAY: String = "[]"
+        private const val TITLE = "title"
+        private const val COMMAND = "command"
     }
 }

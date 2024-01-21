@@ -62,8 +62,8 @@ class HueLampActivity : BaseActivity(), HueRoomInterface {
         setContentView(R.layout.activity_hue_lamp)
 
         id = intent.getStringExtra("id") ?: "0"
-        if (intent.hasExtra("device")) {
-            val extraDevice = intent.getStringExtra("device") ?: ""
+        if (intent.hasExtra(Devices.INTENT_EXTRA_DEVICE)) {
+            val extraDevice = intent.getStringExtra(Devices.INTENT_EXTRA_DEVICE) ?: ""
             val devices = Devices(this)
             if (devices.idExists(extraDevice)) {
                 device = devices.getDeviceById(extraDevice)
@@ -135,11 +135,11 @@ class HueLampActivity : BaseActivity(), HueRoomInterface {
         }
 
         findViewById<Button>(R.id.onBtn).setOnClickListener {
-            hueAPI.switchGroupByID(id, true)
+            hueAPI.switchGroupById(id, true)
         }
 
         findViewById<Button>(R.id.offBtn).setOnClickListener {
-            hueAPI.switchGroupByID(id, false)
+            hueAPI.switchGroupById(id, false)
         }
 
         brightnessBar.addOnSliderTouchListener(
@@ -245,7 +245,7 @@ class HueLampActivity : BaseActivity(), HueRoomInterface {
                     .setIntent(
                         Intent(this, HueLampActivity::class.java)
                             .putExtra("id", id)
-                            .putExtra("device", device.id)
+                            .putExtra(Devices.INTENT_EXTRA_DEVICE, device.id)
                             .setAction(Intent.ACTION_MAIN)
                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK),
                     )

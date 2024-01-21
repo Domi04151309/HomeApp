@@ -63,7 +63,7 @@ class HueScenesFragment :
 
         scenesRequest =
             JsonObjectRequest(
-                Request.Method.GET, lampData.addressPrefix + "/scenes/", null,
+                Request.Method.GET, lampData.addressPrefix + SCENES_PATH, null,
                 this,
             ) { error ->
                 Toast.makeText(
@@ -86,7 +86,7 @@ class HueScenesFragment :
                     queue.add(
                         JsonObjectRequest(
                             Request.Method.GET,
-                            lampData.addressPrefix + "/scenes/" + scenes[i].first,
+                            lampData.addressPrefix + SCENES_PATH + scenes[i].first,
                             null,
                             { sceneResponse ->
                                 gridItems +=
@@ -229,7 +229,7 @@ class HueScenesFragment :
                         val deleteSceneRequest =
                             CustomJsonArrayRequest(
                                 Request.Method.DELETE,
-                                lampData.addressPrefix + "/scenes/" + selectedScene,
+                                lampData.addressPrefix + SCENES_PATH + selectedScene,
                                 null,
                                 { queue.add(scenesRequest) },
                                 { e -> Log.e(Global.LOG_TAG, e.toString()) },
@@ -256,6 +256,7 @@ class HueScenesFragment :
     companion object {
         private const val SCENE_FRACTION_ESTIMATE = 4
         private const val COLUMNS = 3
+        private const val SCENES_PATH = "/scenes/"
 
         var scenesChanged: Boolean = false
     }

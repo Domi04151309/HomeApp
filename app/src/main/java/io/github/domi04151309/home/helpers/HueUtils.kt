@@ -7,6 +7,8 @@ object HueUtils {
     const val MIN_COLOR_TEMPERATURE: Int = 153
     const val MAX_BRIGHTNESS: Int = 255
 
+    private const val ARGUMENT_OUT_OF_RANGE = "Argument out of range."
+
     fun defaultColors(): IntArray =
         IntArray(7) {
                 index ->
@@ -14,12 +16,12 @@ object HueUtils {
         }
 
     fun ctToRGB(ct: Int): Int {
-        require(!(ct < MIN_COLOR_TEMPERATURE || ct > 500)) { "Argument out of range" }
+        require(!(ct < MIN_COLOR_TEMPERATURE || ct > 500)) { ARGUMENT_OUT_OF_RANGE }
         return ColorUtils.temperatureToRGB((6500 - 12.968299711 * (ct - MIN_COLOR_TEMPERATURE)).toInt())
     }
 
     fun ctToKelvin(ct: Int): String {
-        require(!(ct < MIN_COLOR_TEMPERATURE || ct > 500)) { "Argument out of range" }
+        require(!(ct < MIN_COLOR_TEMPERATURE || ct > 500)) { ARGUMENT_OUT_OF_RANGE }
         return "${(6500 - 12.968299711 * (ct - MIN_COLOR_TEMPERATURE)).toInt()} K"
     }
 
@@ -27,22 +29,22 @@ object HueUtils {
         hue: Int,
         sat: Int,
     ): Int {
-        require(!(hue > 65_535 || sat > 254)) { "Argument out of range" }
+        require(!(hue > 65_535 || sat > 254)) { ARGUMENT_OUT_OF_RANGE }
         return Color.HSVToColor(floatArrayOf(hue * 0.005493248F, sat / 254F, 1F))
     }
 
     fun hueToRGB(hue: Int): Int {
-        require(hue <= 65_535) { "Argument out of range" }
+        require(hue <= 65_535) { ARGUMENT_OUT_OF_RANGE }
         return Color.HSVToColor(floatArrayOf(hue * 0.005493248F, 1F, 1F))
     }
 
     fun hueToDegree(hue: Int): String {
-        require(hue <= 65_535) { "Argument out of range" }
+        require(hue <= 65_535) { ARGUMENT_OUT_OF_RANGE }
         return "${(hue * 0.005493248F).toInt()}°"
     }
 
     fun satToPercent(sat: Int): String {
-        require(sat <= 254) { "Argument out of range" }
+        require(sat <= 254) { ARGUMENT_OUT_OF_RANGE }
         return "${(sat / 254F * 100).toInt()}%"
     }
 

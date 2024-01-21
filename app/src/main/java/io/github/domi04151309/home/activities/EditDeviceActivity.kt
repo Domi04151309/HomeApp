@@ -131,12 +131,12 @@ class EditDeviceActivity : BaseActivity() {
                 ) {
                     val string = s.toString()
                     val specialVisibility =
-                        if (string == "Fritz! Auto-Login" || string == "Shelly Gen 1") {
+                        if (string == Global.FRITZ_AUTO_LOGIN || string == Global.SHELLY_GEN_1) {
                             View.VISIBLE
                         } else {
                             View.GONE
                         }
-                    val usernameVisibility = if (string == "Shelly Gen 1") View.VISIBLE else View.GONE
+                    val usernameVisibility = if (string == Global.SHELLY_GEN_1) View.VISIBLE else View.GONE
                     specialDivider.visibility = specialVisibility
                     specialSection.visibility = specialVisibility
                     usernameBox.visibility = usernameVisibility
@@ -233,7 +233,7 @@ class EditDeviceActivity : BaseActivity() {
         }
 
         infoButton.setOnClickListener {
-            startActivity(Intent(this, DeviceInfoActivity::class.java).putExtra("device", deviceId))
+            startActivity(Intent(this, DeviceInfoActivity::class.java).putExtra(Devices.INTENT_EXTRA_DEVICE, deviceId))
         }
 
         findViewById<Button>(R.id.shortcutBtn).setOnClickListener {
@@ -255,21 +255,21 @@ class EditDeviceActivity : BaseActivity() {
 
     private fun onConfigButtonClicked() {
         when (modeSpinner.text.toString()) {
-            "ESP Easy", "Shelly Gen 1", "Shelly Gen 2" -> {
+            Global.ESP_EASY, Global.SHELLY_GEN_1, Global.SHELLY_GEN_2 -> {
                 startActivity(
                     Intent(this, WebActivity::class.java)
                         .putExtra("URI", addressBox.editText?.text.toString())
                         .putExtra("title", resources.getString(R.string.pref_device_config)),
                 )
             }
-            "Node-RED" -> {
+            Global.NODE_RED -> {
                 startActivity(
                     Intent(this, WebActivity::class.java)
                         .putExtra("URI", formatNodeREDAddress(addressBox.editText?.text.toString()))
                         .putExtra("title", resources.getString(R.string.pref_device_config)),
                 )
             }
-            "Hue API" -> {
+            Global.HUE_API -> {
                 val huePackageName = "com.philips.lighting.hue2"
                 val launchIntent = packageManager.getLaunchIntentForPackage(huePackageName)
                 if (launchIntent == null) {
@@ -316,7 +316,7 @@ class EditDeviceActivity : BaseActivity() {
                             .setIcon(Icon.createWithResource(this, device.iconId))
                             .setIntent(
                                 Intent(this, MainActivity::class.java)
-                                    .putExtra("device", deviceId)
+                                    .putExtra(Devices.INTENT_EXTRA_DEVICE, deviceId)
                                     .setAction(Intent.ACTION_MAIN)
                                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK),
                             )
@@ -357,7 +357,7 @@ class EditDeviceActivity : BaseActivity() {
         }
 
         val tempAddress =
-            if (modeSpinner.text.toString() == "Node-RED") {
+            if (modeSpinner.text.toString() == Global.NODE_RED) {
                 formatNodeREDAddress(addressBox.editText?.text.toString())
             } else {
                 addressBox.editText?.text.toString()
@@ -392,25 +392,25 @@ class EditDeviceActivity : BaseActivity() {
     companion object {
         private val SUPPORTS_DIRECT_VIEW =
             arrayOf(
-                "ESP Easy",
-                "Hue API",
-                "Shelly Gen 1",
-                "Shelly Gen 2",
-                "SimpleHome API",
-                "Tasmota",
+                Global.ESP_EASY,
+                Global.HUE_API,
+                Global.SHELLY_GEN_1,
+                Global.SHELLY_GEN_2,
+                Global.SIMPLE_HOME_API,
+                Global.TASMOTA,
             )
         private val HAS_CONFIG =
             arrayOf(
-                "Hue API",
-                "ESP Easy",
-                "Node-RED",
-                "Shelly Gen 1",
-                "Shelly Gen 2",
+                Global.HUE_API,
+                Global.ESP_EASY,
+                Global.NODE_RED,
+                Global.SHELLY_GEN_1,
+                Global.SHELLY_GEN_2,
             )
         private val HAS_INFO =
             arrayOf(
-                "Hue API",
-                "Shelly Gen 2",
+                Global.HUE_API,
+                Global.SHELLY_GEN_2,
             )
     }
 }

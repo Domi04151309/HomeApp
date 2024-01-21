@@ -49,7 +49,7 @@ class ShortcutHueSceneActivity : BaseActivity(), RecyclerViewHelperInterface {
         var currentDevice: DeviceItem
         for (i in 0 until devices.length) {
             currentDevice = devices.getDeviceByIndex(i)
-            if (currentDevice.mode == "Hue API") {
+            if (currentDevice.mode == Global.HUE_API) {
                 listItems +=
                     SimpleListItem(
                         title = currentDevice.name,
@@ -152,7 +152,7 @@ class ShortcutHueSceneActivity : BaseActivity(), RecyclerViewHelperInterface {
                                         view.findViewById<TextView>(R.id.hidden).text,
                                     )
                                     .putExtra("group", group)
-                                    .putExtra("device", device.id)
+                                    .putExtra(Devices.INTENT_EXTRA_DEVICE, device.id)
                                     .setAction(Intent.ACTION_MAIN)
                                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK),
                             )

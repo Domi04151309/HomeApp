@@ -54,7 +54,7 @@ class WebActivity : BaseActivity() {
                     view: WebView,
                     url: String,
                 ) {
-                    if (url == "about:blank") {
+                    if (url == ABOUT_BLANK) {
                         view.visibility = View.GONE
                         return
                     }
@@ -101,7 +101,7 @@ class WebActivity : BaseActivity() {
                     request: WebResourceRequest,
                     error: WebResourceError,
                 ) {
-                    view.loadUrl("about:blank")
+                    view.loadUrl(ABOUT_BLANK)
                     errorOccurred = true
                     progress.visibility = View.GONE
                     errorView.visibility = View.VISIBLE
@@ -172,7 +172,7 @@ class WebActivity : BaseActivity() {
             (getSystemService(DOWNLOAD_SERVICE) as DownloadManager).enqueue(request)
         }
 
-        webView.loadUrl(intent.getStringExtra("URI") ?: "about:blank")
+        webView.loadUrl(intent.getStringExtra("URI") ?: ABOUT_BLANK)
         title = intent.getStringExtra("title")
     }
 
@@ -227,5 +227,9 @@ class WebActivity : BaseActivity() {
             return true
         }
         return super.onKeyDown(keyCode, event)
+    }
+
+    companion object {
+        private const val ABOUT_BLANK = "about:blank"
     }
 }

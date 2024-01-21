@@ -40,7 +40,7 @@ class HueConnectActivity : BaseActivity() {
                         PreferenceManager.getDefaultSharedPreferences(this).edit().putString(deviceId, username).apply()
                         startActivity(
                             Intent(this, MainActivity::class.java)
-                                .putExtra("device", deviceId)
+                                .putExtra(Devices.INTENT_EXTRA_DEVICE, deviceId)
                                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK),
                         )
                     }

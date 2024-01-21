@@ -21,9 +21,9 @@ class SimpleHomeAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.P
                     summary = currentObject.optString("summary"),
                     hidden = "$currentMode@$i",
                     icon = Global.getIcon(currentObject.optString("icon"), R.drawable.ic_do),
-                    state = if (currentMode == "switch") currentObject.optBoolean("data", false) else null,
+                    state = if (currentMode == SWITCH) currentObject.optBoolean("data", false) else null,
                 )
-            if (currentMode == "switch") api?.needsRealTimeData = true
+            if (currentMode == SWITCH) api?.needsRealTimeData = true
         }
         return listItems
     }
@@ -35,12 +35,16 @@ class SimpleHomeAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.P
         for (i in commands.keys()) {
             currentObject = commands.getJSONObject(i)
             listItems +=
-                if (currentObject.optString("mode", "action") == "switch") {
+                if (currentObject.optString("mode", "action") == SWITCH) {
                     currentObject.optBoolean("data", false)
                 } else {
                     null
                 }
         }
         return listItems
+    }
+
+    companion object {
+        private const val SWITCH = "switch"
     }
 }

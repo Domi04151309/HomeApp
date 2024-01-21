@@ -209,7 +209,7 @@ class HueSceneActivity :
                 "$addressPrefix/groups/$groupId",
                 null,
                 { response ->
-                    val lightIDs = response.getJSONArray("lights")
+                    val lightIds = response.getJSONArray("lights")
                     SliderUtils.setProgress(
                         briBar,
                         (response.optJSONObject("action") ?: JSONObject()).optInt("bri"),
@@ -221,13 +221,13 @@ class HueSceneActivity :
                             null,
                             { secondResponse ->
                                 var lightObj: JSONObject
-                                for (i in 0 until lightIDs.length()) {
+                                for (i in 0 until lightIds.length()) {
                                     lightObj =
-                                        secondResponse.getJSONObject(lightIDs.getString(i))
+                                        secondResponse.getJSONObject(lightIds.getString(i))
                                     val state = lightObj.getJSONObject("state")
                                     listItems +=
                                         generateListItem(
-                                            lightIDs.getString(i),
+                                            lightIds.getString(i),
                                             lightObj.getString("name"),
                                             state,
                                         )
@@ -326,7 +326,7 @@ class HueSceneActivity :
         data: SceneListItem,
         state: Boolean,
     ) {
-        hueAPI.switchLightByID(data.hidden, state)
+        hueAPI.switchLightById(data.hidden, state)
         lightStates.switchLight(data.hidden, state)
     }
 

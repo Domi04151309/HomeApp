@@ -35,10 +35,10 @@ class Devices(private val context: Context) {
     private val devicesObject: JSONObject get() = data.optJSONObject("devices") ?: JSONObject()
 
     private val deviceOrder: JSONArray get() {
-        if (!data.has("order")) {
-            data.put("order", devicesObject.names() ?: JSONArray())
+        if (!data.has(ORDER)) {
+            data.put(ORDER, devicesObject.names() ?: JSONArray())
         }
-        return data.getJSONArray("order")
+        return data.getJSONArray(ORDER)
     }
 
     private fun generateRandomId(): String {
@@ -61,7 +61,7 @@ class Devices(private val context: Context) {
                 json.optBoolean("hide", false),
                 json.optBoolean("direct_view", false),
             )
-        device.address = json.optString("address")
+        device.address = json.optString(ADDRESS)
         return device
     }
 
@@ -74,7 +74,7 @@ class Devices(private val context: Context) {
     fun addressExists(address: String): Boolean {
         val formattedAddress = DeviceItem.formatAddress(address)
         for (i in devicesObject.keys()) {
-            if (devicesObject.getJSONObject(i).optString("address") == formattedAddress) {
+            if (devicesObject.getJSONObject(i).optString(ADDRESS) == formattedAddress) {
                 return true
             }
         }
@@ -92,7 +92,7 @@ class Devices(private val context: Context) {
         val deviceObject =
             JSONObject()
                 .put("name", device.name)
-                .put("address", device.address)
+                .put(ADDRESS, device.address)
                 .put("mode", device.mode)
                 .put("icon", device.iconName)
                 .put("hide", device.hide)
@@ -122,7 +122,7 @@ class Devices(private val context: Context) {
                 deviceOrder.getString(it)
             }
         list.add(to, list.removeAt(from))
-        data.put("order", JSONArray(list))
+        data.put(ORDER, JSONArray(list))
     }
 
     fun saveChanges() {
@@ -130,8 +130,12 @@ class Devices(private val context: Context) {
     }
 
     companion object {
+        const val INTENT_EXTRA_DEVICE: String = "device"
+
         private const val ALLOWED_CHARACTERS = "0123456789abcdefghijklmnobqrstuvw"
         private const val ID_LENGTH = 8
+        private const val ORDER = "order"
+        private const val ADDRESS = "address"
         private var storedData: JSONObject? = null
 
         fun reloadFromPreferences() {

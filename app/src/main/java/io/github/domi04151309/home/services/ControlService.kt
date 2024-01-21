@@ -172,7 +172,7 @@ class ControlService : ControlsProviderService() {
                                                 },
                                             )
                                         }
-                                        if (device.mode == "Tasmota") {
+                                        if (device.mode == Global.TASMOTA) {
                                             controlBuilder.setControlTemplate(
                                                 StatelessTemplate(id),
                                             )

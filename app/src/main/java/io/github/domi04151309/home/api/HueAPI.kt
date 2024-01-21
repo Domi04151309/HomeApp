@@ -13,6 +13,7 @@ import io.github.domi04151309.home.activities.HueConnectActivity
 import io.github.domi04151309.home.activities.HueLampActivity
 import io.github.domi04151309.home.custom.CustomJsonArrayRequest
 import io.github.domi04151309.home.data.UnifiedRequestCallback
+import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.Global.volleyError
 import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
@@ -111,7 +112,7 @@ class HueAPI(
         c.startActivity(
             Intent(c, HueLampActivity::class.java)
                 .putExtra("id", path)
-                .putExtra("device", deviceId),
+                .putExtra(Devices.INTENT_EXTRA_DEVICE, deviceId),
         )
     }
 
@@ -119,11 +120,11 @@ class HueAPI(
         id: String,
         state: Boolean,
     ) {
-        switchGroupByID(id, state)
+        switchGroupById(id, state)
     }
 
-    fun loadLightsByIDs(
-        lightIDs: JSONArray,
+    fun loadLightsByIds(
+        lightIds: JSONArray,
         callback: RequestCallback,
     ) {
         val jsonObjectRequest =
@@ -133,10 +134,10 @@ class HueAPI(
                 null,
                 { response ->
                     val returnObject = JSONObject()
-                    var lightID: String
-                    for (i in 0 until lightIDs.length()) {
-                        lightID = lightIDs.getString(i)
-                        returnObject.put(lightID, response.getJSONObject(lightID))
+                    var lightId: String
+                    for (i in 0 until lightIds.length()) {
+                        lightId = lightIds.getString(i)
+                        returnObject.put(lightId, response.getJSONObject(lightId))
                     }
                     callback.onLightsLoaded(returnObject)
                 },
@@ -145,98 +146,102 @@ class HueAPI(
         queue.add(jsonObjectRequest)
     }
 
-    fun switchLightByID(
-        lightID: String,
+    fun switchLightById(
+        lightId: String,
         on: Boolean,
     ) {
-        putObject("/lights/$lightID/state", "{\"on\":$on}")
+        putObject(getLightPath(lightId), "{\"on\":$on}")
     }
 
     fun changeBrightness(
-        lightID: String,
+        lightId: String,
         bri: Int,
     ) {
-        putObject("/lights/$lightID/state", "{\"bri\":$bri}")
+        putObject(getLightPath(lightId), "{\"bri\":$bri}")
     }
 
     fun changeColorTemperature(
-        lightID: String,
+        lightId: String,
         ct: Int,
     ) {
-        putObject("/lights/$lightID/state", "{\"ct\":$ct}")
+        putObject(getLightPath(lightId), "{\"ct\":$ct}")
     }
 
     fun changeHue(
-        lightID: String,
+        lightId: String,
         hue: Int,
     ) {
-        putObject("/lights/$lightID/state", "{\"hue\":$hue}")
+        putObject(getLightPath(lightId), "{\"hue\":$hue}")
     }
 
     fun changeSaturation(
-        lightID: String,
+        lightId: String,
         sat: Int,
     ) {
-        putObject("/lights/$lightID/state", "{\"sat\":$sat}")
+        putObject(getLightPath(lightId), "{\"sat\":$sat}")
     }
 
     fun changeHueSat(
-        lightID: String,
+        lightId: String,
         hue: Int,
         sat: Int,
     ) {
-        putObject("/lights/$lightID/state", """{ "hue": $hue, "sat": $sat }""")
+        putObject(getLightPath(lightId), """{ "hue": $hue, "sat": $sat }""")
     }
 
-    fun switchGroupByID(
-        groupID: String,
+    fun switchGroupById(
+        groupId: String,
         on: Boolean,
     ) {
-        putObject("/groups/$groupID/action", "{\"on\":$on}")
+        putObject(getGroupPath(groupId), "{\"on\":$on}")
     }
 
     fun changeBrightnessOfGroup(
-        groupID: String,
+        groupId: String,
         bri: Int,
     ) {
-        putObject("/groups/$groupID/action", "{\"bri\":$bri}")
+        putObject(getGroupPath(groupId), "{\"bri\":$bri}")
     }
 
     fun changeColorTemperatureOfGroup(
-        groupID: String,
+        groupId: String,
         ct: Int,
     ) {
-        putObject("/groups/$groupID/action", "{\"ct\":$ct}")
+        putObject(getGroupPath(groupId), "{\"ct\":$ct}")
     }
 
     fun changeHueOfGroup(
-        groupID: String,
+        groupId: String,
         hue: Int,
     ) {
-        putObject("/groups/$groupID/action", "{\"hue\":$hue}")
+        putObject(getGroupPath(groupId), "{\"hue\":$hue}")
     }
 
     fun changeSaturationOfGroup(
-        groupID: String,
+        groupId: String,
         sat: Int,
     ) {
-        putObject("/groups/$groupID/action", "{\"sat\":$sat}")
+        putObject(getGroupPath(groupId), "{\"sat\":$sat}")
     }
 
     fun changeHueSatOfGroup(
-        groupID: String,
+        groupId: String,
         hue: Int,
         sat: Int,
     ) {
-        putObject("/groups/$groupID/action", """{ "hue": $hue, "sat": $sat }""")
+        putObject(getGroupPath(groupId), """{ "hue": $hue, "sat": $sat }""")
     }
 
     fun activateSceneOfGroup(
-        groupID: String,
+        groupId: String,
         scene: String,
     ) {
-        putObject("/groups/$groupID/action", """{ "scene": $scene }""")
+        putObject(getGroupPath(groupId), """{ "scene": $scene }""")
     }
+
+    private fun getLightPath(lightId: String) = "/lights/$lightId/state"
+
+    private fun getGroupPath(groupId: String) = "/groups/$groupId/action"
 
     private fun putObject(
         address: String,

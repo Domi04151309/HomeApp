@@ -56,7 +56,7 @@ class HueLampsFragment :
         val hueLampStateListener =
             CompoundButton.OnCheckedChangeListener { compoundButton, b ->
                 if (compoundButton.isPressed) {
-                    hueAPI.switchLightByID(
+                    hueAPI.switchLightById(
                         (compoundButton.parent as ViewGroup).findViewById<TextView>(R.id.hidden).text.toString(),
                         b,
                     )
@@ -114,7 +114,7 @@ class HueLampsFragment :
         super.onStart()
         updateHandler.setUpdateFunction {
             if (lampData.canReceiveRequest && hueAPI.readyForRequest) {
-                hueAPI.loadLightsByIDs(lampData.lights ?: JSONArray(), requestCallBack)
+                hueAPI.loadLightsByIds(lampData.lights ?: JSONArray(), requestCallBack)
             }
         }
     }

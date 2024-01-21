@@ -11,6 +11,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
+@Suppress("FunctionMaxLength")
 class ShellyAPIParserTest {
     private val resources: Resources = RuntimeEnvironment.getApplication().applicationContext.resources
     private val parserV1 = ShellyAPIParser(resources, 1)

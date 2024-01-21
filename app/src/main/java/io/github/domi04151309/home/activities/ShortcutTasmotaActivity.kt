@@ -19,6 +19,7 @@ import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.data.SimpleListItem
 import io.github.domi04151309.home.data.UnifiedRequestCallback
 import io.github.domi04151309.home.helpers.Devices
+import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
 import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
 
@@ -37,7 +38,7 @@ class ShortcutTasmotaActivity : BaseActivity(), RecyclerViewHelperInterface {
         var currentDevice: DeviceItem
         for (i in 0 until devices.length) {
             currentDevice = devices.getDeviceByIndex(i)
-            if (currentDevice.mode == "Tasmota") {
+            if (currentDevice.mode == Global.TASMOTA) {
                 listItems +=
                     SimpleListItem(
                         title = currentDevice.name,
@@ -107,7 +108,7 @@ class ShortcutTasmotaActivity : BaseActivity(), RecyclerViewHelperInterface {
                                             "command",
                                             view.findViewById<TextView>(R.id.summary).text,
                                         )
-                                        .putExtra("device", device.id)
+                                        .putExtra(Devices.INTENT_EXTRA_DEVICE, device.id)
                                         .setAction(Intent.ACTION_MAIN)
                                         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK),
                                 )
