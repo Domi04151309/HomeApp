@@ -28,11 +28,14 @@ import org.json.JSONObject
 class HueLampsFragment :
     Fragment(R.layout.fragment_hue_lamps),
     RecyclerViewHelperInterface,
-    HueAdvancedLampInterface {
+    HueAdvancedLampInterface,
+    HueAPI.RequestCallback,
+    CompoundButton.OnCheckedChangeListener {
     private lateinit var lampData: HueRoomInterface
     private lateinit var hueAPI: HueAPI
     private lateinit var queue: RequestQueue
-    private lateinit var requestCallBack: HueAPI.RequestCallback
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: HueLampListAdapter
     private val updateHandler: UpdateHandler = UpdateHandler()
 
     override var id: String = ""
@@ -52,60 +55,11 @@ class HueLampsFragment :
         device = lampData.device
         addressPrefix = lampData.addressPrefix
 
-        val recyclerView = super.onCreateView(inflater, container, savedInstanceState) as RecyclerView
-        val hueLampStateListener =
-            CompoundButton.OnCheckedChangeListener { compoundButton, b ->
-                if (compoundButton.isPressed) {
-                    hueAPI.switchLightById(
-                        (compoundButton.parent as ViewGroup).findViewById<TextView>(R.id.hidden).text.toString(),
-                        b,
-                    )
-                }
-            }
+        recyclerView = super.onCreateView(inflater, container, savedInstanceState) as RecyclerView
 
-        val adapter = HueLampListAdapter(hueLampStateListener, this@HueLampsFragment)
+        adapter = HueLampListAdapter(this, this)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
-
-        requestCallBack =
-            object : HueAPI.RequestCallback {
-                override fun onLightsLoaded(response: JSONObject?) {
-                    if (response != null) {
-                        var currentObject: JSONObject
-                        var currentState: JSONObject
-                        val listItems: MutableList<ListViewItem> = mutableListOf()
-                        val colorArray: MutableList<Int> = mutableListOf()
-                        for (i in response.keys()) {
-                            currentObject = response.optJSONObject(i) ?: JSONObject()
-                            currentState = currentObject.optJSONObject("state") ?: JSONObject()
-                            colorArray +=
-                                if (currentState.has("hue") && currentState.has("sat")) {
-                                    HueUtils.hueSatToRGB(
-                                        currentState.getInt("hue"),
-                                        currentState.getInt("sat"),
-                                    )
-                                } else if (currentState.has("ct")) {
-                                    HueUtils.ctToRGB(currentState.getInt("ct"))
-                                } else {
-                                    Color.parseColor("#FFFFFF")
-                                }
-                            listItems +=
-                                ListViewItem(
-                                    title = currentObject.optString("name"),
-                                    summary =
-                                        if (currentState.optBoolean("reachable")) {
-                                            resources.getString(R.string.hue_tap)
-                                        } else {
-                                            resources.getString(R.string.str_unreachable)
-                                        },
-                                    hidden = i,
-                                    state = currentState.optBoolean("on"),
-                                )
-                        }
-                        adapter.updateData(recyclerView, listItems, colorArray)
-                    }
-                }
-            }
 
         return recyclerView
     }
@@ -114,7 +68,7 @@ class HueLampsFragment :
         super.onStart()
         updateHandler.setUpdateFunction {
             if (lampData.canReceiveRequest && hueAPI.readyForRequest) {
-                hueAPI.loadLightsByIds(lampData.lights ?: JSONArray(), requestCallBack)
+                hueAPI.loadLightsByIds(lampData.lights ?: JSONArray(), this)
             }
         }
     }
@@ -135,6 +89,43 @@ class HueLampsFragment :
         )
     }
 
+    override fun onLightsLoaded(response: JSONObject?) {
+        if (response != null) {
+            var currentObject: JSONObject
+            var currentState: JSONObject
+            val listItems: MutableList<ListViewItem> = mutableListOf()
+            val colorArray: MutableList<Int> = mutableListOf()
+            for (i in response.keys()) {
+                currentObject = response.optJSONObject(i) ?: JSONObject()
+                currentState = currentObject.optJSONObject("state") ?: JSONObject()
+                colorArray +=
+                    if (currentState.has("hue") && currentState.has("sat")) {
+                        HueUtils.hueSatToRGB(
+                            currentState.getInt("hue"),
+                            currentState.getInt("sat"),
+                        )
+                    } else if (currentState.has("ct")) {
+                        HueUtils.ctToRGB(currentState.getInt("ct"))
+                    } else {
+                        Color.parseColor("#FFFFFF")
+                    }
+                listItems +=
+                    ListViewItem(
+                        title = currentObject.optString("name"),
+                        summary =
+                            if (currentState.optBoolean("reachable")) {
+                                resources.getString(R.string.hue_tap)
+                            } else {
+                                resources.getString(R.string.str_unreachable)
+                            },
+                        hidden = i,
+                        state = currentState.optBoolean("on"),
+                    )
+            }
+            adapter.updateData(recyclerView, listItems, colorArray)
+        }
+    }
+
     override fun onColorChanged(color: Int) {
         // Do nothing.
     }
@@ -152,5 +143,17 @@ class HueLampsFragment :
 
     override fun onCtChanged(ct: Int) {
         // Do nothing.
+    }
+
+    override fun onCheckedChanged(
+        compoundButton: CompoundButton,
+        state: Boolean,
+    ) {
+        if (compoundButton.isPressed) {
+            hueAPI.switchLightById(
+                (compoundButton.parent as ViewGroup).findViewById<TextView>(R.id.hidden).text.toString(),
+                state,
+            )
+        }
     }
 }
