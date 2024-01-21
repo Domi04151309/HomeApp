@@ -36,7 +36,7 @@ class UPnPDevice internal constructor(val hostAddress: String, header: String) {
         try {
             xmlParse(xml)
         } catch (e: XmlPullParserException) {
-            Log.e(UPnPDiscovery.TAG, e.toString())
+            Log.w(UPnPDiscovery.TAG, e.toString())
         }
     }
 
