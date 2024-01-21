@@ -8,8 +8,6 @@ import android.graphics.drawable.Icon
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
@@ -25,6 +23,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputLayout
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.adapters.IconSpinnerAdapter
+import io.github.domi04151309.home.custom.TextWatcher
 import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.helpers.DeviceSecrets
 import io.github.domi04151309.home.helpers.Devices
@@ -83,118 +82,9 @@ class EditDeviceActivity : BaseActivity() {
 
         findViewById<TextView>(R.id.idTxt).text = resources.getString(R.string.pref_add_id, deviceId)
 
-        iconSpinner.addTextChangedListener(
-            object : TextWatcher {
-                override fun afterTextChanged(s: Editable) {
-                    // Do nothing.
-                }
-
-                override fun beforeTextChanged(
-                    s: CharSequence,
-                    start: Int,
-                    count: Int,
-                    after: Int,
-                ) {
-                    // Do nothing.
-                }
-
-                override fun onTextChanged(
-                    s: CharSequence,
-                    start: Int,
-                    before: Int,
-                    count: Int,
-                ) {
-                    deviceIcon.setImageResource(Global.getIcon(s.toString()))
-                }
-            },
-        )
-        modeSpinner.addTextChangedListener(
-            object : TextWatcher {
-                override fun afterTextChanged(s: Editable) {
-                    // Do nothing.
-                }
-
-                override fun beforeTextChanged(
-                    s: CharSequence,
-                    start: Int,
-                    count: Int,
-                    after: Int,
-                ) {
-                    // Do nothing.
-                }
-
-                override fun onTextChanged(
-                    s: CharSequence,
-                    start: Int,
-                    before: Int,
-                    count: Int,
-                ) {
-                    val string = s.toString()
-                    val specialVisibility =
-                        if (string == Global.FRITZ_AUTO_LOGIN || string == Global.SHELLY_GEN_1) {
-                            View.VISIBLE
-                        } else {
-                            View.GONE
-                        }
-                    val usernameVisibility = if (string == Global.SHELLY_GEN_1) View.VISIBLE else View.GONE
-                    specialDivider.visibility = specialVisibility
-                    specialSection.visibility = specialVisibility
-                    usernameBox.visibility = usernameVisibility
-
-                    if (SUPPORTS_DIRECT_VIEW.contains(string)) {
-                        configDirectView.isEnabled = true
-                    } else {
-                        configDirectView.isEnabled = false
-                        configDirectView.isChecked = false
-                    }
-
-                    if (editing) {
-                        configButton.visibility =
-                            if (HAS_CONFIG.contains(string)) {
-                                View.VISIBLE
-                            } else {
-                                View.GONE
-                            }
-                        infoButton.visibility =
-                            if (HAS_INFO.contains(string)) {
-                                View.VISIBLE
-                            } else {
-                                View.GONE
-                            }
-                    }
-                }
-            },
-        )
-        nameBox.editText?.addTextChangedListener(
-            object : TextWatcher {
-                override fun afterTextChanged(s: Editable) {
-                    // Do nothing.
-                }
-
-                override fun beforeTextChanged(
-                    s: CharSequence,
-                    start: Int,
-                    count: Int,
-                    after: Int,
-                ) {
-                    // Do nothing.
-                }
-
-                override fun onTextChanged(
-                    s: CharSequence,
-                    start: Int,
-                    before: Int,
-                    count: Int,
-                ) {
-                    val string = s.toString()
-                    if (string == "") {
-                        nameText.text = resources.getString(R.string.pref_add_name_empty)
-                    } else {
-                        nameText.text = string
-                    }
-                }
-            },
-        )
+        iconSpinner.addTextChangedListener(getIconTextWatcher())
+        modeSpinner.addTextChangedListener(getModeTextWatcher(editing))
+        nameBox.editText?.addTextChangedListener(getNameTextWatcher())
 
         if (editing) {
             onEditDevice()
@@ -215,6 +105,60 @@ class EditDeviceActivity : BaseActivity() {
             onFloatingActionButtonClicked()
         }
     }
+
+    private fun getIconTextWatcher() =
+        TextWatcher {
+            deviceIcon.setImageResource(Global.getIcon(it))
+        }
+
+    private fun showExternalInfoBasedOnMode(mode: String) {
+        configButton.visibility =
+            if (HAS_CONFIG.contains(mode)) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+        infoButton.visibility =
+            if (HAS_INFO.contains(mode)) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+    }
+
+    private fun getModeTextWatcher(editing: Boolean) =
+        TextWatcher {
+            val specialVisibility =
+                if (it == Global.FRITZ_AUTO_LOGIN || it == Global.SHELLY_GEN_1) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
+            val usernameVisibility = if (it == Global.SHELLY_GEN_1) View.VISIBLE else View.GONE
+            specialDivider.visibility = specialVisibility
+            specialSection.visibility = specialVisibility
+            usernameBox.visibility = usernameVisibility
+
+            if (SUPPORTS_DIRECT_VIEW.contains(it)) {
+                configDirectView.isEnabled = true
+            } else {
+                configDirectView.isEnabled = false
+                configDirectView.isChecked = false
+            }
+
+            if (editing) {
+                showExternalInfoBasedOnMode(it)
+            }
+        }
+
+    private fun getNameTextWatcher() =
+        TextWatcher {
+            if (it == "") {
+                nameText.text = resources.getString(R.string.pref_add_name_empty)
+            } else {
+                nameText.text = it
+            }
+        }
 
     private fun onEditDevice() {
         title = resources.getString(R.string.pref_edit_device)
