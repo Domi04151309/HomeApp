@@ -1,7 +1,5 @@
 package io.github.domi04151309.home.services
 
-import android.app.PendingIntent
-import android.content.Intent
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
@@ -10,20 +8,13 @@ import android.service.controls.ControlsProviderService
 import android.service.controls.actions.BooleanAction
 import android.service.controls.actions.CommandAction
 import android.service.controls.actions.ControlAction
-import android.service.controls.templates.ControlButton
-import android.service.controls.templates.StatelessTemplate
-import android.service.controls.templates.ToggleTemplate
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.preference.PreferenceManager
-import io.github.domi04151309.home.R
-import io.github.domi04151309.home.activities.MainActivity
 import io.github.domi04151309.home.api.UnifiedAPI
 import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.data.UnifiedRequestCallback
 import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.helpers.Global
-import io.github.domi04151309.home.helpers.P
 import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
 import java.util.concurrent.Flow
 import java.util.function.Consumer
@@ -32,16 +23,6 @@ import java.util.function.Consumer
 class ControlService : ControlsProviderService() {
     private var updateSubscriber: Flow.Subscriber<in Control>? = null
     private var finishedRequests = 0
-
-    internal fun getPendingIntent(): PendingIntent =
-        PendingIntent.getActivity(
-            this,
-            0,
-            Intent(this, MainActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            },
-            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
-        )
 
     override fun createPublisherForAllAvailable(): Flow.Publisher<Control> =
         Flow.Publisher { subscriber ->
@@ -87,16 +68,7 @@ class ControlService : ControlsProviderService() {
             ) {
                 for (it in holder.response ?: emptyList()) {
                     subscriber.onNext(
-                        Control.StatelessBuilder(
-                            relevantDevices[index].id + '@' + it.hidden,
-                            getPendingIntent(),
-                        )
-                            .setTitle(it.title)
-                            .setSubtitle(relevantDevices[index].name)
-                            .setZone(relevantDevices[index].name)
-                            .setStructure(resources.getString(R.string.app_name))
-                            .setDeviceType(Global.getDeviceType(relevantDevices[index].iconName))
-                            .build(),
+                        ControlBuilders.buildGenericControl(this@ControlService, it, relevantDevices[index]),
                     )
                 }
                 finishedRequests++
@@ -111,19 +83,6 @@ class ControlService : ControlsProviderService() {
             }
         }
 
-    internal fun getUnreachableControl(
-        id: String,
-        device: DeviceItem,
-    ): Control =
-        Control.StatefulBuilder(id, getPendingIntent())
-            .setTitle(device.name)
-            .setZone(device.name)
-            .setStructure(resources.getString(R.string.app_name))
-            .setDeviceType(Global.getDeviceType(device.iconName))
-            .setStatus(Control.STATUS_DISABLED)
-            .setStatusText(resources.getString(R.string.str_unreachable))
-            .build()
-
     private fun loadStatefulControl(
         subscriber: Flow.Subscriber<in Control>?,
         id: String,
@@ -134,7 +93,7 @@ class ControlService : ControlsProviderService() {
                 .getCorrectAPI(this, device.mode, device.id)
                 .loadList(getStatefulControlsCallback(device, id, subscriber))
         } else {
-            subscriber?.onNext(getUnreachableControl(id, device))
+            subscriber?.onNext(ControlBuilders.buildUnreachableControl(this, id, device))
         }
     }
 
@@ -148,54 +107,12 @@ class ControlService : ControlsProviderService() {
             recyclerViewInterface: HomeRecyclerViewHelperInterface?,
         ) {
             if (holder.response == null) {
-                subscriber?.onNext(getUnreachableControl(id, device))
+                subscriber?.onNext(ControlBuilders.buildUnreachableControl(this@ControlService, id, device))
                 return
             }
             for (it in holder.response) {
                 if (device.id + '@' + it.hidden != id) continue
-                val controlBuilder =
-                    Control.StatefulBuilder(id, getPendingIntent())
-                        .setTitle(it.title)
-                        .setSubtitle(device.name)
-                        .setZone(device.name)
-                        .setStructure(resources.getString(R.string.app_name))
-                        .setDeviceType(Global.getDeviceType(device.iconName))
-                        .setStatus(Control.STATUS_OK)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    controlBuilder.setAuthRequired(
-                        PreferenceManager.getDefaultSharedPreferences(this@ControlService)
-                            .getBoolean(
-                                P.PREF_CONTROLS_AUTH,
-                                P.PREF_CONTROLS_AUTH_DEFAULT,
-                            ),
-                    )
-                }
-                if (it.state != null) {
-                    controlBuilder.setControlTemplate(
-                        ToggleTemplate(
-                            id,
-                            ControlButton(
-                                it.state ?: false,
-                                it.state.toString(),
-                            ),
-                        ),
-                    )
-                    controlBuilder.setStatusText(
-                        resources.getString(
-                            if (it.state == true) {
-                                R.string.str_on
-                            } else {
-                                R.string.str_off
-                            },
-                        ),
-                    )
-                }
-                if (device.mode == Global.TASMOTA) {
-                    controlBuilder.setControlTemplate(
-                        StatelessTemplate(id),
-                    )
-                }
-                subscriber?.onNext(controlBuilder.build())
+                subscriber?.onNext(ControlBuilders.buildStatefulControl(this@ControlService, id, it, device))
             }
         }
 
