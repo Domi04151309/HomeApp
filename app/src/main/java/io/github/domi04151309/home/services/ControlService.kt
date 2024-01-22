@@ -31,6 +31,17 @@ import java.util.function.Consumer
 @RequiresApi(Build.VERSION_CODES.R)
 class ControlService : ControlsProviderService() {
     private var updateSubscriber: Flow.Subscriber<in Control>? = null
+    private var finishedRequests = 0
+
+    internal fun getPendingIntent(): PendingIntent =
+        PendingIntent.getActivity(
+            this,
+            0,
+            Intent(this, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            },
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+        )
 
     override fun createPublisherForAllAvailable(): Flow.Publisher<Control> =
         Flow.Publisher { subscriber ->
@@ -51,59 +62,60 @@ class ControlService : ControlsProviderService() {
                     relevantDevices.add(currentDevice)
                 }
             }
-            val pi =
-                PendingIntent.getActivity(
-                    baseContext,
-                    0,
-                    Intent(),
-                    PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
-                )
-            var finishedRequests = 0
-            for (i in 0 until relevantDevices.size) {
-                Global.getCorrectAPI(this, relevantDevices[i].mode, relevantDevices[i].id)
+            finishedRequests = 0
+            for (index in 0 until relevantDevices.size) {
+                Global.getCorrectAPI(this, relevantDevices[index].mode, relevantDevices[index].id)
                     .loadList(
-                        object : UnifiedAPI.CallbackInterface {
-                            override fun onItemsLoaded(
-                                holder: UnifiedRequestCallback,
-                                recyclerViewInterface: HomeRecyclerViewHelperInterface?,
-                            ) {
-                                if (holder.response != null) {
-                                    holder.response.forEach {
-                                        subscriber.onNext(
-                                            Control.StatelessBuilder(
-                                                relevantDevices[i].id + '@' + it.hidden,
-                                                pi,
-                                            )
-                                                .setTitle(it.title)
-                                                .setSubtitle(relevantDevices[i].name)
-                                                .setZone(relevantDevices[i].name)
-                                                .setStructure(resources.getString(R.string.app_name))
-                                                .setDeviceType(Global.getDeviceType(relevantDevices[i].iconName))
-                                                .build(),
-                                        )
-                                    }
-                                }
-                                finishedRequests++
-                                if (finishedRequests == relevantDevices.size) subscriber.onComplete()
-                            }
-
-                            override fun onExecuted(
-                                result: String,
-                                shouldRefresh: Boolean,
-                            ) {
-                                // Do nothing.
-                            }
-                        },
+                        getAllAvailableCallback(
+                            subscriber,
+                            relevantDevices,
+                            index,
+                        ),
                     )
+            }
+        }
+
+    private fun getAllAvailableCallback(
+        subscriber: Flow.Subscriber<in Control>,
+        relevantDevices: MutableList<DeviceItem>,
+        index: Int,
+    ): UnifiedAPI.CallbackInterface =
+        object : UnifiedAPI.CallbackInterface {
+            override fun onItemsLoaded(
+                holder: UnifiedRequestCallback,
+                recyclerViewInterface: HomeRecyclerViewHelperInterface?,
+            ) {
+                for (it in holder.response ?: emptyList()) {
+                    subscriber.onNext(
+                        Control.StatelessBuilder(
+                            relevantDevices[index].id + '@' + it.hidden,
+                            getPendingIntent(),
+                        )
+                            .setTitle(it.title)
+                            .setSubtitle(relevantDevices[index].name)
+                            .setZone(relevantDevices[index].name)
+                            .setStructure(resources.getString(R.string.app_name))
+                            .setDeviceType(Global.getDeviceType(relevantDevices[index].iconName))
+                            .build(),
+                    )
+                }
+                finishedRequests++
+                if (finishedRequests == relevantDevices.size) subscriber.onComplete()
+            }
+
+            override fun onExecuted(
+                result: String,
+                shouldRefresh: Boolean,
+            ) {
+                // Do nothing.
             }
         }
 
     internal fun getUnreachableControl(
         id: String,
         device: DeviceItem,
-        pi: PendingIntent,
     ): Control =
-        Control.StatefulBuilder(id, pi)
+        Control.StatefulBuilder(id, getPendingIntent())
             .setTitle(device.name)
             .setZone(device.name)
             .setStructure(resources.getString(R.string.app_name))
@@ -116,85 +128,82 @@ class ControlService : ControlsProviderService() {
         subscriber: Flow.Subscriber<in Control>?,
         id: String,
     ) {
-        val pi =
-            PendingIntent.getActivity(
-                this,
-                0,
-                Intent(this, MainActivity::class.java).apply {
-                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                },
-                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
-            )
         val device = Devices(this).getDeviceById(id.substring(0, id.indexOf('@')))
         if (Global.checkNetwork(this)) {
-            Global.getCorrectAPI(this, device.mode, device.id)
-                .loadList(
-                    object : UnifiedAPI.CallbackInterface {
-                        override fun onItemsLoaded(
-                            holder: UnifiedRequestCallback,
-                            recyclerViewInterface: HomeRecyclerViewHelperInterface?,
-                        ) {
-                            if (holder.response != null) {
-                                holder.response.forEach {
-                                    if (device.id + '@' + it.hidden == id) {
-                                        val controlBuilder =
-                                            Control.StatefulBuilder(id, pi)
-                                                .setTitle(it.title)
-                                                .setSubtitle(device.name)
-                                                .setZone(device.name)
-                                                .setStructure(resources.getString(R.string.app_name))
-                                                .setDeviceType(Global.getDeviceType(device.iconName))
-                                                .setStatus(Control.STATUS_OK)
-                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                                            controlBuilder.setAuthRequired(
-                                                PreferenceManager.getDefaultSharedPreferences(this@ControlService)
-                                                    .getBoolean(
-                                                        P.PREF_CONTROLS_AUTH,
-                                                        P.PREF_CONTROLS_AUTH_DEFAULT,
-                                                    ),
-                                            )
-                                        }
-                                        if (it.state != null) {
-                                            controlBuilder.setControlTemplate(
-                                                ToggleTemplate(
-                                                    id,
-                                                    ControlButton(
-                                                        it.state ?: false,
-                                                        it.state.toString(),
-                                                    ),
-                                                ),
-                                            )
-                                            controlBuilder.setStatusText(
-                                                if (it.state == true) {
-                                                    resources.getString(R.string.str_on)
-                                                } else {
-                                                    resources.getString(R.string.str_off)
-                                                },
-                                            )
-                                        }
-                                        if (device.mode == Global.TASMOTA) {
-                                            controlBuilder.setControlTemplate(
-                                                StatelessTemplate(id),
-                                            )
-                                        }
-                                        subscriber?.onNext(controlBuilder.build())
-                                    }
-                                }
-                            } else {
-                                subscriber?.onNext(getUnreachableControl(id, device, pi))
-                            }
-                        }
-
-                        override fun onExecuted(
-                            result: String,
-                            shouldRefresh: Boolean,
-                        ) {
-                            // Do nothing.
-                        }
-                    },
-                )
+            Global
+                .getCorrectAPI(this, device.mode, device.id)
+                .loadList(getStatefulControlsCallback(device, id, subscriber))
         } else {
-            subscriber?.onNext(getUnreachableControl(id, device, pi))
+            subscriber?.onNext(getUnreachableControl(id, device))
+        }
+    }
+
+    private fun getStatefulControlsCallback(
+        device: DeviceItem,
+        id: String,
+        subscriber: Flow.Subscriber<in Control>?,
+    ) = object : UnifiedAPI.CallbackInterface {
+        override fun onItemsLoaded(
+            holder: UnifiedRequestCallback,
+            recyclerViewInterface: HomeRecyclerViewHelperInterface?,
+        ) {
+            if (holder.response == null) {
+                subscriber?.onNext(getUnreachableControl(id, device))
+                return
+            }
+            for (it in holder.response) {
+                if (device.id + '@' + it.hidden != id) continue
+                val controlBuilder =
+                    Control.StatefulBuilder(id, getPendingIntent())
+                        .setTitle(it.title)
+                        .setSubtitle(device.name)
+                        .setZone(device.name)
+                        .setStructure(resources.getString(R.string.app_name))
+                        .setDeviceType(Global.getDeviceType(device.iconName))
+                        .setStatus(Control.STATUS_OK)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    controlBuilder.setAuthRequired(
+                        PreferenceManager.getDefaultSharedPreferences(this@ControlService)
+                            .getBoolean(
+                                P.PREF_CONTROLS_AUTH,
+                                P.PREF_CONTROLS_AUTH_DEFAULT,
+                            ),
+                    )
+                }
+                if (it.state != null) {
+                    controlBuilder.setControlTemplate(
+                        ToggleTemplate(
+                            id,
+                            ControlButton(
+                                it.state ?: false,
+                                it.state.toString(),
+                            ),
+                        ),
+                    )
+                    controlBuilder.setStatusText(
+                        resources.getString(
+                            if (it.state == true) {
+                                R.string.str_on
+                            } else {
+                                R.string.str_off
+                            },
+                        ),
+                    )
+                }
+                if (device.mode == Global.TASMOTA) {
+                    controlBuilder.setControlTemplate(
+                        StatelessTemplate(id),
+                    )
+                }
+                subscriber?.onNext(controlBuilder.build())
+            }
+        }
+
+        override fun onExecuted(
+            result: String,
+            shouldRefresh: Boolean,
+        ) {
+            // Do nothing.
         }
     }
 
@@ -212,7 +221,7 @@ class ControlService : ControlsProviderService() {
                     }
                 },
             )
-            controlIds.forEach { id ->
+            for (id in controlIds) {
                 loadStatefulControl(subscriber, id)
             }
         }
