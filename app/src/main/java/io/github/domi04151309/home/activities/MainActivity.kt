@@ -526,11 +526,31 @@ class MainActivity : BaseActivity() {
         )
     }
 
+    private fun getDeviceItem(device: DeviceItem) =
+        ListViewItem(
+            title = device.name,
+            summary = resources.getString(R.string.main_tap_to_connect),
+            hidden = device.id,
+            icon = device.iconId,
+        )
+
+    private fun updateStates(registeredForUpdates: HashMap<Int, UnifiedAPI?>) {
+        if (canReceiveRequest) {
+            for (i in registeredForUpdates.keys) {
+                if (registeredForUpdates[i]?.needsRealTimeData == true) {
+                    registeredForUpdates[i]?.loadStates(
+                        unifiedRealTimeStatesCallback,
+                        adapter.getOffset(i),
+                    )
+                }
+            }
+        }
+    }
+
     internal fun loadDeviceList() {
         updateHandler.stop()
         val registeredForUpdates: HashMap<Int, UnifiedAPI?> = hashMapOf()
         val listItems: ArrayList<ListViewItem> = ArrayList(devices.length)
-        listItems.ensureCapacity(devices.length)
 
         if (devices.length == 0) {
             listItems +=
@@ -551,13 +571,7 @@ class MainActivity : BaseActivity() {
                 ) {
                     onDirectView(currentDevice, actualPosition, registeredForUpdates)
                 }
-                listItems +=
-                    ListViewItem(
-                        title = currentDevice.name,
-                        summary = resources.getString(R.string.main_tap_to_connect),
-                        hidden = currentDevice.id,
-                        icon = currentDevice.iconId,
-                    )
+                listItems += getDeviceItem(currentDevice)
                 actualPosition++
             }
         }
@@ -568,16 +582,7 @@ class MainActivity : BaseActivity() {
         fab.show()
         isDeviceSelected = false
         updateHandler.setUpdateFunction {
-            if (canReceiveRequest) {
-                for (i in registeredForUpdates.keys) {
-                    if (registeredForUpdates[i]?.needsRealTimeData == true) {
-                        registeredForUpdates[i]?.loadStates(
-                            unifiedRealTimeStatesCallback,
-                            adapter.getOffset(i),
-                        )
-                    }
-                }
-            }
+            updateStates(registeredForUpdates)
         }
         unified = null
     }
