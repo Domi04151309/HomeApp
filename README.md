@@ -1,4 +1,4 @@
-![App Icon](https://raw.githubusercontent.com/Domi04151309/HomeApp/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp)
+![App Icon](https://raw.githubusercontent.com/Domi04151309/HomeApp/main/app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp)
 # Home App for Android™
 HomeApp is a small and easy to use smart home app with a simple framework. The goal of this application is to make remote execution of predefined features as easy and user-friendly as possible to help you get started with smart home technology.
 
@@ -33,7 +33,7 @@ Communication between the devices uses HTTP requests and JSON strings. After the
 This app is especially useful if you are using microcontrollers or other small devices such as the Raspberry Pi for smart home automation.
 
 ## Previews
-<img src="https://raw.githubusercontent.com/Domi04151309/HomeApp/master/fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg" width="18%" /><img src="https://raw.githubusercontent.com/Domi04151309/HomeApp/master/fastlane/metadata/android/en-US/images/phoneScreenshots/2.jpg" width="18%" /><img src="https://raw.githubusercontent.com/Domi04151309/HomeApp/master/fastlane/metadata/android/en-US/images/phoneScreenshots/3.jpg" width="18%" /><img src="https://raw.githubusercontent.com/Domi04151309/HomeApp/master/fastlane/metadata/android/en-US/images/phoneScreenshots/4.jpg" width="18%" /><img src="https://raw.githubusercontent.com/Domi04151309/HomeApp/master/fastlane/metadata/android/en-US/images/phoneScreenshots/5.jpg" width="18%" /><img src="https://raw.githubusercontent.com/Domi04151309/HomeApp/master/fastlane/metadata/android/en-US/images/phoneScreenshots/6.jpg" width="18%" />
+<img src="https://raw.githubusercontent.com/Domi04151309/HomeApp/main/fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg" width="18%" /><img src="https://raw.githubusercontent.com/Domi04151309/HomeApp/main/fastlane/metadata/android/en-US/images/phoneScreenshots/2.jpg" width="18%" /><img src="https://raw.githubusercontent.com/Domi04151309/HomeApp/main/fastlane/metadata/android/en-US/images/phoneScreenshots/3.jpg" width="18%" /><img src="https://raw.githubusercontent.com/Domi04151309/HomeApp/main/fastlane/metadata/android/en-US/images/phoneScreenshots/4.jpg" width="18%" /><img src="https://raw.githubusercontent.com/Domi04151309/HomeApp/main/fastlane/metadata/android/en-US/images/phoneScreenshots/5.jpg" width="18%" /><img src="https://raw.githubusercontent.com/Domi04151309/HomeApp/main/fastlane/metadata/android/en-US/images/phoneScreenshots/6.jpg" width="18%" />
 
 <i style="color:gray;">Android, Google Play and the Google Play logo are trademarks of Google LLC.</i>
 
