@@ -1,0 +1,109 @@
+{
+  "ble": {
+    "enable": false,
+    "rpc": {
+      "enable": false
+    },
+    "observer": {
+      "enable": false
+    }
+  },
+  "bthome": {},
+  "cloud": {
+    "enable": false,
+    "server": "iot.shelly.cloud:6012/jrpc"
+  },
+  "mqtt": {
+    "enable": false,
+    "server": null,
+    "client_id": "shellypmminig3-ecda3bc7176c",
+    "user": null,
+    "ssl_ca": null,
+    "topic_prefix": "shellypmminig3-ecda3bc7176c",
+    "rpc_ntf": true,
+    "status_ntf": false,
+    "use_client_cert": false,
+    "enable_rpc": true,
+    "enable_control": true
+  },
+  "pm1:0": {
+    "id": 0,
+    "name": "Kühlschrank",
+    "reverse": false
+  },
+  "sys": {
+    "device": {
+      "name": "shellypm4",
+      "mac": "ECDA3BC7176C",
+      "fw_id": "20241011-114503/1.4.4-g6d2a586",
+      "discoverable": true,
+      "eco_mode": false
+    },
+    "location": {
+      "tz": "Europe/Berlin",
+      "lat": 51.1591,
+      "lon": 12.2847
+    },
+    "debug": {
+      "level": 2,
+      "file_level": null,
+      "mqtt": {
+        "enable": false
+      },
+      "websocket": {
+        "enable": false
+      },
+      "udp": {
+        "addr": null
+      }
+    },
+    "ui_data": {},
+    "rpc_udp": {
+      "dst_addr": null,
+      "listen_port": null
+    },
+    "sntp": {
+      "server": "time.google.com"
+    },
+    "cfg_rev": 9
+  },
+  "wifi": {
+    "ap": {
+      "ssid": "ShellyPMMiniG3-ECDA3BC7176C",
+      "is_open": true,
+      "enable": false,
+      "range_extender": {
+        "enable": false
+      }
+    },
+    "sta": {
+      "ssid": "home.cweiske.de",
+      "is_open": false,
+      "enable": true,
+      "ipv4mode": "static",
+      "ip": "192.168.3.63",
+      "netmask": "255.255.255.0",
+      "gw": "192.168.3.3",
+      "nameserver": "192.168.3.3"
+    },
+    "sta1": {
+      "ssid": null,
+      "is_open": true,
+      "enable": false,
+      "ipv4mode": "dhcp",
+      "ip": null,
+      "netmask": null,
+      "gw": null,
+      "nameserver": null
+    },
+    "roam": {
+      "rssi_thr": -80,
+      "interval": 60
+    }
+  },
+  "ws": {
+    "enable": false,
+    "server": null,
+    "ssl_ca": "ca.pem"
+  }
+}

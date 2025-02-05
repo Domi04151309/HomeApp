@@ -1,0 +1,69 @@
+{
+  "ble": {},
+  "bthome": {
+    "errors": [
+      "bluetooth_disabled"
+    ]
+  },
+  "cloud": {
+    "connected": false
+  },
+  "mqtt": {
+    "connected": false
+  },
+  "pm1:0": {
+    "id": 0,
+    "voltage": 231.5,
+    "current": 0.033,
+    "apower": 4,
+    "freq": 50.1,
+    "aenergy": {
+      "total": 1.695,
+      "by_minute": [
+        0,
+        0,
+        211.882
+      ],
+      "minute_ts": 1738782780
+    },
+    "ret_aenergy": {
+      "total": 0,
+      "by_minute": [
+        0,
+        0,
+        0
+      ],
+      "minute_ts": 1738782780
+    }
+  },
+  "sys": {
+    "mac": "ECDA3BC7176C",
+    "restart_required": false,
+    "time": "20:13",
+    "unixtime": 1738782813,
+    "uptime": 1546,
+    "ram_size": 260924,
+    "ram_free": 143424,
+    "fs_size": 1048576,
+    "fs_free": 618496,
+    "cfg_rev": 9,
+    "kvs_rev": 5,
+    "schedule_rev": 0,
+    "webhook_rev": 0,
+    "available_updates": {
+      "beta": {
+        "version": "1.5.0-beta2"
+      }
+    },
+    "reset_reason": 3
+  },
+  "wifi": {
+    "sta_ip": "192.168.3.63",
+    "status": "got ip",
+    "ssid": "home.cweiske.de",
+    "rssi": -64
+  },
+  "ws": {
+    "connected": false
+  }
+}

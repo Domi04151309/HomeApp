@@ -62,6 +62,8 @@
 
     <string name="shelly_humidity_sensor_summary">Current humidity</string>
     <string name="shelly_powermeter_summary">Current power consumption</string>
+    <string name="shelly_powermeter_current">Current</string>
+    <string name="shelly_powermeter_voltage">Voltage</string>
     <string name="shelly_switch_title">Switch %1$d</string>
     <string name="shelly_temperature_sensor_summary">Current temperature</string>
     <string name="shelly_wifi">WiFi</string>

@@ -154,4 +154,43 @@ class ShellyAPIParserTest {
         val states = parserV2.parseStates(configJson, statusJson)
         assertThat(states, `is`(listOf(true)))
     }
+
+    @Test
+    fun parseListItemsJsonV2_shellyMiniPMG3() {
+        val configJson = JSONObject(Helpers.getFileContents("/shelly/shelly-MiniPMG3-Shelly.GetConfig.json"))
+        val statusJson = JSONObject(Helpers.getFileContents("/shelly/shelly-MiniPMG3-Shelly.GetStatus.json"))
+
+        val listItems = parserV2.parseResponse(configJson, statusJson)
+        assertThat(listItems.size, `is`(3))
+
+        var num = 0
+        assertThat(listItems[num].title, `is`("4.0 W"))
+        assertThat(
+            listItems[num].summary,
+            `is`(resources.getString(R.string.shelly_powermeter_summary)),
+        )
+        assertThat(listItems[num].state, `is`(null as Boolean?))
+        assertThat(listItems[num].hidden, `is`("0"))
+        assertThat(listItems[num].icon, `is`(R.drawable.ic_device_electricity))
+
+        num = 1
+        assertThat(listItems[num].title, `is`("0.033 A"))
+        assertThat(
+            listItems[num].summary,
+            `is`(resources.getString(R.string.shelly_powermeter_current)),
+        )
+        assertThat(listItems[num].state, `is`(null as Boolean?))
+        assertThat(listItems[num].hidden, `is`("0c"))
+        assertThat(listItems[num].icon, `is`(0))
+
+        num = 2
+        assertThat(listItems[num].title, `is`("231.5 V"))
+        assertThat(
+            listItems[num].summary,
+            `is`(resources.getString(R.string.shelly_powermeter_voltage)),
+        )
+        assertThat(listItems[num].state, `is`(null as Boolean?))
+        assertThat(listItems[num].hidden, `is`("0v"))
+        assertThat(listItems[num].icon, `is`(0))
+    }
 }
