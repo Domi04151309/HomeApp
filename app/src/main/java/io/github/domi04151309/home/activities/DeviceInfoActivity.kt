@@ -50,6 +50,7 @@ class DeviceInfoActivity : BaseActivity(), RecyclerViewHelperInterface {
         when (device.mode) {
             Global.HUE_API -> showHueInfo(device, queue, items, recyclerView)
             Global.SHELLY_GEN_2 -> showShelly2Info(device, queue, items, recyclerView)
+            Global.SHELLY_GEN_3 -> showShelly2Info(device, queue, items, recyclerView)
         }
     }
 
