@@ -199,7 +199,7 @@ class EditDeviceActivity : BaseActivity() {
 
     private fun onConfigButtonClicked() {
         when (modeSpinner.text.toString()) {
-            Global.ESP_EASY, Global.SHELLY_GEN_1, Global.SHELLY_GEN_2 -> {
+            Global.ESP_EASY, Global.SHELLY_GEN_1, Global.SHELLY_GEN_2, Global.SHELLY_GEN_3 -> {
                 startActivity(
                     Intent(this, WebActivity::class.java)
                         .putExtra("URI", addressBox.editText?.text.toString())
@@ -340,6 +340,7 @@ class EditDeviceActivity : BaseActivity() {
                 Global.HUE_API,
                 Global.SHELLY_GEN_1,
                 Global.SHELLY_GEN_2,
+                Global.SHELLY_GEN_3,
                 Global.SIMPLE_HOME_API,
                 Global.TASMOTA,
             )
@@ -350,11 +351,13 @@ class EditDeviceActivity : BaseActivity() {
                 Global.NODE_RED,
                 Global.SHELLY_GEN_1,
                 Global.SHELLY_GEN_2,
+                Global.SHELLY_GEN_3,
             )
         private val HAS_INFO =
             arrayOf(
                 Global.HUE_API,
                 Global.SHELLY_GEN_2,
+                Global.SHELLY_GEN_3,
             )
     }
 }

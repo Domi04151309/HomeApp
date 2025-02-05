@@ -214,6 +214,7 @@
         <item>Node-RED</item>
         <item>Shelly Gen 1</item>
         <item>Shelly Gen 2</item>
+        <item>Shelly Gen 3</item>
         <item>Tasmota</item>
         <item>Website</item>
     </string-array>

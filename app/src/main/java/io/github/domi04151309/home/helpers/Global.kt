@@ -30,6 +30,7 @@ internal object Global {
     const val HUE_API = "Hue API"
     const val SHELLY_GEN_1 = "Shelly Gen 1"
     const val SHELLY_GEN_2 = "Shelly Gen 2"
+    const val SHELLY_GEN_3 = "Shelly Gen 3"
     const val SIMPLE_HOME_API = "SimpleHome API"
     const val TASMOTA = "Tasmota"
     const val NODE_RED = "Node-RED"
@@ -41,6 +42,7 @@ internal object Global {
             HUE_API,
             SHELLY_GEN_1,
             SHELLY_GEN_2,
+            SHELLY_GEN_3,
             SIMPLE_HOME_API,
             TASMOTA,
         )
@@ -50,6 +52,7 @@ internal object Global {
             HUE_API,
             SHELLY_GEN_1,
             SHELLY_GEN_2,
+            SHELLY_GEN_3,
             SIMPLE_HOME_API,
             TASMOTA,
         )
@@ -68,6 +71,7 @@ internal object Global {
             TASMOTA -> Tasmota(context, deviceId, tasmotaHelperInterface ?: recyclerViewInterface)
             SHELLY_GEN_1 -> ShellyAPI(context, deviceId, recyclerViewInterface, 1)
             SHELLY_GEN_2 -> ShellyAPI(context, deviceId, recyclerViewInterface, 2)
+            SHELLY_GEN_3 -> ShellyAPI(context, deviceId, recyclerViewInterface, 2)
             else -> UnifiedAPI(context, deviceId, recyclerViewInterface)
         }
 
