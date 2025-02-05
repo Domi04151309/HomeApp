@@ -122,38 +122,91 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
         var currentId: Int
         var currentState: Boolean
         for (switchKey in config.keys()) {
-            if (!switchKey.startsWith("switch:")) continue
-            val properties = config.getJSONObject(switchKey)
-            currentId = properties.getInt("id")
-            currentState = status.getJSONObject(switchKey).getBoolean("output")
-
-            listItems +=
-                ListViewItem(
-                    title =
-                        nameOrDefault(
-                            if (properties.isNull("name")) "" else properties.getString("name"),
-                            currentId,
-                        ),
-                    summary =
-                        resources.getString(
-                            if (currentState) {
-                                R.string.switch_summary_on
-                            } else {
-                                R.string.switch_summary_off
-                            },
-                        ),
-                    hidden = currentId.toString(),
-                    state = currentState,
-                    icon =
-                        Global.getIcon(
-                            config.optJSONObject("sys")?.optJSONObject("ui_data")
-                                ?.optJSONArray("consumption_types")
-                                ?.getString(currentId)
-                                ?: "",
-                            R.drawable.ic_do,
-                        ),
-                )
+            if (switchKey.startsWith("switch:")) {
+                listItems.addAll(
+                    parseSwitchV2(
+                        config.getJSONObject(switchKey),
+                        status.getJSONObject(switchKey),
+                        config
+                    )
+                );
+            } else if (switchKey.startsWith("pm1:")) {
+                listItems.addAll(parsePowermeter1V2(config.getJSONObject(switchKey), status.getJSONObject(switchKey)));
+            }
         }
+        return listItems
+    }
+
+    private fun parsePowermeter1V2(
+        pm1Config: JSONObject,
+        pm1Status: JSONObject,
+    ): List<ListViewItem> {
+        val listItems = mutableListOf<ListViewItem>()
+        val currentId = pm1Config.getInt("id")
+
+        listItems +=
+            ListViewItem(
+                title = "${pm1Status.getDouble("apower")} W",
+                summary = resources.getString(R.string.shelly_powermeter_summary),
+                hidden = currentId.toString(),
+                state = null,
+                icon = R.drawable.ic_device_electricity
+            )
+        listItems +=
+            ListViewItem(
+                title = "${pm1Status.getDouble("current")} A",
+                summary = resources.getString(R.string.shelly_powermeter_current),
+                hidden = currentId.toString() + "c",
+                state = null,
+                icon = 0
+            )
+        listItems +=
+            ListViewItem(
+                title = "${pm1Status.getDouble("voltage")} V",
+                summary = resources.getString(R.string.shelly_powermeter_voltage),
+                hidden = currentId.toString() + "v",
+                state = null,
+                icon = 0
+            )
+
+        return listItems
+    }
+
+    private fun parseSwitchV2(
+        switchConfig: JSONObject,
+        switchStatus: JSONObject,
+        config: JSONObject
+    ): List<ListViewItem> {
+        val listItems = mutableListOf<ListViewItem>()
+        val currentId = switchConfig.getInt("id")
+        val currentState = switchStatus.getBoolean("output")
+
+        listItems +=
+            ListViewItem(
+                title =
+                nameOrDefault(
+                    if (switchConfig.isNull("name")) "" else switchConfig.getString("name"),
+                    currentId,
+                ),
+                summary =
+                resources.getString(
+                    if (currentState) {
+                        R.string.switch_summary_on
+                    } else {
+                        R.string.switch_summary_off
+                    },
+                ),
+                hidden = currentId.toString(),
+                state = currentState,
+                icon =
+                Global.getIcon(
+                    config.optJSONObject("sys")?.optJSONObject("ui_data")
+                        ?.optJSONArray("consumption_types")
+                        ?.getString(currentId)
+                        ?: "",
+                    R.drawable.ic_do,
+                ),
+            )
         return listItems
     }
 
