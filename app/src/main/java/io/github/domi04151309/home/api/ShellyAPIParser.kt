@@ -127,11 +127,11 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
                     parseSwitchV2(
                         config.getJSONObject(switchKey),
                         status.getJSONObject(switchKey),
-                        config
-                    )
-                );
+                        config,
+                    ),
+                )
             } else if (switchKey.startsWith("pm1:")) {
-                listItems.addAll(parsePowermeter1V2(config.getJSONObject(switchKey), status.getJSONObject(switchKey)));
+                listItems.addAll(parsePowermeter1V2(config.getJSONObject(switchKey), status.getJSONObject(switchKey)))
             }
         }
         return listItems
@@ -150,7 +150,7 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
                 summary = resources.getString(R.string.shelly_powermeter_summary),
                 hidden = currentId.toString(),
                 state = null,
-                icon = R.drawable.ic_device_electricity
+                icon = R.drawable.ic_device_electricity,
             )
         listItems +=
             ListViewItem(
@@ -158,7 +158,7 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
                 summary = resources.getString(R.string.shelly_powermeter_current),
                 hidden = currentId.toString() + "c",
                 state = null,
-                icon = 0
+                icon = 0,
             )
         listItems +=
             ListViewItem(
@@ -166,7 +166,7 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
                 summary = resources.getString(R.string.shelly_powermeter_voltage),
                 hidden = currentId.toString() + "v",
                 state = null,
-                icon = 0
+                icon = 0,
             )
 
         return listItems
@@ -175,7 +175,7 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
     private fun parseSwitchV2(
         switchConfig: JSONObject,
         switchStatus: JSONObject,
-        config: JSONObject
+        config: JSONObject,
     ): List<ListViewItem> {
         val listItems = mutableListOf<ListViewItem>()
         val currentId = switchConfig.getInt("id")
@@ -184,28 +184,28 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
         listItems +=
             ListViewItem(
                 title =
-                nameOrDefault(
-                    if (switchConfig.isNull("name")) "" else switchConfig.getString("name"),
-                    currentId,
-                ),
+                    nameOrDefault(
+                        if (switchConfig.isNull("name")) "" else switchConfig.getString("name"),
+                        currentId,
+                    ),
                 summary =
-                resources.getString(
-                    if (currentState) {
-                        R.string.switch_summary_on
-                    } else {
-                        R.string.switch_summary_off
-                    },
-                ),
+                    resources.getString(
+                        if (currentState) {
+                            R.string.switch_summary_on
+                        } else {
+                            R.string.switch_summary_off
+                        },
+                    ),
                 hidden = currentId.toString(),
                 state = currentState,
                 icon =
-                Global.getIcon(
-                    config.optJSONObject("sys")?.optJSONObject("ui_data")
-                        ?.optJSONArray("consumption_types")
-                        ?.getString(currentId)
-                        ?: "",
-                    R.drawable.ic_do,
-                ),
+                    Global.getIcon(
+                        config.optJSONObject("sys")?.optJSONObject("ui_data")
+                            ?.optJSONArray("consumption_types")
+                            ?.getString(currentId)
+                            ?: "",
+                        R.drawable.ic_do,
+                    ),
             )
         return listItems
     }
