@@ -91,14 +91,14 @@ tasks.register("license") {
 }
 
 dependencies {
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.11.0")
+    implementation("androidx.appcompat:appcompat:1.7.0")
+    implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.preference:preference-ktx:1.2.1")
-    implementation("androidx.annotation:annotation:1.7.1")
+    implementation("androidx.annotation:annotation:1.9.1")
     implementation("com.android.volley:volley:1.2.1")
     implementation("androidx.security:security-crypto-ktx:1.1.0-alpha06")
-    implementation("com.github.skydoves:colorpickerview:2.2.3")
+    implementation("com.github.skydoves:colorpickerview:2.3.0")
 
     testImplementation("junit:junit:4.13.2")
-    testImplementation("org.robolectric:robolectric:4.11.1")
+    testImplementation("org.robolectric:robolectric:4.14.1")
 }

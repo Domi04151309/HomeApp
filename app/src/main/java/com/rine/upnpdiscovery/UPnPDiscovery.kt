@@ -62,6 +62,7 @@ class UPnPDiscovery : AsyncTask<Activity, UPnPDiscovery.OnDiscoveryListener, Voi
         mPort = port
     }
 
+    @Deprecated("Deprecated in Java")
     override fun doInBackground(vararg p0: Activity?): Void? {
         mListener.onStart()
         val wifi = mContext.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager

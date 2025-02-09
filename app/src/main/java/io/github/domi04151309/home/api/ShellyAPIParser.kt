@@ -119,8 +119,6 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
         status: JSONObject,
     ): List<ListViewItem> {
         val listItems = mutableListOf<ListViewItem>()
-        var currentId: Int
-        var currentState: Boolean
         for (switchKey in config.keys()) {
             if (switchKey.startsWith("switch:")) {
                 listItems.addAll(
@@ -149,7 +147,6 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
                 title = "${pm1Status.getDouble("apower")} W",
                 summary = resources.getString(R.string.shelly_powermeter_summary),
                 hidden = currentId.toString(),
-                state = null,
                 icon = R.drawable.ic_device_electricity,
             )
         listItems +=
@@ -157,16 +154,12 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
                 title = "${pm1Status.getDouble("current")} A",
                 summary = resources.getString(R.string.shelly_powermeter_current),
                 hidden = currentId.toString() + "c",
-                state = null,
-                icon = 0,
             )
         listItems +=
             ListViewItem(
                 title = "${pm1Status.getDouble("voltage")} V",
                 summary = resources.getString(R.string.shelly_powermeter_voltage),
                 hidden = currentId.toString() + "v",
-                state = null,
-                icon = 0,
             )
 
         return listItems
