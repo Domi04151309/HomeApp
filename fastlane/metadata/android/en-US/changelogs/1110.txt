@@ -1,0 +1,1 @@
+This version includes improved Shelly Gen 3 support, thanks to cweiske. Furthermore, there were some behind-the-scenes changes to improve code quality.
