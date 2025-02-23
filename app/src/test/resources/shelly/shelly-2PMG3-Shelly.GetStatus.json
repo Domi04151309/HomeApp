@@ -1,0 +1,156 @@
+{
+  "ble": {},
+  "bthome": {
+    "errors": [
+      "observer_disabled"
+    ]
+  },
+  "cloud": {
+    "connected": false
+  },
+  "cover:0": {
+    "id": 0,
+    "source": "init",
+    "state": "stopped",
+    "apower": 0.0,
+    "voltage": 233.2,
+    "current": 0.000,
+    "pf": 0.00,
+    "freq": 50.0,
+    "aenergy": {
+      "total": 2.000,
+      "by_minute": [
+        0.000,
+        0.000,
+        0.000
+      ],
+      "minute_ts": 1740335040
+    },
+    "temperature": {
+      "tC": 48.2,
+      "tF": 118.8
+    },
+    "pos_control": false,
+    "last_direction": "open"
+  },
+  "input:0": {
+    "id": 0,
+    "state": null
+  },
+  "input:1": {
+    "id": 1,
+    "state": null
+  },
+  "knx": {},
+  "mqtt": {
+    "connected": false
+  },
+  "sys": {
+    "mac": "000000000000",
+    "restart_required": false,
+    "time": "19:24",
+    "unixtime": 1740335089,
+    "uptime": 2161,
+    "ram_size": 256152,
+    "ram_free": 80744,
+    "fs_size": 1048576,
+    "fs_free": 573440,
+    "cfg_rev": 11,
+    "kvs_rev": 0,
+    "schedule_rev": 1,
+    "webhook_rev": 1,
+    "available_updates": {
+      "beta": {
+        "version": "1.5.1-beta1"
+      }
+    },
+    "reset_reason": 1
+  },
+  "wifi": {
+    "sta_ip": "192.168.178.31",
+    "status": "got ip",
+    "ssid": "WLAN",
+    "rssi": -60
+  },
+  "ws": {
+    "connected": false
+  }
+}
+{
+  "ble": {},
+  "bthome": {
+    "errors": [
+      "observer_disabled"
+    ]
+  },
+  "cloud": {
+    "connected": false
+  },
+  "cover:0": {
+    "id": 0,
+    "source": "init",
+    "state": "stopped",
+    "apower": 0.0,
+    "voltage": 233.9,
+    "current": 0.000,
+    "pf": 0.00,
+    "freq": 50.0,
+    "aenergy": {
+      "total": 2.000,
+      "by_minute": [
+        0.000,
+        0.000,
+        0.000
+      ],
+      "minute_ts": 1740335880
+    },
+    "temperature": {
+      "tC": 48.7,
+      "tF": 119.6
+    },
+    "pos_control": false,
+    "last_direction": "open"
+  },
+  "input:0": {
+    "id": 0,
+    "state": null
+  },
+  "input:1": {
+    "id": 1,
+    "state": null
+  },
+  "knx": {},
+  "mqtt": {
+    "connected": false
+  },
+  "sys": {
+    "mac": "000000000000",
+    "restart_required": false,
+    "time": "19:38",
+    "unixtime": 1740335920,
+    "uptime": 2992,
+    "ram_size": 256052,
+    "ram_free": 79456,
+    "fs_size": 1048576,
+    "fs_free": 573440,
+    "cfg_rev": 11,
+    "kvs_rev": 0,
+    "schedule_rev": 1,
+    "webhook_rev": 1,
+    "available_updates": {
+      "beta": {
+        "version": "1.5.1-beta1"
+      }
+    },
+    "reset_reason": 1
+  },
+  "wifi": {
+    "sta_ip": "192.168.178.31",
+    "status": "got ip",
+    "ssid": "WLAN",
+    "rssi": -58
+  },
+  "ws": {
+    "connected": false
+  }
+}
