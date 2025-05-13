@@ -56,7 +56,7 @@ class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapt
 
         val id = getItemId(position)
         if (items[position].state != null) {
-            holder.stateSwitch.isChecked = items[position].state ?: false
+            holder.stateSwitch.isChecked = items[position].state == true
             holder.stateSwitch.setOnCheckedChangeListener { compoundButton, b ->
                 if (compoundButton.isPressed) {
                     helperInterface?.onStateChanged(
@@ -98,13 +98,13 @@ class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapt
         offsets = IntArray(newItems.size) { 1 }
         if (newHelperInterface != null) {
             attachedTo.layoutManager?.scrollToPosition(0)
-            animate = preferredAnimationState ?: true
+            animate = preferredAnimationState != false
             items.clear()
             items.addAll(newItems)
             helperInterface = newHelperInterface
             notifyDataSetChanged()
         } else {
-            animate = preferredAnimationState ?: false
+            animate = preferredAnimationState == true
             val changed = mutableListOf<Int>()
             items.clear()
             for (i in 0 until items.size) {

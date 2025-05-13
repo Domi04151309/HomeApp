@@ -175,7 +175,7 @@ class HueScenesFragment :
                 }
             }
         }
-        return if (currentSceneValues.size > 0) {
+        return if (currentSceneValues.isNotEmpty()) {
             currentSceneValues[0]
         } else {
             Color.WHITE

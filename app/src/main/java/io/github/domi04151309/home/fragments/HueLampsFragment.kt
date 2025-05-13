@@ -1,12 +1,12 @@
 package io.github.domi04151309.home.fragments
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CompoundButton
 import android.widget.TextView
+import androidx.core.graphics.toColorInt
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -107,7 +107,7 @@ class HueLampsFragment :
                     } else if (currentState.has("ct")) {
                         HueUtils.ctToRGB(currentState.getInt("ct"))
                     } else {
-                        Color.parseColor("#FFFFFF")
+                        "#FFFFFF".toColorInt()
                     }
                 listItems +=
                     ListViewItem(

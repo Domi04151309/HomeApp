@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import io.github.domi04151309.home.R
@@ -33,30 +34,32 @@ class TasmotaHelper(private val c: Context, private val tasmota: UnifiedAPI) {
                 val newTitle = titleTxt.text.toString()
                 val newCommand = commandTxt.text.toString()
                 array.remove(index)
-                prefs.edit().putString(
-                    tasmota.deviceId,
-                    array.put(
-                        JSONObject()
-                            .put(
-                                TITLE,
-                                if (newTitle == "") {
-                                    c.resources.getString(R.string.tasmota_add_command_dialog_title_empty)
-                                } else {
-                                    newTitle
-                                },
-                            )
-                            .put(
-                                COMMAND,
-                                if (newCommand == "") {
-                                    c.resources.getString(
-                                        R.string.tasmota_add_command_dialog_command_empty,
-                                    )
-                                } else {
-                                    newCommand
-                                },
-                            ),
-                    ).toString(),
-                ).apply()
+                prefs.edit {
+                    putString(
+                        tasmota.deviceId,
+                        array.put(
+                            JSONObject()
+                                .put(
+                                    TITLE,
+                                    if (newTitle == "") {
+                                        c.resources.getString(R.string.tasmota_add_command_dialog_title_empty)
+                                    } else {
+                                        newTitle
+                                    },
+                                )
+                                .put(
+                                    COMMAND,
+                                    if (newCommand == "") {
+                                        c.resources.getString(
+                                            R.string.tasmota_add_command_dialog_command_empty,
+                                        )
+                                    } else {
+                                        newCommand
+                                    },
+                                ),
+                        ).toString(),
+                    )
+                }
                 tasmota.loadList(callback)
             }
             .setNegativeButton(android.R.string.cancel) { _, _ -> }
@@ -79,34 +82,36 @@ class TasmotaHelper(private val c: Context, private val tasmota: UnifiedAPI) {
             .setPositiveButton(android.R.string.ok) { _, _ ->
                 val newTitle = titleTxt.text.toString()
                 val newCommand = commandTxt.text.toString()
-                prefs.edit().putString(
-                    tasmota.deviceId,
-                    JSONArray(
-                        prefs.getString(tasmota.deviceId, EMPTY_ARRAY),
-                    ).put(
-                        JSONObject()
-                            .put(
-                                TITLE,
-                                if (newTitle == "") {
-                                    c.resources.getString(
-                                        R.string.tasmota_add_command_dialog_title_empty,
-                                    )
-                                } else {
-                                    newTitle
-                                },
-                            )
-                            .put(
-                                COMMAND,
-                                if (newCommand == "") {
-                                    c.resources.getString(
-                                        R.string.tasmota_add_command_dialog_command_empty,
-                                    )
-                                } else {
-                                    newCommand
-                                },
-                            ),
-                    ).toString(),
-                ).apply()
+                prefs.edit {
+                    putString(
+                        tasmota.deviceId,
+                        JSONArray(
+                            prefs.getString(tasmota.deviceId, EMPTY_ARRAY),
+                        ).put(
+                            JSONObject()
+                                .put(
+                                    TITLE,
+                                    if (newTitle == "") {
+                                        c.resources.getString(
+                                            R.string.tasmota_add_command_dialog_title_empty,
+                                        )
+                                    } else {
+                                        newTitle
+                                    },
+                                )
+                                .put(
+                                    COMMAND,
+                                    if (newCommand == "") {
+                                        c.resources.getString(
+                                            R.string.tasmota_add_command_dialog_command_empty,
+                                        )
+                                    } else {
+                                        newCommand
+                                    },
+                                ),
+                        ).toString(),
+                    )
+                }
                 tasmota.loadList(callback)
             }
             .setNegativeButton(android.R.string.cancel) { _, _ -> }
@@ -119,7 +124,7 @@ class TasmotaHelper(private val c: Context, private val tasmota: UnifiedAPI) {
     ) {
         val array = JSONArray(prefs.getString(tasmota.deviceId, EMPTY_ARRAY))
         array.remove(index)
-        prefs.edit().putString(tasmota.deviceId, array.toString()).apply()
+        prefs.edit { putString(tasmota.deviceId, array.toString()) }
         tasmota.loadList(callback)
     }
 

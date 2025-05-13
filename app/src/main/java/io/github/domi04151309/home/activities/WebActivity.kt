@@ -28,6 +28,7 @@ import android.widget.RelativeLayout
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
+import androidx.core.net.toUri
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.helpers.DeviceSecrets
@@ -181,7 +182,7 @@ class WebActivity : BaseActivity() {
             )
         }
 
-        val uri = Uri.parse(url)
+        val uri = url.toUri()
         (getSystemService(DOWNLOAD_SERVICE) as DownloadManager).enqueue(
             DownloadManager.Request(uri).apply {
                 setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
@@ -229,7 +230,7 @@ class WebActivity : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_open) {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(webView.url)))
+            startActivity(Intent(Intent.ACTION_VIEW, webView.url?.toUri()))
             return true
         }
         return super.onOptionsItemSelected(item)

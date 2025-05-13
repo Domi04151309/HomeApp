@@ -1,6 +1,5 @@
 package io.github.domi04151309.home.activities
 
-import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,6 +7,7 @@ import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.graphics.toColorInt
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
@@ -266,7 +266,7 @@ class HueSceneActivity :
             } else if (state.has("ct")) {
                 HueUtils.ctToRGB(state.getInt("ct"))
             } else {
-                Color.parseColor("#FFFFFF")
+                "#FFFFFF".toColorInt()
             },
         )
 

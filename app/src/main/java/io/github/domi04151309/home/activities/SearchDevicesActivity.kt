@@ -1,6 +1,5 @@
 package io.github.domi04151309.home.activities
 
-import android.content.Context
 import android.net.nsd.NsdManager
 import android.net.wifi.WifiManager
 import android.os.Bundle
@@ -49,7 +48,7 @@ class SearchDevicesActivity : BaseActivity(), RecyclerViewHelperInterface {
         recyclerView.adapter = adapter
 
         // Device variables
-        val manager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+        val manager = applicationContext.getSystemService(WIFI_SERVICE) as WifiManager
         val routerIp = intToIp(manager.dhcpInfo.gateway)
 
         Thread {

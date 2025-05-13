@@ -1,10 +1,11 @@
 package io.github.domi04151309.home.activities
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
+import androidx.core.content.edit
+import androidx.core.net.toUri
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
@@ -45,9 +46,9 @@ class SettingsActivity : BaseActivity() {
                     .setTitle(R.string.pref_reset)
                     .setMessage(R.string.pref_reset_question)
                     .setPositiveButton(R.string.str_delete) { _, _ ->
-                        PreferenceManager.getDefaultSharedPreferences(requireContext()).edit()
-                            .putString("devices_json", Global.DEFAULT_JSON)
-                            .apply()
+                        PreferenceManager.getDefaultSharedPreferences(requireContext()).edit {
+                            putString("devices_json", Global.DEFAULT_JSON)
+                        }
                         Toast.makeText(context, R.string.pref_reset_toast, Toast.LENGTH_LONG).show()
                         Devices.reloadFromPreferences()
                     }
@@ -71,7 +72,7 @@ class SettingsActivity : BaseActivity() {
                 startActivity(
                     Intent(
                         Intent.ACTION_VIEW,
-                        Uri.parse("https://unsplash.com/photos/mx4mSkK9zeo"),
+                        "https://unsplash.com/photos/mx4mSkK9zeo".toUri(),
                     ),
                 )
                 true

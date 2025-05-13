@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
 import android.graphics.drawable.Icon
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -18,6 +17,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.net.toUri
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputLayout
@@ -221,7 +221,7 @@ class EditDeviceActivity : BaseActivity() {
                         startActivity(
                             Intent(
                                 Intent.ACTION_VIEW,
-                                Uri.parse("market://details?id=$huePackageName"),
+                                "market://details?id=$huePackageName".toUri(),
                             ),
                         )
                     } catch (e: ActivityNotFoundException) {
@@ -229,7 +229,7 @@ class EditDeviceActivity : BaseActivity() {
                         startActivity(
                             Intent(
                                 Intent.ACTION_VIEW,
-                                Uri.parse("https://play.google.com/store/apps/details?id=$huePackageName"),
+                                "https://play.google.com/store/apps/details?id=$huePackageName".toUri(),
                             ),
                         )
                     }

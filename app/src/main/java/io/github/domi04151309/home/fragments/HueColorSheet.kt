@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.graphics.toColorInt
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
@@ -198,7 +199,7 @@ class HueColorSheet(private val lampInterface: HueAdvancedLampInterface) :
             ctBar,
             intArrayOf(
                 Color.WHITE,
-                Color.parseColor("#FF8B16"),
+                "#FF8B16".toColorInt(),
             ),
         )
 

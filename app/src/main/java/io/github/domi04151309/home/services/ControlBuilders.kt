@@ -87,7 +87,7 @@ object ControlBuilders {
                 ToggleTemplate(
                     id,
                     ControlButton(
-                        listItem.state ?: false,
+                        listItem.state == true,
                         listItem.state.toString(),
                     ),
                 ),

@@ -3,6 +3,7 @@ package io.github.domi04151309.home.helpers
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
+import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import io.github.domi04151309.home.data.DeviceItem
 import org.json.JSONArray
@@ -126,7 +127,7 @@ class Devices(private val context: Context) {
     }
 
     fun saveChanges() {
-        preferences.edit().putString("devices_json", data.toString()).apply()
+        preferences.edit { putString("devices_json", data.toString()) }
     }
 
     companion object {

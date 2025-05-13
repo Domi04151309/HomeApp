@@ -2,6 +2,7 @@ package io.github.domi04151309.home.helpers
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import org.json.JSONObject
@@ -40,11 +41,11 @@ class DeviceSecrets(context: Context, private val id: String) {
         }
 
     fun updateDeviceSecrets() {
-        preferences.edit().putString(id, secrets.toString()).apply()
+        preferences.edit { putString(id, secrets.toString()) }
     }
 
     fun deleteDeviceSecrets() {
-        preferences.edit().remove(id).apply()
+        preferences.edit { remove(id) }
     }
 
     companion object {

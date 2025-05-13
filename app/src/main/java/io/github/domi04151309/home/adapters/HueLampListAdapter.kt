@@ -49,7 +49,7 @@ class HueLampListAdapter(
         holder.title.text = items[position].title
         holder.summary.text = items[position].summary
         holder.hidden.text = items[position].hidden
-        holder.stateSwitch.isChecked = items[position].state ?: false
+        holder.stateSwitch.isChecked = items[position].state == true
         holder.stateSwitch.setOnCheckedChangeListener(stateListener)
         holder.itemView.setOnClickListener { helperInterface.onItemClicked(holder.itemView, position) }
     }
@@ -76,7 +76,7 @@ class HueLampListAdapter(
             } else {
                 val holder = (recyclerView.findViewHolderForAdapterPosition(i) ?: return) as ViewHolder
                 if (items[i].state != newItems[i].state) {
-                    holder.stateSwitch.isChecked = newItems[i].state ?: false
+                    holder.stateSwitch.isChecked = newItems[i].state == true
                 }
                 if (colors[i] != newColors[i]) {
                     val context = holder.itemView.context

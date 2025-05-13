@@ -10,6 +10,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.graphics.toColorInt
 import androidx.fragment.app.Fragment
 import com.google.android.material.slider.Slider
 import com.skydoves.colorpickerview.ColorPickerView
@@ -216,7 +217,7 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
             ctBar,
             intArrayOf(
                 Color.WHITE,
-                Color.parseColor("#FF8B16"),
+                "#FF8B16".toColorInt(),
             ),
         )
 

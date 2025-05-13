@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
+import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import com.android.volley.Request
 import com.android.volley.RequestQueue
@@ -37,7 +38,12 @@ class HueConnectActivity : BaseActivity() {
                     if (responseObject.has("success") && !success) {
                         success = true
                         val username = responseObject.getJSONObject("success").getString("username")
-                        PreferenceManager.getDefaultSharedPreferences(this).edit().putString(deviceId, username).apply()
+                        PreferenceManager.getDefaultSharedPreferences(this).edit {
+                            putString(
+                                deviceId,
+                                username,
+                            )
+                        }
                         startActivity(
                             Intent(this, MainActivity::class.java)
                                 .putExtra(Devices.INTENT_EXTRA_DEVICE, deviceId)
