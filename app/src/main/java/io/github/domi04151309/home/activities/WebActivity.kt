@@ -6,6 +6,7 @@ import android.app.DownloadManager
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.net.http.SslError
 import android.os.Bundle
 import android.os.Environment
 import android.util.Base64
@@ -16,6 +17,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.HttpAuthHandler
+import android.webkit.SslErrorHandler
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceError
@@ -25,6 +27,7 @@ import android.webkit.WebViewClient
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
@@ -84,6 +87,16 @@ class WebActivity : BaseActivity() {
                     realm: String,
                 ) {
                     onAuthRequest(handler)
+                }
+
+                @SuppressLint("WebViewClientOnReceivedSslError")
+                override fun onReceivedSslError(
+                    view: WebView,
+                    handler: SslErrorHandler,
+                    error: SslError,
+                ) {
+                    Toast.makeText(this@WebActivity, R.string.webView_ssl_error, Toast.LENGTH_LONG).show()
+                    handler.proceed()
                 }
 
                 override fun onReceivedError(
