@@ -86,6 +86,7 @@ internal object Global {
             "clock" -> R.drawable.ic_device_clock
             "display" -> R.drawable.ic_device_display
             "display alt" -> R.drawable.ic_device_display_alt
+            "docker" -> R.drawable.ic_device_docker
             "electricity" -> R.drawable.ic_device_electricity
             "entertainment" -> R.drawable.ic_device_speaker
             "gauge" -> R.drawable.ic_device_gauge
@@ -94,6 +95,7 @@ internal object Global {
             "lamp" -> R.drawable.ic_device_lamp
             "lights" -> R.drawable.ic_device_lamp
             "raspberry pi" -> R.drawable.ic_device_raspberry_pi
+            "raspberry pi alt" -> R.drawable.ic_device_raspberry_pi_alt
             "router" -> R.drawable.ic_device_router
             "speaker" -> R.drawable.ic_device_speaker
             "schwibbogen" -> R.drawable.ic_device_schwibbogen

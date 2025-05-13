@@ -195,11 +195,13 @@
         <item>Clock</item>
         <item>Display</item>
         <item>Display Alt</item>
+        <item>Docker</item>
         <item>Electricity</item>
         <item>Gauge</item>
         <item>Hygrometer</item>
         <item>Lamp</item>
         <item>Raspberry Pi</item>
+        <item>Raspberry Pi Alt</item>
         <item>Router</item>
         <item>Socket</item>
         <item>Speaker</item>
