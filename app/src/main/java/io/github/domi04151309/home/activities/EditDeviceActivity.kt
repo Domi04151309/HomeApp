@@ -129,7 +129,7 @@ class EditDeviceActivity : BaseActivity() {
     private fun getModeTextWatcher(editing: Boolean) =
         TextWatcher {
             val specialVisibility =
-                if (it == Global.FRITZ_AUTO_LOGIN || it == Global.SHELLY_GEN_1) {
+                if (it == Global.FRITZ_AUTO_LOGIN || it == Global.PI_HOLE_AUTO_LOGIN || it == Global.SHELLY_GEN_1) {
                     View.VISIBLE
                 } else {
                     View.GONE

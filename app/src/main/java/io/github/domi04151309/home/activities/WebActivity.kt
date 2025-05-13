@@ -9,7 +9,6 @@ import android.net.Uri
 import android.net.http.SslError
 import android.os.Bundle
 import android.os.Environment
-import android.util.Base64
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.Menu
@@ -64,17 +63,27 @@ class WebActivity : BaseActivity() {
                         view.visibility = View.GONE
                         return
                     }
-                    if (url.contains("github.com")) injectCSS(view)
-                    if (isFirstLoad && intent.hasExtra("fritz_auto_login")) {
-                        injectFritzLogin(
-                            view,
-                            DeviceSecrets(
-                                this@WebActivity,
-                                intent.getStringExtra("fritz_auto_login") ?: "",
-                            ).password,
-                        )
+                    if (isFirstLoad) {
+                        if (intent.hasExtra("fritz_auto_login")) {
+                            injectFritzLogin(
+                                view,
+                                DeviceSecrets(
+                                    this@WebActivity,
+                                    intent.getStringExtra("fritz_auto_login") ?: "",
+                                ).password,
+                            )
+                        } else if (intent.hasExtra("pi_hole_auto_login")) {
+                            injectPiHoleLogin(
+                                view,
+                                DeviceSecrets(
+                                    this@WebActivity,
+                                    intent.getStringExtra("pi_hole_auto_login") ?: "",
+                                ).password,
+                            )
+                        }
                         isFirstLoad = false
                     }
+
                     progress.visibility = View.GONE
                     view.visibility = View.VISIBLE
                     super.onPageFinished(view, url)
@@ -207,31 +216,26 @@ class WebActivity : BaseActivity() {
         )
     }
 
-    internal fun injectCSS(webView: WebView) {
-        val inputStream = assets.open("github_style.css")
-        val buffer = ByteArray(inputStream.available())
-        inputStream.read(buffer)
-        inputStream.close()
+    internal fun injectFritzLogin(
+        webView: WebView,
+        password: String,
+    ) {
         webView.loadUrl(
-            "javascript:(function() {" +
-                "var parent = document.getElementsByTagName('head').item(0);" +
-                "var style = document.createElement('style');" +
-                "style.type = 'text/css';" +
-                // Tell the browser to BASE64-decode the string into your script !!!
-                "style.innerHTML = window.atob('" + Base64.encodeToString(buffer, Base64.NO_WRAP) + "');" +
-                "parent.appendChild(style)" +
+            "javascript:(() => {" +
+                "document.getElementById('uiPass').value = '" + password + "';" +
+                "document.getElementById('submitLoginBtn').click()" +
                 "})()",
         )
     }
 
-    internal fun injectFritzLogin(
+    internal fun injectPiHoleLogin(
         webView: WebView,
-        uiPass: String,
+        password: String,
     ) {
         webView.loadUrl(
-            "javascript:(function() {" +
-                "document.getElementById('uiPass').value = '" + uiPass + "';" +
-                "document.getElementById('submitLoginBtn').click()" +
+            "javascript:(() => {" +
+                "document.getElementById('current-password').value = '" + password + "';" +
+                "document.querySelector('button[type=submit]').click()" +
                 "})()",
         )
     }

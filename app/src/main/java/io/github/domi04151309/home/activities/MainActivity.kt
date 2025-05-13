@@ -458,6 +458,10 @@ class MainActivity : BaseActivity() {
                         intent.putExtra("URI", deviceObj.address)
                         intent.putExtra("fritz_auto_login", deviceObj.id)
                     }
+                    Global.PI_HOLE_AUTO_LOGIN -> {
+                        intent.putExtra("URI", deviceObj.address)
+                        intent.putExtra("pi_hole_auto_login", deviceObj.id)
+                    }
                     Global.NODE_RED -> {
                         intent.putExtra("URI", deviceObj.address + "ui/")
                     }
@@ -617,6 +621,7 @@ class MainActivity : BaseActivity() {
         private val WEB_MODES =
             arrayOf(
                 Global.FRITZ_AUTO_LOGIN,
+                Global.PI_HOLE_AUTO_LOGIN,
                 Global.NODE_RED,
                 Global.WEBSITE,
             )
