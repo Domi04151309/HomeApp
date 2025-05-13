@@ -220,11 +220,10 @@ class WebActivity : BaseActivity() {
         webView: WebView,
         password: String,
     ) {
-        webView.loadUrl(
-            "javascript:(() => {" +
-                "document.getElementById('uiPass').value = '" + password + "';" +
-                "document.getElementById('submitLoginBtn').click()" +
-                "})()",
+        injectJavaScript(
+            webView,
+            "document.getElementById('uiPass').value = '" + password + "';" +
+                "document.getElementById('submitLoginBtn').click()",
         )
     }
 
@@ -232,12 +231,18 @@ class WebActivity : BaseActivity() {
         webView: WebView,
         password: String,
     ) {
-        webView.loadUrl(
-            "javascript:(() => {" +
-                "document.getElementById('current-password').value = '" + password + "';" +
-                "document.querySelector('button[type=submit]').click()" +
-                "})()",
+        injectJavaScript(
+            webView,
+            "document.getElementById('current-password').value = '" + password + "';" +
+                "document.querySelector('button[type=submit]').click()",
         )
+    }
+
+    internal fun injectJavaScript(
+        webView: WebView,
+        javaScript: String,
+    ) {
+        webView.loadUrl("javascript:(() => {$javaScript})()")
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
