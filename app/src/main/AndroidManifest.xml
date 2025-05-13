@@ -140,7 +140,8 @@
         <service
             android:name=".services.ControlService"
             android:permission="android.permission.BIND_CONTROLS"
-            android:exported="true">
+            android:exported="true"
+            tools:targetApi="30">
             <intent-filter>
                 <action android:name="android.service.controls.ControlsProviderService" />
             </intent-filter>
