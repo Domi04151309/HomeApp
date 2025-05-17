@@ -125,13 +125,12 @@ class WebActivityWebViewClient(
         webView: WebView,
         password: String,
     ) {
-        injectJavaScript(
-            webView,
+        webView.evaluateJavascript(
             """
             document.getElementById('uiPass').value = '$password';
             document.getElementById('submitLoginBtn').click();
             """,
-        )
+        ) {}
     }
 
     private fun injectGrafanaLogin(
@@ -139,8 +138,7 @@ class WebActivityWebViewClient(
         username: String,
         password: String,
     ) {
-        injectJavaScript(
-            webView,
+        webView.evaluateJavascript(
             """
             function setNativeValue(element, value) {
                 const proto = Object.getPrototypeOf(element);
@@ -172,27 +170,19 @@ class WebActivityWebViewClient(
                 }
             }, 100);
             """,
-        )
+        ) {}
     }
 
     private fun injectPiHoleLogin(
         webView: WebView,
         password: String,
     ) {
-        injectJavaScript(
-            webView,
+        webView.evaluateJavascript(
             """
             document.getElementById('current-password').value = '$password';
             document.querySelector('button[type=submit]').click();
             """,
-        )
-    }
-
-    private fun injectJavaScript(
-        webView: WebView,
-        javaScript: String,
-    ) {
-        webView.loadUrl("javascript:(() => {$javaScript})()")
+        ) {}
     }
 
     companion object {
