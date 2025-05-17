@@ -139,18 +139,36 @@ class WebActivityWebViewClient(
         username: String,
         password: String,
     ) {
-        // Submission does not work because the form validation does not update correctly.
         injectJavaScript(
             webView,
             """
+            function setNativeValue(element, value) {
+                const proto = Object.getPrototypeOf(element);
+                const descriptor = Object.getOwnPropertyDescriptor(proto, 'value');
+                const setter = descriptor && descriptor.set;
+                
+                if (setter) {
+                    setter.call(element, value);
+                } else {
+                    element.value = value;
+                }
+            }
+                
             const check = setInterval(() => {
                 const username = document.querySelector('input[name=user]');
                 const password = document.querySelector('input[name=password]');
                 if (username && password) {
                     clearInterval(check);
                     
-                    username.value = '$username';
-                    password.value = '$password';
+                    setNativeValue(username, '$username');
+                    setNativeValue(password, '$password');
+                    
+                    ['input', 'change'].forEach(eventName => {
+                        username.dispatchEvent(new Event(eventName, { bubbles: true }));
+                        password.dispatchEvent(new Event(eventName, { bubbles: true }));
+                    });
+                    
+                    document.querySelector('button[type=submit]').click();
                 }
             }, 100);
             """,
