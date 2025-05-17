@@ -91,6 +91,7 @@ internal object Global {
             "electricity" -> R.drawable.ic_device_electricity
             "entertainment" -> R.drawable.ic_device_speaker
             "gauge" -> R.drawable.ic_device_gauge
+            "grafana" -> R.drawable.ic_device_grafana
             "heating" -> R.drawable.ic_device_thermometer
             "hygrometer" -> R.drawable.ic_device_hygrometer
             "lamp" -> R.drawable.ic_device_lamp
