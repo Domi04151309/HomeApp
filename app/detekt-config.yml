@@ -643,7 +643,7 @@ style:
   MultilineLambdaItParameter:
     active: true
   MultilineRawStringIndentation:
-    active: true
+    active: false
     indentSize: 4
     trimmingMethods:
       - 'trimIndent'
@@ -697,7 +697,7 @@ style:
   TrailingWhitespace:
     active: true
   TrimMultilineRawString:
-    active: true
+    active: false
     trimmingMethods:
       - 'trimIndent'
       - 'trimMargin'

@@ -36,6 +36,7 @@ internal object Global {
     const val NODE_RED = "Node-RED"
     const val WEBSITE = "Website"
     const val FRITZ_AUTO_LOGIN = "Fritz! Auto-Login"
+    const val GRAFANA_AUTO_LOGIN = "Grafana Auto-Login"
     const val PI_HOLE_AUTO_LOGIN = "Pi-hole Auto-Login"
     val UNIFIED_MODES =
         arrayOf(

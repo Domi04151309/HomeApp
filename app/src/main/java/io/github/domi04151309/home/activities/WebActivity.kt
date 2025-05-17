@@ -72,6 +72,17 @@ class WebActivity : BaseActivity() {
                                     intent.getStringExtra("fritz_auto_login") ?: "",
                                 ).password,
                             )
+                        } else if (intent.hasExtra("grafana_auto_login")) {
+                            val secrets =
+                                DeviceSecrets(
+                                    this@WebActivity,
+                                    intent.getStringExtra("grafana_auto_login") ?: "",
+                                )
+                            injectGrafanaLogin(
+                                view,
+                                secrets.username,
+                                secrets.password,
+                            )
                         } else if (intent.hasExtra("pi_hole_auto_login")) {
                             injectPiHoleLogin(
                                 view,
@@ -222,8 +233,33 @@ class WebActivity : BaseActivity() {
     ) {
         injectJavaScript(
             webView,
-            "document.getElementById('uiPass').value = '" + password + "';" +
-                "document.getElementById('submitLoginBtn').click()",
+            """
+            document.getElementById('uiPass').value = '$password';
+            document.getElementById('submitLoginBtn').click();
+            """,
+        )
+    }
+
+    internal fun injectGrafanaLogin(
+        webView: WebView,
+        username: String,
+        password: String,
+    ) {
+        // Submission does not work because the form validation does not update correctly.
+        injectJavaScript(
+            webView,
+            """
+            const check = setInterval(() => {
+                const username = document.querySelector('input[name=user]');
+                const password = document.querySelector('input[name=password]');
+                if (username && password) {
+                    clearInterval(check);
+                    
+                    username.value = '$username';
+                    password.value = '$password';
+                }
+            }, 100);
+            """,
         )
     }
 
@@ -233,8 +269,10 @@ class WebActivity : BaseActivity() {
     ) {
         injectJavaScript(
             webView,
-            "document.getElementById('current-password').value = '" + password + "';" +
-                "document.querySelector('button[type=submit]').click()",
+            """
+            document.getElementById('current-password').value = '$password';
+            document.querySelector('button[type=submit]').click();
+            """,
         )
     }
 
