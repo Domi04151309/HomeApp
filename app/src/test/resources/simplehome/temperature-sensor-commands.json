@@ -8,7 +8,7 @@
     },
     "humidity": {
       "title": "Humidity",
-      "summary": "The humidity is 86.30%",
+      "summary": "The humidity is 86.30 %",
       "icon": "hygrometer",
       "mode": "none"
     }

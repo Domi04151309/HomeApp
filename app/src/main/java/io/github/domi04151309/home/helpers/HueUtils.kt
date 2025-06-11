@@ -45,14 +45,14 @@ object HueUtils {
 
     fun satToPercent(sat: Int): String {
         require(sat <= 254) { ARGUMENT_OUT_OF_RANGE }
-        return "${(sat / 254F * 100).toInt()}%"
+        return "${(sat / 254F * 100).toInt()} %"
     }
 
     fun briToPercent(bri: Int): String =
         when {
-            bri < 1 -> "0%"
-            bri > 254 -> "100%"
-            else -> "${(bri / 254F * 100).toInt()}%"
+            bri < 1 -> "0 %"
+            bri > 254 -> "100 %"
+            else -> "${(bri / 254F * 100).toInt()} %"
         }
 
     fun rgbToHueSat(color: Int): IntArray {

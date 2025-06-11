@@ -32,7 +32,7 @@ class SimpleHomeAPIParserTest {
 
         num = 1
         assertThat(listItems[num].title, `is`("Humidity"))
-        assertThat(listItems[num].summary, `is`("The humidity is 86.30%"))
+        assertThat(listItems[num].summary, `is`("The humidity is 86.30 %"))
         assertThat(listItems[num].state, `is`(null as Boolean?))
         assertThat(listItems[num].hidden, `is`("none@humidity"))
         assertThat(listItems[num].icon, `is`(R.drawable.ic_device_hygrometer))
