@@ -32,7 +32,6 @@
     <string name="hue_hue_sat">Farbton und Sättigung</string>
     <string name="hue_scene">Szene</string>
     <string name="hue_add_scene">Szene hinzufügen</string>
-    <string name="hue_edit_scene">Szene bearbeiten</string>
     <string name="hue_new_scene">Neue Szene</string>
     <string name="hue_delete_scene">Sind Sie sich sicher, dass Sie diese Szene löschen möchten?</string>
     <string name="hue_bridge">Brücke</string>

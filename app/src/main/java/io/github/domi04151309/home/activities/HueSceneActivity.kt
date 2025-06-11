@@ -16,7 +16,9 @@ import com.android.volley.Response
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.slider.Slider
 import com.google.android.material.textfield.TextInputLayout
@@ -67,6 +69,8 @@ class HueSceneActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hue_scene)
+
+        window.statusBarColor = SurfaceColors.SURFACE_0.getColor(this)
 
         val nameTxt = findViewById<TextView>(R.id.nameTxt)
 
@@ -145,10 +149,16 @@ class HueSceneActivity :
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
             onFloatingActionButtnClicked()
         }
+
+        findViewById<MaterialToolbar>(R.id.toolbar).apply {
+            setNavigationIcon(R.drawable.ic_arrow_back)
+            setNavigationOnClickListener {
+                onBackPressedDispatcher.onBackPressed()
+            }
+        }
     }
 
     private fun onEditScene() {
-        supportActionBar?.setTitle(R.string.hue_edit_scene)
         defaultText = resources.getString(R.string.hue_scene)
         hueAPI.activateSceneOfGroup(groupId, sceneId)
         queue.add(
@@ -201,7 +211,6 @@ class HueSceneActivity :
     }
 
     private fun onCreateScene() {
-        supportActionBar?.setTitle(R.string.hue_add_scene)
         defaultText = resources.getString(R.string.hue_new_scene)
         queue.add(
             JsonObjectRequest(

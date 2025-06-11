@@ -33,6 +33,7 @@
         android:dataExtractionRules="@xml/data_extraction_rules">
         <activity
             android:name=".activities.HueSceneActivity"
+            android:theme="@style/Theme.Material3.DayNight.NoActionBar"
             android:parentActivityName=".activities.MainActivity" />
         <activity
             android:name=".activities.AboutActivity"
