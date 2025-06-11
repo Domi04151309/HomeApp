@@ -47,7 +47,6 @@
                     android:text="@string/pref_add_id"
                     android:textAlignment="center"
                     android:textSize="12sp" />
-
             </LinearLayout>
 
             <View

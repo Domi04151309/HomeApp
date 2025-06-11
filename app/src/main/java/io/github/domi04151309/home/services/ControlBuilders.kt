@@ -13,7 +13,7 @@ import android.service.controls.templates.ToggleTemplate
 import androidx.annotation.RequiresApi
 import androidx.preference.PreferenceManager
 import io.github.domi04151309.home.R
-import io.github.domi04151309.home.activities.MainActivity
+import io.github.domi04151309.home.activities.ControlInfoActivity
 import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.data.ListViewItem
 import io.github.domi04151309.home.helpers.Global
@@ -25,12 +25,20 @@ object ControlBuilders {
     private const val RANGE_MAX = 100f
     private const val RANGE_STEP = 1f
 
-    private fun getPendingIntent(context: Context): PendingIntent =
+    private var requestCode = 0
+
+    private fun getPendingIntent(
+        context: Context,
+        id: String,
+        title: String,
+    ): PendingIntent =
         PendingIntent.getActivity(
             context,
-            0,
-            Intent(context, MainActivity::class.java).apply {
+            requestCode++,
+            Intent(context, ControlInfoActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                putExtra(ControlInfoActivity.EXTRA_ID, id)
+                putExtra(ControlInfoActivity.EXTRA_TITLE, title)
             },
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
         )
@@ -59,7 +67,7 @@ object ControlBuilders {
         id: String,
         device: DeviceItem,
     ): Control =
-        Control.StatefulBuilder(id, getPendingIntent(context))
+        Control.StatefulBuilder(id, getPendingIntent(context, id, device.name))
             .setTitle(device.name)
             .setZone(device.name)
             .setStructure(context.resources.getString(R.string.app_name))
@@ -72,10 +80,11 @@ object ControlBuilders {
         context: Context,
         listItem: ListViewItem,
         device: DeviceItem,
-    ): Control =
-        Control.StatelessBuilder(
-            device.id + '@' + listItem.hidden,
-            getPendingIntent(context),
+    ): Control {
+        val id = device.id + '@' + listItem.hidden
+        return Control.StatelessBuilder(
+            id,
+            getPendingIntent(context, id, listItem.title),
         )
             .setTitle(listItem.title)
             .setSubtitle(device.name)
@@ -83,6 +92,7 @@ object ControlBuilders {
             .setStructure(context.resources.getString(R.string.app_name))
             .setDeviceType(Global.getDeviceType(device.iconName))
             .build()
+    }
 
     fun buildStatefulControl(
         context: Context,
@@ -91,7 +101,7 @@ object ControlBuilders {
         device: DeviceItem,
     ): Control {
         val controlBuilder =
-            Control.StatefulBuilder(id, getPendingIntent(context))
+            Control.StatefulBuilder(id, getPendingIntent(context, id, listItem.title))
                 .setTitle(listItem.title)
                 .setSubtitle(device.name)
                 .setZone(device.name)

@@ -94,6 +94,10 @@
             android:launchMode="singleTop"
             android:parentActivityName=".activities.EditDeviceActivity" />
         <activity
+            android:name=".activities.ControlInfoActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.Material3.DayNight.NoActionBar" />
+        <activity
             android:name=".activities.ShortcutDeviceActivity"
             android:label="@string/pref_add_name_empty"
             android:exported="true">
