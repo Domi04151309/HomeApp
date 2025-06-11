@@ -6,7 +6,9 @@ import android.content.Intent
 import android.os.Build
 import android.service.controls.Control
 import android.service.controls.templates.ControlButton
+import android.service.controls.templates.RangeTemplate
 import android.service.controls.templates.StatelessTemplate
+import android.service.controls.templates.ToggleRangeTemplate
 import android.service.controls.templates.ToggleTemplate
 import androidx.annotation.RequiresApi
 import androidx.preference.PreferenceManager
@@ -19,6 +21,10 @@ import io.github.domi04151309.home.helpers.P
 
 @RequiresApi(Build.VERSION_CODES.R)
 object ControlBuilders {
+    private const val RANGE_MIN = 0f
+    private const val RANGE_MAX = 100f
+    private const val RANGE_STEP = 1f
+
     private fun getPendingIntent(context: Context): PendingIntent =
         PendingIntent.getActivity(
             context,
@@ -27,6 +33,25 @@ object ControlBuilders {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             },
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+        )
+
+    private fun getControlButton(item: ListViewItem): ControlButton =
+        ControlButton(
+            item.state == true,
+            item.state.toString(),
+        )
+
+    private fun getRangeTemplate(
+        id: String,
+        item: ListViewItem,
+    ): RangeTemplate =
+        RangeTemplate(
+            id,
+            RANGE_MIN,
+            RANGE_MAX,
+            item.percentage?.toFloat() ?: 0f,
+            RANGE_STEP,
+            "%.0f %%",
         )
 
     fun buildUnreachableControl(
@@ -73,6 +98,7 @@ object ControlBuilders {
                 .setStructure(context.resources.getString(R.string.app_name))
                 .setDeviceType(Global.getDeviceType(device.iconName))
                 .setStatus(Control.STATUS_OK)
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             controlBuilder.setAuthRequired(
                 PreferenceManager.getDefaultSharedPreferences(context)
@@ -82,16 +108,8 @@ object ControlBuilders {
                     ),
             )
         }
+
         if (listItem.state != null) {
-            controlBuilder.setControlTemplate(
-                ToggleTemplate(
-                    id,
-                    ControlButton(
-                        listItem.state == true,
-                        listItem.state.toString(),
-                    ),
-                ),
-            )
             controlBuilder.setStatusText(
                 context.resources.getString(
                     if (listItem.state == true) {
@@ -102,11 +120,34 @@ object ControlBuilders {
                 ),
             )
         }
+
+        if (listItem.state != null && listItem.percentage != null) {
+            controlBuilder.setControlTemplate(
+                ToggleRangeTemplate(
+                    id,
+                    getControlButton(listItem),
+                    getRangeTemplate(id, listItem),
+                ),
+            )
+        } else if (listItem.state != null) {
+            controlBuilder.setControlTemplate(
+                ToggleTemplate(
+                    id,
+                    getControlButton(listItem),
+                ),
+            )
+        } else if (listItem.percentage != null) {
+            controlBuilder.setControlTemplate(
+                getRangeTemplate(id, listItem),
+            )
+        }
+
         if (device.mode == Global.TASMOTA) {
             controlBuilder.setControlTemplate(
                 StatelessTemplate(id),
             )
         }
+
         return controlBuilder.build()
     }
 }

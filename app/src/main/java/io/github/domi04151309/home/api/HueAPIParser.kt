@@ -55,9 +55,7 @@ class HueAPIParser(resources: Resources) : UnifiedAPI.Parser(resources) {
             hidden = pair.first,
             icon = if (isZone) R.drawable.ic_zone else R.drawable.ic_room,
             state = state,
-            min = 0,
-            max = HueUtils.MAX_BRIGHTNESS,
-            value = value,
+            percentage = (value / HueUtils.MAX_BRIGHTNESS.toFloat() * 100).toInt(),
         )
     }
 
