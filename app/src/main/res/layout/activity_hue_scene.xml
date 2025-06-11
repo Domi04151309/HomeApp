@@ -38,6 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="@dimen/dialog_item_margin"
+            android:layout_marginHorizontal="?dialogPreferredPadding"
             android:alpha="?android:attr/disabledAlpha"
             android:background="?android:attr/textColorSecondary" />
 
@@ -78,6 +79,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_marginHorizontal="?dialogPreferredPadding"
             android:alpha="?android:attr/disabledAlpha"
             android:background="?android:attr/textColorSecondary" />
 
