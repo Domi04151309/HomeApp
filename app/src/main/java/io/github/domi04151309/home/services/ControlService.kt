@@ -8,6 +8,7 @@ import android.service.controls.ControlsProviderService
 import android.service.controls.actions.BooleanAction
 import android.service.controls.actions.CommandAction
 import android.service.controls.actions.ControlAction
+import android.service.controls.actions.FloatAction
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import io.github.domi04151309.home.api.UnifiedAPI
@@ -153,11 +154,14 @@ class ControlService : ControlsProviderService() {
                 Devices(this)
                     .getDeviceById(controlId.substring(0, controlId.indexOf('@')))
             val api = Global.getCorrectAPI(this, device.mode, device.id)
+            val relevantId = controlId.substring(device.id.length + 1)
             if (action is BooleanAction) {
-                api.changeSwitchState(controlId.substring(device.id.length + 1), action.newState)
+                api.changeSwitchState(relevantId, action.newState)
+            } else if (action is FloatAction) {
+                api.changePercentage(relevantId, action.newValue)
             } else if (action is CommandAction) {
                 api.execute(
-                    controlId.substring(device.id.length + 1),
+                    relevantId,
                     object : UnifiedAPI.CallbackInterface {
                         override fun onItemsLoaded(
                             holder: UnifiedRequestCallback,

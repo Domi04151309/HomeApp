@@ -16,6 +16,7 @@ import io.github.domi04151309.home.data.UnifiedRequestCallback
 import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.Global.volleyError
+import io.github.domi04151309.home.helpers.HueUtils
 import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
 import org.json.JSONArray
 import org.json.JSONObject
@@ -120,6 +121,13 @@ class HueAPI(
         state: Boolean,
     ) {
         switchGroupById(id, state)
+    }
+
+    override fun changePercentage(
+        id: String,
+        percentage: Float,
+    ) {
+        changeBrightnessOfGroup(id, (percentage / MAX_PERCENTAGE * HueUtils.MAX_BRIGHTNESS).toInt())
     }
 
     fun loadLightsByIds(
