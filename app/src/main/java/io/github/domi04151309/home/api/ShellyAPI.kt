@@ -155,9 +155,8 @@ class ShellyAPI(
                                     null,
                                     { statusResponse ->
                                         callback.onStatesLoaded(
-                                            parser.parseStates(settingsResponse, statusResponse),
+                                            parser.parseResponse(settingsResponse, statusResponse),
                                             offset,
-                                            dynamicSummaries,
                                         )
                                     },
                                     { },
@@ -179,9 +178,8 @@ class ShellyAPI(
                                     null,
                                     { statusResponse ->
                                         callback.onStatesLoaded(
-                                            parser.parseStates(configResponse, statusResponse),
+                                            parser.parseResponse(configResponse, statusResponse),
                                             offset,
-                                            dynamicSummaries,
                                         )
                                     },
                                     { },

@@ -29,13 +29,11 @@ open class UnifiedAPI(
 
     interface RealTimeStatesCallback {
         fun onStatesLoaded(
-            states: List<Boolean?>,
+            states: List<ListViewItem>,
             offset: Int,
-            dynamicSummary: Boolean,
         )
     }
 
-    var dynamicSummaries: Boolean = true
     var needsRealTimeData: Boolean = false
 
     protected val url: String = Devices(c).getDeviceById(deviceId).address
@@ -75,8 +73,6 @@ open class UnifiedAPI(
 
     open class Parser(protected val resources: Resources, protected val api: UnifiedAPI? = null) {
         open fun parseResponse(response: JSONObject): List<ListViewItem> = listOf()
-
-        open fun parseStates(response: JSONObject): List<Boolean?> = listOf()
     }
 
     companion object {

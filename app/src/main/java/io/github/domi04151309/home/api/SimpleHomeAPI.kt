@@ -22,10 +22,6 @@ class SimpleHomeAPI(
 ) : UnifiedAPI(c, deviceId, recyclerViewInterface) {
     private val parser = SimpleHomeAPIParser(c.resources, this)
 
-    init {
-        dynamicSummaries = false
-    }
-
     override fun loadList(
         callback: CallbackInterface,
         extended: Boolean,
@@ -65,9 +61,8 @@ class SimpleHomeAPI(
                 null,
                 { infoResponse ->
                     callback.onStatesLoaded(
-                        parser.parseStates(infoResponse),
+                        parser.parseResponse(infoResponse),
                         offset,
-                        dynamicSummaries,
                     )
                 },
                 { },

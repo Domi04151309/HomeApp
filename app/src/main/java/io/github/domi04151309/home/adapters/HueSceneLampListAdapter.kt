@@ -100,11 +100,8 @@ class HueSceneLampListAdapter(
         resources: Resources,
         item: SceneListItem,
     ): String =
-        resources.getString(
-            if (item.state) R.string.str_on else R.string.str_off,
-        ) +
-            " · " + resources.getString(R.string.hue_brightness) +
-            ": " + if (item.state) item.brightness else "0%"
+        resources.getString(R.string.hue_brightness) +
+            ": " + if (item.state) item.brightness else "0 %"
 
     private fun getPosFromId(id: Long): Int = items.indices.indexOfFirst { getItemId(it) == id }
 

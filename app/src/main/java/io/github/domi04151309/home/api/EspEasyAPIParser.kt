@@ -110,67 +110,6 @@ class EspEasyAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.Pars
         return listItems
     }
 
-    override fun parseStates(response: JSONObject): List<Boolean?> {
-        val listItems = mutableListOf<Boolean?>()
-
-        // sensors
-        val sensors = response.optJSONArray("Sensors") ?: JSONArray()
-        for (sensorId in 0 until sensors.length()) {
-            val currentSensor = sensors.getJSONObject(sensorId)
-            if (currentSensor.optString("TaskEnabled", FALSE).equals(FALSE)) {
-                continue
-            }
-
-            val type = currentSensor.optString("Type")
-            if (type.startsWith("Environment")) {
-                listItems.addAll(parseEnvironmentStates(type, currentSensor))
-            } else if (type.startsWith("Switch")) {
-                listItems.addAll(parseSwitchStates(type, currentSensor))
-            }
-        }
-
-        return listItems
-    }
-
-    private fun parseEnvironmentStates(
-        type: String,
-        currentSensor: JSONObject,
-    ): List<Boolean?> {
-        val listItems = mutableListOf<Boolean?>()
-        var tasks = 0
-        @Suppress("MagicNumber")
-        when (type) {
-            "Environment - BMx280" -> tasks += 3
-            "Environment - DHT11/12/22  SONOFF2301/7021" -> tasks += 2
-            "Environment - DS18b20" -> tasks++
-        }
-
-        for (taskId in 0 until tasks) {
-            if (
-                !currentSensor.getJSONArray(TASK_VALUES)
-                    .getJSONObject(taskId)
-                    .getString(VALUE)
-                    .equals("nan")
-            ) {
-                listItems += null
-            }
-        }
-        return listItems
-    }
-
-    private fun parseSwitchStates(
-        type: String,
-        currentSensor: JSONObject,
-    ): List<Boolean?> {
-        val listItems = mutableListOf<Boolean?>()
-        when (type) {
-            "Switch input - Switch" -> {
-                listItems += currentSensor.getJSONArray(TASK_VALUES).getJSONObject(0).getInt(VALUE) > 0
-            }
-        }
-        return listItems
-    }
-
     companion object {
         private const val FALSE = "false"
         private const val TASK_VALUES = "TaskValues"

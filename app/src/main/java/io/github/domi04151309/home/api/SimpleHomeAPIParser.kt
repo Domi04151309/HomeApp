@@ -28,22 +28,6 @@ class SimpleHomeAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.P
         return listItems
     }
 
-    override fun parseStates(response: JSONObject): List<Boolean?> {
-        val listItems: ArrayList<Boolean?> = ArrayList(response.length())
-        val commands = response.optJSONObject("commands") ?: return listItems
-        var currentObject: JSONObject
-        for (i in commands.keys()) {
-            currentObject = commands.getJSONObject(i)
-            listItems +=
-                if (currentObject.optString("mode", "action") == SWITCH) {
-                    currentObject.optBoolean("data", false)
-                } else {
-                    null
-                }
-        }
-        return listItems
-    }
-
     companion object {
         private const val SWITCH = "switch"
     }

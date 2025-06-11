@@ -100,16 +100,6 @@ class MainActivity : BaseActivity() {
                 state: Boolean,
             ) {
                 if (data.hidden.isEmpty()) return
-                if (unified?.dynamicSummaries == true) {
-                    view.findViewById<TextView>(R.id.summary).text =
-                        resources.getString(
-                            if (state) {
-                                R.string.switch_summary_on
-                            } else {
-                                R.string.switch_summary_off
-                            },
-                        )
-                }
                 unified?.changeSwitchState(data.hidden, state)
             }
 
@@ -123,18 +113,14 @@ class MainActivity : BaseActivity() {
     private val unifiedRealTimeStatesCallback =
         object : UnifiedAPI.RealTimeStatesCallback {
             override fun onStatesLoaded(
-                states: List<Boolean?>,
+                states: List<ListViewItem>,
                 offset: Int,
-                dynamicSummary: Boolean,
             ) {
                 for (i in states.indices) {
-                    if (states[i] != null) {
-                        adapter.updateSwitch(
-                            i + offset,
-                            states[i] ?: return,
-                            dynamicSummary,
-                        )
-                    }
+                    adapter.updateItem(
+                        i + offset,
+                        states[i],
+                    )
                 }
             }
         }
@@ -182,18 +168,11 @@ class MainActivity : BaseActivity() {
                 if (data.hidden.isEmpty()) return
 
                 val deviceId = data.hidden.substring(0, data.hidden.indexOf('@'))
-                val api = Global.getCorrectAPI(this@MainActivity, devices.getDeviceById(deviceId).mode, deviceId)
-                if (api.dynamicSummaries) {
-                    view.findViewById<TextView>(R.id.summary).text =
-                        resources.getString(
-                            if (state) {
-                                R.string.switch_summary_on
-                            } else {
-                                R.string.switch_summary_off
-                            },
-                        )
-                }
-                api.changeSwitchState(data.hidden.substring(deviceId.length + 1), state)
+                Global.getCorrectAPI(
+                    this@MainActivity,
+                    devices.getDeviceById(deviceId).mode,
+                    deviceId,
+                ).changeSwitchState(data.hidden.substring(deviceId.length + 1), state)
             }
 
             override fun onItemClicked(

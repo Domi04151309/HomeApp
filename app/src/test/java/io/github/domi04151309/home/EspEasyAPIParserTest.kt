@@ -55,27 +55,11 @@ class EspEasyAPIParserTest {
     }
 
     @Test
-    fun parseStates1() {
-        val infoJson = JSONObject(Helpers.getFileContents("/espeasy/espeasy-1.json"))
-
-        val states = parser.parseStates(infoJson)
-        assertThat(states, `is`(listOf(null, null, null, false)))
-    }
-
-    @Test
     fun parseInfoDisabledTasks() {
         val infoJson = JSONObject(Helpers.getFileContents("/espeasy/espeasy-disabledtasks.json"))
 
         val listItems = parser.parseResponse(infoJson)
         assertThat(listItems.size, `is`(0))
-    }
-
-    @Test
-    fun parseStatesDisabledTasks() {
-        val infoJson = JSONObject(Helpers.getFileContents("/espeasy/espeasy-disabledtasks.json"))
-
-        val states = parser.parseStates(infoJson)
-        assertThat(states, `is`(listOf()))
     }
 
     @Test
@@ -93,14 +77,6 @@ class EspEasyAPIParserTest {
         assertThat(listItems[num].state, `is`(null as Boolean?))
         assertThat(listItems[num].hidden, `is`(""))
         assertThat(listItems[num].icon, `is`(R.drawable.ic_device_hygrometer))
-    }
-
-    @Test
-    fun parseStatesHideNanSensorValues() {
-        val infoJson = JSONObject(Helpers.getFileContents("/espeasy/espeasy-nan.json"))
-
-        val states = parser.parseStates(infoJson)
-        assertThat(states, `is`(listOf(null)))
     }
 
     @Test
@@ -131,13 +107,5 @@ class EspEasyAPIParserTest {
         assertThat(listItems[num].state, `is`(null as Boolean?))
         assertThat(listItems[num].hidden, `is`(""))
         assertThat(listItems[num].icon, `is`(R.drawable.ic_device_gauge))
-    }
-
-    @Test
-    fun parseStatesPressure() {
-        val infoJson = JSONObject(Helpers.getFileContents("/espeasy/espeasy-pressure.json"))
-
-        val states = parser.parseStates(infoJson)
-        assertThat(states, `is`(listOf(null, null, null)))
     }
 }

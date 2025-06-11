@@ -203,61 +203,6 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
         return listItems
     }
 
-    fun parseStates(
-        config: JSONObject,
-        status: JSONObject,
-    ): List<Boolean?> = if (version == 1) parseStatesV1(config, status) else parseStatesV2(config, status)
-
-    private fun parseStatesV1(
-        settings: JSONObject,
-        status: JSONObject,
-    ): List<Boolean?> {
-        val listItems = mutableListOf<Boolean?>()
-
-        // switches
-        val relays = settings.optJSONArray("relays") ?: JSONArray()
-        var currentRelay: JSONObject
-        var hideMeters = false
-        for (relayId in 0 until relays.length()) {
-            currentRelay = relays.getJSONObject(relayId)
-            listItems += currentRelay.getBoolean("ison")
-            // Shelly1 has the "user power constant" setting, but no actual meter
-            hideMeters = currentRelay.has("power")
-        }
-
-        // power meters
-        val meters = if (hideMeters) JSONArray() else status.optJSONArray("meters") ?: JSONArray()
-        for (meterId in 0 until meters.length()) {
-            listItems += null
-        }
-
-        // external temperature sensors
-        val tempSensors = status.optJSONObject("ext_temperature") ?: JSONObject()
-        for (sensorId in tempSensors.keys()) {
-            listItems += null
-        }
-
-        // external humidity sensors
-        val humSensors = status.optJSONObject("ext_humidity") ?: JSONObject()
-        for (sensorId in humSensors.keys()) {
-            listItems += null
-        }
-
-        return listItems
-    }
-
-    private fun parseStatesV2(
-        config: JSONObject,
-        status: JSONObject,
-    ): List<Boolean?> {
-        val listItems = mutableListOf<Boolean?>()
-        for (switchKey in config.keys()) {
-            if (!switchKey.startsWith("switch:")) continue
-            listItems += status.getJSONObject(switchKey).getBoolean("output")
-        }
-        return listItems
-    }
-
     private fun nameOrDefault(
         name: String,
         id: Int,

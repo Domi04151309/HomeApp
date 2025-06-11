@@ -30,7 +30,6 @@ class HueAPI(
     var readyForRequest: Boolean = true
 
     init {
-        dynamicSummaries = false
         needsRealTimeData = true
     }
 
@@ -98,7 +97,7 @@ class HueAPI(
                 url + "api/${getUsername()}/groups",
                 null,
                 { response ->
-                    callback.onStatesLoaded(parser.parseStates(response), offset, dynamicSummaries)
+                    callback.onStatesLoaded(parser.parseResponse(response), offset)
                 },
                 { },
             )

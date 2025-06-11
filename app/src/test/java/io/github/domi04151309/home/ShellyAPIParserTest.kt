@@ -44,15 +44,6 @@ class ShellyAPIParserTest {
     }
 
     @Test
-    fun parseStatesJsonV1_shellyPlug1WithPowerMeter() {
-        val settingsJson = JSONObject(Helpers.getFileContents("/shelly/shellyplug1-settings.json"))
-        val statusJson = JSONObject(Helpers.getFileContents("/shelly/shellyplug1-status.json"))
-
-        val states = parserV1.parseStates(settingsJson, statusJson)
-        assertThat(states, `is`(listOf(true, null)))
-    }
-
-    @Test
     fun parseListItemsJsonV1_shellyPlug1ApplianceTypesForIcons() {
         val settingsJson = JSONObject(Helpers.getFileContents("/shelly/shellyplug1-icons-settings.json"))
         val statusJson = JSONObject(Helpers.getFileContents("/shelly/shellyplug1-icons-status.json"))
@@ -122,15 +113,6 @@ class ShellyAPIParserTest {
     }
 
     @Test
-    fun parseStatesJsonV1_shelly1WithTemperatureNoRelayName() {
-        val settingsJson = JSONObject(Helpers.getFileContents("/shelly/shelly1-settings.json"))
-        val statusJson = JSONObject(Helpers.getFileContents("/shelly/shelly1-status.json"))
-
-        val states = parserV1.parseStates(settingsJson, statusJson)
-        assertThat(states, `is`(listOf(false, null, null)))
-    }
-
-    @Test
     fun parseListItemsJsonV2_shellyPlus1() {
         val configJson = JSONObject(Helpers.getFileContents("/shelly/shelly-plus-1-Shelly.GetConfig.json"))
         val statusJson = JSONObject(Helpers.getFileContents("/shelly/shelly-plus-1-Shelly.GetStatus.json"))
@@ -144,15 +126,6 @@ class ShellyAPIParserTest {
         assertThat(listItems[num].state, `is`(true))
         assertThat(listItems[num].hidden, `is`("0"))
         assertThat(listItems[num].icon, `is`(R.drawable.ic_device_lamp))
-    }
-
-    @Test
-    fun parseStatesJsonV2_shellyPlus1() {
-        val configJson = JSONObject(Helpers.getFileContents("/shelly/shelly-plus-1-Shelly.GetConfig.json"))
-        val statusJson = JSONObject(Helpers.getFileContents("/shelly/shelly-plus-1-Shelly.GetStatus.json"))
-
-        val states = parserV2.parseStates(configJson, statusJson)
-        assertThat(states, `is`(listOf(true)))
     }
 
     @Test

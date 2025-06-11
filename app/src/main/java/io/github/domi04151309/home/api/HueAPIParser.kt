@@ -4,6 +4,7 @@ import android.content.res.Resources
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.data.ListViewItem
 import io.github.domi04151309.home.data.SimpleListItem
+import io.github.domi04151309.home.helpers.HueUtils
 import org.json.JSONObject
 import java.util.TreeMap
 import kotlin.collections.ArrayList
@@ -36,42 +37,36 @@ class HueAPIParser(resources: Resources) : UnifiedAPI.Parser(resources) {
         return listItems
     }
 
-    override fun parseStates(response: JSONObject): List<Boolean?> {
-        val states: ArrayList<Boolean?> = ArrayList(response.length())
-        val rooms: TreeMap<String, Pair<String, Boolean?>> = TreeMap()
-        val zones: TreeMap<String, Pair<String, Boolean?>> = TreeMap()
-        var currentObject: JSONObject
-        for (i in response.keys()) {
-            currentObject = response.getJSONObject(i)
-            when (currentObject.getString("type")) {
-                "Room" ->
-                    rooms[currentObject.getString("name")] =
-                        Pair(i, currentObject.optJSONObject(STATE)?.optBoolean(ANY_ON))
-                "Zone" ->
-                    zones[currentObject.getString("name")] =
-                        Pair(i, currentObject.optJSONObject(STATE)?.optBoolean(ANY_ON))
-            }
-        }
-        for (i in rooms.keys) states.add(rooms[i]?.second)
-        for (i in zones.keys) states.add(zones[i]?.second)
-        return states
-    }
-
     private fun parseGroupObj(
         pair: Pair<String, JSONObject>,
         isZone: Boolean,
-    ): ListViewItem =
-        ListViewItem(
+    ): ListViewItem {
+        val state = pair.second.optJSONObject(STATE)?.optBoolean(ANY_ON)
+        val value =
+            pair.second.optJSONObject(ACTION)?.optInt(
+                BRI,
+                HueUtils.MAX_BRIGHTNESS,
+            ) ?: HueUtils.MAX_BRIGHTNESS
+        return ListViewItem(
             title = pair.second.getString("name"),
-            summary = resources.getString(R.string.hue_tap),
+            summary =
+                resources.getString(R.string.hue_brightness) +
+                    ": " + if (state == true) HueUtils.briToPercent(value) else "0 %",
             hidden = pair.first,
             icon = if (isZone) R.drawable.ic_zone else R.drawable.ic_room,
-            state = pair.second.optJSONObject(STATE)?.optBoolean(ANY_ON),
+            state = state,
+            min = 0,
+            max = HueUtils.MAX_BRIGHTNESS,
+            value = value,
         )
+    }
 
     companion object {
         private const val STATE = "state"
         private const val ANY_ON = "any_on"
+
+        private const val ACTION = "action"
+        private const val BRI = "bri"
 
         fun parseHueConfig(
             resources: Resources,

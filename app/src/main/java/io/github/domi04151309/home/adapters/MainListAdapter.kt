@@ -115,33 +115,28 @@ class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapt
         }
     }
 
-    fun updateSwitch(
+    fun updateItem(
         position: Int,
-        state: Boolean,
-        dynamicSummary: Boolean,
+        item: ListViewItem,
     ) {
         if (position > items.size - 1) {
-            Log.w(Global.LOG_TAG, "The position $position with value $state is larger than the item count")
+            Log.w(Global.LOG_TAG, "The position $position is larger than the item count")
             return
         }
-        if (items[position].state != state) {
-            items[position].state = state
-            val viewHolder = attachedTo.findViewHolderForAdapterPosition(position) as? ViewHolder
-            if (viewHolder == null) {
-                notifyItemChanged(position)
-            } else {
-                viewHolder.stateSwitch.isChecked = state
-                if (dynamicSummary) {
-                    viewHolder.summary.text =
-                        attachedTo.context.resources.getString(
-                            if (state) {
-                                R.string.switch_summary_on
-                            } else {
-                                R.string.switch_summary_off
-                            },
-                        )
-                }
-            }
+
+        if (items[position].summary == item.summary && items[position].state == item.state) {
+            return
+        }
+
+        items[position].summary = item.summary
+        items[position].state = item.state
+
+        val viewHolder = attachedTo.findViewHolderForAdapterPosition(position) as? ViewHolder
+        if (viewHolder == null) {
+            notifyItemChanged(position)
+        } else {
+            viewHolder.summary.text = item.summary
+            viewHolder.stateSwitch.isChecked = item.state == true
         }
     }
 

@@ -75,6 +75,9 @@ class HueLampListAdapter(
                 changed.add(i)
             } else {
                 val holder = (recyclerView.findViewHolderForAdapterPosition(i) ?: return) as ViewHolder
+                if (items[i].summary != newItems[i].summary) {
+                    holder.summary.text = newItems[i].summary
+                }
                 if (items[i].state != newItems[i].state) {
                     holder.stateSwitch.isChecked = newItems[i].state == true
                 }

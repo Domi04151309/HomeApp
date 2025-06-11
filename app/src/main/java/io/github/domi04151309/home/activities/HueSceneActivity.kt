@@ -147,7 +147,7 @@ class HueSceneActivity :
         )
 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
-            onFloatingActionButtnClicked()
+            onFloatingActionButtonClicked()
         }
 
         findViewById<MaterialToolbar>(R.id.toolbar).apply {
@@ -279,7 +279,7 @@ class HueSceneActivity :
             },
         )
 
-    private fun onFloatingActionButtnClicked() {
+    private fun onFloatingActionButtonClicked() {
         val name = nameBox.editText?.text.toString()
         if (name == "") {
             MaterialAlertDialogBuilder(this)

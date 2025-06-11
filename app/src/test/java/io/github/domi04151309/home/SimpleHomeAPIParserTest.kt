@@ -39,14 +39,6 @@ class SimpleHomeAPIParserTest {
     }
 
     @Test
-    fun parseStates_TemperatureSensor() {
-        val commandsJson = JSONObject(Helpers.getFileContents("/simplehome/temperature-sensor-commands.json"))
-
-        val states = parser.parseStates(commandsJson)
-        assertThat(states, `is`(listOf(null, null)))
-    }
-
-    @Test
     fun parseListItems_TestServer() {
         val commandsJson = JSONObject(Helpers.getFileContents("/simplehome/test-server-commands.json"))
 
@@ -87,13 +79,5 @@ class SimpleHomeAPIParserTest {
         assertThat(listItems[num].state, `is`(null as Boolean?))
         assertThat(listItems[num].hidden, `is`("action@rand"))
         assertThat(listItems[num].icon, `is`(R.drawable.ic_do))
-    }
-
-    @Test
-    fun parseStates_TestServer() {
-        val commandsJson = JSONObject(Helpers.getFileContents("/simplehome/test-server-commands.json"))
-
-        val states = parser.parseStates(commandsJson)
-        assertThat(states, `is`(listOf(null, null, null, true, null)))
     }
 }

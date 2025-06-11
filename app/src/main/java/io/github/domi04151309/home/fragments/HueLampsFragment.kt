@@ -89,15 +89,18 @@ class HueLampsFragment :
         )
     }
 
+    @Suppress("CognitiveComplexMethod")
     override fun onLightsLoaded(response: JSONObject?) {
         if (response != null) {
             var currentObject: JSONObject
             var currentState: JSONObject
+            var state: Boolean?
             val listItems: MutableList<ListViewItem> = mutableListOf()
             val colorArray: MutableList<Int> = mutableListOf()
             for (i in response.keys()) {
                 currentObject = response.optJSONObject(i) ?: JSONObject()
                 currentState = currentObject.optJSONObject("state") ?: JSONObject()
+                state = currentState.optBoolean("on")
                 colorArray +=
                     if (currentState.has("hue") && currentState.has("sat")) {
                         HueUtils.hueSatToRGB(
@@ -114,12 +117,23 @@ class HueLampsFragment :
                         title = currentObject.optString("name"),
                         summary =
                             if (currentState.optBoolean("reachable")) {
-                                resources.getString(R.string.hue_tap)
+                                resources.getString(R.string.hue_brightness) +
+                                    ": " +
+                                    if (state) {
+                                        HueUtils.briToPercent(
+                                            currentState.optInt(
+                                                "bri",
+                                                HueUtils.MAX_BRIGHTNESS,
+                                            ),
+                                        )
+                                    } else {
+                                        "0 %"
+                                    }
                             } else {
                                 resources.getString(R.string.str_unreachable)
                             },
                         hidden = i,
-                        state = currentState.optBoolean("on"),
+                        state = state,
                     )
             }
             adapter.updateData(recyclerView, listItems, colorArray)
