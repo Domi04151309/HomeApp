@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:paddingTop="?attr/actionBarSize"
     android:paddingStart="?dialogPreferredPadding"
+    android:paddingBottom="@dimen/dialog_item_margin"
     android:paddingEnd="?dialogPreferredPadding">
 
     <RelativeLayout
@@ -72,12 +74,6 @@
                 android:text="@string/str_on" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
-
-    <TextView
-        android:id="@+id/briTxt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/hue_brightness" />
 
     <com.google.android.material.slider.Slider
         android:id="@+id/briBar"

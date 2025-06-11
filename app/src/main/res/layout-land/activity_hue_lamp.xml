@@ -5,17 +5,36 @@
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
-    <ScrollView
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
 
-        <include layout="@layout/hue_controls" />
-    </ScrollView>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <include layout="@layout/hue_controls" />
+        </ScrollView>
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/top_app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?attr/actionBarSize" />
+        </com.google.android.material.appbar.AppBarLayout>
+    </FrameLayout>
 
     <View
         android:layout_width="1dp"
         android:layout_height="match_parent"
+        android:layout_marginVertical="?dialogPreferredPadding"
         android:alpha="?android:attr/disabledAlpha"
         android:background="?android:attr/textColorSecondary" />
 

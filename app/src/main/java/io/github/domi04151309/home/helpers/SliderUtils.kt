@@ -12,7 +12,7 @@ import com.google.android.material.slider.Slider
 
 object SliderUtils {
     private const val CORNER_RADIUS = 16
-    private const val MARGIN_VERTICAL = 22
+    private const val MARGIN_VERTICAL = 16
     private const val MARGIN_HORIZONTAL = 14
     private const val ANIMATION_DURATION = 300L
 

@@ -53,6 +53,7 @@
             android:theme="@style/Theme.Material3.DayNight.NoActionBar" />
         <activity
             android:name=".activities.HueLampActivity"
+            android:theme="@style/Theme.Material3.DayNight.NoActionBar"
             android:parentActivityName=".activities.MainActivity" />
         <activity
             android:name=".activities.MainActivity"

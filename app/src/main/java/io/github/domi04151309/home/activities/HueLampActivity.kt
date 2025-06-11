@@ -8,13 +8,13 @@ import android.graphics.Color
 import android.graphics.drawable.Icon
 import android.os.Build
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.widget.Toolbar
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.ImageViewCompat
 import androidx.viewpager2.widget.ViewPager2
@@ -22,6 +22,8 @@ import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.slider.Slider
 import com.google.android.material.tabs.TabLayoutMediator
 import io.github.domi04151309.home.R
@@ -38,7 +40,7 @@ import io.github.domi04151309.home.helpers.UpdateHandler
 import io.github.domi04151309.home.interfaces.HueRoomInterface
 import org.json.JSONArray
 
-class HueLampActivity : BaseActivity(), HueRoomInterface {
+class HueLampActivity : BaseActivity(), HueRoomInterface, Toolbar.OnMenuItemClickListener {
     override var addressPrefix: String = ""
     override var id: String = ""
     override var lights: JSONArray? = null
@@ -61,6 +63,8 @@ class HueLampActivity : BaseActivity(), HueRoomInterface {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hue_lamp)
 
+        window.statusBarColor = SurfaceColors.SURFACE_0.getColor(this)
+
         id = intent.getStringExtra("id") ?: "0"
         if (intent.hasExtra(Devices.INTENT_EXTRA_DEVICE)) {
             val extraDevice = intent.getStringExtra(Devices.INTENT_EXTRA_DEVICE) ?: ""
@@ -77,7 +81,6 @@ class HueLampActivity : BaseActivity(), HueRoomInterface {
         hueAPI = HueAPI(this, device.id)
         addressPrefix = device.address + "api/" + hueAPI.getUsername()
         queue = Volley.newRequestQueue(this)
-        title = device.name
         lampIcon = findViewById(R.id.lampIcon)
         nameText = findViewById(R.id.nameTxt)
         brightnessText = findViewById(R.id.briTxt)
@@ -105,6 +108,15 @@ class HueLampActivity : BaseActivity(), HueRoomInterface {
             if (canReceiveRequest && hueAPI.readyForRequest) {
                 queue.add(updateDataRequest)
             }
+        }
+
+        findViewById<MaterialToolbar>(R.id.toolbar).apply {
+            setNavigationIcon(R.drawable.ic_arrow_back)
+            setNavigationOnClickListener {
+                onBackPressedDispatcher.onBackPressed()
+            }
+            inflateMenu(R.menu.activity_hue_lamp_actions)
+            setOnMenuItemClickListener(this@HueLampActivity)
         }
     }
 
@@ -223,13 +235,8 @@ class HueLampActivity : BaseActivity(), HueRoomInterface {
         )
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.activity_hue_lamp_actions, menu)
-        return true
-    }
-
     @Suppress("ReturnCount")
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    override fun onMenuItemClick(item: MenuItem): Boolean {
         if (item.itemId != R.id.action_add_shortcut) return super.onOptionsItemSelected(item)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val shortcutManager = getSystemService(ShortcutManager::class.java) ?: return true
