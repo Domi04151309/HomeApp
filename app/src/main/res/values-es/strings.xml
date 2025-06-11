@@ -41,7 +41,6 @@
     <string name="pref_devices">Dispositivos</string>
     <string name="pref_edit">Editar lista de dispositivos</string>
     <string name="pref_edit_summary">Editar la lista de dispositivos</string>
-    <string name="pref_edit_device">Editar dispositivo</string>
     <string name="pref_delete_device_question">¿Estás seguro de que quieres borrar este dispositivo?</string>
     <string name="pref_add_shortcut">Añadir a la pantalla de inicio</string>
     <string name="pref_add_shortcut_failed">Los atajos no están soportados por el sistema</string>

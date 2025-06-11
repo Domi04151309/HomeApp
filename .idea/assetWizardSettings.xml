@@ -147,8 +147,8 @@
                           <map>
                             <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="icons8_raspberry_pi" />
-                            <entry key="sourceFile" value="/mnt/D404B62904B60E8C/GITHUB/Android/HomeApp/icons8-raspberry-pi.svg" />
+                            <entry key="outputName" value="ic_arrow_back" />
+                            <entry key="sourceFile" value="/mnt/D404B62904B60E8C/GITHUB/Android/HomeApp/arrow_back_24dp__FILL0_wght400_GRAD0_opsz24.svg" />
                           </map>
                         </option>
                       </PersistentState>

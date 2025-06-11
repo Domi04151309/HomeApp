@@ -41,7 +41,6 @@
     <string name="pref_devices">Apparaten</string>
     <string name="pref_edit">Apparaatlijst bewerken</string>
     <string name="pref_edit_summary">Bewerk de lijst met apparaten</string>
-    <string name="pref_edit_device">Apparaat bewerken</string>
     <string name="pref_delete_device_question">Weet je zeker dat je dit apparaat wilt verwijderen?</string>
     <string name="pref_add_shortcut">Toevoegen aan startscherm</string>
     <string name="pref_add_shortcut_failed">Je systeem heeft geen ondersteuning voor snelkoppelingen</string>

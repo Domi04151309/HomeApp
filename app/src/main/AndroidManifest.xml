@@ -83,8 +83,8 @@
             android:parentActivityName=".activities.SettingsActivity" />
         <activity
             android:name=".activities.EditDeviceActivity"
-            android:label="@string/pref_add"
             android:launchMode="singleTop"
+            android:theme="@style/Theme.Material3.DayNight.NoActionBar"
             android:parentActivityName=".activities.DevicesActivity" />
         <activity
             android:name=".activities.DeviceInfoActivity"

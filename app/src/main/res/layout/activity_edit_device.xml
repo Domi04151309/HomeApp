@@ -13,6 +13,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="?attr/actionBarSize"
             android:orientation="vertical">
 
             <LinearLayout
@@ -53,6 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="@dimen/dialog_item_margin"
+                android:layout_marginHorizontal="?dialogPreferredPadding"
                 android:alpha="?android:attr/disabledAlpha"
                 android:background="?android:attr/textColorSecondary" />
 
@@ -128,6 +130,7 @@
                 android:id="@+id/specialDivider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginHorizontal="?dialogPreferredPadding"
                 android:alpha="?android:attr/disabledAlpha"
                 android:background="?android:attr/textColorSecondary" />
 
@@ -171,6 +174,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginHorizontal="?dialogPreferredPadding"
                 android:alpha="?android:attr/disabledAlpha"
                 android:background="?android:attr/textColorSecondary" />
 
@@ -198,6 +202,7 @@
                 android:id="@+id/editDivider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginHorizontal="?dialogPreferredPadding"
                 android:alpha="?android:attr/disabledAlpha"
                 android:background="?android:attr/textColorSecondary" />
 
@@ -255,6 +260,19 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/top_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize" />
+    </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"

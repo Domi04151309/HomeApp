@@ -18,7 +18,9 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.net.toUri
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputLayout
 import io.github.domi04151309.home.R
@@ -51,6 +53,8 @@ class EditDeviceActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_device)
+
+        window.statusBarColor = SurfaceColors.SURFACE_0.getColor(this)
 
         devices = Devices(this)
         var deviceId = intent.getStringExtra("deviceId")
@@ -103,6 +107,13 @@ class EditDeviceActivity : BaseActivity() {
 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
             onFloatingActionButtonClicked()
+        }
+
+        findViewById<MaterialToolbar>(R.id.toolbar).apply {
+            setNavigationIcon(R.drawable.ic_arrow_back)
+            setNavigationOnClickListener {
+                onBackPressedDispatcher.onBackPressed()
+            }
         }
     }
 
@@ -175,7 +186,6 @@ class EditDeviceActivity : BaseActivity() {
         }
 
     private fun onEditDevice() {
-        title = resources.getString(R.string.pref_edit_device)
         val device = devices.getDeviceById(deviceId)
         nameBox.editText?.setText(device.name)
         addressBox.editText?.setText(device.address)
