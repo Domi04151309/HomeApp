@@ -90,7 +90,7 @@ class HueLampActivity : BaseActivity(), HueRoomInterface, Toolbar.OnMenuItemClic
 
         val viewPager = findViewById<ViewPager2>(R.id.viewPager)
         viewPager.isUserInputEnabled = false
-        viewPager.adapter = HueDetailsTabAdapter(this)
+        viewPager.adapter = HueDetailsTabAdapter(this, this)
         viewPager.setCurrentItem(1, false)
 
         val tabIcons =

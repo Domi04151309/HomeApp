@@ -23,8 +23,7 @@ import io.github.domi04151309.home.helpers.HueUtils.MIN_COLOR_TEMPERATURE
 import io.github.domi04151309.home.helpers.SliderUtils
 import io.github.domi04151309.home.interfaces.HueRoomInterface
 
-class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
-    private lateinit var lampInterface: HueRoomInterface
+class HueColorFragment(private var lampInterface: HueRoomInterface) : Fragment(R.layout.fragment_hue_color) {
     private lateinit var hueAPI: HueAPI
     private lateinit var colorPickerView: ColorPickerView
     private lateinit var ctText: TextView
@@ -52,7 +51,6 @@ class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        lampInterface = context as HueRoomInterface
         hueAPI = HueAPI(requireContext(), lampInterface.device.id)
 
         val view =

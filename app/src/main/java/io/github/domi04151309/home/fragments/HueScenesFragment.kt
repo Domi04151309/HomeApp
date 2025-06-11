@@ -35,14 +35,13 @@ import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
 import org.json.JSONException
 import org.json.JSONObject
 
-class HueScenesFragment :
+class HueScenesFragment(private var lampInterface: HueLampInterface) :
     Fragment(R.layout.fragment_hue_scenes),
     RecyclerViewHelperInterface,
     Response.Listener<JSONObject> {
     private var scenesRequest: JsonObjectRequest? = null
     private var selectedScene: CharSequence = ""
     private var selectedSceneName: CharSequence = ""
-    private lateinit var lampData: HueLampInterface
     private lateinit var hueAPI: HueAPI
     private lateinit var queue: RequestQueue
     private lateinit var adapter: HueSceneGridAdapter
@@ -52,8 +51,7 @@ class HueScenesFragment :
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        lampData = context as HueLampInterface
-        hueAPI = HueAPI(requireContext(), lampData.device.id)
+        hueAPI = HueAPI(requireContext(), lampInterface.device.id)
         queue = Volley.newRequestQueue(context)
 
         val recyclerView = super.onCreateView(inflater, container, savedInstanceState) as RecyclerView
@@ -63,7 +61,7 @@ class HueScenesFragment :
 
         scenesRequest =
             JsonObjectRequest(
-                Request.Method.GET, lampData.addressPrefix + SCENES_PATH, null,
+                Request.Method.GET, lampInterface.addressPrefix + SCENES_PATH, null,
                 this,
             ) { error ->
                 Toast.makeText(
@@ -86,7 +84,7 @@ class HueScenesFragment :
                     queue.add(
                         JsonObjectRequest(
                             Request.Method.GET,
-                            lampData.addressPrefix + SCENES_PATH + scenes[i].first,
+                            lampInterface.addressPrefix + SCENES_PATH + scenes[i].first,
                             null,
                             { sceneResponse ->
                                 gridItems +=
@@ -137,7 +135,7 @@ class HueScenesFragment :
         var currentObject: JSONObject
         for (i in response.keys()) {
             currentObject = response.getJSONObject(i)
-            if (currentObject.optString("group") == lampData.id) {
+            if (currentObject.optString("group") == lampInterface.id) {
                 scenes.add(Pair(i, currentObject.getString("name")))
             }
         }
@@ -191,11 +189,11 @@ class HueScenesFragment :
             startActivity(
                 Intent(requireContext(), HueSceneActivity::class.java).putExtra(
                     "deviceId",
-                    lampData.device.id,
-                ).putExtra("room", lampData.id),
+                    lampInterface.device.id,
+                ).putExtra("room", lampInterface.id),
             )
         } else {
-            hueAPI.activateSceneOfGroup(lampData.id, hiddenText)
+            hueAPI.activateSceneOfGroup(lampInterface.id, hiddenText)
         }
     }
 
@@ -215,8 +213,8 @@ class HueScenesFragment :
             resources.getString(R.string.str_edit) -> {
                 startActivity(
                     Intent(requireContext(), HueSceneActivity::class.java)
-                        .putExtra("deviceId", lampData.device.id)
-                        .putExtra("room", lampData.id)
+                        .putExtra("deviceId", lampInterface.device.id)
+                        .putExtra("room", lampInterface.id)
                         .putExtra("scene", selectedScene),
                 )
                 true
@@ -229,7 +227,7 @@ class HueScenesFragment :
                         val deleteSceneRequest =
                             CustomJsonArrayRequest(
                                 Request.Method.DELETE,
-                                lampData.addressPrefix + SCENES_PATH + selectedScene,
+                                lampInterface.addressPrefix + SCENES_PATH + selectedScene,
                                 null,
                                 { queue.add(scenesRequest) },
                                 { e -> Log.e(Global.LOG_TAG, e.toString()) },

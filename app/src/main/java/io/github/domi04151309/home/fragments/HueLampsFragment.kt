@@ -25,13 +25,12 @@ import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
 import org.json.JSONArray
 import org.json.JSONObject
 
-class HueLampsFragment :
+class HueLampsFragment(private var lampInterface: HueRoomInterface) :
     Fragment(R.layout.fragment_hue_lamps),
     RecyclerViewHelperInterface,
     HueAdvancedLampInterface,
     HueAPI.RequestCallback,
     CompoundButton.OnCheckedChangeListener {
-    private lateinit var lampData: HueRoomInterface
     private lateinit var hueAPI: HueAPI
     private lateinit var queue: RequestQueue
     private lateinit var recyclerView: RecyclerView
@@ -48,12 +47,11 @@ class HueLampsFragment :
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        lampData = context as HueRoomInterface
-        hueAPI = HueAPI(requireContext(), lampData.device.id)
+        hueAPI = HueAPI(requireContext(), lampInterface.device.id)
         queue = Volley.newRequestQueue(context)
 
-        device = lampData.device
-        addressPrefix = lampData.addressPrefix
+        device = lampInterface.device
+        addressPrefix = lampInterface.addressPrefix
 
         recyclerView = super.onCreateView(inflater, container, savedInstanceState) as RecyclerView
 
@@ -67,8 +65,8 @@ class HueLampsFragment :
     override fun onStart() {
         super.onStart()
         updateHandler.setUpdateFunction {
-            if (lampData.canReceiveRequest && hueAPI.readyForRequest) {
-                hueAPI.loadLightsByIds(lampData.lights ?: JSONArray(), this)
+            if (lampInterface.canReceiveRequest && hueAPI.readyForRequest) {
+                hueAPI.loadLightsByIds(lampInterface.lights ?: JSONArray(), this)
             }
         }
     }
