@@ -6,6 +6,7 @@ import io.github.domi04151309.home.data.ListViewItem
 import io.github.domi04151309.home.helpers.Global
 import org.json.JSONArray
 import org.json.JSONObject
+import java.text.DecimalFormat
 
 class ShellyAPIParser(resources: Resources, private val version: Int) :
     UnifiedAPI.Parser(resources) {
@@ -140,26 +141,39 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
         pm1Status: JSONObject,
     ): List<ListViewItem> {
         val listItems = mutableListOf<ListViewItem>()
-        val currentId = pm1Config.getInt("id")
+        val currentId = pm1Config.getInt("id").toString()
+        val format = DecimalFormat("#.###")
 
         listItems +=
             ListViewItem(
-                title = "${pm1Status.getDouble("apower")} W",
+                title = "${format.format(pm1Status.getDouble("apower"))} W",
                 summary = resources.getString(R.string.shelly_powermeter_summary),
-                hidden = currentId.toString(),
+                hidden = currentId,
                 icon = R.drawable.ic_device_electricity,
             )
         listItems +=
             ListViewItem(
-                title = "${pm1Status.getDouble("current")} A",
+                title = "${format.format(pm1Status.getDouble("current"))} A",
                 summary = resources.getString(R.string.shelly_powermeter_current),
-                hidden = currentId.toString() + "c",
+                hidden = currentId + "c",
             )
         listItems +=
             ListViewItem(
-                title = "${pm1Status.getDouble("voltage")} V",
+                title = "${format.format(pm1Status.getDouble("voltage"))} V",
                 summary = resources.getString(R.string.shelly_powermeter_voltage),
-                hidden = currentId.toString() + "v",
+                hidden = currentId + "v",
+            )
+        listItems +=
+            ListViewItem(
+                title = "${format.format(pm1Status.getJSONObject("aenergy").getDouble("total") / KILO)} kWh",
+                summary = resources.getString(R.string.shelly_powermeter_energy),
+                hidden = currentId + "e",
+            )
+        listItems +=
+            ListViewItem(
+                title = "${format.format(pm1Status.getJSONObject("ret_aenergy").getDouble("total") / KILO)} kWh",
+                summary = resources.getString(R.string.shelly_powermeter_return_energy),
+                hidden = currentId + "rete",
             )
 
         return listItems
@@ -212,4 +226,8 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
         } else {
             name
         }
+
+    companion object {
+        private const val KILO = 1000
+    }
 }

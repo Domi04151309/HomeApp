@@ -60,6 +60,8 @@
     <string name="shelly_powermeter_summary">Aktueller Stromverbrauch</string>
     <string name="shelly_powermeter_current">Stromstärke</string>
     <string name="shelly_powermeter_voltage">Spannung</string>
+    <string name="shelly_powermeter_energy">Energie</string>
+    <string name="shelly_powermeter_return_energy">Zurückgeführte Energie</string>
     <string name="shelly_switch_title">Schalter %1$d</string>
     <string name="shelly_temperature_sensor_summary">Aktuelle Temperatur</string>
     <string name="shelly_wifi">W-Lan</string>
