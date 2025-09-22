@@ -40,7 +40,9 @@
     <string name="hue_bridge_id">Bridge ID</string>
     <string name="hue_bridge_software">Software Version</string>
     <string name="hue_bridge_zigbee">Zigbee Channel</string>
+    <string name="hue_bridge_dhcp">DHCP</string>
     <string name="hue_bridge_time_zone">Time Zone</string>
+    <string name="hue_users">Users</string>
     <string name="hue_controls">Controls</string>
     <string name="hue_lights">Lights</string>
     <string name="hue_room">Hue Room</string>

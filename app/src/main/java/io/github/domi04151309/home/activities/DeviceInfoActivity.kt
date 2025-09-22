@@ -111,6 +111,7 @@ class DeviceInfoActivity : BaseActivity(), RecyclerViewHelperInterface {
                 null,
                 { response ->
                     items.addAll(HueAPIParser.parseHueConfig(resources, response))
+                    items.addAll(HueAPIParser.parseHueUsers(this, resources, response))
 
                     queue.add(
                         JsonObjectRequest(
@@ -118,7 +119,7 @@ class DeviceInfoActivity : BaseActivity(), RecyclerViewHelperInterface {
                             "$addressPrefix/sensors",
                             null,
                             { innerResponse ->
-                                items.addAll(HueAPIParser.parseHueSensors(resources, innerResponse))
+                                items.addAll(HueAPIParser.parseHueSensors(this, resources, innerResponse))
 
                                 queue.add(
                                     JsonObjectRequest(
