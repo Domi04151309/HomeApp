@@ -42,7 +42,7 @@ class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapt
         ViewHolder(
             LayoutInflater
                 .from(parent.context)
-                .inflate(R.layout.list_item, parent, false),
+                .inflate(R.layout.list_item_main, parent, false),
         )
 
     override fun onBindViewHolder(
