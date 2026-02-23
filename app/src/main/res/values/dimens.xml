@@ -9,4 +9,10 @@
     <dimen name="header_size">96dp</dimen>
 
     <dimen name="list_padding_vertical">8dp</dimen>
+
+    <dimen name="card_padding_full">24dp</dimen>
+    <dimen name="card_padding_half">12dp</dimen>
+    <dimen name="card_padding_quarter">6dp</dimen>
+    <dimen name="card_padding_three_quarter">18dp</dimen>
+    <dimen name="card_padding_switch">8dp</dimen>
 </resources>

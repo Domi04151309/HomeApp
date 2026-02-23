@@ -48,7 +48,7 @@ class EspEasyAPIParserTest {
         // sensor 3: Switch in off mode
         num++
         assertThat(listItems[num].title, `is`("Relais"))
-        assertThat(listItems[num].summary, `is`(resources.getString(R.string.switch_summary_off)))
+        assertThat(listItems[num].summary, `is`(resources.getString(R.string.str_off)))
         assertThat(listItems[num].state, `is`(false))
         assertThat(listItems[num].hidden, `is`("12"))
         assertThat(listItems[num].icon, `is`(R.drawable.ic_do))

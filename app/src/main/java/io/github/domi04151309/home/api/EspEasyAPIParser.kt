@@ -95,9 +95,9 @@ class EspEasyAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.Pars
                         summary =
                             resources.getString(
                                 if (currentState) {
-                                    R.string.switch_summary_on
+                                    R.string.str_on
                                 } else {
-                                    R.string.switch_summary_off
+                                    R.string.str_off
                                 },
                             ),
                         hidden = gpioId,

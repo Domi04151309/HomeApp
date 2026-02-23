@@ -79,8 +79,6 @@
 
     <string name="input_title">Please enter something</string>
     <string name="input_hint">Input</string>
-    <string name="switch_summary_on">The switch is on</string>
-    <string name="switch_summary_off">The switch is off</string>
 
     <string name="webView">Web View</string>
     <string name="webView_open">Open in browser</string>

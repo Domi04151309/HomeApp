@@ -76,8 +76,6 @@
 
     <string name="input_title">Geben Sie etwas ein</string>
     <string name="input_hint">Eingabe</string>
-    <string name="switch_summary_on">Der Schalter ist an</string>
-    <string name="switch_summary_off">Der Schalter ist aus</string>
 
     <string name="webView">Internetansicht</string>
     <string name="webView_open">Im Browser öffnen</string>

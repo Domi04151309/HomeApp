@@ -52,9 +52,7 @@ class HueAPIParser(resources: Resources) : UnifiedAPI.Parser(resources) {
             ) ?: HueUtils.MAX_BRIGHTNESS
         return ListViewItem(
             title = pair.second.getString("name"),
-            summary =
-                resources.getString(R.string.hue_brightness) +
-                    ": " + if (state == true) HueUtils.briToPercent(value) else "0 %",
+            summary = if (state == true) HueUtils.briToPercent(value) else "0 %",
             hidden = pair.first,
             icon = if (isZone) R.drawable.ic_zone else R.drawable.ic_room,
             state = state,

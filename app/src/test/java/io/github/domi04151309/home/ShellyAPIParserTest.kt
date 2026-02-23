@@ -27,7 +27,7 @@ class ShellyAPIParserTest {
 
         var num = 0
         assertThat(listItems[num].title, `is`("Wohnzimmer Gartenfenster"))
-        assertThat(listItems[num].summary, `is`(resources.getString(R.string.switch_summary_on)))
+        assertThat(listItems[num].summary, `is`(resources.getString(R.string.str_on)))
         assertThat(listItems[num].state, `is`(true))
         assertThat(listItems[num].hidden, `is`("0"))
         assertThat(listItems[num].icon, `is`(R.drawable.ic_do))
@@ -86,7 +86,7 @@ class ShellyAPIParserTest {
 
         var num = 0
         assertThat(listItems[num].title, `is`(resources.getString(R.string.shelly_switch_title, 1)))
-        assertThat(listItems[num].summary, `is`(resources.getString(R.string.switch_summary_off)))
+        assertThat(listItems[num].summary, `is`(resources.getString(R.string.str_off)))
         assertThat(listItems[num].state, `is`(false))
         assertThat(listItems[num].hidden, `is`("0"))
         assertThat(listItems[num].icon, `is`(R.drawable.ic_do))
@@ -122,7 +122,7 @@ class ShellyAPIParserTest {
 
         val num = 0
         assertThat(listItems[num].title, `is`("Kamin"))
-        assertThat(listItems[num].summary, `is`(resources.getString(R.string.switch_summary_on)))
+        assertThat(listItems[num].summary, `is`(resources.getString(R.string.str_on)))
         assertThat(listItems[num].state, `is`(true))
         assertThat(listItems[num].hidden, `is`("0"))
         assertThat(listItems[num].icon, `is`(R.drawable.ic_device_lamp))

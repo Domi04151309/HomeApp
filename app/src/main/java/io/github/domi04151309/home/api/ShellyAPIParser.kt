@@ -56,9 +56,9 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
                     summary =
                         resources.getString(
                             if (currentState) {
-                                R.string.switch_summary_on
+                                R.string.str_on
                             } else {
-                                R.string.switch_summary_off
+                                R.string.str_off
                             },
                         ),
                     hidden = relayId.toString(),
@@ -198,9 +198,9 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
                 summary =
                     resources.getString(
                         if (currentState) {
-                            R.string.switch_summary_on
+                            R.string.str_on
                         } else {
-                            R.string.switch_summary_off
+                            R.string.str_off
                         },
                     ),
                 hidden = currentId.toString(),

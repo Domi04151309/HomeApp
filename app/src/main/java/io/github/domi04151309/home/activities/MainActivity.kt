@@ -609,7 +609,7 @@ class MainActivity : BaseActivity() {
                 Global.WEBSITE,
             )
         private const val TINY_DELAY = 100L
-        private const val COLUMN_COUNT_FRACTION = 240
+        private const val COLUMN_COUNT_FRACTION = 192
         private const val MAX_RESPONSE_LENGTH = 64
     }
 }
