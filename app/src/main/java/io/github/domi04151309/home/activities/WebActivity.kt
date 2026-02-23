@@ -9,11 +9,10 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.view.KeyEvent
-import android.view.Menu
-import android.view.MenuItem
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
 import android.webkit.WebView
+import android.widget.Button
 import android.widget.ProgressBar
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -31,6 +30,13 @@ class WebActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_web)
+
+        val url = intent.getStringExtra("URI") ?: ABOUT_BLANK
+
+        val errorButton = findViewById<Button>(R.id.openBtn)
+        errorButton.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, url.toUri()))
+        }
 
         webViewClient =
             WebActivityWebViewClient(
@@ -72,7 +78,7 @@ class WebActivity : BaseActivity() {
             onDownload(url)
         }
 
-        webView.loadUrl(intent.getStringExtra("URI") ?: ABOUT_BLANK)
+        webView.loadUrl(url)
         title = intent.getStringExtra("title")
     }
 
@@ -122,19 +128,6 @@ class WebActivity : BaseActivity() {
                 )
             },
         )
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.activity_web_actions, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.action_open) {
-            startActivity(Intent(Intent.ACTION_VIEW, webView.url?.toUri()))
-            return true
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     override fun onKeyDown(

@@ -44,6 +44,7 @@
             android:text="@string/webView_error" />
 
         <TextView
+            android:id="@+id/summaryTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dialog_item_margin"
@@ -51,5 +52,13 @@
             android:layout_centerHorizontal="true"
             android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
             android:text="@string/webView_error_summary" />
+
+        <Button
+            android:id="@+id/openBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/summaryTxt"
+            android:layout_centerHorizontal="true"
+            android:text="@string/webView_open" />
     </RelativeLayout>
 </merge>
