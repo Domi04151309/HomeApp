@@ -56,7 +56,6 @@ class HueLampActivity : BaseActivity(), HueRoomInterface, Toolbar.OnMenuItemClic
     private lateinit var queue: RequestQueue
     private lateinit var lampIcon: ImageView
     private lateinit var nameText: TextView
-    private lateinit var brightnessText: TextView
     private lateinit var brightnessBar: Slider
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,7 +82,6 @@ class HueLampActivity : BaseActivity(), HueRoomInterface, Toolbar.OnMenuItemClic
         queue = Volley.newRequestQueue(this)
         lampIcon = findViewById(R.id.lampIcon)
         nameText = findViewById(R.id.nameTxt)
-        brightnessText = findViewById(R.id.briTxt)
         brightnessBar = findViewById(R.id.briBar)
 
         setupViews()
@@ -183,7 +181,6 @@ class HueLampActivity : BaseActivity(), HueRoomInterface, Toolbar.OnMenuItemClic
                 if (action.has("bri")) {
                     SliderUtils.setProgress(brightnessBar, action.getInt("bri"))
                 } else {
-                    brightnessText.visibility = View.GONE
                     brightnessBar.visibility = View.GONE
                 }
                 light.ct =
