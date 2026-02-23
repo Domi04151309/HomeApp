@@ -430,7 +430,6 @@ class MainActivity : BaseActivity() {
             WEB_MODES.contains(deviceObj.mode) -> {
                 val intent =
                     Intent(this, WebActivity::class.java)
-                        .putExtra("title", deviceObj.name)
 
                 when (deviceObj.mode) {
                     Global.FRITZ_AUTO_LOGIN -> {

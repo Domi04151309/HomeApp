@@ -226,15 +226,13 @@ class EditDeviceActivity : BaseActivity() {
             Global.ESP_EASY, Global.SHELLY_GEN_1, Global.SHELLY_GEN_2, Global.SHELLY_GEN_3 -> {
                 startActivity(
                     Intent(this, WebActivity::class.java)
-                        .putExtra("URI", addressBox.editText?.text.toString())
-                        .putExtra("title", resources.getString(R.string.pref_device_config)),
+                        .putExtra("URI", addressBox.editText?.text.toString()),
                 )
             }
             Global.NODE_RED -> {
                 startActivity(
                     Intent(this, WebActivity::class.java)
-                        .putExtra("URI", formatNodeREDAddress(addressBox.editText?.text.toString()))
-                        .putExtra("title", resources.getString(R.string.pref_device_config)),
+                        .putExtra("URI", formatNodeREDAddress(addressBox.editText?.text.toString())),
                 )
             }
             Global.HUE_API -> {

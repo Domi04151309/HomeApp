@@ -77,6 +77,7 @@
             android:name=".activities.WebActivity"
             android:label="@string/webView"
             android:configChanges="orientation|screenSize"
+            android:theme="@style/Theme.Material3.DayNight.NoActionBar"
             android:parentActivityName=".activities.MainActivity" />
         <activity
             android:name=".activities.DevicesActivity"

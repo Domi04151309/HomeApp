@@ -63,8 +63,7 @@ class SettingsActivity : BaseActivity() {
             findPreference<Preference>("wiki")?.setOnPreferenceClickListener {
                 val uri = "https://github.com/Domi04151309/HomeApp/wiki"
                 startActivity(
-                    Intent(context, WebActivity::class.java).putExtra("URI", uri)
-                        .putExtra("title", resources.getString(R.string.pref_info_wiki)),
+                    Intent(context, WebActivity::class.java).putExtra("URI", uri),
                 )
                 true
             }

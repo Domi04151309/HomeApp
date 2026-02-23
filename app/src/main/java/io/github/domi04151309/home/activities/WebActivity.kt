@@ -18,6 +18,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.net.toUri
+import com.google.android.material.elevation.SurfaceColors
 import io.github.domi04151309.home.R
 
 class WebActivity : BaseActivity() {
@@ -30,6 +31,8 @@ class WebActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_web)
+
+        window.statusBarColor = SurfaceColors.SURFACE_0.getColor(this)
 
         val url = intent.getStringExtra("URI") ?: ABOUT_BLANK
 
@@ -79,7 +82,6 @@ class WebActivity : BaseActivity() {
         }
 
         webView.loadUrl(url)
-        title = intent.getStringExtra("title")
     }
 
     internal fun showFileChooser(filePathCallback: ValueCallback<Array<Uri>>?): Boolean {
