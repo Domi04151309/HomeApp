@@ -8,8 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
-import android.view.animation.AnimationSet
-import android.view.animation.TranslateAnimation
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -172,27 +170,9 @@ class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapt
     }
 
     private fun playAnimation(v: View) {
-        val set = AnimationSet(true)
-
-        val firstAnimation: Animation = AlphaAnimation(0.0f, 1.0f)
-        firstAnimation.duration = ANIMATION_DURATION
-        set.addAnimation(firstAnimation)
-
-        val secondAnimation =
-            TranslateAnimation(
-                Animation.RELATIVE_TO_SELF,
-                -1.0f,
-                Animation.RELATIVE_TO_SELF,
-                0.0f,
-                Animation.RELATIVE_TO_SELF,
-                0.0f,
-                Animation.RELATIVE_TO_SELF,
-                0.0f,
-            )
-        secondAnimation.duration = ANIMATION_DURATION
-        set.addAnimation(secondAnimation)
-
-        v.startAnimation(set)
+        val animation: Animation = AlphaAnimation(0.0f, 1.0f)
+        animation.duration = ANIMATION_DURATION
+        v.startAnimation(animation)
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
