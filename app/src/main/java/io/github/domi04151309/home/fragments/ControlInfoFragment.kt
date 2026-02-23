@@ -19,7 +19,7 @@ class ControlInfoFragment(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         val view =
             super.onCreateView(inflater, container, savedInstanceState)
                 ?: error("View does not exist yet.")

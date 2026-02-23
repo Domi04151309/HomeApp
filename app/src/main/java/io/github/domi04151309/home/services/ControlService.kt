@@ -155,29 +155,35 @@ class ControlService : ControlsProviderService() {
                     .getDeviceById(controlId.substring(0, controlId.indexOf('@')))
             val api = Global.getCorrectAPI(this, device.mode, device.id)
             val relevantId = controlId.substring(device.id.length + 1)
-            if (action is BooleanAction) {
-                api.changeSwitchState(relevantId, action.newState)
-            } else if (action is FloatAction) {
-                api.changePercentage(relevantId, action.newValue)
-            } else if (action is CommandAction) {
-                api.execute(
-                    relevantId,
-                    object : UnifiedAPI.CallbackInterface {
-                        override fun onItemsLoaded(
-                            holder: UnifiedRequestCallback,
-                            recyclerViewInterface: HomeRecyclerViewHelperInterface?,
-                        ) {
-                            // Do nothing.
-                        }
+            when (action) {
+                is BooleanAction -> {
+                    api.changeSwitchState(relevantId, action.newState)
+                }
 
-                        override fun onExecuted(
-                            result: String,
-                            shouldRefresh: Boolean,
-                        ) {
-                            Toast.makeText(this@ControlService, result, Toast.LENGTH_LONG).show()
-                        }
-                    },
-                )
+                is FloatAction -> {
+                    api.changePercentage(relevantId, action.newValue)
+                }
+
+                is CommandAction -> {
+                    api.execute(
+                        relevantId,
+                        object : UnifiedAPI.CallbackInterface {
+                            override fun onItemsLoaded(
+                                holder: UnifiedRequestCallback,
+                                recyclerViewInterface: HomeRecyclerViewHelperInterface?,
+                            ) {
+                                // Do nothing.
+                            }
+
+                            override fun onExecuted(
+                                result: String,
+                                shouldRefresh: Boolean,
+                            ) {
+                                Toast.makeText(this@ControlService, result, Toast.LENGTH_LONG).show()
+                            }
+                        },
+                    )
+                }
             }
             consumer.accept(ControlAction.RESPONSE_OK)
             Handler(Looper.getMainLooper()).postDelayed({

@@ -16,12 +16,12 @@ object HueUtils {
         }
 
     fun ctToRGB(ct: Int): Int {
-        require(!(ct < MIN_COLOR_TEMPERATURE || ct > 500)) { ARGUMENT_OUT_OF_RANGE }
+        require(ct in MIN_COLOR_TEMPERATURE..500) { ARGUMENT_OUT_OF_RANGE }
         return ColorUtils.temperatureToRGB((6500 - 12.968299711 * (ct - MIN_COLOR_TEMPERATURE)).toInt())
     }
 
     fun ctToKelvin(ct: Int): String {
-        require(!(ct < MIN_COLOR_TEMPERATURE || ct > 500)) { ARGUMENT_OUT_OF_RANGE }
+        require(ct in MIN_COLOR_TEMPERATURE..500) { ARGUMENT_OUT_OF_RANGE }
         return "${(6500 - 12.968299711 * (ct - MIN_COLOR_TEMPERATURE)).toInt()} K"
     }
 

@@ -22,7 +22,7 @@ class NetworkServiceResolveListener(
     private val nsdManager = activity.getSystemService(AppCompatActivity.NSD_SERVICE) as NsdManager
 
     var isBusy: AtomicBoolean = AtomicBoolean(false)
-    var pendingServices: ConcurrentLinkedQueue<NsdServiceInfo> = ConcurrentLinkedQueue<NsdServiceInfo>()
+    var pendingServices: ConcurrentLinkedQueue<NsdServiceInfo> = ConcurrentLinkedQueue()
 
     override fun onResolveFailed(
         service: NsdServiceInfo,

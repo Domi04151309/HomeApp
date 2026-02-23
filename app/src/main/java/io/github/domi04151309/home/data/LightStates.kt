@@ -20,8 +20,8 @@ class LightStates {
     }
 
     fun setSceneBrightness(bri: Int) {
-        for (i in lights) {
-            i.value.bri = bri
+        for ((_, value) in lights) {
+            value.bri = bri
         }
     }
 

@@ -4,7 +4,6 @@ private val readAndUnderstoodLicense = false
 
 plugins {
     id("com.android.application")
-    id("org.jetbrains.kotlin.android")
     id("io.gitlab.arturbosch.detekt")
 }
 
@@ -50,9 +49,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
     detekt {
         config.setFrom(file("detekt-config.yml"))
         buildUponDefaultConfig = true
@@ -91,13 +87,13 @@ tasks.register("license") {
 
 dependencies {
     implementation("androidx.appcompat:appcompat:1.7.1")
-    implementation("com.google.android.material:material:1.12.0")
+    implementation("com.google.android.material:material:1.13.0")
     implementation("androidx.preference:preference-ktx:1.2.1")
     implementation("androidx.annotation:annotation:1.9.1")
     implementation("com.android.volley:volley:1.2.1")
-    implementation("androidx.security:security-crypto-ktx:1.1.0-beta01")
-    implementation("com.github.skydoves:colorpickerview:2.3.0")
+    implementation("androidx.security:security-crypto-ktx:1.1.0")
+    implementation("com.github.skydoves:colorpickerview:2.4.0")
 
     testImplementation("junit:junit:4.13.2")
-    testImplementation("org.robolectric:robolectric:4.14.1")
+    testImplementation("org.robolectric:robolectric:4.16.1")
 }

@@ -84,6 +84,6 @@ open class UnifiedAPI(
         private const val LIST_REQUEST_TIMEOUT = 1000
         private val listCache: MutableMap<String, Pair<Long, List<ListViewItem>>> = mutableMapOf()
 
-        protected const val MAX_PERCENTAGE = 100f
+        protected const val MAX_PERCENTAGE: Float = 100f
     }
 }

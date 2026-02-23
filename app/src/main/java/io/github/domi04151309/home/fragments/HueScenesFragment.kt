@@ -96,7 +96,7 @@ class HueScenesFragment(private var lampInterface: HueLampInterface) :
                                 completedRequests++
                                 if (completedRequests == scenes.size) {
                                     val sortedItems =
-                                        gridItems.sortedWith(compareBy { it.color })
+                                        gridItems.sortedWith(compareBy { (_, _, color) -> color })
                                             .toMutableList()
                                     sortedItems +=
                                         SceneGridItem(
