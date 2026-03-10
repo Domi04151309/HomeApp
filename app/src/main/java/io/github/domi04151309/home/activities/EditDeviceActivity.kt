@@ -223,7 +223,7 @@ class EditDeviceActivity : BaseActivity() {
 
     private fun onConfigButtonClicked() {
         when (modeSpinner.text.toString()) {
-            Global.ESP_EASY, Global.SHELLY_GEN_1, Global.SHELLY_GEN_2, Global.SHELLY_GEN_3 -> {
+            Global.ESP_EASY, Global.SHELLY_GEN_1, Global.SHELLY_GEN_2, Global.SHELLY_GEN_3, Global.SIMPLE_HOME_API -> {
                 startActivity(
                     Intent(this, WebActivity::class.java)
                         .putExtra("URI", addressBox.editText?.text.toString()),
@@ -374,6 +374,7 @@ class EditDeviceActivity : BaseActivity() {
                 Global.SHELLY_GEN_1,
                 Global.SHELLY_GEN_2,
                 Global.SHELLY_GEN_3,
+                Global.SIMPLE_HOME_API,
             )
         private val HAS_INFO =
             arrayOf(
