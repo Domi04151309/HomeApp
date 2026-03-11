@@ -69,7 +69,11 @@ class ControlService : ControlsProviderService() {
             ) {
                 for (it in holder.response ?: emptyList()) {
                     subscriber.onNext(
-                        ControlBuilders.buildGenericControl(this@ControlService, it, relevantDevices[index]),
+                        ControlBuilders.buildGenericControl(
+                            this@ControlService,
+                            it,
+                            relevantDevices[index],
+                        ),
                     )
                 }
                 finishedRequests++
@@ -84,45 +88,63 @@ class ControlService : ControlsProviderService() {
             }
         }
 
-    private fun loadStatefulControl(
+    private fun loadStatefulControlsForDevice(
         subscriber: Flow.Subscriber<in Control>?,
-        id: String,
+        deviceId: String,
+        targetIds: List<String>,
     ) {
-        val device = Devices(this).getDeviceById(id.substring(0, id.indexOf('@')))
-        if (Global.checkNetwork(this)) {
-            Global
-                .getCorrectAPI(this, device.mode, device.id)
-                .loadList(getStatefulControlsCallback(device, id, subscriber))
-        } else {
-            subscriber?.onNext(ControlBuilders.buildUnreachableControl(this, id, device))
-        }
-    }
+        val device = Devices(this).getDeviceById(deviceId)
 
-    private fun getStatefulControlsCallback(
-        device: DeviceItem,
-        id: String,
-        subscriber: Flow.Subscriber<in Control>?,
-    ) = object : UnifiedAPI.CallbackInterface {
-        override fun onItemsLoaded(
-            holder: UnifiedRequestCallback,
-            recyclerViewInterface: HomeRecyclerViewHelperInterface?,
-        ) {
-            if (holder.response == null) {
-                subscriber?.onNext(ControlBuilders.buildUnreachableControl(this@ControlService, id, device))
-                return
+        if (!Global.checkNetwork(this)) {
+            for (id in targetIds) {
+                subscriber?.onNext(ControlBuilders.buildUnreachableControl(this, id, device))
             }
-            for (it in holder.response) {
-                if (device.id + '@' + it.hidden != id) continue
-                subscriber?.onNext(ControlBuilders.buildStatefulControl(this@ControlService, id, it, device))
-            }
+            return
         }
 
-        override fun onExecuted(
-            result: String,
-            shouldRefresh: Boolean,
-        ) {
-            // Do nothing.
-        }
+        Global.getCorrectAPI(this, device.mode, device.id).loadList(
+            object : UnifiedAPI.CallbackInterface {
+                override fun onItemsLoaded(
+                    holder: UnifiedRequestCallback,
+                    recyclerViewInterface: HomeRecyclerViewHelperInterface?,
+                ) {
+                    if (holder.response == null) {
+                        for (id in targetIds) {
+                            subscriber?.onNext(
+                                ControlBuilders.buildUnreachableControl(
+                                    this@ControlService,
+                                    id,
+                                    device,
+                                ),
+                            )
+                        }
+                        return
+                    }
+
+                    // Match loaded items against the specific controls requested for this device
+                    for (item in holder.response) {
+                        val fullId = "${device.id}@${item.hidden}"
+                        if (targetIds.contains(fullId)) {
+                            subscriber?.onNext(
+                                ControlBuilders.buildStatefulControl(
+                                    this@ControlService,
+                                    fullId,
+                                    item,
+                                    device,
+                                ),
+                            )
+                        }
+                    }
+                }
+
+                override fun onExecuted(
+                    result: String,
+                    shouldRefresh: Boolean,
+                ) {
+                    // Do nothing.
+                }
+            },
+        )
     }
 
     override fun createPublisherFor(controlIds: MutableList<String>): Flow.Publisher<Control> =
@@ -139,8 +161,8 @@ class ControlService : ControlsProviderService() {
                     }
                 },
             )
-            for (id in controlIds) {
-                loadStatefulControl(subscriber, id)
+            controlIds.groupBy { it.substringBefore('@') }.forEach { (deviceId, idsForDevice) ->
+                loadStatefulControlsForDevice(subscriber, deviceId, idsForDevice)
             }
         }
 
@@ -179,7 +201,8 @@ class ControlService : ControlsProviderService() {
                                 result: String,
                                 shouldRefresh: Boolean,
                             ) {
-                                Toast.makeText(this@ControlService, result, Toast.LENGTH_LONG).show()
+                                Toast.makeText(this@ControlService, result, Toast.LENGTH_LONG)
+                                    .show()
                             }
                         },
                     )
@@ -187,7 +210,11 @@ class ControlService : ControlsProviderService() {
             }
             consumer.accept(ControlAction.RESPONSE_OK)
             Handler(Looper.getMainLooper()).postDelayed({
-                loadStatefulControl(updateSubscriber, controlId)
+                loadStatefulControlsForDevice(
+                    updateSubscriber,
+                    controlId.substringBefore('@'),
+                    listOf(controlId),
+                )
             }, UPDATE_DELAY)
         } else {
             consumer.accept(ControlAction.RESPONSE_FAIL)
