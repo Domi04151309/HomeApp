@@ -29,7 +29,7 @@ class DevicesActivity : BaseActivity(), RecyclerViewHelperInterfaceAdvanced {
                 viewHolder: RecyclerView.ViewHolder,
             ): Int =
                 if (
-                    viewHolder.adapterPosition == (recyclerView.adapter?.itemCount ?: -1) - 1
+                    viewHolder.bindingAdapterPosition == (recyclerView.adapter?.itemCount ?: -1) - 1
                 ) {
                     makeMovementFlags(0, 0)
                 } else {
@@ -42,14 +42,14 @@ class DevicesActivity : BaseActivity(), RecyclerViewHelperInterfaceAdvanced {
                 target: RecyclerView.ViewHolder,
             ): Boolean {
                 val adapter = recyclerView.adapter ?: return false
-                return if (target.adapterPosition == adapter.itemCount - 1) {
+                return if (target.bindingAdapterPosition == adapter.itemCount - 1) {
                     false
                 } else {
                     recyclerView.adapter?.notifyItemMoved(
-                        viewHolder.adapterPosition,
-                        target.adapterPosition,
+                        viewHolder.bindingAdapterPosition,
+                        target.bindingAdapterPosition,
                     )
-                    devices.moveDevice(viewHolder.adapterPosition, target.adapterPosition)
+                    devices.moveDevice(viewHolder.bindingAdapterPosition, target.bindingAdapterPosition)
                     true
                 }
             }
