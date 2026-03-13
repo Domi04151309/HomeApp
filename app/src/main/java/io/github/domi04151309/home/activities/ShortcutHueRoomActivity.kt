@@ -11,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.appbar.MaterialToolbar
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.adapters.SimpleListAdapter
 import io.github.domi04151309.home.api.HueAPI
@@ -30,6 +31,8 @@ class ShortcutHueRoomActivity : BaseActivity(), RecyclerViewHelperInterface {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_devices)
+        setSupportActionBar(findViewById<MaterialToolbar>(R.id.toolbar))
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         recyclerView = findViewById(R.id.recyclerView)
 

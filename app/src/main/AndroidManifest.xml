@@ -27,13 +27,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Material3.DayNight"
+        android:theme="@style/Theme.Material3.DayNight.NoActionBar"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute"
         android:dataExtractionRules="@xml/data_extraction_rules">
         <activity
             android:name=".activities.HueSceneActivity"
-            android:theme="@style/Theme.Material3.DayNight.NoActionBar"
             android:parentActivityName=".activities.MainActivity" />
         <activity
             android:name=".activities.AboutActivity"
@@ -50,17 +49,14 @@
             android:label="@string/pref_add"
             android:parentActivityName=".activities.DevicesActivity" />
         <activity
-            android:name=".activities.HueConnectActivity"
-            android:theme="@style/Theme.Material3.DayNight.NoActionBar" />
+            android:name=".activities.HueConnectActivity" />
         <activity
             android:name=".activities.HueLampActivity"
-            android:theme="@style/Theme.Material3.DayNight.NoActionBar"
             android:parentActivityName=".activities.MainActivity" />
         <activity
             android:name=".activities.MainActivity"
             android:launchMode="singleTop"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/Theme.Material3.DayNight.NoActionBar"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -77,7 +73,6 @@
             android:name=".activities.WebActivity"
             android:label="@string/webView"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/Theme.Material3.DayNight.NoActionBar"
             android:parentActivityName=".activities.MainActivity" />
         <activity
             android:name=".activities.DevicesActivity"
@@ -87,7 +82,6 @@
         <activity
             android:name=".activities.EditDeviceActivity"
             android:launchMode="singleTop"
-            android:theme="@style/Theme.Material3.DayNight.NoActionBar"
             android:parentActivityName=".activities.DevicesActivity" />
         <activity
             android:name=".activities.DeviceInfoActivity"
@@ -96,8 +90,7 @@
             android:parentActivityName=".activities.EditDeviceActivity" />
         <activity
             android:name=".activities.ControlInfoActivity"
-            android:launchMode="singleTop"
-            android:theme="@style/Theme.Material3.DayNight.NoActionBar" />
+            android:launchMode="singleTop" />
         <activity
             android:name=".activities.ShortcutDeviceActivity"
             android:label="@string/pref_add_name_empty"

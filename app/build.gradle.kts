@@ -9,13 +9,13 @@ plugins {
 
 android {
     namespace = "io.github.domi04151309.home"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "io.github.domi04151309.home"
         minSdk = 23
         //noinspection EditedTargetSdkVersion
-        targetSdk = 34
+        targetSdk = 36
         versionCode = 1120
         versionName = "1.12.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

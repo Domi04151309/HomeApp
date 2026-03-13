@@ -20,7 +20,6 @@ import android.widget.Toast
 import androidx.core.net.toUri
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputLayout
 import io.github.domi04151309.home.R
@@ -53,8 +52,6 @@ class EditDeviceActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_device)
-
-        window.statusBarColor = SurfaceColors.SURFACE_0.getColor(this)
 
         devices = Devices(this)
         var deviceId = intent.getStringExtra("deviceId")

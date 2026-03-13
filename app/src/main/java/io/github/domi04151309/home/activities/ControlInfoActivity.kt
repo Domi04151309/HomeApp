@@ -1,7 +1,6 @@
 package io.github.domi04151309.home.activities
 
 import android.os.Bundle
-import com.google.android.material.elevation.SurfaceColors
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.fragments.ControlInfoFragment
@@ -16,8 +15,6 @@ class ControlInfoActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
-
-        window.statusBarColor = SurfaceColors.SURFACE_0.getColor(this)
 
         val id = intent.getStringExtra(EXTRA_ID)
         if (id === null) {

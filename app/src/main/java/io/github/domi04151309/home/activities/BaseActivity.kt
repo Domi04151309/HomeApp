@@ -3,7 +3,8 @@ package io.github.domi04151309.home.activities
 import android.content.res.Configuration
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.elevation.SurfaceColors
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import io.github.domi04151309.home.R
 
 abstract class BaseActivity : AppCompatActivity() {
@@ -15,8 +16,11 @@ abstract class BaseActivity : AppCompatActivity() {
         ) {
             setTheme(R.style.LightStatusBarOverlay)
         }
-        val color = SurfaceColors.SURFACE_2.getColor(this)
-        window.statusBarColor = color
-        window.navigationBarColor = color
+
+        ViewCompat.setOnApplyWindowInsetsListener(window.decorView) { view, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(insets.left, insets.top, insets.right, 0)
+            windowInsets
+        }
     }
 }

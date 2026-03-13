@@ -23,7 +23,6 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.slider.Slider
 import com.google.android.material.tabs.TabLayoutMediator
 import io.github.domi04151309.home.R
@@ -61,8 +60,6 @@ class HueLampActivity : BaseActivity(), HueRoomInterface, Toolbar.OnMenuItemClic
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hue_lamp)
-
-        window.statusBarColor = SurfaceColors.SURFACE_0.getColor(this)
 
         id = intent.getStringExtra("id") ?: "0"
         if (intent.hasExtra(Devices.INTENT_EXTRA_DEVICE)) {

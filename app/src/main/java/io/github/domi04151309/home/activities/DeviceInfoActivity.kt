@@ -8,6 +8,7 @@ import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.material.appbar.MaterialToolbar
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.adapters.SimpleListAdapter
 import io.github.domi04151309.home.api.HueAPI
@@ -26,6 +27,8 @@ class DeviceInfoActivity : BaseActivity(), RecyclerViewHelperInterface {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_devices)
+        setSupportActionBar(findViewById<MaterialToolbar>(R.id.toolbar))
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val devices = Devices(this)
         val id = intent.getStringExtra(Devices.INTENT_EXTRA_DEVICE) ?: ""
