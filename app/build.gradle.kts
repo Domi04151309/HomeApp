@@ -9,12 +9,16 @@ plugins {
 
 android {
     namespace = "io.github.domi04151309.home"
-    compileSdk = 36
+    compileSdk {
+        version =
+            release(36) {
+                minorApiLevel = 1
+            }
+    }
 
     defaultConfig {
         applicationId = "io.github.domi04151309.home"
         minSdk = 23
-        //noinspection EditedTargetSdkVersion
         targetSdk = 36
         versionCode = 1120
         versionName = "1.12.0"
@@ -49,15 +53,16 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    detekt {
-        config.setFrom(file("detekt-config.yml"))
-        buildUponDefaultConfig = true
-        basePath = rootProject.projectDir.absolutePath
-    }
     lint {
         disable += "MissingTranslation"
     }
     project.tasks.preBuild.dependsOn("license")
+}
+
+detekt {
+    config.setFrom(file("detekt-config.yml"))
+    buildUponDefaultConfig = true
+    basePath = rootProject.projectDir.absolutePath
 }
 
 tasks.register("license") {
