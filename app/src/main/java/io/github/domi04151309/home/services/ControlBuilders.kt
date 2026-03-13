@@ -30,7 +30,9 @@ object ControlBuilders {
     private fun getPendingIntent(
         context: Context,
         id: String,
+        icon: Int,
         title: String,
+        summary: String,
     ): PendingIntent =
         PendingIntent.getActivity(
             context,
@@ -38,7 +40,9 @@ object ControlBuilders {
             Intent(context, ControlInfoActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 putExtra(ControlInfoActivity.EXTRA_ID, id)
+                putExtra(ControlInfoActivity.EXTRA_ICON, icon)
                 putExtra(ControlInfoActivity.EXTRA_TITLE, title)
+                putExtra(ControlInfoActivity.EXTRA_SUMMARY, summary)
             },
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
         )
@@ -67,7 +71,7 @@ object ControlBuilders {
         id: String,
         device: DeviceItem,
     ): Control =
-        Control.StatefulBuilder(id, getPendingIntent(context, id, device.name))
+        Control.StatefulBuilder(id, getPendingIntent(context, id, device.iconId, device.name, device.name))
             .setTitle(device.name)
             .setZone(device.name)
             .setStructure(context.resources.getString(R.string.app_name))
@@ -84,7 +88,7 @@ object ControlBuilders {
         val id = device.id + '@' + listItem.hidden
         return Control.StatelessBuilder(
             id,
-            getPendingIntent(context, id, listItem.title),
+            getPendingIntent(context, id, listItem.icon, listItem.title, listItem.summary),
         )
             .setTitle(listItem.title)
             .setSubtitle(device.name)
@@ -101,7 +105,7 @@ object ControlBuilders {
         device: DeviceItem,
     ): Control {
         val controlBuilder =
-            Control.StatefulBuilder(id, getPendingIntent(context, id, listItem.title))
+            Control.StatefulBuilder(id, getPendingIntent(context, id, listItem.icon, listItem.title, listItem.summary))
                 .setTitle(listItem.title)
                 .setSubtitle(device.name)
                 .setZone(device.name)

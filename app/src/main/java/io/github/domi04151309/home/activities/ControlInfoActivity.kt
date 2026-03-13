@@ -30,7 +30,14 @@ class ControlInfoActivity : BaseActivity() {
 
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.settings, ControlInfoFragment(device, intent.getStringExtra(EXTRA_TITLE) ?: ""))
+            .replace(
+                R.id.settings,
+                ControlInfoFragment(
+                    intent.getIntExtra(EXTRA_ICON, R.drawable.ic_warning),
+                    intent.getStringExtra(EXTRA_TITLE) ?: "",
+                    intent.getStringExtra(EXTRA_SUMMARY) ?: "",
+                ),
+            )
             .commit()
     }
 
@@ -62,6 +69,8 @@ class ControlInfoActivity : BaseActivity() {
 
     companion object {
         const val EXTRA_ID: String = "EXTRA_ID"
+        const val EXTRA_ICON: String = "EXTRA_ICON"
         const val EXTRA_TITLE: String = "EXTRA_TITLE"
+        const val EXTRA_SUMMARY: String = "EXTRA_SUMMARY"
     }
 }

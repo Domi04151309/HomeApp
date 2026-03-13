@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="96dp"
         android:layout_marginHorizontal="?dialogPreferredPadding"
-        android:layout_marginBottom="?dialogPreferredPadding"
+        android:layout_marginBottom="@dimen/card_padding_half"
         android:contentDescription="@string/main_device_icon"
         app:srcCompat="@drawable/ic_warning" />
 
@@ -22,6 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="?dialogPreferredPadding"
+        android:layout_marginBottom="@dimen/card_padding_quarter"
         android:textAlignment="center"
         android:textIsSelectable="false"
         android:textAppearance="@style/TextAppearance.Material3.DisplayLarge" />
@@ -31,6 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="?dialogPreferredPadding"
+        android:layout_marginBottom="@dimen/card_padding_full"
         android:textAlignment="center"
         android:textIsSelectable="false"
         android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
