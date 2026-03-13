@@ -1,0 +1,1 @@
+Device discovery has been refined to be faster and more reliable while duplicate connections are now prevented. A smoother interface is introduced through new column styles, updated animations, and a cleaner web view. Additionally, a crash has been fixed to ensure a more stable experience.
