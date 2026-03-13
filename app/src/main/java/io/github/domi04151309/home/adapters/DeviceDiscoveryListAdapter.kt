@@ -45,6 +45,12 @@ class DeviceDiscoveryListAdapter(
     override fun getItemCount(): Int = items.size
 
     fun add(item: ListViewItem): Int {
+        val existing = items.indexOfFirst { it.summary == item.summary }
+
+        if (existing != -1) {
+            return existing
+        }
+
         items.add(item)
         notifyItemInserted(items.size - 1)
         return items.size - 1
