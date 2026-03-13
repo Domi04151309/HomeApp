@@ -1,7 +1,7 @@
 package io.github.domi04151309.home.activities
 
+import android.net.ConnectivityManager
 import android.net.nsd.NsdManager
-import android.net.wifi.WifiManager
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
@@ -51,8 +51,11 @@ class SearchDevicesActivity : BaseActivity(), RecyclerViewHelperInterface {
         recyclerView.adapter = adapter
 
         // Device variables
-        val manager = applicationContext.getSystemService(WIFI_SERVICE) as WifiManager
-        val routerIp = intToIp(manager.dhcpInfo.gateway)
+        val connectivityManager = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+        val routerIp =
+            connectivityManager.getLinkProperties(connectivityManager.activeNetwork)?.routes?.firstOrNull {
+                it.isDefaultRoute
+            }?.gateway?.hostAddress ?: ""
 
         Thread {
             // Add Router
@@ -80,11 +83,6 @@ class SearchDevicesActivity : BaseActivity(), RecyclerViewHelperInterface {
         nsdManager.discoverServices("_http._tcp", NsdManager.PROTOCOL_DNS_SD, discoveryListenerHttp)
         nsdManager.discoverServices("_simplehome._tcp", NsdManager.PROTOCOL_DNS_SD, discoveryListenerSimpleHome)
     }
-
-    @Suppress("MagicNumber")
-    private fun intToIp(address: Int): String =
-        (address and 0xFF).toString() + "." + (address shr 8 and 0xFF) + "." +
-            (address shr 16 and 0xFF) + "." + (address shr 24 and 0xFF)
 
     override fun onItemClicked(
         view: View,
