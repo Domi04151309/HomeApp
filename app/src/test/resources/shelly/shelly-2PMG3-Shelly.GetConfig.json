@@ -1,0 +1,168 @@
+{
+  "ble": {
+    "enable": true,
+    "rpc": {
+      "enable": true
+    },
+    "observer": {
+      "enable": false
+    }
+  },
+  "bthome": {},
+  "cloud": {
+    "enable": false,
+    "server": "iot.shelly.cloud:6012/jrpc"
+  },
+  "cover:0": {
+    "id": 0,
+    "name": null,
+    "motor": {
+      "idle_power_thr": 2.00,
+      "idle_confirm_period": 0.25
+    },
+    "maxtime_open": 30.00,
+    "maxtime_close": 30.00,
+    "initial_state": "stopped",
+    "invert_directions": false,
+    "in_mode": "dual",
+    "swap_inputs": false,
+    "safety_switch": {
+      "enable": false,
+      "direction": "both",
+      "action": "stop",
+      "allowed_move": null
+    },
+    "power_limit": 2800,
+    "voltage_limit": 280,
+    "undervoltage_limit": 0,
+    "current_limit": 10.00,
+    "obstruction_detection": {
+      "enable": false,
+      "direction": "both",
+      "action": "stop",
+      "power_thr": 1000,
+      "holdoff": 1.00
+    },
+    "slat": {
+      "enable": false,
+      "open_time": 1.50,
+      "close_time": 1.50,
+      "step": 20,
+      "retain_pos": false,
+      "precise_ctl": false
+    }
+  },
+  "input:0": {
+    "id": 0,
+    "name": null,
+    "type": "button",
+    "enable": true,
+    "invert": false,
+    "factory_reset": true
+  },
+  "input:1": {
+    "id": 1,
+    "name": null,
+    "type": "button",
+    "enable": true,
+    "invert": false,
+    "factory_reset": true
+  },
+  "knx": {
+    "enable": false,
+    "ia": "15.15.255",
+    "routing": {
+      "addr": "224.0.23.12:3671"
+    }
+  },
+  "mqtt": {
+    "enable": false,
+    "server": null,
+    "client_id": "shelly2pmg3-000000000000",
+    "user": null,
+    "ssl_ca": null,
+    "topic_prefix": "shelly2pmg3-000000000000",
+    "rpc_ntf": true,
+    "status_ntf": false,
+    "use_client_cert": false,
+    "enable_rpc": true,
+    "enable_control": true
+  },
+  "sys": {
+    "device": {
+      "name": null,            
+      "mac": "000000000000",
+      "fw_id": "20240731-123728/1.4.99-2pmg3prod0-ge3db05c",
+      "discoverable": true,
+      "eco_mode": false,
+      "profile": "cover",
+      "addon_type": null
+    },
+    "location": {
+      "tz": "Europe/Berlin",
+      "lat": 52.520008,
+      "lon": 13.404954
+    },
+    "debug": {
+      "level": 2,
+      "file_level": null,
+      "mqtt": {
+        "enable": false
+      },
+      "websocket": {
+        "enable": false
+      },
+      "udp": {
+        "addr": null
+      }
+    },
+    "ui_data": {},
+    "rpc_udp": {
+      "dst_addr": null,
+      "listen_port": null
+    },
+    "sntp": {
+      "server": "time.google.com"
+    },
+    "cfg_rev": 11
+  },
+  "wifi": {
+    "ap": {
+      "ssid": "Shelly2PMG3-000000000000",
+      "is_open": false,
+      "enable": true,
+      "range_extender": {
+        "enable": false
+      }
+    },
+    "sta": {
+      "ssid": "WLAN",
+      "is_open": false,
+      "enable": true,
+      "ipv4mode": "dhcp",
+      "ip": null,
+      "netmask": null,
+      "gw": null,
+      "nameserver": null
+    },
+    "sta1": {
+      "ssid": null,
+      "is_open": true,
+      "enable": false,
+      "ipv4mode": "dhcp",
+      "ip": null,
+      "netmask": null,
+      "gw": null,
+      "nameserver": null
+    },
+    "roam": {
+      "rssi_thr": -80,
+      "interval": 60
+    }
+  },
+  "ws": {
+    "enable": false,
+    "server": null,
+    "ssl_ca": "ca.pem"
+  }
+}
