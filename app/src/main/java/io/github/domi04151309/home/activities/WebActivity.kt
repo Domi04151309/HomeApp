@@ -8,12 +8,12 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.view.KeyEvent
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.widget.Button
 import android.widget.ProgressBar
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
@@ -25,8 +25,6 @@ import io.github.domi04151309.home.R
 
 class WebActivity : BaseActivity() {
     private var valueCallback: ValueCallback<Array<Uri>>? = null
-    private lateinit var webView: WebView
-    private lateinit var webViewClient: WebActivityWebViewClient
     private lateinit var resultLauncher: ActivityResultLauncher<Intent>
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -51,12 +49,9 @@ class WebActivity : BaseActivity() {
 
         val url = intent.getStringExtra("URI") ?: ABOUT_BLANK
 
+        val webView = findViewById<WebView>(R.id.webView)
         val errorButton = findViewById<Button>(R.id.openBtn)
-        errorButton.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, url.toUri()))
-        }
-
-        webViewClient =
+        val webViewClient =
             WebActivityWebViewClient(
                 this,
                 intent,
@@ -64,25 +59,9 @@ class WebActivity : BaseActivity() {
                 findViewById<ProgressBar>(R.id.error),
             )
 
-        webView = findViewById(R.id.webView)
         webView.settings.javaScriptEnabled = true
         webView.settings.domStorageEnabled = true
         webView.webViewClient = webViewClient
-
-        resultLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == RESULT_OK) {
-                    val path = result.data?.data
-                    valueCallback?.onReceiveValue(
-                        if (path == null) {
-                            arrayOf()
-                        } else {
-                            arrayOf(path)
-                        },
-                    )
-                }
-            }
-
         webView.webChromeClient =
             object : WebChromeClient() {
                 override fun onShowFileChooser(
@@ -97,6 +76,37 @@ class WebActivity : BaseActivity() {
         }
 
         webView.loadUrl(url)
+
+        errorButton.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, url.toUri()))
+        }
+        resultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == RESULT_OK) {
+                    val path = result.data?.data
+                    valueCallback?.onReceiveValue(
+                        if (path == null) {
+                            arrayOf()
+                        } else {
+                            arrayOf(path)
+                        },
+                    )
+                }
+            }
+
+        onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (webView.canGoBack() && !webViewClient.hasError) {
+                        webView.goBack()
+                    } else {
+                        isEnabled = false
+                        onBackPressedDispatcher.onBackPressed()
+                    }
+                }
+            },
+        )
     }
 
     internal fun showFileChooser(filePathCallback: ValueCallback<Array<Uri>>?): Boolean {
@@ -145,17 +155,6 @@ class WebActivity : BaseActivity() {
                 )
             },
         )
-    }
-
-    override fun onKeyDown(
-        keyCode: Int,
-        event: KeyEvent,
-    ): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack() && !webViewClient.hasError) {
-            webView.goBack()
-            return true
-        }
-        return super.onKeyDown(keyCode, event)
     }
 
     companion object {
