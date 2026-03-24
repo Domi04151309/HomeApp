@@ -3,9 +3,9 @@ package io.github.domi04151309.home.activities
 import android.os.Bundle
 import androidx.core.content.res.ResourcesCompat
 import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
 import com.google.android.material.appbar.MaterialToolbar
 import io.github.domi04151309.home.R
+import io.github.domi04151309.home.fragments.PreferenceFragment
 
 class LibraryActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,7 +20,7 @@ class LibraryActivity : BaseActivity() {
             .commit()
     }
 
-    class GeneralPreferenceFragment : PreferenceFragmentCompat() {
+    class GeneralPreferenceFragment : PreferenceFragment() {
         override fun onCreatePreferences(
             savedInstanceState: Bundle?,
             rootKey: String?,

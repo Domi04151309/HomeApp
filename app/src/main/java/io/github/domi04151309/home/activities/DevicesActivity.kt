@@ -82,6 +82,7 @@ class DevicesActivity : BaseActivity(), RecyclerViewHelperInterfaceAdvanced {
         recyclerView = findViewById(R.id.recyclerView)
         itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
 
+        applyBottomInsetPadding(recyclerView)
         itemTouchHelper.attachToRecyclerView(recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
     }

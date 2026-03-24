@@ -37,9 +37,11 @@ class DeviceInfoActivity : BaseActivity(), RecyclerViewHelperInterface {
             return
         }
 
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
+        applyBottomInsetPadding(recyclerView)
+
         val device = devices.getDeviceById(id)
         val queue = Volley.newRequestQueue(this)
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         val items = mutableListOf<SimpleListItem>()
         recyclerView.layoutManager = LinearLayoutManager(this)
         items.add(

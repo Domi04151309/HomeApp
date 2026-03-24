@@ -7,11 +7,11 @@ import android.widget.Toast
 import androidx.core.content.edit
 import androidx.core.net.toUri
 import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import io.github.domi04151309.home.R
+import io.github.domi04151309.home.fragments.PreferenceFragment
 import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.P
@@ -29,7 +29,7 @@ class SettingsActivity : BaseActivity() {
             .commit()
     }
 
-    class GeneralPreferenceFragment : PreferenceFragmentCompat() {
+    class GeneralPreferenceFragment : PreferenceFragment() {
         override fun onCreatePreferences(
             savedInstanceState: Bundle?,
             rootKey: String?,

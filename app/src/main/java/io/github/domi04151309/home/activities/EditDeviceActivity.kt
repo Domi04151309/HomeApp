@@ -53,6 +53,10 @@ class EditDeviceActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_device)
 
+        val fab = findViewById<FloatingActionButton>(R.id.fab)
+        applyBottomInsetPadding(findViewById(R.id.scrollView))
+        applyBottomInsetMargin(fab)
+
         devices = Devices(this)
         var deviceId = intent.getStringExtra("deviceId")
         val editing =
@@ -102,7 +106,7 @@ class EditDeviceActivity : BaseActivity() {
             ),
         )
 
-        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
+        fab.setOnClickListener {
             onFloatingActionButtonClicked()
         }
 

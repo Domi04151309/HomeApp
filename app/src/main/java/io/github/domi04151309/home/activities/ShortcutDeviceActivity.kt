@@ -25,8 +25,10 @@ class ShortcutDeviceActivity : BaseActivity(), RecyclerViewHelperInterface {
         setSupportActionBar(findViewById<MaterialToolbar>(R.id.toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
+        applyBottomInsetPadding(recyclerView)
+
         val devices = Devices(this)
-        val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         val listItems: ArrayList<SimpleListItem> = ArrayList(devices.length)
         var currentDevice: DeviceItem
         for (i in 0 until devices.length) {

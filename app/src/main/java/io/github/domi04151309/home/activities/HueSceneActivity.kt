@@ -69,6 +69,11 @@ class HueSceneActivity :
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hue_scene)
 
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
+        val fab = findViewById<FloatingActionButton>(R.id.fab)
+        applyBottomInsetPadding(recyclerView)
+        applyBottomInsetMargin(fab)
+
         val nameTxt = findViewById<TextView>(R.id.nameTxt)
 
         device = Devices(this).getDeviceById(intent.getStringExtra("deviceId") ?: "")
@@ -84,10 +89,8 @@ class HueSceneActivity :
         groupId = intent.getStringExtra("room") ?: "0"
         sceneId = intent.getStringExtra("scene") ?: ""
 
-        findViewById<RecyclerView>(R.id.recyclerView).apply {
-            layoutManager = LinearLayoutManager(this@HueSceneActivity)
-            adapter = this@HueSceneActivity.adapter
-        }
+        recyclerView.layoutManager = LinearLayoutManager(this@HueSceneActivity)
+        recyclerView.adapter = adapter
         briBar.setLabelFormatter { value: Float ->
             HueUtils.briToPercent(value.toInt())
         }
@@ -143,7 +146,7 @@ class HueSceneActivity :
             },
         )
 
-        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
+        fab.setOnClickListener {
             onFloatingActionButtonClicked()
         }
 

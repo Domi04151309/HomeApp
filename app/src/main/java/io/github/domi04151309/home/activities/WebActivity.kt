@@ -17,6 +17,7 @@ import android.widget.ProgressBar
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
+import androidx.core.graphics.Insets
 import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -32,6 +33,21 @@ class WebActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_web)
+
+        ViewCompat.setOnApplyWindowInsetsListener(window.decorView) { _, windowInsets ->
+            val systemBars = WindowInsetsCompat.Type.systemBars()
+            WindowInsetsCompat.Builder(windowInsets)
+                .setInsets(
+                    systemBars,
+                    Insets.of(
+                        0,
+                        0,
+                        0,
+                        windowInsets.getInsets(systemBars).bottom,
+                    ),
+                )
+                .build()
+        }
 
         val url = intent.getStringExtra("URI") ?: ABOUT_BLANK
 
@@ -52,12 +68,6 @@ class WebActivity : BaseActivity() {
         webView.settings.javaScriptEnabled = true
         webView.settings.domStorageEnabled = true
         webView.webViewClient = webViewClient
-
-        ViewCompat.setOnApplyWindowInsetsListener(webView) { view, windowInsets ->
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
-            view.setPadding(0, 0, 0, insets.bottom)
-            windowInsets
-        }
 
         resultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->

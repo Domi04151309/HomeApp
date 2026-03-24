@@ -34,6 +34,8 @@ class SearchDevicesActivity : BaseActivity(), RecyclerViewHelperInterface {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
+        applyBottomInsetPadding(recyclerView)
+
         adapter =
             DeviceDiscoveryListAdapter(
                 mutableListOf(

@@ -262,6 +262,8 @@ class MainActivity : BaseActivity() {
         columns = getColumns()
 
         setupHeader()
+        applyBottomInsetPadding(recyclerView)
+        applyBottomInsetMargin(fab)
 
         adapter = MainListAdapter(recyclerView)
         recyclerView.layoutManager = GridLayoutManager(this, numberOfRows())

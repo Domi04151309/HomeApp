@@ -35,6 +35,7 @@ class ShortcutTasmotaActivity : BaseActivity(), RecyclerViewHelperInterface {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         recyclerView = findViewById(R.id.recyclerView)
+        applyBottomInsetPadding(recyclerView)
 
         val devices = Devices(this)
         val listItems: ArrayList<SimpleListItem> = ArrayList(devices.length)

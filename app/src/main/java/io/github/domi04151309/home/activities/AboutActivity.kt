@@ -4,11 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.core.net.toUri
 import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import io.github.domi04151309.home.BuildConfig
 import io.github.domi04151309.home.R
+import io.github.domi04151309.home.fragments.PreferenceFragment
 
 class AboutActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +23,7 @@ class AboutActivity : BaseActivity() {
             .commit()
     }
 
-    class GeneralPreferenceFragment : PreferenceFragmentCompat() {
+    class GeneralPreferenceFragment : PreferenceFragment() {
         @Suppress("SameReturnValue")
         private fun onIconsClicked(): Boolean {
             MaterialAlertDialogBuilder(requireContext())

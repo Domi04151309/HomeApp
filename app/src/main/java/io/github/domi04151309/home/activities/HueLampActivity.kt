@@ -60,6 +60,7 @@ class HueLampActivity : BaseActivity(), HueRoomInterface, Toolbar.OnMenuItemClic
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hue_lamp)
+        applyBottomInsetMargin(findViewById(R.id.tabBarCard))
 
         id = intent.getStringExtra("id") ?: "0"
         if (intent.hasExtra(Devices.INTENT_EXTRA_DEVICE)) {
