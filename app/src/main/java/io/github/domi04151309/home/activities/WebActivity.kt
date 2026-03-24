@@ -32,21 +32,6 @@ class WebActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_web)
 
-        ViewCompat.setOnApplyWindowInsetsListener(window.decorView) { _, windowInsets ->
-            val systemBars = WindowInsetsCompat.Type.systemBars()
-            WindowInsetsCompat.Builder(windowInsets)
-                .setInsets(
-                    systemBars,
-                    Insets.of(
-                        0,
-                        0,
-                        0,
-                        windowInsets.getInsets(systemBars).bottom,
-                    ),
-                )
-                .build()
-        }
-
         val url = intent.getStringExtra("URI") ?: ABOUT_BLANK
 
         val webView = findViewById<WebView>(R.id.webView)
@@ -58,6 +43,21 @@ class WebActivity : BaseActivity() {
                 findViewById<ProgressBar>(R.id.progressBar),
                 findViewById<ProgressBar>(R.id.error),
             )
+
+        ViewCompat.setOnApplyWindowInsetsListener(webView) { view, windowInsets ->
+            val mask = WindowInsetsCompat.Type.systemBars()
+            val systemBars = windowInsets.getInsets(mask)
+            val onlyBottom = Insets.of(0, 0, 0, systemBars.bottom)
+            val modifiedInsets =
+                WindowInsetsCompat.Builder()
+                    .setInsets(mask, onlyBottom)
+                    .setInsetsIgnoringVisibility(mask, onlyBottom)
+                    .build()
+
+            view.onApplyWindowInsets(modifiedInsets.toWindowInsets())
+
+            WindowInsetsCompat.CONSUMED
+        }
 
         webView.settings.javaScriptEnabled = true
         webView.settings.domStorageEnabled = true
