@@ -1,5 +1,6 @@
 package io.github.domi04151309.home.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -25,7 +26,7 @@ import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
 import org.json.JSONArray
 import org.json.JSONObject
 
-class HueLampsFragment(private var lampInterface: HueRoomInterface) :
+class HueLampsFragment :
     Fragment(R.layout.fragment_hue_lamps),
     RecyclerViewHelperInterface,
     HueAdvancedLampInterface,
@@ -33,6 +34,7 @@ class HueLampsFragment(private var lampInterface: HueRoomInterface) :
     CompoundButton.OnCheckedChangeListener {
     private lateinit var hueAPI: HueAPI
     private lateinit var queue: RequestQueue
+    private lateinit var lampInterface: HueRoomInterface
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: HueLampListAdapter
     private val updateHandler: UpdateHandler = UpdateHandler()
@@ -41,6 +43,11 @@ class HueLampsFragment(private var lampInterface: HueRoomInterface) :
     override var canReceiveRequest: Boolean = true
     override lateinit var device: DeviceItem
     override lateinit var addressPrefix: String
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        lampInterface = context as HueRoomInterface
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -89,53 +96,55 @@ class HueLampsFragment(private var lampInterface: HueRoomInterface) :
 
     @Suppress("CognitiveComplexMethod")
     override fun onLightsLoaded(response: JSONObject?) {
-        if (response != null) {
-            var currentObject: JSONObject
-            var currentState: JSONObject
-            var state: Boolean?
-            val listItems: MutableList<ListViewItem> = mutableListOf()
-            val colorArray: MutableList<Int> = mutableListOf()
-            for (i in response.keys()) {
-                currentObject = response.optJSONObject(i) ?: JSONObject()
-                currentState = currentObject.optJSONObject("state") ?: JSONObject()
-                state = currentState.optBoolean("on")
-                colorArray +=
-                    if (currentState.has("hue") && currentState.has("sat")) {
-                        HueUtils.hueSatToRGB(
-                            currentState.getInt("hue"),
-                            currentState.getInt("sat"),
-                        )
-                    } else if (currentState.has("ct")) {
-                        HueUtils.ctToRGB(currentState.getInt("ct"))
-                    } else {
-                        "#FFFFFF".toColorInt()
-                    }
-                listItems +=
-                    ListViewItem(
-                        title = currentObject.optString("name"),
-                        summary =
-                            if (currentState.optBoolean("reachable")) {
-                                resources.getString(R.string.hue_brightness) +
-                                    ": " +
-                                    if (state) {
-                                        HueUtils.briToPercent(
-                                            currentState.optInt(
-                                                "bri",
-                                                HueUtils.MAX_BRIGHTNESS,
-                                            ),
-                                        )
-                                    } else {
-                                        "0 %"
-                                    }
-                            } else {
-                                resources.getString(R.string.str_unreachable)
-                            },
-                        hidden = i,
-                        state = state,
-                    )
-            }
-            adapter.updateData(recyclerView, listItems, colorArray)
+        if (!isAdded || context == null || response == null) {
+            return
         }
+
+        var currentObject: JSONObject
+        var currentState: JSONObject
+        var state: Boolean?
+        val listItems: MutableList<ListViewItem> = mutableListOf()
+        val colorArray: MutableList<Int> = mutableListOf()
+        for (i in response.keys()) {
+            currentObject = response.optJSONObject(i) ?: JSONObject()
+            currentState = currentObject.optJSONObject("state") ?: JSONObject()
+            state = currentState.optBoolean("on")
+            colorArray +=
+                if (currentState.has("hue") && currentState.has("sat")) {
+                    HueUtils.hueSatToRGB(
+                        currentState.getInt("hue"),
+                        currentState.getInt("sat"),
+                    )
+                } else if (currentState.has("ct")) {
+                    HueUtils.ctToRGB(currentState.getInt("ct"))
+                } else {
+                    "#FFFFFF".toColorInt()
+                }
+            listItems +=
+                ListViewItem(
+                    title = currentObject.optString("name"),
+                    summary =
+                        if (currentState.optBoolean("reachable")) {
+                            resources.getString(R.string.hue_brightness) +
+                                ": " +
+                                if (state) {
+                                    HueUtils.briToPercent(
+                                        currentState.optInt(
+                                            "bri",
+                                            HueUtils.MAX_BRIGHTNESS,
+                                        ),
+                                    )
+                                } else {
+                                    "0 %"
+                                }
+                        } else {
+                            resources.getString(R.string.str_unreachable)
+                        },
+                    hidden = i,
+                    state = state,
+                )
+        }
+        adapter.updateData(recyclerView, listItems, colorArray)
     }
 
     override fun onColorChanged(color: Int) {

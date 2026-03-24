@@ -1,5 +1,6 @@
 package io.github.domi04151309.home.fragments
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -35,7 +36,7 @@ import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterface
 import org.json.JSONException
 import org.json.JSONObject
 
-class HueScenesFragment(private var lampInterface: HueLampInterface) :
+class HueScenesFragment :
     Fragment(R.layout.fragment_hue_scenes),
     RecyclerViewHelperInterface,
     Response.Listener<JSONObject> {
@@ -44,7 +45,13 @@ class HueScenesFragment(private var lampInterface: HueLampInterface) :
     private var selectedSceneName: CharSequence = ""
     private lateinit var hueAPI: HueAPI
     private lateinit var queue: RequestQueue
+    private lateinit var lampInterface: HueLampInterface
     private lateinit var adapter: HueSceneGridAdapter
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        lampInterface = context as HueLampInterface
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

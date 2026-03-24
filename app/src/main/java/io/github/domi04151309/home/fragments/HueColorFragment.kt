@@ -1,6 +1,7 @@
 package io.github.domi04151309.home.fragments
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
@@ -23,8 +24,9 @@ import io.github.domi04151309.home.helpers.HueUtils.MIN_COLOR_TEMPERATURE
 import io.github.domi04151309.home.helpers.SliderUtils
 import io.github.domi04151309.home.interfaces.HueRoomInterface
 
-class HueColorFragment(private var lampInterface: HueRoomInterface) : Fragment(R.layout.fragment_hue_color) {
+class HueColorFragment : Fragment(R.layout.fragment_hue_color) {
     private lateinit var hueAPI: HueAPI
+    private lateinit var lampInterface: HueRoomInterface
     private lateinit var colorPickerView: ColorPickerView
     private lateinit var ctText: TextView
     private lateinit var ctBar: Slider
@@ -44,6 +46,11 @@ class HueColorFragment(private var lampInterface: HueRoomInterface) : Fragment(R
             action(slider)
             fragment.resumeUpdates()
         }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        lampInterface = context as HueRoomInterface
     }
 
     override fun onCreateView(
@@ -71,32 +78,34 @@ class HueColorFragment(private var lampInterface: HueRoomInterface) : Fragment(R
         setupTemperatureControls(hueAPI)
 
         fun updateFunction(data: LightStates.Light) {
-            if (lampInterface.canReceiveRequest) {
-                if (data.ct == -1) {
-                    ctViews.forEach {
-                        it.visibility = View.GONE
-                    }
-                } else {
-                    ctViews.forEach {
-                        it.visibility = View.VISIBLE
-                    }
-                    SliderUtils.setProgress(ctBar, data.ct)
+            if (!isAdded || context == null || !lampInterface.canReceiveRequest) {
+                return
+            }
+
+            if (data.ct == -1) {
+                ctViews.forEach {
+                    it.visibility = View.GONE
                 }
-                if (data.hue == -1 || data.sat == -1) {
-                    hueSatViews.forEach {
-                        it.visibility = View.GONE
-                    }
-                } else {
-                    hueSatViews.forEach {
-                        it.visibility = View.VISIBLE
-                    }
-                    colorPickerView.selectByHsvColor(HueUtils.hueSatToRGB(data.hue, data.sat))
-                    SliderUtils.setProgress(hueBar, data.hue)
-                    SliderUtils.setProgress(satBar, data.sat)
+            } else {
+                ctViews.forEach {
+                    it.visibility = View.VISIBLE
                 }
-                availableInputs.forEach {
-                    it.isEnabled = data.on
+                SliderUtils.setProgress(ctBar, data.ct)
+            }
+            if (data.hue == -1 || data.sat == -1) {
+                hueSatViews.forEach {
+                    it.visibility = View.GONE
                 }
+            } else {
+                hueSatViews.forEach {
+                    it.visibility = View.VISIBLE
+                }
+                colorPickerView.selectByHsvColor(HueUtils.hueSatToRGB(data.hue, data.sat))
+                SliderUtils.setProgress(hueBar, data.hue)
+                SliderUtils.setProgress(satBar, data.sat)
+            }
+            availableInputs.forEach {
+                it.isEnabled = data.on
             }
         }
 
