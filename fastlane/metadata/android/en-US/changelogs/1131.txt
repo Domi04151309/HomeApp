@@ -1,0 +1,1 @@
+This update improves the browsing experience with fixes for web view insets and back navigation. A crash occurring during screen rotation is resolved, bottom insets now apply correctly, and support for Shelly Gen 4 devices is added.
