@@ -36,7 +36,7 @@ open class UnifiedAPI(
 
     var needsRealTimeData: Boolean = false
 
-    protected val url: String = Devices(c).getDeviceById(deviceId).address
+    val url: String = Devices(c).getDeviceById(deviceId).address
     protected val queue: RequestQueue = Volley.newRequestQueue(c)
 
     protected fun updateCache(items: List<ListViewItem>) {

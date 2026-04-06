@@ -60,6 +60,7 @@
     <string name="tasmota_delete_command">Are you sure you want to delete this entry?</string>
     <string name="tasmota_execute_once">Execute command</string>
     <string name="tasmota_execute_once_summary">Execute command once without adding it to the list</string>
+    <string name="tasmota_go_to_ui">Go to Tasmota UI</string>
 
     <string name="shelly_humidity_sensor_summary">Current humidity</string>
     <string name="shelly_powermeter_summary">Current power consumption</string>
