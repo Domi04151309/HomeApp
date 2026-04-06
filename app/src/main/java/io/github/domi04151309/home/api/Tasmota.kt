@@ -71,6 +71,14 @@ class Tasmota(
                     icon = R.drawable.ic_edit,
                     hidden = "execute_once",
                 )
+
+            listItems +=
+                ListViewItem(
+                    title = c.resources.getString(R.string.tasmota_go_to_ui),
+                    summary = "",
+                    icon = R.drawable.ic_device_router,
+                    hidden = "go_to_ui",
+                )
         }
 
         updateCache(listItems)
