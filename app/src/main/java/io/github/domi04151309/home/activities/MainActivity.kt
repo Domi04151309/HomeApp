@@ -278,7 +278,9 @@ class MainActivity : BaseActivity() {
             startActivityAndReset(Intent(this, DevicesActivity::class.java))
         }
 
-        findViewById<MaterialToolbar>(R.id.toolbar).setOnMenuItemClickListener {
+        val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
+        toolbar.setTitle(R.string.app_name)
+        toolbar.setOnMenuItemClickListener {
             startActivity(
                 Intent(
                     this@MainActivity,

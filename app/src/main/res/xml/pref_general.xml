@@ -12,6 +12,15 @@
             app:title="@string/pref_columns"
             app:iconSpaceReserved="false" />
 
+        <ListPreference
+            app:defaultValue=""
+            app:entries="@array/pref_language_array"
+            app:entryValues="@array/pref_language_array_values"
+            app:key="language"
+            app:summary="@string/pref_language_summary"
+            app:title="@string/pref_language"
+            app:iconSpaceReserved="false" />
+
         <SwitchPreference
             app:defaultValue="false"
             app:key="controls_auth"

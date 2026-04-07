@@ -29,8 +29,10 @@ object SliderUtils {
         gradient.setCornerRadius(dpToPx(view.resources, CORNER_RADIUS).toFloat())
         gradient.paint.shader =
             LinearGradient(
-                0f, 0f,
-                view.width.toFloat(), 0f,
+                0f,
+                0f,
+                view.width.toFloat(),
+                0f,
                 colors,
                 null,
                 Shader.TileMode.CLAMP,
