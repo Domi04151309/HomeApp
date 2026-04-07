@@ -146,7 +146,7 @@ class MainActivity : BaseActivity() {
                 when (data.hidden) {
                     "add" -> helper.addToList(unifiedRequestCallback)
                     "execute_once" -> helper.executeOnce(unifiedRequestCallback)
-                    "go_to_ui" ->
+                    "open_ui" ->
                         startActivity(
                             Intent(Intent.ACTION_VIEW, unified?.url?.toUri()),
                         )
