@@ -74,10 +74,10 @@ class Tasmota(
 
             listItems +=
                 ListViewItem(
-                    title = c.resources.getString(R.string.tasmota_go_to_ui),
-                    summary = "",
+                    title = c.resources.getString(R.string.tasmota_open_ui),
+                    summary = c.resources.getString(R.string.tasmota_open_ui_summary),
                     icon = R.drawable.ic_device_router,
-                    hidden = "go_to_ui",
+                    hidden = "open_ui",
                 )
         }
 
