@@ -1,0 +1,220 @@
+<resources>
+    <string name="app_name">Otthon</string>
+    <string name="app_description">Egy kis okosotthon alkalmazás Philips Hue, Arduino és más eszközökhöz</string>
+
+    <string name="main_no_devices">Nem található eszköz</string>
+    <string name="main_no_devices_summary">Új eszköz hozzáadása a beállításokban</string>
+    <string name="main_device_nonexistent">Az eszköz nem szerepel a listádban</string>
+    <string name="main_tap_to_connect">Érintsd meg a csatlakozáshoz</string>
+    <string name="main_connecting">Csatlakozás</string>
+    <string name="main_network_not_secure">A kapcsolat nem biztonságos</string>
+    <string name="main_unknown_mode">Az eszköz ismeretlen módot használ</string>
+    <string name="main_device_unavailable">Az eszköz jelenleg nem elérhető</string>
+    <string name="main_parse_error">A válasz nem felel meg a követelményeknek</string>
+    <string name="main_client_error">Az eszköz nem válaszolt</string>
+    <string name="main_execution_completed">A végrehajtás sikeresen befejeződött</string>
+
+    <string name="main_device_icon">Eszköz ikon</string>
+    <string name="main_device_name">Eszközök</string>
+
+    <string name="err">Valami hiba történt</string>
+    <string name="err_wrong_format">Rossz formátum</string>
+    <string name="err_missing_name">Kérjük, add meg a nevet</string>
+    <string name="err_missing_name_summary">A név fontos, hogy később felismerhesd az elemet</string>
+    <string name="err_missing_address">Kérjük, add meg a címet</string>
+    <string name="err_missing_address_summary">A cím fontos, mert lehetővé teszi az alkalmazás számára, hogy elérje az eszközt</string>
+
+    <string name="hue_connect">Csatlakozás a Bridge-hez</string>
+    <string name="hue_press_button">Kérjük, nyomd meg a gombot a bridge-en a folytatáshoz.</string>
+    <string name="hue_tap">Érintsd meg a kiválasztáshoz</string>
+    <string name="hue_brightness">Fényerő</string>
+    <string name="hue_color_temperature">Színhőmérséklet</string>
+    <string name="hue_hue_sat">Színárnyalat és telítettség</string>
+    <string name="hue_scene">Jelenet</string>
+    <string name="hue_add_scene">Jelenet hozzáadása</string>
+    <string name="hue_new_scene">Új jelenet</string>
+    <string name="hue_delete_scene">Biztosan törölni szeretnéd ezt a jelenetet?</string>
+    <string name="hue_bridge">Bridge</string>
+    <string name="hue_bridge_name">Bridge neve</string>
+    <string name="hue_bridge_model">Bridge modell</string>
+    <string name="hue_bridge_id">Bridge ID</string>
+    <string name="hue_bridge_software">Szoftververzió</string>
+    <string name="hue_bridge_zigbee">Zigbee csatorna</string>
+    <string name="hue_bridge_dhcp">DHCP</string>
+    <string name="hue_bridge_time_zone">Időzóna</string>
+    <string name="hue_users">Felhasználók</string>
+    <string name="hue_controls">Vezérlők</string>
+    <string name="hue_lights">Lámpák</string>
+    <string name="hue_room">Hue szoba</string>
+    <string name="hue_scene_shortcut">Hue jelenet</string>
+
+    <string name="tasmota_empty_list">Még nincsenek parancsok hozzáadva</string>
+    <string name="tasmota_empty_list_summary">Parancsok hozzáadása alább</string>
+    <string name="tasmota_add_command">Parancs hozzáadása a listához</string>
+    <string name="tasmota_add_command_summary">Új parancs hozzáadása a listádhoz</string>
+    <string name="tasmota_add_command_dialog_title">Cím</string>
+    <string name="tasmota_add_command_dialog_title_empty">Parancs</string>
+    <string name="tasmota_delete_command">Biztosan törölni szeretnéd ezt az elemet?</string>
+    <string name="tasmota_execute_once">Parancs végrehajtása</string>
+    <string name="tasmota_execute_once_summary">Parancs egyszeri végrehajtása a lista hozzáadása nélkül</string>
+    <string name="tasmota_go_to_ui">Ugrás a Tasmota UI-ra</string>
+
+    <string name="shelly_humidity_sensor_summary">Jelenlegi páratartalom</string>
+    <string name="shelly_powermeter_summary">Jelenlegi energiafogyasztás</string>
+    <string name="shelly_powermeter_current">Áramerősség</string>
+    <string name="shelly_powermeter_voltage">Feszültség</string>
+    <string name="shelly_powermeter_energy">Energia</string>
+    <string name="shelly_powermeter_return_energy">Visszatáplált energia</string>
+    <string name="shelly_switch_title">Kapcsoló %1$d</string>
+    <string name="shelly_temperature_sensor_summary">Jelenlegi hőmérséklet</string>
+    <string name="shelly_wifi">WiFi</string>
+    <string name="shelly_mqtt">MQTT</string>
+    <string name="shelly_cloud">Felhő</string>
+    <string name="shelly_uptime">Üzemidő</string>
+    <string name="shelly_storage">Felhasznált tárhely</string>
+    <string name="shelly_ram">Felhasznált RAM</string>
+    <string name="shelly_update">Elérhető frissítések</string>
+
+    <string name="input_title">Kérjük, adj meg valamit</string>
+    <string name="input_hint">Bevitel</string>
+
+    <string name="webView">Webnézet</string>
+    <string name="webView_open">Megnyitás böngészőben</string>
+    <string name="webView_error">A weboldal betöltése nem sikerült</string>
+    <string name="webView_error_summary">Kérjük, ellenőrizd a hálózati kapcsolatot, vagy próbáld újra később</string>
+    <string name="webView_authentication">Hitelesítés</string>
+    <string name="webView_ssl_error">Nem megbízható tanúsítvány</string>
+
+    <string name="pref">Beállítások</string>
+    <string name="pref_general">Általános beállítások</string>
+    <string name="pref_columns">Oszlopok száma</string>
+    <string name="pref_columns_summary">Megváltoztatja a főlista oszlopainak számát</string>
+    <string name="pref_language">Nyelv</string>
+    <string name="pref_language_summary">Válassza ki az alkalmazás nyelvét</string>
+    <string name="pref_language_restart">Alkalmazás újraindítása a nyelv alkalmazásához...</string>
+    <string name="pref_devices">Eszközök</string>
+    <string name="pref_edit">Eszközlista szerkesztése</string>
+    <string name="pref_edit_summary">Az eszközök listájának szerkesztése</string>
+    <string name="pref_delete_device_question">Biztosan törölni szeretnéd ezt az eszközt?</string>
+    <string name="pref_device_config">Eszközbeállítások</string>
+    <string name="pref_add_shortcut">Hozzáadás a kezdőképernyőhöz</string>
+    <string name="pref_add_shortcut_failed">A rendszered nem támogatja a parancsikonokat</string>
+    <string name="pref_add">Új eszköz hozzáadása</string>
+    <string name="pref_add_summary">Új eszköz hozzáadása a címével</string>
+    <string name="pref_add_method">Módszer kiválasztása</string>
+    <string name="pref_add_new_device">Új eszköz</string>
+    <string name="pref_add_id">Belső ID: %1$s</string>
+    <string name="pref_add_name">Név</string>
+    <string name="pref_add_name_example">pl. Eszköz</string>
+    <string name="pref_add_name_empty">Eszköz</string>
+    <string name="pref_add_address">Cím</string>
+    <string name="pref_add_address_example">pl. http://127.0.0.1/</string>
+    <string name="pref_add_icon">Ikon</string>
+    <string name="pref_add_mode">Mód</string>
+    <string name="pref_add_search">Kompatibilis eszközök keresése</string>
+    <string name="pref_add_search_summary">Ez eltarthat néhány másodpercig</string>
+    <string name="pref_add_dialog">Eszköz hozzáadása</string>
+    <string name="pref_add_dialog_message">Hozzá szeretnéd adni a(z) &#8220;%1$s&#8221; az eszközeidhez?</string>
+    <string name="pref_edit_text">Speciális szerkesztés</string>
+    <string name="pref_edit_text_summary">A JSON karakterlánc saját magad általi szerkesztése</string>
+    <string name="pref_controls_auth">Eszköz feloldásának megkövetelése a vezérlőkhöz</string>
+    <string name="pref_controls_auth_summary">Az eszköz feloldásának megkövetelése a bekapcsológomb-vezérlőkhöz</string>
+    <string name="pref_advanced">Speciális beállítások</string>
+    <string name="pref_reset">Összes eszköz törlése</string>
+    <string name="pref_reset_summary">Ez törli az összes eszközödet</string>
+    <string name="pref_reset_question">Biztosan törölni szeretnéd az összes eszközödet? Ezt nem lehet visszavonni!</string>
+    <string name="pref_reset_toast">Összes eszköz törölve</string>
+    <string name="pref_safety_checks">Potenciálisan nem biztonságos kérések blokkolása</string>
+    <string name="pref_safety_checks_summary">Alapvető biztonsági ellenőrzések végrehajtása\nFigyelmeztetés: Ennek kikapcsolása kiszivárogtathatja a kapcsolati adatokat a támadóknak!</string>
+    <string name="pref_info">Információ</string>
+    <string name="pref_info_wiki">Wiki</string>
+    <string name="pref_info_wiki_summary">Dokumentáció és segítség</string>
+    <string name="pref_info_header">Fejléc háttér</string>
+    <string name="pref_info_header_summary">Fejléc háttér: Alberto Castillo Q. az Unsplash-en</string>
+    <string name="pref_device_router">Router</string>
+    <string name="placeholder">Betöltés</string>
+
+    <string name="security_username">Felhasználónév</string>
+    <string name="security_password">Jelszó</string>
+
+    <string name="device_config_direct_view">Eszköz betöltése a főlistával</string>
+    <string name="device_config_hide">Eszköz elrejtése a főlistából</string>
+    <string name="device_config_hidden">rejtett</string>
+    <string name="device_config_info">Eszköz információ</string>
+    <string name="device_config_info_status">Állapot</string>
+
+    <string name="str_cancel">Mégse</string>
+    <string name="str_edit">Szerkesztés</string>
+    <string name="str_delete">Törlés</string>
+    <string name="str_show">Mutat</string>
+    <string name="str_done">Kész</string>
+    <string name="str_add">Hozzáadás</string>
+    <string name="str_send">Küldés</string>
+    <string name="str_on">Be</string>
+    <string name="str_off">Ki</string>
+    <string name="str_yes">Igen</string>
+    <string name="str_no">Nem</string>
+    <string name="str_unreachable">Elérhetetlen</string>
+
+    <string name="about">Névjegy</string>
+    <string name="about_summary">Az alkalmazásról</string>
+    <string name="about_app_version">Alkalmazás verzió</string>
+    <string name="about_privacy">Külső tartalom</string>
+    <string name="about_privacy_desc">Külső tartalom a GitHub-ról töltődik be. További információért olvasd el az adatvédelmi irányelveiket.</string>
+    <string name="about_privacy_policy">Adatvédelmi irányelvek</string>
+    <string name="about_contributors">Közreműködők</string>
+    <string name="about_contributors_desc">A közreműködők listája</string>
+    <string name="about_general">Általános</string>
+    <string name="about_github">GitHub repository</string>
+    <string name="about_license">Licenc</string>
+    <string name="about_icons">Ikonok</string>
+    <string name="about_icons_desc">Ikonok: Icons8 és Google</string>
+    <string name="about_libraries">Könyvtárak</string>
+    <string name="about_libraries_desc">Az összes használt könyvtár listája</string>
+
+    <string-array name="pref_columns_array">
+        <item>Automatikus</item>
+        <item>Egy</item>
+        <item>Kettő</item>
+        <item>Három</item>
+        <item>Négy</item>
+    </string-array>
+    <string-array name="pref_add_method_array">
+        <item>Eszköz hozzáadása cím alapján</item>
+        <item>Kompatibilis eszközök keresése (kísérleti)</item>
+    </string-array>
+    <string-array name="pref_language_array">
+        <item>Rendszer alapértelmezett</item>
+        <item>English</item>
+        <item>Čeština</item>
+        <item>Deutsch</item>
+        <item>Ελληνικά</item>
+        <item>Español</item>
+        <item>Français</item>
+        <item>Magyar</item>
+        <item>Italiano</item>
+        <item>Nederlands</item>
+        <item>Polski</item>
+        <item>Português</item>
+        <item>Română</item>
+        <item>Русский</item>
+        <item>Svenska</item>
+    </string-array>
+    <string-array name="pref_language_array_values" translatable="false">
+        <item></item>
+        <item>en</item>
+        <item>cs</item>
+        <item>de</item>
+        <item>el</item>
+        <item>es</item>
+        <item>fr</item>
+        <item>hu</item>
+        <item>it</item>
+        <item>nl</item>
+        <item>pl</item>
+        <item>pt</item>
+        <item>ro</item>
+        <item>ru</item>
+        <item>sv</item>
+    </string-array>
+</resources>

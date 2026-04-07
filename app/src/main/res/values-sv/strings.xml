@@ -1,0 +1,220 @@
+<resources>
+    <string name="app_name">Hem</string>
+    <string name="app_description">En liten smart home-app för Philips Hue, Arduino och andra enheter</string>
+
+    <string name="main_no_devices">Inga enheter hittades</string>
+    <string name="main_no_devices_summary">Lägg till en ny enhet i inställningarna</string>
+    <string name="main_device_nonexistent">Enheten finns inte i din lista</string>
+    <string name="main_tap_to_connect">Tryck för att ansluta</string>
+    <string name="main_connecting">Ansluter</string>
+    <string name="main_network_not_secure">Anslutningen är inte säker</string>
+    <string name="main_unknown_mode">Enheten använder ett okänt läge</string>
+    <string name="main_device_unavailable">Enheten är för närvarande otillgänglig</string>
+    <string name="main_parse_error">Svaret uppfyller inte kraven</string>
+    <string name="main_client_error">Enheten svarade inte</string>
+    <string name="main_execution_completed">Körningen slutfördes framgångsrikt</string>
+
+    <string name="main_device_icon">Enhetsikon</string>
+    <string name="main_device_name">Dina enheter</string>
+
+    <string name="err">Något gick fel</string>
+    <string name="err_wrong_format">Fel format</string>
+    <string name="err_missing_name">Ange ett namn</string>
+    <string name="err_missing_name_summary">Ett namn är viktigt så att du kan känna igen posten senare</string>
+    <string name="err_missing_address">Ange en adress</string>
+    <string name="err_missing_address_summary">En adress är viktig eftersom den gör att appen kan nå enheten</string>
+
+    <string name="hue_connect">Anslut till din Bridge</string>
+    <string name="hue_press_button">Tryck på knappen på din bridge för att fortsätta.</string>
+    <string name="hue_tap">Tryck för att välja</string>
+    <string name="hue_brightness">Ljusstyrka</string>
+    <string name="hue_color_temperature">Färgtemperatur</string>
+    <string name="hue_hue_sat">Nyans och mättnad</string>
+    <string name="hue_scene">Scen</string>
+    <string name="hue_add_scene">Lägg till scen</string>
+    <string name="hue_new_scene">Ny scen</string>
+    <string name="hue_delete_scene">Är du säker på att du vill ta bort denna scen?</string>
+    <string name="hue_bridge">Bridge</string>
+    <string name="hue_bridge_name">Bridge-namn</string>
+    <string name="hue_bridge_model">Bridge-modell</string>
+    <string name="hue_bridge_id">Bridge-ID</string>
+    <string name="hue_bridge_software">Programvaruversion</string>
+    <string name="hue_bridge_zigbee">Zigbee-kanal</string>
+    <string name="hue_bridge_dhcp">DHCP</string>
+    <string name="hue_bridge_time_zone">Tidszon</string>
+    <string name="hue_users">Användare</string>
+    <string name="hue_controls">Kontroller</string>
+    <string name="hue_lights">Lampor</string>
+    <string name="hue_room">Hue-rum</string>
+    <string name="hue_scene_shortcut">Hue-scen</string>
+
+    <string name="tasmota_empty_list">Inga kommandon har lagts till än</string>
+    <string name="tasmota_empty_list_summary">Lägg till kommandon nedan</string>
+    <string name="tasmota_add_command">Lägg till kommando i listan</string>
+    <string name="tasmota_add_command_summary">Lägg till ett nytt kommando i din lista</string>
+    <string name="tasmota_add_command_dialog_title">Titel</string>
+    <string name="tasmota_add_command_dialog_title_empty">Kommando</string>
+    <string name="tasmota_delete_command">Är du säker på att du vill ta bort denna post?</string>
+    <string name="tasmota_execute_once">Kör kommando</string>
+    <string name="tasmota_execute_once_summary">Kör kommando en gång utan att lägga till det i listan</string>
+    <string name="tasmota_go_to_ui">Gå till Tasmota UI</string>
+
+    <string name="shelly_humidity_sensor_summary">Aktuell luftfuktighet</string>
+    <string name="shelly_powermeter_summary">Aktuell strömförbrukning</string>
+    <string name="shelly_powermeter_current">Ström</string>
+    <string name="shelly_powermeter_voltage">Spänning</string>
+    <string name="shelly_powermeter_energy">Energi</string>
+    <string name="shelly_powermeter_return_energy">Returnerad energi</string>
+    <string name="shelly_switch_title">Strömbrytare %1$d</string>
+    <string name="shelly_temperature_sensor_summary">Aktuell temperatur</string>
+    <string name="shelly_wifi">WiFi</string>
+    <string name="shelly_mqtt">MQTT</string>
+    <string name="shelly_cloud">Moln</string>
+    <string name="shelly_uptime">Drifttid</string>
+    <string name="shelly_storage">Lagring använd</string>
+    <string name="shelly_ram">RAM använd</string>
+    <string name="shelly_update">Uppdateringar tillgängliga</string>
+
+    <string name="input_title">Ange något</string>
+    <string name="input_hint">Inmatning</string>
+
+    <string name="webView">Webbläsare</string>
+    <string name="webView_open">Öppna i webbläsare</string>
+    <string name="webView_error">Laddning av webbplatsen misslyckades</string>
+    <string name="webView_error_summary">Kontrollera din nätverksanslutning eller försök igen senare</string>
+    <string name="webView_authentication">Autentisering</string>
+    <string name="webView_ssl_error">Ej betrott certifikat</string>
+
+    <string name="pref">Inställningar</string>
+    <string name="pref_general">Allmänna inställningar</string>
+    <string name="pref_columns">Antal kolumner</string>
+    <string name="pref_columns_summary">Ändrar antalet kolumner i huvudlistan</string>
+    <string name="pref_language">Språk</string>
+    <string name="pref_language_summary">Välj appens språk</string>
+    <string name="pref_language_restart">Startar om appen för att tillämpa språket...</string>
+    <string name="pref_devices">Enheter</string>
+    <string name="pref_edit">Redigera enhetslista</string>
+    <string name="pref_edit_summary">Redigera listan över enheter</string>
+    <string name="pref_delete_device_question">Är du säker på att du vill ta bort denna enhet?</string>
+    <string name="pref_device_config">Enhetskonfiguration</string>
+    <string name="pref_add_shortcut">Lägg till på hemskärmen</string>
+    <string name="pref_add_shortcut_failed">Genvägar stöds inte av ditt system</string>
+    <string name="pref_add">Lägg till en ny enhet</string>
+    <string name="pref_add_summary">Lägg till en ny enhet med dess adress</string>
+    <string name="pref_add_method">Välj metod</string>
+    <string name="pref_add_new_device">Ny enhet</string>
+    <string name="pref_add_id">Internt ID: %1$s</string>
+    <string name="pref_add_name">Namn</string>
+    <string name="pref_add_name_example">t.ex. Enhet</string>
+    <string name="pref_add_name_empty">Enhet</string>
+    <string name="pref_add_address">Adress</string>
+    <string name="pref_add_address_example">t.ex. http://127.0.0.1/</string>
+    <string name="pref_add_icon">Ikon</string>
+    <string name="pref_add_mode">Läge</string>
+    <string name="pref_add_search">Söker efter kompatibla enheter</string>
+    <string name="pref_add_search_summary">Detta kan ta några sekunder</string>
+    <string name="pref_add_dialog">Lägg till enhet</string>
+    <string name="pref_add_dialog_message">Vill du lägga till &#8220;%1$s&#8221; i dina enheter?</string>
+    <string name="pref_edit_text">Avancerad redigering</string>
+    <string name="pref_edit_text_summary">Redigera JSON-strängen själv</string>
+    <string name="pref_controls_auth">Kräv enhetsupplåsning för kontroller</string>
+    <string name="pref_controls_auth_summary">Kräv att enheten är upplåst för strömmenykontroller</string>
+    <string name="pref_advanced">Avancerade inställningar</string>
+    <string name="pref_reset">Ta bort alla enheter</string>
+    <string name="pref_reset_summary">Detta tar bort alla dina enheter</string>
+    <string name="pref_reset_question">Är du säker på att du vill ta bort alla dina enheter? Detta kan inte ångras!</string>
+    <string name="pref_reset_toast">Tog bort alla enheter</string>
+    <string name="pref_safety_checks">Blockera potentiellt osäkra förfrågningar</string>
+    <string name="pref_safety_checks_summary">Utför grundläggande säkerhetskontroller\nVarning: Att stänga av detta kan läcka anslutningsdata till angripare!</string>
+    <string name="pref_info">Information</string>
+    <string name="pref_info_wiki">Wiki</string>
+    <string name="pref_info_wiki_summary">Dokumentation och hjälp</string>
+    <string name="pref_info_header">Sidhuvudbakgrund</string>
+    <string name="pref_info_header_summary">Sidhuvudbakgrund av Alberto Castillo Q. på Unsplash</string>
+    <string name="pref_device_router">Router</string>
+    <string name="placeholder">Laddar</string>
+
+    <string name="security_username">Användarnamn</string>
+    <string name="security_password">Lösenord</string>
+
+    <string name="device_config_direct_view">Ladda enhet med huvudlista</string>
+    <string name="device_config_hide">Dölj enhet från huvudlista</string>
+    <string name="device_config_hidden">dold</string>
+    <string name="device_config_info">Enhetsinfo</string>
+    <string name="device_config_info_status">Status</string>
+
+    <string name="str_cancel">Avbryt</string>
+    <string name="str_edit">Redigera</string>
+    <string name="str_delete">Ta bort</string>
+    <string name="str_show">Visa</string>
+    <string name="str_done">Klar</string>
+    <string name="str_add">Lägg till</string>
+    <string name="str_send">Skicka</string>
+    <string name="str_on">På</string>
+    <string name="str_off">Av</string>
+    <string name="str_yes">Ja</string>
+    <string name="str_no">Nej</string>
+    <string name="str_unreachable">Otillgänglig</string>
+
+    <string name="about">Om</string>
+    <string name="about_summary">Om appen</string>
+    <string name="about_app_version">Appversion</string>
+    <string name="about_privacy">Externt innehåll</string>
+    <string name="about_privacy_desc">Externt innehåll kommer att laddas från GitHub. Läs deras integritetspolicy för mer information.</string>
+    <string name="about_privacy_policy">Integritetspolicy</string>
+    <string name="about_contributors">Medverkande</string>
+    <string name="about_contributors_desc">En lista över medverkande</string>
+    <string name="about_general">Allmänt</string>
+    <string name="about_github">GitHub-repositorium</string>
+    <string name="about_license">Licens</string>
+    <string name="about_icons">Ikoner</string>
+    <string name="about_icons_desc">Ikoner av Icons8 och Google</string>
+    <string name="about_libraries">Bibliotek</string>
+    <string name="about_libraries_desc">En lista över alla använda bibliotek</string>
+
+    <string-array name="pref_columns_array">
+        <item>Auto</item>
+        <item>En</item>
+        <item>Två</item>
+        <item>Tre</item>
+        <item>Fyra</item>
+    </string-array>
+    <string-array name="pref_add_method_array">
+        <item>Lägg till enhet efter adress</item>
+        <item>Sök efter kompatibla enheter (experimentell)</item>
+    </string-array>
+    <string-array name="pref_language_array">
+        <item>Systemstandard</item>
+        <item>English</item>
+        <item>Čeština</item>
+        <item>Deutsch</item>
+        <item>Ελληνικά</item>
+        <item>Español</item>
+        <item>Français</item>
+        <item>Magyar</item>
+        <item>Italiano</item>
+        <item>Nederlands</item>
+        <item>Polski</item>
+        <item>Português</item>
+        <item>Română</item>
+        <item>Русский</item>
+        <item>Svenska</item>
+    </string-array>
+    <string-array name="pref_language_array_values" translatable="false">
+        <item></item>
+        <item>en</item>
+        <item>cs</item>
+        <item>de</item>
+        <item>el</item>
+        <item>es</item>
+        <item>fr</item>
+        <item>hu</item>
+        <item>it</item>
+        <item>nl</item>
+        <item>pl</item>
+        <item>pt</item>
+        <item>ro</item>
+        <item>ru</item>
+        <item>sv</item>
+    </string-array>
+</resources>

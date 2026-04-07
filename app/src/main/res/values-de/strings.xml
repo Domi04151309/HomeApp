@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Home</string>
+    <string name="app_name">Zuhause</string>
     <string name="app_description">Eine kleine Smart-Home-App für Philips Hue, Arduino und andere Geräte</string>
 
     <string name="main_no_devices">Keine Geräte gefunden</string>
@@ -90,6 +90,9 @@
     <string name="pref_general">Generelle Einstellungen</string>
     <string name="pref_columns">Spaltenanzahl</string>
     <string name="pref_columns_summary">Ändert die Anzahl der Spalten der Hauptliste</string>
+    <string name="pref_language">Sprache</string>
+    <string name="pref_language_summary">Wählen Sie die App-Sprache</string>
+    <string name="pref_language_restart">App wird neu gestartet, um Sprache anzuwenden...</string>
     <string name="pref_devices">Geräte</string>
     <string name="pref_edit">Geräteliste bearbeiten</string>
     <string name="pref_edit_summary">Bearbeiten Sie Ihre Geräteliste</string>
@@ -180,5 +183,39 @@
     <string-array name="pref_add_method_array">
         <item>Gerät mit Adresse hinzufügen</item>
         <item>Nach kompatiblen Geräten suchen (experimentell)</item>
+    </string-array>
+    <string-array name="pref_language_array">
+        <item>Systemstandard</item>
+        <item>English</item>
+        <item>Čeština</item>
+        <item>Deutsch</item>
+        <item>Ελληνικά</item>
+        <item>Español</item>
+        <item>Français</item>
+        <item>Magyar</item>
+        <item>Italiano</item>
+        <item>Nederlands</item>
+        <item>Polski</item>
+        <item>Português</item>
+        <item>Română</item>
+        <item>Русский</item>
+        <item>Svenska</item>
+    </string-array>
+    <string-array name="pref_language_array_values" translatable="false">
+        <item></item>
+        <item>en</item>
+        <item>cs</item>
+        <item>de</item>
+        <item>el</item>
+        <item>es</item>
+        <item>fr</item>
+        <item>hu</item>
+        <item>it</item>
+        <item>nl</item>
+        <item>pl</item>
+        <item>pt</item>
+        <item>ro</item>
+        <item>ru</item>
+        <item>sv</item>
     </string-array>
 </resources>

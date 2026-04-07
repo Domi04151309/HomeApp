@@ -14,6 +14,7 @@ import io.github.domi04151309.home.R
 import io.github.domi04151309.home.fragments.PreferenceFragment
 import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.helpers.Global
+import io.github.domi04151309.home.helpers.LocaleHelper
 import io.github.domi04151309.home.helpers.P
 
 class SettingsActivity : BaseActivity() {
@@ -78,6 +79,28 @@ class SettingsActivity : BaseActivity() {
                         "https://unsplash.com/photos/mx4mSkK9zeo".toUri(),
                     ),
                 )
+                true
+            }
+            findPreference<Preference>(P.PREF_LANGUAGE)?.setOnPreferenceChangeListener { _, newValue ->
+                val newLang = newValue as String
+                LocaleHelper.setNewLocale(requireContext(), newLang)
+                
+                // Show toast to inform user
+                Toast.makeText(context, R.string.pref_language_restart, Toast.LENGTH_SHORT).show()
+                
+                // Restart the entire app to apply the new language
+                // Use a handler to give the toast time to show and preference time to save
+                android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                    val packageManager = requireContext().packageManager
+                    val intent = packageManager.getLaunchIntentForPackage(requireContext().packageName)
+                    intent?.let {
+                        it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        it.putExtra("language_changed", true)
+                        startActivity(it)
+                    }
+                    android.os.Process.killProcess(android.os.Process.myPid())
+                    System.exit(0)
+                }, 500)
                 true
             }
         }

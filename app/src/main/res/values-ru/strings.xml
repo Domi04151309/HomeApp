@@ -1,0 +1,220 @@
+<resources>
+    <string name="app_name">Дом</string>
+    <string name="app_description">Небольшое приложение для умного дома для Philips Hue, Arduino и других устройств</string>
+
+    <string name="main_no_devices">Устройства не найдены</string>
+    <string name="main_no_devices_summary">Добавьте новое устройство в настройках</string>
+    <string name="main_device_nonexistent">Устройство отсутствует в вашем списке</string>
+    <string name="main_tap_to_connect">Нажмите для подключения</string>
+    <string name="main_connecting">Подключение</string>
+    <string name="main_network_not_secure">Соединение не защищено</string>
+    <string name="main_unknown_mode">Устройство использует неизвестный режим</string>
+    <string name="main_device_unavailable">Устройство в настоящее время недоступно</string>
+    <string name="main_parse_error">Ответ не соответствует требованиям</string>
+    <string name="main_client_error">Устройство не ответило</string>
+    <string name="main_execution_completed">Выполнение успешно завершено</string>
+
+    <string name="main_device_icon">Значок устройства</string>
+    <string name="main_device_name">Ваши устройства</string>
+
+    <string name="err">Что-то пошло не так</string>
+    <string name="err_wrong_format">Неверный формат</string>
+    <string name="err_missing_name">Пожалуйста, введите название</string>
+    <string name="err_missing_name_summary">Название важно, чтобы вы могли распознать запись позже</string>
+    <string name="err_missing_address">Пожалуйста, введите адрес</string>
+    <string name="err_missing_address_summary">Адрес важен, потому что он позволяет приложению связаться с устройством</string>
+
+    <string name="hue_connect">Подключитесь к вашему мосту</string>
+    <string name="hue_press_button">Пожалуйста, нажмите кнопку на вашем мосту, чтобы продолжить.</string>
+    <string name="hue_tap">Нажмите для выбора</string>
+    <string name="hue_brightness">Яркость</string>
+    <string name="hue_color_temperature">Цветовая температура</string>
+    <string name="hue_hue_sat">Оттенок и насыщенность</string>
+    <string name="hue_scene">Сцена</string>
+    <string name="hue_add_scene">Добавить сцену</string>
+    <string name="hue_new_scene">Новая сцена</string>
+    <string name="hue_delete_scene">Вы уверены, что хотите удалить эту сцену?</string>
+    <string name="hue_bridge">Мост</string>
+    <string name="hue_bridge_name">Название моста</string>
+    <string name="hue_bridge_model">Модель моста</string>
+    <string name="hue_bridge_id">ID моста</string>
+    <string name="hue_bridge_software">Версия ПО</string>
+    <string name="hue_bridge_zigbee">Канал Zigbee</string>
+    <string name="hue_bridge_dhcp">DHCP</string>
+    <string name="hue_bridge_time_zone">Часовой пояс</string>
+    <string name="hue_users">Пользователи</string>
+    <string name="hue_controls">Элементы управления</string>
+    <string name="hue_lights">Освещение</string>
+    <string name="hue_room">Комната Hue</string>
+    <string name="hue_scene_shortcut">Сцена Hue</string>
+
+    <string name="tasmota_empty_list">Команды еще не добавлены</string>
+    <string name="tasmota_empty_list_summary">Добавьте команды ниже</string>
+    <string name="tasmota_add_command">Добавить команду в список</string>
+    <string name="tasmota_add_command_summary">Добавить новую команду в ваш список</string>
+    <string name="tasmota_add_command_dialog_title">Название</string>
+    <string name="tasmota_add_command_dialog_title_empty">Команда</string>
+    <string name="tasmota_delete_command">Вы уверены, что хотите удалить эту запись?</string>
+    <string name="tasmota_execute_once">Выполнить команду</string>
+    <string name="tasmota_execute_once_summary">Выполнить команду один раз без добавления в список</string>
+    <string name="tasmota_go_to_ui">Перейти в Tasmota UI</string>
+
+    <string name="shelly_humidity_sensor_summary">Текущая влажность</string>
+    <string name="shelly_powermeter_summary">Текущее потребление энергии</string>
+    <string name="shelly_powermeter_current">Ток</string>
+    <string name="shelly_powermeter_voltage">Напряжение</string>
+    <string name="shelly_powermeter_energy">Энергия</string>
+    <string name="shelly_powermeter_return_energy">Возвращенная энергия</string>
+    <string name="shelly_switch_title">Переключатель %1$d</string>
+    <string name="shelly_temperature_sensor_summary">Текущая температура</string>
+    <string name="shelly_wifi">WiFi</string>
+    <string name="shelly_mqtt">MQTT</string>
+    <string name="shelly_cloud">Облако</string>
+    <string name="shelly_uptime">Время работы</string>
+    <string name="shelly_storage">Использовано хранилища</string>
+    <string name="shelly_ram">Использовано ОЗУ</string>
+    <string name="shelly_update">Доступны обновления</string>
+
+    <string name="input_title">Пожалуйста, введите что-нибудь</string>
+    <string name="input_hint">Ввод</string>
+
+    <string name="webView">Веб-просмотр</string>
+    <string name="webView_open">Открыть в браузере</string>
+    <string name="webView_error">Не удалось загрузить веб-сайт</string>
+    <string name="webView_error_summary">Пожалуйста, проверьте подключение к сети или попробуйте позже</string>
+    <string name="webView_authentication">Аутентификация</string>
+    <string name="webView_ssl_error">Ненадежный сертификат</string>
+
+    <string name="pref">Настройки</string>
+    <string name="pref_general">Общие настройки</string>
+    <string name="pref_columns">Количество столбцов</string>
+    <string name="pref_columns_summary">Изменяет количество столбцов главного списка</string>
+    <string name="pref_language">Язык</string>
+    <string name="pref_language_summary">Выберите язык приложения</string>
+    <string name="pref_language_restart">Перезапуск приложения для применения языка...</string>
+    <string name="pref_devices">Устройства</string>
+    <string name="pref_edit">Изменить список устройств</string>
+    <string name="pref_edit_summary">Изменить список устройств</string>
+    <string name="pref_delete_device_question">Вы уверены, что хотите удалить это устройство?</string>
+    <string name="pref_device_config">Конфигурация устройства</string>
+    <string name="pref_add_shortcut">Добавить на главный экран</string>
+    <string name="pref_add_shortcut_failed">Ярлыки не поддерживаются вашей системой</string>
+    <string name="pref_add">Добавить новое устройство</string>
+    <string name="pref_add_summary">Добавить новое устройство с его адресом</string>
+    <string name="pref_add_method">Выберите метод</string>
+    <string name="pref_add_new_device">Новое устройство</string>
+    <string name="pref_add_id">Внутренний ID: %1$s</string>
+    <string name="pref_add_name">Название</string>
+    <string name="pref_add_name_example">например, Устройство</string>
+    <string name="pref_add_name_empty">Устройство</string>
+    <string name="pref_add_address">Адрес</string>
+    <string name="pref_add_address_example">например, http://127.0.0.1/</string>
+    <string name="pref_add_icon">Значок</string>
+    <string name="pref_add_mode">Режим</string>
+    <string name="pref_add_search">Поиск совместимых устройств</string>
+    <string name="pref_add_search_summary">Это может занять несколько секунд</string>
+    <string name="pref_add_dialog">Добавить устройство</string>
+    <string name="pref_add_dialog_message">Хотите добавить &#8220;%1$s&#8221; в ваши устройства?</string>
+    <string name="pref_edit_text">Расширенное редактирование</string>
+    <string name="pref_edit_text_summary">Отредактируйте JSON-строку самостоятельно</string>
+    <string name="pref_controls_auth">Требовать разблокировку устройства для управления</string>
+    <string name="pref_controls_auth_summary">Требовать разблокировку устройства для элементов управления в меню питания</string>
+    <string name="pref_advanced">Расширенные настройки</string>
+    <string name="pref_reset">Удалить все устройства</string>
+    <string name="pref_reset_summary">Это удалит все ваши устройства</string>
+    <string name="pref_reset_question">Вы уверены, что хотите удалить все свои устройства? Это нельзя отменить!</string>
+    <string name="pref_reset_toast">Все устройства удалены</string>
+    <string name="pref_safety_checks">Блокировать потенциально небезопасные запросы</string>
+    <string name="pref_safety_checks_summary">Выполнять базовые проверки безопасности\nПредупреждение: отключение этой функции может привести к утечке данных о подключении к злоумышленникам!</string>
+    <string name="pref_info">Информация</string>
+    <string name="pref_info_wiki">Вики</string>
+    <string name="pref_info_wiki_summary">Документация и справка</string>
+    <string name="pref_info_header">Фон заголовка</string>
+    <string name="pref_info_header_summary">Фон заголовка от Alberto Castillo Q. на Unsplash</string>
+    <string name="pref_device_router">Маршрутизатор</string>
+    <string name="placeholder">Загрузка</string>
+
+    <string name="security_username">Имя пользователя</string>
+    <string name="security_password">Пароль</string>
+
+    <string name="device_config_direct_view">Загружать устройство с главным списком</string>
+    <string name="device_config_hide">Скрыть устройство из главного списка</string>
+    <string name="device_config_hidden">скрыто</string>
+    <string name="device_config_info">Информация об устройстве</string>
+    <string name="device_config_info_status">Статус</string>
+
+    <string name="str_cancel">Отмена</string>
+    <string name="str_edit">Изменить</string>
+    <string name="str_delete">Удалить</string>
+    <string name="str_show">Показать</string>
+    <string name="str_done">Готово</string>
+    <string name="str_add">Добавить</string>
+    <string name="str_send">Отправить</string>
+    <string name="str_on">Вкл</string>
+    <string name="str_off">Выкл</string>
+    <string name="str_yes">Да</string>
+    <string name="str_no">Нет</string>
+    <string name="str_unreachable">Недоступно</string>
+
+    <string name="about">О приложении</string>
+    <string name="about_summary">О приложении</string>
+    <string name="about_app_version">Версия приложения</string>
+    <string name="about_privacy">Внешний контент</string>
+    <string name="about_privacy_desc">Внешний контент будет загружен из GitHub. Прочитайте их политику конфиденциальности для получения дополнительной информации.</string>
+    <string name="about_privacy_policy">Политика конфиденциальности</string>
+    <string name="about_contributors">Участники</string>
+    <string name="about_contributors_desc">Список участников</string>
+    <string name="about_general">Общая информация</string>
+    <string name="about_github">Репозиторий GitHub</string>
+    <string name="about_license">Лицензия</string>
+    <string name="about_icons">Значки</string>
+    <string name="about_icons_desc">Значки от Icons8 и Google</string>
+    <string name="about_libraries">Библиотеки</string>
+    <string name="about_libraries_desc">Список всех используемых библиотек</string>
+
+    <string-array name="pref_columns_array">
+        <item>Авто</item>
+        <item>Один</item>
+        <item>Два</item>
+        <item>Три</item>
+        <item>Четыре</item>
+    </string-array>
+    <string-array name="pref_add_method_array">
+        <item>Добавить устройство по адресу</item>
+        <item>Поиск совместимых устройств (экспериментально)</item>
+    </string-array>
+    <string-array name="pref_language_array">
+        <item>Системный по умолчанию</item>
+        <item>English</item>
+        <item>Čeština</item>
+        <item>Deutsch</item>
+        <item>Ελληνικά</item>
+        <item>Español</item>
+        <item>Français</item>
+        <item>Magyar</item>
+        <item>Italiano</item>
+        <item>Nederlands</item>
+        <item>Polski</item>
+        <item>Português</item>
+        <item>Română</item>
+        <item>Русский</item>
+        <item>Svenska</item>
+    </string-array>
+    <string-array name="pref_language_array_values" translatable="false">
+        <item></item>
+        <item>en</item>
+        <item>cs</item>
+        <item>de</item>
+        <item>el</item>
+        <item>es</item>
+        <item>fr</item>
+        <item>hu</item>
+        <item>it</item>
+        <item>nl</item>
+        <item>pl</item>
+        <item>pt</item>
+        <item>ro</item>
+        <item>ru</item>
+        <item>sv</item>
+    </string-array>
+</resources>

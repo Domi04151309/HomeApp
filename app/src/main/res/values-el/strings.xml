@@ -1,0 +1,220 @@
+<resources>
+    <string name="app_name">Σπίτι</string>
+    <string name="app_description">Μια μικρή εφαρμογή έξυπνου σπιτιού για Philips Hue, Arduino και άλλες συσκευές</string>
+
+    <string name="main_no_devices">Δεν βρέθηκαν συσκευές</string>
+    <string name="main_no_devices_summary">Προσθέστε μια νέα συσκευή στις ρυθμίσεις</string>
+    <string name="main_device_nonexistent">Η συσκευή δεν υπάρχει στη λίστα σας</string>
+    <string name="main_tap_to_connect">Πατήστε για σύνδεση</string>
+    <string name="main_connecting">Σύνδεση</string>
+    <string name="main_network_not_secure">Η σύνδεση δεν είναι ασφαλής</string>
+    <string name="main_unknown_mode">Η συσκευή χρησιμοποιεί άγνωστη λειτουργία</string>
+    <string name="main_device_unavailable">Η συσκευή δεν είναι διαθέσιμη αυτή τη στιγμή</string>
+    <string name="main_parse_error">Η απόκριση δεν πληροί τις απαιτήσεις</string>
+    <string name="main_client_error">Η συσκευή δεν απάντησε</string>
+    <string name="main_execution_completed">Η εκτέλεση ολοκληρώθηκε επιτυχώς</string>
+
+    <string name="main_device_icon">Εικονίδιο συσκευής</string>
+    <string name="main_device_name">Οι συσκευές σας</string>
+
+    <string name="err">Κάτι πήγε στραβά</string>
+    <string name="err_wrong_format">Λάθος μορφή</string>
+    <string name="err_missing_name">Παρακαλώ εισάγετε ένα όνομα</string>
+    <string name="err_missing_name_summary">Ένα όνομα είναι σημαντικό για να αναγνωρίσετε την καταχώρηση αργότερα</string>
+    <string name="err_missing_address">Παρακαλώ εισάγετε μια διεύθυνση</string>
+    <string name="err_missing_address_summary">Μια διεύθυνση είναι σημαντική γιατί επιτρέπει στην εφαρμογή να φτάσει στη συσκευή</string>
+
+    <string name="hue_connect">Σύνδεση με το Bridge σας</string>
+    <string name="hue_press_button">Παρακαλώ πατήστε το κουμπί στο bridge σας για να συνεχίσετε.</string>
+    <string name="hue_tap">Πατήστε για επιλογή</string>
+    <string name="hue_brightness">Φωτεινότητα</string>
+    <string name="hue_color_temperature">Θερμοκρασία χρώματος</string>
+    <string name="hue_hue_sat">Απόχρωση και κορεσμός</string>
+    <string name="hue_scene">Σκηνή</string>
+    <string name="hue_add_scene">Προσθήκη σκηνής</string>
+    <string name="hue_new_scene">Νέα σκηνή</string>
+    <string name="hue_delete_scene">Είστε βέβαιοι ότι θέλετε να διαγράψετε αυτή τη σκηνή;</string>
+    <string name="hue_bridge">Bridge</string>
+    <string name="hue_bridge_name">Όνομα Bridge</string>
+    <string name="hue_bridge_model">Μοντέλο Bridge</string>
+    <string name="hue_bridge_id">ID Bridge</string>
+    <string name="hue_bridge_software">Έκδοση λογισμικού</string>
+    <string name="hue_bridge_zigbee">Κανάλι Zigbee</string>
+    <string name="hue_bridge_dhcp">DHCP</string>
+    <string name="hue_bridge_time_zone">Ζώνη ώρας</string>
+    <string name="hue_users">Χρήστες</string>
+    <string name="hue_controls">Χειρισμοί</string>
+    <string name="hue_lights">Φωτισμοί</string>
+    <string name="hue_room">Δωμάτιο Hue</string>
+    <string name="hue_scene_shortcut">Σκηνή Hue</string>
+
+    <string name="tasmota_empty_list">Δεν έχουν προστεθεί εντολές ακόμα</string>
+    <string name="tasmota_empty_list_summary">Προσθέστε εντολές παρακάτω</string>
+    <string name="tasmota_add_command">Προσθήκη εντολής στη λίστα</string>
+    <string name="tasmota_add_command_summary">Προσθήκη νέας εντολής στη λίστα σας</string>
+    <string name="tasmota_add_command_dialog_title">Τίτλος</string>
+    <string name="tasmota_add_command_dialog_title_empty">Εντολή</string>
+    <string name="tasmota_delete_command">Είστε βέβαιοι ότι θέλετε να διαγράψετε αυτή την καταχώρηση;</string>
+    <string name="tasmota_execute_once">Εκτέλεση εντολής</string>
+    <string name="tasmota_execute_once_summary">Εκτέλεση εντολής μία φορά χωρίς προσθήκη στη λίστα</string>
+    <string name="tasmota_go_to_ui">Μετάβαση στο UI Tasmota</string>
+
+    <string name="shelly_humidity_sensor_summary">Τρέχουσα υγρασία</string>
+    <string name="shelly_powermeter_summary">Τρέχουσα κατανάλωση ενέργειας</string>
+    <string name="shelly_powermeter_current">Ένταση</string>
+    <string name="shelly_powermeter_voltage">Τάση</string>
+    <string name="shelly_powermeter_energy">Ενέργεια</string>
+    <string name="shelly_powermeter_return_energy">Επιστρεφόμενη ενέργεια</string>
+    <string name="shelly_switch_title">Διακόπτης %1$d</string>
+    <string name="shelly_temperature_sensor_summary">Τρέχουσα θερμοκρασία</string>
+    <string name="shelly_wifi">WiFi</string>
+    <string name="shelly_mqtt">MQTT</string>
+    <string name="shelly_cloud">Cloud</string>
+    <string name="shelly_uptime">Χρόνος λειτουργίας</string>
+    <string name="shelly_storage">Χρήση αποθήκευσης</string>
+    <string name="shelly_ram">Χρήση RAM</string>
+    <string name="shelly_update">Διαθέσιμες ενημερώσεις</string>
+
+    <string name="input_title">Παρακαλώ εισάγετε κάτι</string>
+    <string name="input_hint">Εισαγωγή</string>
+
+    <string name="webView">Προβολή Web</string>
+    <string name="webView_open">Άνοιγμα στο πρόγραμμα περιήγησης</string>
+    <string name="webView_error">Η φόρτωση της ιστοσελίδας απέτυχε</string>
+    <string name="webView_error_summary">Παρακαλώ ελέγξτε τη σύνδεση δικτύου σας ή προσπαθήστε ξανά αργότερα</string>
+    <string name="webView_authentication">Πιστοποίηση</string>
+    <string name="webView_ssl_error">Μη έμπιστο πιστοποιητικό</string>
+
+    <string name="pref">Ρυθμίσεις</string>
+    <string name="pref_general">Γενικές ρυθμίσεις</string>
+    <string name="pref_columns">Αριθμός στηλών</string>
+    <string name="pref_columns_summary">Αλλάζει τον αριθμό των στηλών της κύριας λίστας</string>
+    <string name="pref_language">Γλώσσα</string>
+    <string name="pref_language_summary">Επιλέξτε τη γλώσσα της εφαρμογής</string>
+    <string name="pref_language_restart">Επανεκκίνηση της εφαρμογής για εφαρμογή της γλώσσας...</string>
+    <string name="pref_devices">Συσκευές</string>
+    <string name="pref_edit">Επεξεργασία λίστας συσκευών</string>
+    <string name="pref_edit_summary">Επεξεργασία της λίστας συσκευών</string>
+    <string name="pref_delete_device_question">Είστε βέβαιοι ότι θέλετε να διαγράψετε αυτή τη συσκευή;</string>
+    <string name="pref_device_config">Ρύθμιση συσκευής</string>
+    <string name="pref_add_shortcut">Προσθήκη στην αρχική οθόνη</string>
+    <string name="pref_add_shortcut_failed">Οι συντομεύσεις δεν υποστηρίζονται από το σύστημά σας</string>
+    <string name="pref_add">Προσθήκη νέας συσκευής</string>
+    <string name="pref_add_summary">Προσθήκη νέας συσκευής με τη διεύθυνσή της</string>
+    <string name="pref_add_method">Επιλογή μεθόδου</string>
+    <string name="pref_add_new_device">Νέα συσκευή</string>
+    <string name="pref_add_id">Εσωτερικό ID: %1$s</string>
+    <string name="pref_add_name">Όνομα</string>
+    <string name="pref_add_name_example">π.χ., Συσκευή</string>
+    <string name="pref_add_name_empty">Συσκευή</string>
+    <string name="pref_add_address">Διεύθυνση</string>
+    <string name="pref_add_address_example">π.χ., http://127.0.0.1/</string>
+    <string name="pref_add_icon">Εικονίδιο</string>
+    <string name="pref_add_mode">Λειτουργία</string>
+    <string name="pref_add_search">Αναζήτηση συμβατών συσκευών</string>
+    <string name="pref_add_search_summary">Αυτό μπορεί να διαρκέσει μερικά δευτερόλεπτα</string>
+    <string name="pref_add_dialog">Προσθήκη συσκευής</string>
+    <string name="pref_add_dialog_message">Θέλετε να προσθέσετε &#8220;%1$s&#8221; στις συσκευές σας;</string>
+    <string name="pref_edit_text">Σύνθετη επεξεργασία</string>
+    <string name="pref_edit_text_summary">Επεξεργαστείτε μόνοι σας το string JSON</string>
+    <string name="pref_controls_auth">Απαίτηση ξεκλειδώματος συσκευής για χειρισμούς</string>
+    <string name="pref_controls_auth_summary">Απαιτείται η συσκευή να είναι ξεκλείδωτη για χειρισμούς μενού ενέργειας</string>
+    <string name="pref_advanced">Σύνθετες ρυθμίσεις</string>
+    <string name="pref_reset">Διαγραφή όλων των συσκευών</string>
+    <string name="pref_reset_summary">Αυτό διαγράφει όλες τις συσκευές σας</string>
+    <string name="pref_reset_question">Είστε βέβαιοι ότι θέλετε να διαγράψετε όλες τις συσκευές σας; Αυτό δεν μπορεί να αναιρεθεί!</string>
+    <string name="pref_reset_toast">Διαγράφηκαν όλες οι συσκευές</string>
+    <string name="pref_safety_checks">Αποκλεισμός πιθανώς επικίνδυνων αιτημάτων</string>
+    <string name="pref_safety_checks_summary">Εκτέλεση βασικών ελέγχων ασφαλείας\nΠροειδοποίηση: Η απενεργοποίηση αυτού μπορεί να διαρρεύσει δεδομένα σύνδεσης σε επιτιθέμενους!</string>
+    <string name="pref_info">Πληροφορίες</string>
+    <string name="pref_info_wiki">Wiki</string>
+    <string name="pref_info_wiki_summary">Τεκμηρίωση και βοήθεια</string>
+    <string name="pref_info_header">Φόντο κεφαλίδας</string>
+    <string name="pref_info_header_summary">Φόντο κεφαλίδας από Alberto Castillo Q. στο Unsplash</string>
+    <string name="pref_device_router">Δρομολογητής</string>
+    <string name="placeholder">Φόρτωση</string>
+
+    <string name="security_username">Όνομα χρήστη</string>
+    <string name="security_password">Κωδικός πρόσβασης</string>
+
+    <string name="device_config_direct_view">Φόρτωση συσκευής με κύρια λίστα</string>
+    <string name="device_config_hide">Απόκρυψη συσκευής από κύρια λίστα</string>
+    <string name="device_config_hidden">κρυφή</string>
+    <string name="device_config_info">Πληροφορίες συσκευής</string>
+    <string name="device_config_info_status">Κατάσταση</string>
+
+    <string name="str_cancel">Άκυρο</string>
+    <string name="str_edit">Επεξεργασία</string>
+    <string name="str_delete">Διαγραφή</string>
+    <string name="str_show">Εμφάνιση</string>
+    <string name="str_done">Τέλος</string>
+    <string name="str_add">Προσθήκη</string>
+    <string name="str_send">Αποστολή</string>
+    <string name="str_on">On</string>
+    <string name="str_off">Off</string>
+    <string name="str_yes">Ναι</string>
+    <string name="str_no">Όχι</string>
+    <string name="str_unreachable">Μη προσβάσιμο</string>
+
+    <string name="about">Σχετικά</string>
+    <string name="about_summary">Σχετικά με την εφαρμογή</string>
+    <string name="about_app_version">Έκδοση εφαρμογής</string>
+    <string name="about_privacy">Εξωτερικό περιεχόμενο</string>
+    <string name="about_privacy_desc">Το εξωτερικό περιεχόμενο θα φορτωθεί από το GitHub. Διαβάστε την πολιτική απορρήτου τους για περισσότερες πληροφορίες.</string>
+    <string name="about_privacy_policy">Πολιτική απορρήτου</string>
+    <string name="about_contributors">Συνεισφέροντες</string>
+    <string name="about_contributors_desc">Μια λίστα των συνεισφερόντων</string>
+    <string name="about_general">Γενικά</string>
+    <string name="about_github">Αποθετήριο GitHub</string>
+    <string name="about_license">Άδεια</string>
+    <string name="about_icons">Εικονίδια</string>
+    <string name="about_icons_desc">Εικονίδια από Icons8 και Google</string>
+    <string name="about_libraries">Βιβλιοθήκες</string>
+    <string name="about_libraries_desc">Μια λίστα όλων των χρησιμοποιούμενων βιβλιοθηκών</string>
+
+    <string-array name="pref_columns_array">
+        <item>Αυτόματα</item>
+        <item>Μία</item>
+        <item>Δύο</item>
+        <item>Τρεις</item>
+        <item>Τέσσερις</item>
+    </string-array>
+    <string-array name="pref_add_method_array">
+        <item>Προσθήκη συσκευής με διεύθυνση</item>
+        <item>Αναζήτηση συμβατών συσκευών (πειραματικό)</item>
+    </string-array>
+    <string-array name="pref_language_array">
+        <item>Προεπιλογή συστήματος</item>
+        <item>English</item>
+        <item>Čeština</item>
+        <item>Deutsch</item>
+        <item>Ελληνικά</item>
+        <item>Español</item>
+        <item>Français</item>
+        <item>Magyar</item>
+        <item>Italiano</item>
+        <item>Nederlands</item>
+        <item>Polski</item>
+        <item>Português</item>
+        <item>Română</item>
+        <item>Русский</item>
+        <item>Svenska</item>
+    </string-array>
+    <string-array name="pref_language_array_values" translatable="false">
+        <item></item>
+        <item>en</item>
+        <item>cs</item>
+        <item>de</item>
+        <item>el</item>
+        <item>es</item>
+        <item>fr</item>
+        <item>hu</item>
+        <item>it</item>
+        <item>nl</item>
+        <item>pl</item>
+        <item>pt</item>
+        <item>ro</item>
+        <item>ru</item>
+        <item>sv</item>
+    </string-array>
+</resources>
