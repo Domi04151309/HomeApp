@@ -1,7 +1,6 @@
 package io.github.domi04151309.home.activities
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.DisplayMetrics
@@ -18,6 +17,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -146,11 +146,10 @@ class MainActivity : BaseActivity() {
                 when (data.hidden) {
                     "add" -> helper.addToList(unifiedRequestCallback)
                     "execute_once" -> helper.executeOnce(unifiedRequestCallback)
-                    "go_to_ui" -> {
+                    "go_to_ui" ->
                         startActivity(
-                            Intent(Intent.ACTION_VIEW, Uri.parse(unified?.url)),
+                            Intent(Intent.ACTION_VIEW, unified?.url?.toUri()),
                         )
-                    }
                     else ->
                         unified?.execute(
                             view.findViewById<TextView>(R.id.summary).text.toString(),
