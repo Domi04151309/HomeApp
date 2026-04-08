@@ -1,0 +1,246 @@
+<resources>
+    <string name="app_name">المنزل</string>
+    <string name="app_description">تطبيق منزل ذكي صغير لأجهزة Philips Hue وArduino وأجهزة أخرى</string>
+
+    <string name="main_no_devices">لم يتم العثور على أجهزة</string>
+    <string name="main_no_devices_summary">أضف جهازاً جديداً في الإعدادات</string>
+    <string name="main_device_nonexistent">الجهاز غير موجود في قائمتك</string>
+    <string name="main_tap_to_connect">اضغط للاتصال</string>
+    <string name="main_connecting">جاري الاتصال</string>
+    <string name="main_network_not_secure">الاتصال غير آمن</string>
+    <string name="main_unknown_mode">الجهاز يستخدم وضعاً غير معروف</string>
+    <string name="main_device_unavailable">الجهاز غير متاح حالياً</string>
+    <string name="main_parse_error">الاستجابة لا تلبي المتطلبات</string>
+    <string name="main_client_error">لم يستجب الجهاز</string>
+    <string name="main_execution_completed">تم التنفيذ بنجاح</string>
+
+    <string name="main_device_icon">أيقونة الجهاز</string>
+    <string name="main_device_name">أجهزتك</string>
+
+    <string name="err">حدث خطأ ما</string>
+    <string name="err_wrong_format">تنسيق خاطئ</string>
+    <string name="err_missing_name">الرجاء إدخال اسم</string>
+    <string name="err_missing_name_summary">الاسم مهم حتى تتمكن من التعرف على الإدخال لاحقاً</string>
+    <string name="err_missing_address">الرجاء إدخال عنوان</string>
+    <string name="err_missing_address_summary">العنوان مهم لأنه يتيح للتطبيق الوصول إلى الجهاز</string>
+
+    <string name="hue_connect">الاتصال بجهاز Bridge الخاص بك</string>
+    <string name="hue_press_button">الرجاء الضغط على الزر الموجود على جهاز Bridge للمتابعة.</string>
+    <string name="hue_tap">اضغط للاختيار</string>
+    <string name="hue_brightness">السطوع</string>
+    <string name="hue_color_temperature">درجة حرارة اللون</string>
+    <string name="hue_hue_sat">الصبغة والتشبع</string>
+    <string name="hue_scene">المشهد</string>
+    <string name="hue_add_scene">إضافة مشهد</string>
+    <string name="hue_new_scene">مشهد جديد</string>
+    <string name="hue_delete_scene">هل أنت متأكد من أنك تريد حذف هذا المشهد؟</string>
+    <string name="hue_bridge">الجسر</string>
+    <string name="hue_bridge_name">اسم الجسر</string>
+    <string name="hue_bridge_model">طراز الجسر</string>
+    <string name="hue_bridge_id">معرف الجسر</string>
+    <string name="hue_bridge_software">إصدار البرنامج</string>
+    <string name="hue_bridge_zigbee">قناة Zigbee</string>
+    <string name="hue_bridge_dhcp">DHCP</string>
+    <string name="hue_bridge_time_zone">المنطقة الزمنية</string>
+    <string name="hue_users">المستخدمون</string>
+    <string name="hue_controls">الضوابط</string>
+    <string name="hue_lights">الأضواء</string>
+    <string name="hue_room">غرفة Hue</string>
+    <string name="hue_scene_shortcut">مشهد Hue</string>
+
+    <string name="tasmota_empty_list">لم تتم إضافة أي أوامر بعد</string>
+    <string name="tasmota_empty_list_summary">أضف أوامر أدناه</string>
+    <string name="tasmota_add_command">إضافة أمر إلى القائمة</string>
+    <string name="tasmota_add_command_summary">أضف أمراً جديداً إلى قائمتك</string>
+    <string name="tasmota_add_command_dialog_title">العنوان</string>
+    <string name="tasmota_add_command_dialog_title_empty">الأمر</string>
+    <string name="tasmota_delete_command">هل أنت متأكد من أنك تريد حذف هذا الإدخال؟</string>
+    <string name="tasmota_execute_once">تنفيذ الأمر</string>
+    <string name="tasmota_execute_once_summary">تنفيذ الأمر مرة واحدة دون إضافته إلى القائمة</string>
+    <string name="tasmota_go_to_ui">الانتقال إلى واجهة Tasmota</string>
+
+    <string name="shelly_humidity_sensor_summary">الرطوبة الحالية</string>
+    <string name="shelly_powermeter_summary">استهلاك الطاقة الحالي</string>
+    <string name="shelly_powermeter_current">التيار</string>
+    <string name="shelly_powermeter_voltage">الجهد</string>
+    <string name="shelly_powermeter_energy">الطاقة</string>
+    <string name="shelly_powermeter_return_energy">الطاقة المعادة</string>
+    <string name="shelly_switch_title">المفتاح %1$d</string>
+    <string name="shelly_temperature_sensor_summary">درجة الحرارة الحالية</string>
+    <string name="shelly_wifi">WiFi</string>
+    <string name="shelly_mqtt">MQTT</string>
+    <string name="shelly_cloud">السحابة</string>
+    <string name="shelly_uptime">وقت التشغيل</string>
+    <string name="shelly_storage">التخزين المستخدم</string>
+    <string name="shelly_ram">الذاكرة المستخدمة</string>
+    <string name="shelly_update">التحديثات المتوفرة</string>
+
+    <string name="input_title">الرجاء إدخال شيء ما</string>
+    <string name="input_hint">الإدخال</string>
+
+    <string name="webView">عرض الويب</string>
+    <string name="webView_open">فتح في المتصفح</string>
+    <string name="webView_error">فشل تحميل الموقع</string>
+    <string name="webView_error_summary">الرجاء التحقق من اتصالك بالشبكة أو المحاولة مرة أخرى لاحقاً</string>
+    <string name="webView_authentication">المصادقة</string>
+    <string name="webView_ssl_error">شهادة غير موثوقة</string>
+
+    <string name="pref">الإعدادات</string>
+    <string name="pref_general">الإعدادات العامة</string>
+    <string name="pref_columns">عدد الأعمدة</string>
+    <string name="pref_columns_summary">تغيير عدد أعمدة القائمة الرئيسية</string>
+    <string name="pref_language">اللغة</string>
+    <string name="pref_language_summary">اختيار لغة التطبيق</string>
+    <string name="pref_language_restart">جارٍ إعادة تشغيل التطبيق لتطبيق اللغة...</string>
+    <string name="pref_devices">الأجهزة</string>
+    <string name="pref_edit">تحرير قائمة الأجهزة</string>
+    <string name="pref_edit_summary">تحرير قائمة الأجهزة</string>
+    <string name="pref_delete_device_question">هل أنت متأكد من أنك تريد حذف هذا الجهاز؟</string>
+    <string name="pref_device_config">تكوين الجهاز</string>
+    <string name="pref_add_shortcut">إضافة إلى الشاشة الرئيسية</string>
+    <string name="pref_add_shortcut_failed">الاختصارات غير مدعومة من قبل نظامك</string>
+    <string name="pref_add">إضافة جهاز جديد</string>
+    <string name="pref_add_summary">إضافة جهاز جديد مع عنوانه</string>
+    <string name="pref_add_method">اختيار الطريقة</string>
+    <string name="pref_add_new_device">جهاز جديد</string>
+    <string name="pref_add_id">المعرف الداخلي: %1$s</string>
+    <string name="pref_add_name">الاسم</string>
+    <string name="pref_add_name_example">مثال: جهاز</string>
+    <string name="pref_add_name_empty">جهاز</string>
+    <string name="pref_add_address">العنوان</string>
+    <string name="pref_add_address_example">مثال: http://127.0.0.1/</string>
+    <string name="pref_add_icon">الأيقونة</string>
+    <string name="pref_add_mode">الوضع</string>
+    <string name="pref_add_search">البحث عن أجهزة متوافقة</string>
+    <string name="pref_add_search_summary">قد يستغرق هذا بضع ثوانٍ</string>
+    <string name="pref_add_dialog">إضافة جهاز</string>
+    <string name="pref_add_dialog_message">هل تريد إضافة "%1$s" إلى أجهزتك؟</string>
+    <string name="pref_edit_text">التحرير المتقدم</string>
+    <string name="pref_edit_text_summary">تحرير سلسلة JSON بنفسك</string>
+    <string name="pref_controls_auth">طلب فتح الجهاز للضوابط</string>
+    <string name="pref_controls_auth_summary">طلب فتح الجهاز لضوابط قائمة الطاقة</string>
+    <string name="pref_advanced">الإعدادات المتقدمة</string>
+    <string name="pref_reset">حذف جميع الأجهزة</string>
+    <string name="pref_reset_summary">سيحذف هذا جميع أجهزتك</string>
+    <string name="pref_reset_question">هل أنت متأكد من أنك تريد حذف جميع أجهزتك؟ لا يمكن التراجع عن هذا!</string>
+    <string name="pref_reset_toast">تم حذف جميع الأجهزة</string>
+    <string name="pref_safety_checks">حظر الطلبات غير الآمنة المحتملة</string>
+    <string name="pref_safety_checks_summary">إجراء فحوصات أمنية أساسية\nتحذير: قد يؤدي إيقاف هذا إلى تسريب بيانات الاتصال للمهاجمين!</string>
+    <string name="pref_info">المعلومات</string>
+    <string name="pref_info_wiki">الويكي</string>
+    <string name="pref_info_wiki_summary">التوثيق والمساعدة</string>
+    <string name="pref_info_header">خلفية الرأس</string>
+    <string name="pref_info_header_summary">خلفية الرأس بواسطة Alberto Castillo Q. على Unsplash</string>
+    <string name="pref_device_router">الموجه</string>
+    <string name="placeholder">جاري التحميل</string>
+
+    <string name="security_username">اسم المستخدم</string>
+    <string name="security_password">كلمة المرور</string>
+
+    <string name="device_config_direct_view">تحميل الجهاز مع القائمة الرئيسية</string>
+    <string name="device_config_hide">إخفاء الجهاز من القائمة الرئيسية</string>
+    <string name="device_config_hidden">مخفي</string>
+    <string name="device_config_info">معلومات الجهاز</string>
+    <string name="device_config_info_status">الحالة</string>
+
+    <string name="str_cancel">إلغاء</string>
+    <string name="str_edit">تحرير</string>
+    <string name="str_delete">حذف</string>
+    <string name="str_show">إظهار</string>
+    <string name="str_done">تم</string>
+    <string name="str_add">إضافة</string>
+    <string name="str_send">إرسال</string>
+    <string name="str_on">تشغيل</string>
+    <string name="str_off">إيقاف</string>
+    <string name="str_yes">نعم</string>
+    <string name="str_no">لا</string>
+    <string name="str_unreachable">لا يمكن الوصول إليه</string>
+
+    <string name="about">حول</string>
+    <string name="about_summary">حول التطبيق</string>
+    <string name="about_app_version">إصدار التطبيق</string>
+    <string name="about_privacy">المحتوى الخارجي</string>
+    <string name="about_privacy_desc">سيتم تحميل المحتوى الخارجي من GitHub. اقرأ سياسة الخصوصية الخاصة بهم لمزيد من المعلومات.</string>
+    <string name="about_privacy_policy">سياسة الخصوصية</string>
+    <string name="about_contributors">المساهمون</string>
+    <string name="about_contributors_desc">قائمة المساهمين</string>
+    <string name="about_general">عام</string>
+    <string name="about_github">مستودع GitHub</string>
+    <string name="about_license">الترخيص</string>
+    <string name="about_icons">الأيقونات</string>
+    <string name="about_icons_desc">الأيقونات بواسطة Icons8 وGoogle</string>
+    <string name="about_libraries">المكتبات</string>
+    <string name="about_libraries_desc">قائمة بجميع المكتبات المستخدمة</string>
+
+    <string-array name="pref_columns_array">
+        <item>تلقائي</item>
+        <item>واحد</item>
+        <item>اثنان</item>
+        <item>ثلاثة</item>
+        <item>أربعة</item>
+    </string-array>
+    <string-array name="pref_add_method_array">
+        <item>إضافة جهاز بالعنوان</item>
+        <item>البحث عن أجهزة متوافقة (تجريبي)</item>
+    </string-array>
+    <string-array name="pref_language_array">
+        <item>الإعداد الافتراضي للنظام</item>
+        <item>English</item>
+        <item>العربية</item>
+        <item>Български</item>
+        <item>Čeština</item>
+        <item>Dansk</item>
+        <item>Deutsch</item>
+        <item>Ελληνικά</item>
+        <item>Eesti</item>
+        <item>Español</item>
+        <item>Suomi</item>
+        <item>Français</item>
+        <item>Magyar</item>
+        <item>Italiano</item>
+        <item>日本語</item>
+        <item>한국어</item>
+        <item>Lietuvių</item>
+        <item>Latviešu</item>
+        <item>Nederlands</item>
+        <item>Polski</item>
+        <item>Português</item>
+        <item>Română</item>
+        <item>Русский</item>
+        <item>Svenska</item>
+        <item>Türkçe</item>
+        <item>Tiếng Việt</item>
+        <item>简体中文</item>
+        <item>繁體中文</item>
+    </string-array>
+    <string-array name="pref_language_array_values" translatable="false">
+        <item></item>
+        <item>en</item>
+        <item>ar</item>
+        <item>bg</item>
+        <item>cs</item>
+        <item>da</item>
+        <item>de</item>
+        <item>el</item>
+        <item>et</item>
+        <item>es</item>
+        <item>fi</item>
+        <item>fr</item>
+        <item>hu</item>
+        <item>it</item>
+        <item>ja</item>
+        <item>ko</item>
+        <item>lt</item>
+        <item>lv</item>
+        <item>nl</item>
+        <item>pl</item>
+        <item>pt</item>
+        <item>ro</item>
+        <item>ru</item>
+        <item>sv</item>
+        <item>tr</item>
+        <item>vi</item>
+        <item>zh-rCN</item>
+        <item>zh-rTW</item>
+    </string-array>
+</resources>

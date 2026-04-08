@@ -1,0 +1,246 @@
+<resources>
+    <string name="app_name">Home</string>
+    <string name="app_description">Maža išmaniųjų namų programėlė skirta Philips Hue, Arduino ir kitiems įrenginiams</string>
+
+    <string name="main_no_devices">Įrenginių nerasta</string>
+    <string name="main_no_devices_summary">Pridėkite naują įrenginį nustatymuose</string>
+    <string name="main_device_nonexistent">Įrenginys neegzistuoja jūsų sąraše</string>
+    <string name="main_tap_to_connect">Palieskite, kad prisijungtumėte</string>
+    <string name="main_connecting">Jungiamasi</string>
+    <string name="main_network_not_secure">Ryšys nėra saugus</string>
+    <string name="main_unknown_mode">Įrenginys naudoja nežinomą režimą</string>
+    <string name="main_device_unavailable">Įrenginys šiuo metu nepasiekiamas</string>
+    <string name="main_parse_error">Atsakymas neatitinka reikalavimų</string>
+    <string name="main_client_error">Įrenginys neatsakė</string>
+    <string name="main_execution_completed">Vykdymas sėkmingai baigtas</string>
+
+    <string name="main_device_icon">Įrenginio piktograma</string>
+    <string name="main_device_name">Jūsų įrenginiai</string>
+
+    <string name="err">Kažkas nutiko netinkamai</string>
+    <string name="err_wrong_format">Neteisingas formatas</string>
+    <string name="err_missing_name">Prašome įvesti pavadinimą</string>
+    <string name="err_missing_name_summary">Pavadinimas svarbus, kad vėliau galėtumėte atpažinti įrašą</string>
+    <string name="err_missing_address">Prašome įvesti adresą</string>
+    <string name="err_missing_address_summary">Adresas svarbus, nes leidžia programėlei pasiekti įrenginį</string>
+
+    <string name="hue_connect">Prisijunkite prie savo tilto</string>
+    <string name="hue_press_button">Norėdami tęsti, paspauskite mygtuką ant tilto.</string>
+    <string name="hue_tap">Palieskite, kad pasirinktumėte</string>
+    <string name="hue_brightness">Šviesumas</string>
+    <string name="hue_color_temperature">Spalvos temperatūra</string>
+    <string name="hue_hue_sat">Atspalvis ir sodrumas</string>
+    <string name="hue_scene">Scena</string>
+    <string name="hue_add_scene">Pridėti sceną</string>
+    <string name="hue_new_scene">Nauja scena</string>
+    <string name="hue_delete_scene">Ar tikrai norite ištrinti šią sceną?</string>
+    <string name="hue_bridge">Tiltas</string>
+    <string name="hue_bridge_name">Tilto pavadinimas</string>
+    <string name="hue_bridge_model">Tilto modelis</string>
+    <string name="hue_bridge_id">Tilto ID</string>
+    <string name="hue_bridge_software">Programinės įrangos versija</string>
+    <string name="hue_bridge_zigbee">Zigbee kanalas</string>
+    <string name="hue_bridge_dhcp">DHCP</string>
+    <string name="hue_bridge_time_zone">Laiko juosta</string>
+    <string name="hue_users">Vartotojai</string>
+    <string name="hue_controls">Valdikliai</string>
+    <string name="hue_lights">Šviestuvai</string>
+    <string name="hue_room">Hue kambarys</string>
+    <string name="hue_scene_shortcut">Hue scena</string>
+
+    <string name="tasmota_empty_list">Dar nėra pridėta jokių komandų</string>
+    <string name="tasmota_empty_list_summary">Pridėkite komandas žemiau</string>
+    <string name="tasmota_add_command">Pridėti komandą į sąrašą</string>
+    <string name="tasmota_add_command_summary">Pridėkite naują komandą į savo sąrašą</string>
+    <string name="tasmota_add_command_dialog_title">Pavadinimas</string>
+    <string name="tasmota_add_command_dialog_title_empty">Komanda</string>
+    <string name="tasmota_delete_command">Ar tikrai norite ištrinti šį įrašą?</string>
+    <string name="tasmota_execute_once">Vykdyti komandą</string>
+    <string name="tasmota_execute_once_summary">Vykdykite komandą vieną kartą, nepridėdami jos į sąrašą</string>
+    <string name="tasmota_go_to_ui">Eiti į Tasmota vartotojo sąsają</string>
+
+    <string name="shelly_humidity_sensor_summary">Dabartinė drėgmė</string>
+    <string name="shelly_powermeter_summary">Dabartinis energijos suvartojimas</string>
+    <string name="shelly_powermeter_current">Srovė</string>
+    <string name="shelly_powermeter_voltage">Įtampa</string>
+    <string name="shelly_powermeter_energy">Energija</string>
+    <string name="shelly_powermeter_return_energy">Grąžinta energija</string>
+    <string name="shelly_switch_title">Jungiklis %1$d</string>
+    <string name="shelly_temperature_sensor_summary">Dabartinė temperatūra</string>
+    <string name="shelly_wifi">WiFi</string>
+    <string name="shelly_mqtt">MQTT</string>
+    <string name="shelly_cloud">Debesis</string>
+    <string name="shelly_uptime">Veikimo laikas</string>
+    <string name="shelly_storage">Naudojama saugykla</string>
+    <string name="shelly_ram">Naudojama RAM</string>
+    <string name="shelly_update">Galimi atnaujinimai</string>
+
+    <string name="input_title">Prašome įvesti ką nors</string>
+    <string name="input_hint">Įvestis</string>
+
+    <string name="webView">Žiniatinklio rodinys</string>
+    <string name="webView_open">Atidaryti naršyklėje</string>
+    <string name="webView_error">Nepavyko įkelti svetainės</string>
+    <string name="webView_error_summary">Patikrinkite savo tinklo ryšį arba bandykite dar kartą vėliau</string>
+    <string name="webView_authentication">Autentifikavimas</string>
+    <string name="webView_ssl_error">Nepatikimas sertifikatas</string>
+
+    <string name="pref">Nustatymai</string>
+    <string name="pref_general">Bendrieji nustatymai</string>
+    <string name="pref_columns">Stulpelių skaičius</string>
+    <string name="pref_columns_summary">Keičia pagrindinio sąrašo stulpelių skaičių</string>
+    <string name="pref_language">Kalba</string>
+    <string name="pref_language_summary">Pasirinkite programėlės kalbą</string>
+    <string name="pref_language_restart">Paleidžiama programėlę iš naujo, kad pritaikytų kalbą...</string>
+    <string name="pref_devices">Įrenginiai</string>
+    <string name="pref_edit">Redaguoti įrenginių sąrašą</string>
+    <string name="pref_edit_summary">Redaguoti įrenginių sąrašą</string>
+    <string name="pref_delete_device_question">Ar tikrai norite ištrinti šį įrenginį?</string>
+    <string name="pref_device_config">Įrenginio konfigūracija</string>
+    <string name="pref_add_shortcut">Pridėti į pagrindinį ekraną</string>
+    <string name="pref_add_shortcut_failed">Trumpinės nepalaikomos jūsų sistemoje</string>
+    <string name="pref_add">Pridėti naują įrenginį</string>
+    <string name="pref_add_summary">Pridėti naują įrenginį su jo adresu</string>
+    <string name="pref_add_method">Pasirinkite metodą</string>
+    <string name="pref_add_new_device">Naujas įrenginys</string>
+    <string name="pref_add_id">Vidinis ID: %1$s</string>
+    <string name="pref_add_name">Pavadinimas</string>
+    <string name="pref_add_name_example">pvz., Įrenginys</string>
+    <string name="pref_add_name_empty">Įrenginys</string>
+    <string name="pref_add_address">Adresas</string>
+    <string name="pref_add_address_example">pvz., http://127.0.0.1/</string>
+    <string name="pref_add_icon">Piktograma</string>
+    <string name="pref_add_mode">Režimas</string>
+    <string name="pref_add_search">Ieškoma suderinamų įrenginių</string>
+    <string name="pref_add_search_summary">Tai gali užtrukti kelias sekundes</string>
+    <string name="pref_add_dialog">Pridėti įrenginį</string>
+    <string name="pref_add_dialog_message">Ar norite pridėti \u201C%1$s\u201D į savo įrenginius?</string>
+    <string name="pref_edit_text">Išplėstinė redagavimas</string>
+    <string name="pref_edit_text_summary">Redaguoti JSON eilutę patiems</string>
+    <string name="pref_controls_auth">Reikalauti įrenginio atrakinimo valdikliams</string>
+    <string name="pref_controls_auth_summary">Reikalauti, kad įrenginys būtų atrakintas, norint naudoti energijos meniu valdiklius</string>
+    <string name="pref_advanced">Išplėstiniai nustatymai</string>
+    <string name="pref_reset">Ištrinti visus įrenginius</string>
+    <string name="pref_reset_summary">Tai ištrins visus jūsų įrenginius</string>
+    <string name="pref_reset_question">Ar tikrai norite ištrinti visus savo įrenginius? Tai negali būti atšaukta!</string>
+    <string name="pref_reset_toast">Visi įrenginiai ištrinti</string>
+    <string name="pref_safety_checks">Blokuoti potencialiai pavojingas užklausas</string>
+    <string name="pref_safety_checks_summary">Atlikti pagrindinius saugumo patikrinimus\nĮspėjimas: Išjungus tai, gali nutekėti ryšio duomenys įpuolikams!</string>
+    <string name="pref_info">Informacija</string>
+    <string name="pref_info_wiki">Wiki</string>
+    <string name="pref_info_wiki_summary">Dokumentacija ir pagalba</string>
+    <string name="pref_info_header">Antraštės fonas</string>
+    <string name="pref_info_header_summary">Antraštės fonas sukurtas Alberto Castillo Q. iš Unsplash</string>
+    <string name="pref_device_router">Maršrutizatorius</string>
+    <string name="placeholder">Įkeliama</string>
+
+    <string name="security_username">Naudotojo vardas</string>
+    <string name="security_password">Slaptažodis</string>
+
+    <string name="device_config_direct_view">Įkelti įrenginį su pagrindiniu sąrašu</string>
+    <string name="device_config_hide">Slėpti įrenginį iš pagrindinio sąrašo</string>
+    <string name="device_config_hidden">paslėpta</string>
+    <string name="device_config_info">Įrenginio informacija</string>
+    <string name="device_config_info_status">Būsena</string>
+
+    <string name="str_cancel">Atšaukti</string>
+    <string name="str_edit">Redaguoti</string>
+    <string name="str_delete">Ištrinti</string>
+    <string name="str_show">Rodyti</string>
+    <string name="str_done">Atlikta</string>
+    <string name="str_add">Pridėti</string>
+    <string name="str_send">Siųsti</string>
+    <string name="str_on">Įjungta</string>
+    <string name="str_off">Išjungta</string>
+    <string name="str_yes">Taip</string>
+    <string name="str_no">Ne</string>
+    <string name="str_unreachable">Nepasiekiamas</string>
+
+    <string name="about">Apie</string>
+    <string name="about_summary">Apie programėlę</string>
+    <string name="about_app_version">Programėlės versija</string>
+    <string name="about_privacy">Išorinis turinys</string>
+    <string name="about_privacy_desc">Išorinis turinys bus įkeltas iš GitHub. Perskaitykite jų privatumo politiką norėdami gauti daugiau informacijos.</string>
+    <string name="about_privacy_policy">Privatumo politika</string>
+    <string name="about_contributors">Prisidėjėjai</string>
+    <string name="about_contributors_desc">Prisidėjėjų sąrašas</string>
+    <string name="about_general">Bendroji informacija</string>
+    <string name="about_github">GitHub saugykla</string>
+    <string name="about_license">Licencija</string>
+    <string name="about_icons">Piktogramos</string>
+    <string name="about_icons_desc">Piktogramos sukurtos Icons8 ir Google</string>
+    <string name="about_libraries">Bibliotekos</string>
+    <string name="about_libraries_desc">Visų naudojamų bibliotekų sąrašas</string>
+
+    <string-array name="pref_columns_array">
+        <item>Automatiškai</item>
+        <item>Vienas</item>
+        <item>Du</item>
+        <item>Trys</item>
+        <item>Keturi</item>
+    </string-array>
+    <string-array name="pref_add_method_array">
+        <item>Pridėti įrenginį pagal adresą</item>
+        <item>Ieškoti suderinamų įrenginių (eksperimentinis)</item>
+    </string-array>
+    <string-array name="pref_language_array">
+        <item>Sistemos numatytasis</item>
+        <item>English</item>
+        <item>العربية</item>
+        <item>Български</item>
+        <item>Čeština</item>
+        <item>Dansk</item>
+        <item>Deutsch</item>
+        <item>Ελληνικά</item>
+        <item>Eesti</item>
+        <item>Español</item>
+        <item>Suomi</item>
+        <item>Français</item>
+        <item>Magyar</item>
+        <item>Italiano</item>
+        <item>日本語</item>
+        <item>한국어</item>
+        <item>Lietuvių</item>
+        <item>Latviešu</item>
+        <item>Nederlands</item>
+        <item>Polski</item>
+        <item>Português</item>
+        <item>Română</item>
+        <item>Русский</item>
+        <item>Svenska</item>
+        <item>Türkçe</item>
+        <item>Tiếng Việt</item>
+        <item>简体中文</item>
+        <item>繁體中文</item>
+    </string-array>
+    <string-array name="pref_language_array_values" translatable="false">
+        <item></item>
+        <item>en</item>
+        <item>ar</item>
+        <item>bg</item>
+        <item>cs</item>
+        <item>da</item>
+        <item>de</item>
+        <item>el</item>
+        <item>et</item>
+        <item>es</item>
+        <item>fi</item>
+        <item>fr</item>
+        <item>hu</item>
+        <item>it</item>
+        <item>ja</item>
+        <item>ko</item>
+        <item>lt</item>
+        <item>lv</item>
+        <item>nl</item>
+        <item>pl</item>
+        <item>pt</item>
+        <item>ro</item>
+        <item>ru</item>
+        <item>sv</item>
+        <item>tr</item>
+        <item>vi</item>
+        <item>zh-rCN</item>
+        <item>zh-rTW</item>
+    </string-array>
+</resources>

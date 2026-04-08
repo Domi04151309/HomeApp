@@ -18,19 +18,32 @@ object LocaleHelper {
         mapOf(
             "" to "System default",
             "en" to "English",
+            "ar" to "العربية",
+            "bg" to "Български",
             "cs" to "Čeština",
+            "da" to "Dansk",
             "de" to "Deutsch",
             "el" to "Ελληνικά",
             "es" to "Español",
+            "et" to "Eesti",
+            "fi" to "Suomi",
             "fr" to "Français",
             "hu" to "Magyar",
             "it" to "Italiano",
+            "ja" to "日本語",
+            "ko" to "한국어",
+            "lt" to "Lietuvių",
+            "lv" to "Latviešu",
             "nl" to "Nederlands",
             "pl" to "Polski",
             "pt" to "Português",
             "ro" to "Română",
             "ru" to "Русский",
             "sv" to "Svenska",
+            "tr" to "Türkçe",
+            "vi" to "Tiếng Việt",
+            "zh-rCN" to "简体中文",
+            "zh-rTW" to "繁體中文",
         )
 
     fun getLanguageDisplayName(languageCode: String): String =
@@ -73,13 +86,25 @@ object LocaleHelper {
     }
 
     /**
+     * Creates a locale from a language code.
+     * Handles special cases like Chinese locales.
+     */
+    private fun createLocale(language: String): Locale {
+        return when (language) {
+            "zh-rCN" -> Locale("zh", "CN")
+            "zh-rTW" -> Locale("zh", "TW")
+            else -> Locale(language)
+        }
+    }
+
+    /**
      * Creates a new context with the specified locale.
      */
     private fun setLocale(
         context: Context,
         language: String,
     ): Context {
-        val locale = Locale(language)
+        val locale = createLocale(language)
         Locale.setDefault(locale)
 
         val config = Configuration(context.resources.configuration)
@@ -105,7 +130,7 @@ object LocaleHelper {
         val language = getCurrentLanguage(activity)
         if (language.isEmpty()) return
 
-        val locale = Locale(language)
+        val locale = createLocale(language)
         Locale.setDefault(locale)
 
         val resources: Resources = activity.resources

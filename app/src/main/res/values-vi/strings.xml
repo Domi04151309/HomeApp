@@ -1,0 +1,246 @@
+<resources>
+    <string name="app_name">Home</string>
+    <string name="app_description">Một ứng dụng nhà thông minh nhỏ cho Philips Hue, Arduino và các thiết bị khác</string>
+
+    <string name="main_no_devices">Không tìm thấy thiết bị nào</string>
+    <string name="main_no_devices_summary">Thêm thiết bị mới trong cài đặt</string>
+    <string name="main_device_nonexistent">Thiết bị không tồn tại trong danh sách của bạn</string>
+    <string name="main_tap_to_connect">Nhấn để kết nối</string>
+    <string name="main_connecting">Đang kết nối</string>
+    <string name="main_network_not_secure">Kết nối không an toàn</string>
+    <string name="main_unknown_mode">Thiết bị sử dụng chế độ không xác định</string>
+    <string name="main_device_unavailable">Thiết bị hiện không khả dụng</string>
+    <string name="main_parse_error">Phản hồi không đáp ứng yêu cầu</string>
+    <string name="main_client_error">Thiết bị không phản hồi</string>
+    <string name="main_execution_completed">Thực thi hoàn tất thành công</string>
+
+    <string name="main_device_icon">Biểu tượng thiết bị</string>
+    <string name="main_device_name">Thiết bị của bạn</string>
+
+    <string name="err">Đã xảy ra lỗi</string>
+    <string name="err_wrong_format">Sai định dạng</string>
+    <string name="err_missing_name">Vui lòng nhập tên</string>
+    <string name="err_missing_name_summary">Tên rất quan trọng để bạn có thể nhận diện mục này sau này</string>
+    <string name="err_missing_address">Vui lòng nhập địa chỉ</string>
+    <string name="err_missing_address_summary">Địa chỉ rất quan trọng vì nó cho phép ứng dụng kết nối với thiết bị</string>
+
+    <string name="hue_connect">Kết nối với Bridge của bạn</string>
+    <string name="hue_press_button">Vui lòng nhấn nút trên bridge để tiếp tục.</string>
+    <string name="hue_tap">Nhấn để chọn</string>
+    <string name="hue_brightness">Độ sáng</string>
+    <string name="hue_color_temperature">Nhiệt độ màu</string>
+    <string name="hue_hue_sat">Sắc độ và độ bão hòa</string>
+    <string name="hue_scene">Cảnh</string>
+    <string name="hue_add_scene">Thêm Cảnh</string>
+    <string name="hue_new_scene">Cảnh Mới</string>
+    <string name="hue_delete_scene">Bạn có chắc chắn muốn xóa cảnh này?</string>
+    <string name="hue_bridge">Bridge</string>
+    <string name="hue_bridge_name">Tên Bridge</string>
+    <string name="hue_bridge_model">Mẫu Bridge</string>
+    <string name="hue_bridge_id">ID Bridge</string>
+    <string name="hue_bridge_software">Phiên bản phần mềm</string>
+    <string name="hue_bridge_zigbee">Kênh Zigbee</string>
+    <string name="hue_bridge_dhcp">DHCP</string>
+    <string name="hue_bridge_time_zone">Múi giờ</string>
+    <string name="hue_users">Ngườii dùng</string>
+    <string name="hue_controls">Điều khiển</string>
+    <string name="hue_lights">Đèn</string>
+    <string name="hue_room">Phòng Hue</string>
+    <string name="hue_scene_shortcut">Cảnh Hue</string>
+
+    <string name="tasmota_empty_list">Chưa có lệnh nào được thêm</string>
+    <string name="tasmota_empty_list_summary">Thêm lệnh bên dưới</string>
+    <string name="tasmota_add_command">Thêm lệnh vào danh sách</string>
+    <string name="tasmota_add_command_summary">Thêm lệnh mới vào danh sách của bạn</string>
+    <string name="tasmota_add_command_dialog_title">Tiêu đề</string>
+    <string name="tasmota_add_command_dialog_title_empty">Lệnh</string>
+    <string name="tasmota_delete_command">Bạn có chắc chắn muốn xóa mục này?</string>
+    <string name="tasmota_execute_once">Thực thi lệnh</string>
+    <string name="tasmota_execute_once_summary">Thực thi lệnh một lần mà không thêm vào danh sách</string>
+    <string name="tasmota_go_to_ui">Đến giao diện Tasmota</string>
+
+    <string name="shelly_humidity_sensor_summary">Độ ẩm hiện tại</string>
+    <string name="shelly_powermeter_summary">Mức tiêu thụ điện hiện tại</string>
+    <string name="shelly_powermeter_current">Dòng điện</string>
+    <string name="shelly_powermeter_voltage">Điện áp</string>
+    <string name="shelly_powermeter_energy">Năng lượng</string>
+    <string name="shelly_powermeter_return_energy">Năng lượng trả về</string>
+    <string name="shelly_switch_title">Công tắc %1$d</string>
+    <string name="shelly_temperature_sensor_summary">Nhiệt độ hiện tại</string>
+    <string name="shelly_wifi">WiFi</string>
+    <string name="shelly_mqtt">MQTT</string>
+    <string name="shelly_cloud">Đám mây</string>
+    <string name="shelly_uptime">Thờii gian hoạt động</string>
+    <string name="shelly_storage">Bộ nhớ đã dùng</string>
+    <string name="shelly_ram">RAM đã dùng</string>
+    <string name="shelly_update">Có bản cập nhật</string>
+
+    <string name="input_title">Vui lòng nhập nội dung</string>
+    <string name="input_hint">Nhập</string>
+
+    <string name="webView">Xem Web</string>
+    <string name="webView_open">Mở trong trình duyệt</string>
+    <string name="webView_error">Tải trang web thất bại</string>
+    <string name="webView_error_summary">Vui lòng kiểm tra kết nối mạng hoặc thử lại sau</string>
+    <string name="webView_authentication">Xác thực</string>
+    <string name="webView_ssl_error">Chứng chỉ không đáng tin cậy</string>
+
+    <string name="pref">Cài đặt</string>
+    <string name="pref_general">Cài đặt chung</string>
+    <string name="pref_columns">Số cột</string>
+    <string name="pref_columns_summary">Thay đổi số cột của danh sách chính</string>
+    <string name="pref_language">Ngôn ngữ</string>
+    <string name="pref_language_summary">Chọn ngôn ngữ ứng dụng</string>
+    <string name="pref_language_restart">Đang khởii động lại ứng dụng để áp dụng ngôn ngữ...</string>
+    <string name="pref_devices">Thiết bị</string>
+    <string name="pref_edit">Chỉnh sửa danh sách thiết bị</string>
+    <string name="pref_edit_summary">Chỉnh sửa danh sách các thiết bị</string>
+    <string name="pref_delete_device_question">Bạn có chắc chắn muốn xóa thiết bị này?</string>
+    <string name="pref_device_config">Cấu hình thiết bị</string>
+    <string name="pref_add_shortcut">Thêm vào màn hình chính</string>
+    <string name="pref_add_shortcut_failed">Hệ thống không hỗ trợ lối tắt</string>
+    <string name="pref_add">Thêm thiết bị mới</string>
+    <string name="pref_add_summary">Thêm thiết bị mới với địa chỉ của nó</string>
+    <string name="pref_add_method">Chọn phương pháp</string>
+    <string name="pref_add_new_device">Thiết bị Mới</string>
+    <string name="pref_add_id">ID nội bộ: %1$s</string>
+    <string name="pref_add_name">Tên</string>
+    <string name="pref_add_name_example">ví dụ: Thiết bị</string>
+    <string name="pref_add_name_empty">Thiết bị</string>
+    <string name="pref_add_address">Địa chỉ</string>
+    <string name="pref_add_address_example">ví dụ: http://127.0.0.1/</string>
+    <string name="pref_add_icon">Biểu tượng</string>
+    <string name="pref_add_mode">Chế độ</string>
+    <string name="pref_add_search">Đang tìm thiết bị tương thích</string>
+    <string name="pref_add_search_summary">Điều này có thể mất vài giây</string>
+    <string name="pref_add_dialog">Thêm thiết bị</string>
+    <string name="pref_add_dialog_message">Bạn có muốn thêm &#8220;%1$s&#8221; vào thiết bị của mình?</string>
+    <string name="pref_edit_text">Chỉnh sửa nâng cao</string>
+    <string name="pref_edit_text_summary">Tự chỉnh sửa chuỗi JSON</string>
+    <string name="pref_controls_auth">Yêu cầu mở khóa thiết bị để điều khiển</string>
+    <string name="pref_controls_auth_summary">Yêu cầu thiết bị được mở khóa để điều khiển từ menu nguồn</string>
+    <string name="pref_advanced">Cài đặt nâng cao</string>
+    <string name="pref_reset">Xóa tất cả thiết bị</string>
+    <string name="pref_reset_summary">Điều này sẽ xóa tất cả thiết bị của bạn</string>
+    <string name="pref_reset_question">Bạn có chắc chắn muốn xóa tất cả thiết bị? Hành động này không thể hoàn tác!</string>
+    <string name="pref_reset_toast">Đã xóa tất cả thiết bị</string>
+    <string name="pref_safety_checks">Chặn các yêu cầu có thể không an toàn</string>
+    <string name="pref_safety_checks_summary">Thực hiện kiểm tra bảo mật cơ bản\nCảnh báo: Tắt tính năng này có thể làm rò rỉ dữ liệu kết nối cho kẻ tấn công!</string>
+    <string name="pref_info">Thông tin</string>
+    <string name="pref_info_wiki">Wiki</string>
+    <string name="pref_info_wiki_summary">Tài liệu và trợ giúp</string>
+    <string name="pref_info_header">Nền tiêu đề</string>
+    <string name="pref_info_header_summary">Nền tiêu đề bởi Alberto Castillo Q. trên Unsplash</string>
+    <string name="pref_device_router">Bộ định tuyến</string>
+    <string name="placeholder">Đang tải</string>
+
+    <string name="security_username">Tên đăng nhập</string>
+    <string name="security_password">Mật khẩu</string>
+
+    <string name="device_config_direct_view">Tải thiết bị với danh sách chính</string>
+    <string name="device_config_hide">Ẩn thiết bị khỏi danh sách chính</string>
+    <string name="device_config_hidden">đã ẩn</string>
+    <string name="device_config_info">Thông tin thiết bị</string>
+    <string name="device_config_info_status">Trạng thái</string>
+
+    <string name="str_cancel">Hủy</string>
+    <string name="str_edit">Chỉnh sửa</string>
+    <string name="str_delete">Xóa</string>
+    <string name="str_show">Hiển thị</string>
+    <string name="str_done">Xong</string>
+    <string name="str_add">Thêm</string>
+    <string name="str_send">Gửi</string>
+    <string name="str_on">Bật</string>
+    <string name="str_off">Tắt</string>
+    <string name="str_yes">Có</string>
+    <string name="str_no">Không</string>
+    <string name="str_unreachable">Không thể kết nối</string>
+
+    <string name="about">Giới thiệu</string>
+    <string name="about_summary">Về ứng dụng</string>
+    <string name="about_app_version">Phiên bản ứng dụng</string>
+    <string name="about_privacy">Nội dung bên ngoài</string>
+    <string name="about_privacy_desc">Nội dung bên ngoài sẽ được tải từ GitHub. Đọc chính sách quyền riêng tư của họ để biết thêm thông tin.</string>
+    <string name="about_privacy_policy">Chính sách quyền riêng tư</string>
+    <string name="about_contributors">Ngườii đóng góp</string>
+    <string name="about_contributors_desc">Danh sách ngườii đóng góp</string>
+    <string name="about_general">Chung</string>
+    <string name="about_github">Kho lưu trữ GitHub</string>
+    <string name="about_license">Giấy phép</string>
+    <string name="about_icons">Biểu tượng</string>
+    <string name="about_icons_desc">Biểu tượng bởi Icons8 và Google</string>
+    <string name="about_libraries">Thư viện</string>
+    <string name="about_libraries_desc">Danh sách tất cả các thư viện đã sử dụng</string>
+
+    <string-array name="pref_columns_array">
+        <item>Tự động</item>
+        <item>Một</item>
+        <item>Hai</item>
+        <item>Ba</item>
+        <item>Bốn</item>
+    </string-array>
+    <string-array name="pref_add_method_array">
+        <item>Thêm thiết bị bằng địa chỉ</item>
+        <item>Tìm thiết bị tương thích (thử nghiệm)</item>
+    </string-array>
+    <string-array name="pref_language_array">
+        <item>Mặc định hệ thống</item>
+        <item>English</item>
+        <item>العربية</item>
+        <item>Български</item>
+        <item>Čeština</item>
+        <item>Dansk</item>
+        <item>Deutsch</item>
+        <item>Ελληνικά</item>
+        <item>Eesti</item>
+        <item>Español</item>
+        <item>Suomi</item>
+        <item>Français</item>
+        <item>Magyar</item>
+        <item>Italiano</item>
+        <item>日本語</item>
+        <item>한국어</item>
+        <item>Lietuvių</item>
+        <item>Latviešu</item>
+        <item>Nederlands</item>
+        <item>Polski</item>
+        <item>Português</item>
+        <item>Română</item>
+        <item>Русский</item>
+        <item>Svenska</item>
+        <item>Türkçe</item>
+        <item>Tiếng Việt</item>
+        <item>简体中文</item>
+        <item>繁體中文</item>
+    </string-array>
+    <string-array name="pref_language_array_values" translatable="false">
+        <item></item>
+        <item>en</item>
+        <item>ar</item>
+        <item>bg</item>
+        <item>cs</item>
+        <item>da</item>
+        <item>de</item>
+        <item>el</item>
+        <item>et</item>
+        <item>es</item>
+        <item>fi</item>
+        <item>fr</item>
+        <item>hu</item>
+        <item>it</item>
+        <item>ja</item>
+        <item>ko</item>
+        <item>lt</item>
+        <item>lv</item>
+        <item>nl</item>
+        <item>pl</item>
+        <item>pt</item>
+        <item>ro</item>
+        <item>ru</item>
+        <item>sv</item>
+        <item>tr</item>
+        <item>vi</item>
+        <item>zh-rCN</item>
+        <item>zh-rTW</item>
+    </string-array>
+</resources>

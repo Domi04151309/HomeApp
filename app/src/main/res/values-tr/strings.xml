@@ -1,0 +1,246 @@
+<resources>
+    <string name="app_name">Home</string>
+    <string name="app_description">Philips Hue, Arduino ve diger cihazlar icin kucuk bir akilli ev uygulamasi</string>
+
+    <string name="main_no_devices">Cihaz bulunamadi</string>
+    <string name="main_no_devices_summary">Ayarlar\'dan yeni bir cihaz ekleyin</string>
+    <string name="main_device_nonexistent">Cihaz listenizde bulunmuyor</string>
+    <string name="main_tap_to_connect">Baglanmak icin dokunun</string>
+    <string name="main_connecting">Baglaniyor</string>
+    <string name="main_network_not_secure">Baglanti guvenli degil</string>
+    <string name="main_unknown_mode">Cihaz bilinmeyen bir mod kullaniyor</string>
+    <string name="main_device_unavailable">Cihaz su anda kullanilamiyor</string>
+    <string name="main_parse_error">Yanit gereksinimleri karsilamiyor</string>
+    <string name="main_client_error">Cihaz yanit vermedi</string>
+    <string name="main_execution_completed">Islem basariyla tamamlandi</string>
+
+    <string name="main_device_icon">Cihaz Simgesi</string>
+    <string name="main_device_name">Cihazlariniz</string>
+
+    <string name="err">Bir seyler yanlis gitti</string>
+    <string name="err_wrong_format">Yanlis format</string>
+    <string name="err_missing_name">Lutfen bir isim girin</string>
+    <string name="err_missing_name_summary">Bir isim onemlidir, boylece girdiyi sonra tanimayabilirsiniz</string>
+    <string name="err_missing_address">Lutfen bir adres girin</string>
+    <string name="err_missing_address_summary">Bir adres onemlidir cunku uygulamanin cihaza ulasmasini saglar</string>
+
+    <string name="hue_connect">Bridge\'inize baglanin</string>
+    <string name="hue_press_button">Devam etmek icin lutfen Bridge\'inizdeki dugmeye basin.</string>
+    <string name="hue_tap">Secmek icin dokunun</string>
+    <string name="hue_brightness">Parlaklik</string>
+    <string name="hue_color_temperature">Renk sicakligi</string>
+    <string name="hue_hue_sat">Ton ve doygunluk</string>
+    <string name="hue_scene">Sahne</string>
+    <string name="hue_add_scene">Sahne Ekle</string>
+    <string name="hue_new_scene">Yeni Sahne</string>
+    <string name="hue_delete_scene">Bu sahneyi silmek istediginizden emin misiniz?</string>
+    <string name="hue_bridge">Bridge</string>
+    <string name="hue_bridge_name">Bridge Adi</string>
+    <string name="hue_bridge_model">Bridge Modeli</string>
+    <string name="hue_bridge_id">Bridge Kimligi</string>
+    <string name="hue_bridge_software">Yazilim Surumu</string>
+    <string name="hue_bridge_zigbee">Zigbee Kanali</string>
+    <string name="hue_bridge_dhcp">DHCP</string>
+    <string name="hue_bridge_time_zone">Saat Dilimi</string>
+    <string name="hue_users">Kullanicilar</string>
+    <string name="hue_controls">Kontroller</string>
+    <string name="hue_lights">Isiklar</string>
+    <string name="hue_room">Hue Odasi</string>
+    <string name="hue_scene_shortcut">Hue Sahnesi</string>
+
+    <string name="tasmota_empty_list">Henuz komut eklenmedi</string>
+    <string name="tasmota_empty_list_summary">Asagiya komutlar ekleyin</string>
+    <string name="tasmota_add_command">Listeye komut ekle</string>
+    <string name="tasmota_add_command_summary">Listeye yeni bir komut ekleyin</string>
+    <string name="tasmota_add_command_dialog_title">Baslik</string>
+    <string name="tasmota_add_command_dialog_title_empty">Komut</string>
+    <string name="tasmota_delete_command">Bu girdiyi silmek istediginizden emin misiniz?</string>
+    <string name="tasmota_execute_once">Komutu calistir</string>
+    <string name="tasmota_execute_once_summary">Listeye eklemeden komutu bir kez calistirin</string>
+    <string name="tasmota_go_to_ui">Tasmota Arayuzune Git</string>
+
+    <string name="shelly_humidity_sensor_summary">Mevcut nem</string>
+    <string name="shelly_powermeter_summary">Mevcut guc tuketimi</string>
+    <string name="shelly_powermeter_current">Akim</string>
+    <string name="shelly_powermeter_voltage">Voltaj</string>
+    <string name="shelly_powermeter_energy">Enerji</string>
+    <string name="shelly_powermeter_return_energy">Iade edilen enerji</string>
+    <string name="shelly_switch_title">Anahtar %1$d</string>
+    <string name="shelly_temperature_sensor_summary">Mevcut sicaklik</string>
+    <string name="shelly_wifi">WiFi</string>
+    <string name="shelly_mqtt">MQTT</string>
+    <string name="shelly_cloud">Bulut</string>
+    <string name="shelly_uptime">Calisma suresi</string>
+    <string name="shelly_storage">Kullanilan Depolama</string>
+    <string name="shelly_ram">Kullanilan RAM</string>
+    <string name="shelly_update">Mevcut Guncellemeler</string>
+
+    <string name="input_title">Lutfen bir seyler girin</string>
+    <string name="input_hint">Girdi</string>
+
+    <string name="webView">Web Gorunumu</string>
+    <string name="webView_open">Tarayicide ac</string>
+    <string name="webView_error">Web sitesi yuklenemedi</string>
+    <string name="webView_error_summary">Lutfen ag baglantinizi kontrol edin veya daha sonra tekrar deneyin</string>
+    <string name="webView_authentication">Kimlik Dogrulama</string>
+    <string name="webView_ssl_error">Guvenilir olmayan sertifika</string>
+
+    <string name="pref">Ayarlar</string>
+    <string name="pref_general">Genel Ayarlar</string>
+    <string name="pref_columns">Sutun sayisi</string>
+    <string name="pref_columns_summary">Ana listenin sutun sayisini degistirir</string>
+    <string name="pref_language">Dil</string>
+    <string name="pref_language_summary">Uygulama dilini secin</string>
+    <string name="pref_language_restart">Dili uygulamak icin uygulama yeniden baslatiliyor...</string>
+    <string name="pref_devices">Cihazlar</string>
+    <string name="pref_edit">Cihaz listesini duzenle</string>
+    <string name="pref_edit_summary">Cihaz listesini duzenleyin</string>
+    <string name="pref_delete_device_question">Bu cihazi silmek istediginizden emin misiniz?</string>
+    <string name="pref_device_config">Cihaz Yapilandirmasi</string>
+    <string name="pref_add_shortcut">Ana ekrana ekle</string>
+    <string name="pref_add_shortcut_failed">Kisayollar sisteminiz tarafindan desteklenmiyor</string>
+    <string name="pref_add">Yeni cihaz ekle</string>
+    <string name="pref_add_summary">Adresi ile yeni bir cihaz ekleyin</string>
+    <string name="pref_add_method">Yontem Sec</string>
+    <string name="pref_add_new_device">Yeni Cihaz</string>
+    <string name="pref_add_id">Ic Kimlik: %1$s</string>
+    <string name="pref_add_name">Isim</string>
+    <string name="pref_add_name_example">ornegin, Cihaz</string>
+    <string name="pref_add_name_empty">Cihaz</string>
+    <string name="pref_add_address">Adres</string>
+    <string name="pref_add_address_example">ornegin, http://127.0.0.1/</string>
+    <string name="pref_add_icon">Simge</string>
+    <string name="pref_add_mode">Mod</string>
+    <string name="pref_add_search">Uyumlu cihazlar araniyor</string>
+    <string name="pref_add_search_summary">Bu birkac saniye surabilir</string>
+    <string name="pref_add_dialog">Cihaz Ekle</string>
+    <string name="pref_add_dialog_message">Cihazlariniza &#8220;%1$s&#8221; eklemek istiyor musunuz?</string>
+    <string name="pref_edit_text">Gelismis duzenleme</string>
+    <string name="pref_edit_text_summary">JSON dizisini kendiniz duzenleyin</string>
+    <string name="pref_controls_auth">Kontroller icin cihaz kilidini gerektir</string>
+    <string name="pref_controls_auth_summary">Guc menusu kontrolleri icin cihazin kilidinin acilmasini gerektir</string>
+    <string name="pref_advanced">Gelismis Ayarlar</string>
+    <string name="pref_reset">Tum cihazlari sil</string>
+    <string name="pref_reset_summary">Bu tum cihazlarinizi siler</string>
+    <string name="pref_reset_question">Tum cihazlarinizi silmek istediginizden emin misiniz? Bu islem geri alinamaz!</string>
+    <string name="pref_reset_toast">Tum cihazlar silindi</string>
+    <string name="pref_safety_checks">Potansiyel olarak guvensiz istekleri engelle</string>
+    <string name="pref_safety_checks_summary">Temel guvenlik kontrolleri gerceklestir\nUyari: Bunu kapatmak baglanti verilerinin saldirganlara sizmasina neden olabilir!</string>
+    <string name="pref_info">Bilgi</string>
+    <string name="pref_info_wiki">Wiki</string>
+    <string name="pref_info_wiki_summary">Dokumantasyon ve yardim</string>
+    <string name="pref_info_header">Baslik arka plani</string>
+    <string name="pref_info_header_summary">Baslik arka plani: Alberto Castillo Q., Unsplash\'te</string>
+    <string name="pref_device_router">Yonlendirici</string>
+    <string name="placeholder">Yukleniyor</string>
+
+    <string name="security_username">Kullanici adi</string>
+    <string name="security_password">Sifre</string>
+
+    <string name="device_config_direct_view">Ana liste ile cihazi yukle</string>
+    <string name="device_config_hide">Cihazi ana listeden gizle</string>
+    <string name="device_config_hidden">gizli</string>
+    <string name="device_config_info">Cihaz Bilgisi</string>
+    <string name="device_config_info_status">Durum</string>
+
+    <string name="str_cancel">Iptal</string>
+    <string name="str_edit">Duzenle</string>
+    <string name="str_delete">Sil</string>
+    <string name="str_show">Goster</string>
+    <string name="str_done">Bitti</string>
+    <string name="str_add">Ekle</string>
+    <string name="str_send">Gonder</string>
+    <string name="str_on">Acik</string>
+    <string name="str_off">Kapali</string>
+    <string name="str_yes">Evet</string>
+    <string name="str_no">Hayir</string>
+    <string name="str_unreachable">Erisilemez</string>
+
+    <string name="about">Hakkinda</string>
+    <string name="about_summary">Uygulama hakkinda</string>
+    <string name="about_app_version">Uygulama surumu</string>
+    <string name="about_privacy">Harici Icerik</string>
+    <string name="about_privacy_desc">Harici icerik GitHub\'dan yuklenecektir. Daha fazla bilgi icin gizlilik politikalarini okuyun.</string>
+    <string name="about_privacy_policy">Gizlilik Politikasi</string>
+    <string name="about_contributors">Katkida Bulunanlar</string>
+    <string name="about_contributors_desc">Katkida bulunanlarin listesi</string>
+    <string name="about_general">Genel</string>
+    <string name="about_github">GitHub deposu</string>
+    <string name="about_license">Lisans</string>
+    <string name="about_icons">Simgeler</string>
+    <string name="about_icons_desc">Simgeler: Icons8 ve Google</string>
+    <string name="about_libraries">Kutuphaneler</string>
+    <string name="about_libraries_desc">Kullanilan tum kutuphanelerin listesi</string>
+
+    <string-array name="pref_columns_array">
+        <item>Otomatik</item>
+        <item>Bir</item>
+        <item>Iki</item>
+        <item>Uc</item>
+        <item>Dort</item>
+    </string-array>
+    <string-array name="pref_add_method_array">
+        <item>Adres ile cihaz ekle</item>
+        <item>Uyumlu cihazlari ara (deneysel)</item>
+    </string-array>
+    <string-array name="pref_language_array">
+        <item>Sistem Varsayilani</item>
+        <item>English</item>
+        <item>العربية</item>
+        <item>Български</item>
+        <item>Čeština</item>
+        <item>Dansk</item>
+        <item>Deutsch</item>
+        <item>Ελληνικά</item>
+        <item>Eesti</item>
+        <item>Español</item>
+        <item>Suomi</item>
+        <item>Français</item>
+        <item>Magyar</item>
+        <item>Italiano</item>
+        <item>日本語</item>
+        <item>한국어</item>
+        <item>Lietuvių</item>
+        <item>Latviešu</item>
+        <item>Nederlands</item>
+        <item>Polski</item>
+        <item>Português</item>
+        <item>Română</item>
+        <item>Русский</item>
+        <item>Svenska</item>
+        <item>Türkçe</item>
+        <item>Tiếng Việt</item>
+        <item>简体中文</item>
+        <item>繁體中文</item>
+    </string-array>
+    <string-array name="pref_language_array_values" translatable="false">
+        <item></item>
+        <item>en</item>
+        <item>ar</item>
+        <item>bg</item>
+        <item>cs</item>
+        <item>da</item>
+        <item>de</item>
+        <item>el</item>
+        <item>et</item>
+        <item>es</item>
+        <item>fi</item>
+        <item>fr</item>
+        <item>hu</item>
+        <item>it</item>
+        <item>ja</item>
+        <item>ko</item>
+        <item>lt</item>
+        <item>lv</item>
+        <item>nl</item>
+        <item>pl</item>
+        <item>pt</item>
+        <item>ro</item>
+        <item>ru</item>
+        <item>sv</item>
+        <item>tr</item>
+        <item>vi</item>
+        <item>zh-rCN</item>
+        <item>zh-rTW</item>
+    </string-array>
+</resources>
