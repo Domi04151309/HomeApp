@@ -31,10 +31,6 @@ class SettingsActivity : BaseActivity() {
     }
 
     class GeneralPreferenceFragment : PreferenceFragment() {
-        companion object {
-            private const val RESTART_DELAY_MS = 500L
-        }
-
         override fun onCreatePreferences(
             savedInstanceState: Bundle?,
             rootKey: String?,
@@ -114,6 +110,10 @@ class SettingsActivity : BaseActivity() {
                 android.os.Process.killProcess(android.os.Process.myPid())
                 System.exit(0)
             }, RESTART_DELAY_MS)
+        }
+
+        companion object {
+            private const val RESTART_DELAY_MS = 500L
         }
     }
 }
