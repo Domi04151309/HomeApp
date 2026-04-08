@@ -18,9 +18,6 @@ import io.github.domi04151309.home.helpers.LocaleHelper
 import io.github.domi04151309.home.helpers.P
 
 class SettingsActivity : BaseActivity() {
-    companion object {
-        private const val RESTART_DELAY_MS = 500L
-    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -34,6 +31,10 @@ class SettingsActivity : BaseActivity() {
     }
 
     class GeneralPreferenceFragment : PreferenceFragment() {
+        companion object {
+            private const val RESTART_DELAY_MS = 500L
+        }
+
         override fun onCreatePreferences(
             savedInstanceState: Bundle?,
             rootKey: String?,
