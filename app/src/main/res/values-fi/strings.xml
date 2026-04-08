@@ -57,7 +57,8 @@
     <string name="tasmota_delete_command">Haluatko varmasti poistaa tämän merkinnän?</string>
     <string name="tasmota_execute_once">Suorita komento</string>
     <string name="tasmota_execute_once_summary">Suorita komento kerran lisäämättä sitä listaan</string>
-    <string name="tasmota_go_to_ui">Siirry Tasmota-käyttöliittymään</string>
+    <string name="tasmota_open_ui">Siirry Tasmota-käyttöliittymään</string>
+    <string name="tasmota_open_ui_summary">Opens the Tasmota UI in a browser</string>
 
     <string name="shelly_humidity_sensor_summary">Nykyinen kosteus</string>
     <string name="shelly_powermeter_summary">Nykyinen virrankulutus</string>

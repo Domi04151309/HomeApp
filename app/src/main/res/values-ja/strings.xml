@@ -57,7 +57,8 @@
     <string name="tasmota_delete_command">このエントリーを削除してもよろしいですか？</string>
     <string name="tasmota_execute_once">コマンドを実行</string>
     <string name="tasmota_execute_once_summary">リストに追加せずに一度だけコマンドを実行</string>
-    <string name="tasmota_go_to_ui">Tasmota UIへ移動</string>
+    <string name="tasmota_open_ui">Tasmota UIへ移動</string>
+    <string name="tasmota_open_ui_summary">Opens the Tasmota UI in a browser</string>
 
     <string name="shelly_humidity_sensor_summary">現在の湿度</string>
     <string name="shelly_powermeter_summary">現在の消費電力</string>

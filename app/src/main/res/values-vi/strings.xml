@@ -57,7 +57,8 @@
     <string name="tasmota_delete_command">Bạn có chắc chắn muốn xóa mục này?</string>
     <string name="tasmota_execute_once">Thực thi lệnh</string>
     <string name="tasmota_execute_once_summary">Thực thi lệnh một lần mà không thêm vào danh sách</string>
-    <string name="tasmota_go_to_ui">Đến giao diện Tasmota</string>
+    <string name="tasmota_open_ui">Đến giao diện Tasmota</string>
+    <string name="tasmota_open_ui_summary">Opens the Tasmota UI in a browser</string>
 
     <string name="shelly_humidity_sensor_summary">Độ ẩm hiện tại</string>
     <string name="shelly_powermeter_summary">Mức tiêu thụ điện hiện tại</string>

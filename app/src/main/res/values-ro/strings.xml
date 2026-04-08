@@ -57,7 +57,8 @@
     <string name="tasmota_delete_command">Sigur doriți să ștergeți această intrare?</string>
     <string name="tasmota_execute_once">Executare comandă</string>
     <string name="tasmota_execute_once_summary">Executați comanda o dată fără a o adăuga la listă</string>
-    <string name="tasmota_go_to_ui">Mergeți la interfața Tasmota</string>
+    <string name="tasmota_open_ui">Mergeți la interfața Tasmota</string>
+    <string name="tasmota_open_ui_summary">Opens the Tasmota UI in a browser</string>
 
     <string name="shelly_humidity_sensor_summary">Umiditate curentă</string>
     <string name="shelly_powermeter_summary">Consum de energie curent</string>

@@ -57,7 +57,8 @@
     <string name="tasmota_delete_command">Tem a certeza de que pretende eliminar esta entrada?</string>
     <string name="tasmota_execute_once">Executar comando</string>
     <string name="tasmota_execute_once_summary">Executar comando uma vez sem o adicionar à lista</string>
-    <string name="tasmota_go_to_ui">Ir para a UI do Tasmota</string>
+    <string name="tasmota_open_ui">Ir para a UI do Tasmota</string>
+    <string name="tasmota_open_ui_summary">Opens the Tasmota UI in a browser</string>
 
     <string name="shelly_humidity_sensor_summary">Humidade atual</string>
     <string name="shelly_powermeter_summary">Consumo de energia atual</string>

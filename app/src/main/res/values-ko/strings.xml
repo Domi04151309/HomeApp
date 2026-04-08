@@ -57,7 +57,8 @@
     <string name="tasmota_delete_command">이 항목을 삭제하시겠습니까?</string>
     <string name="tasmota_execute_once">명령 실행</string>
     <string name="tasmota_execute_once_summary">목록에 추가하지 않고 한 번만 명령 실행</string>
-    <string name="tasmota_go_to_ui">Tasmota UI로 이동</string>
+    <string name="tasmota_open_ui">Tasmota UI로 이동</string>
+    <string name="tasmota_open_ui_summary">Opens the Tasmota UI in a browser</string>
 
     <string name="shelly_humidity_sensor_summary">현재 습도</string>
     <string name="shelly_powermeter_summary">현재 전력 소비량</string>

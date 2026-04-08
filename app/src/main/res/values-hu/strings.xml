@@ -57,7 +57,8 @@
     <string name="tasmota_delete_command">Biztosan törölni szeretnéd ezt az elemet?</string>
     <string name="tasmota_execute_once">Parancs végrehajtása</string>
     <string name="tasmota_execute_once_summary">Parancs egyszeri végrehajtása a lista hozzáadása nélkül</string>
-    <string name="tasmota_go_to_ui">Ugrás a Tasmota UI-ra</string>
+    <string name="tasmota_open_ui">Ugrás a Tasmota UI-ra</string>
+    <string name="tasmota_open_ui_summary">Opens the Tasmota UI in a browser</string>
 
     <string name="shelly_humidity_sensor_summary">Jelenlegi páratartalom</string>
     <string name="shelly_powermeter_summary">Jelenlegi energiafogyasztás</string>

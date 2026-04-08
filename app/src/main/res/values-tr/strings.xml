@@ -57,7 +57,8 @@
     <string name="tasmota_delete_command">Bu girdiyi silmek istediginizden emin misiniz?</string>
     <string name="tasmota_execute_once">Komutu calistir</string>
     <string name="tasmota_execute_once_summary">Listeye eklemeden komutu bir kez calistirin</string>
-    <string name="tasmota_go_to_ui">Tasmota Arayuzune Git</string>
+    <string name="tasmota_open_ui">Tasmota Arayuzune Git</string>
+    <string name="tasmota_open_ui_summary">Opens the Tasmota UI in a browser</string>
 
     <string name="shelly_humidity_sensor_summary">Mevcut nem</string>
     <string name="shelly_powermeter_summary">Mevcut guc tuketimi</string>

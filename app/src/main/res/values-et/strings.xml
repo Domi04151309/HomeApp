@@ -57,7 +57,8 @@
     <string name="tasmota_delete_command">Kas oled kindel, et soovid selle kirje kustutada?</string>
     <string name="tasmota_execute_once">Käivita käsk</string>
     <string name="tasmota_execute_once_summary">Käivita käsk üks kord ilma seda nimekirja lisamata</string>
-    <string name="tasmota_go_to_ui">Mine Tasmota kasutajaliidesesse</string>
+    <string name="tasmota_open_ui">Mine Tasmota kasutajaliidesesse</string>
+    <string name="tasmota_open_ui_summary">Opens the Tasmota UI in a browser</string>
 
     <string name="shelly_humidity_sensor_summary">Praegune niiskus</string>
     <string name="shelly_powermeter_summary">Praegune energiatarbimine</string>

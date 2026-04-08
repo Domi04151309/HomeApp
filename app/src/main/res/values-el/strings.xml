@@ -57,7 +57,8 @@
     <string name="tasmota_delete_command">Είστε βέβαιοι ότι θέλετε να διαγράψετε αυτή την καταχώρηση;</string>
     <string name="tasmota_execute_once">Εκτέλεση εντολής</string>
     <string name="tasmota_execute_once_summary">Εκτέλεση εντολής μία φορά χωρίς προσθήκη στη λίστα</string>
-    <string name="tasmota_go_to_ui">Μετάβαση στο UI Tasmota</string>
+    <string name="tasmota_open_ui">Μετάβαση στο UI Tasmota</string>
+    <string name="tasmota_open_ui_summary">Opens the Tasmota UI in a browser</string>
 
     <string name="shelly_humidity_sensor_summary">Τρέχουσα υγρασία</string>
     <string name="shelly_powermeter_summary">Τρέχουσα κατανάλωση ενέργειας</string>

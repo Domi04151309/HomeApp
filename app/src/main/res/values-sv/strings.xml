@@ -57,7 +57,8 @@
     <string name="tasmota_delete_command">Är du säker på att du vill ta bort denna post?</string>
     <string name="tasmota_execute_once">Kör kommando</string>
     <string name="tasmota_execute_once_summary">Kör kommando en gång utan att lägga till det i listan</string>
-    <string name="tasmota_go_to_ui">Gå till Tasmota UI</string>
+    <string name="tasmota_open_ui">Gå till Tasmota UI</string>
+    <string name="tasmota_open_ui_summary">Opens the Tasmota UI in a browser</string>
 
     <string name="shelly_humidity_sensor_summary">Aktuell luftfuktighet</string>
     <string name="shelly_powermeter_summary">Aktuell strömförbrukning</string>

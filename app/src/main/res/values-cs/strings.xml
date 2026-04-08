@@ -57,7 +57,8 @@
     <string name="tasmota_delete_command">Jste si jisti, že chcete smazat tuto položku?</string>
     <string name="tasmota_execute_once">Provést příkaz</string>
     <string name="tasmota_execute_once_summary">Provést příkaz jednou bez přidání do seznamu</string>
-    <string name="tasmota_go_to_ui">Přejít na Tasmota UI</string>
+    <string name="tasmota_open_ui">Přejít na Tasmota UI</string>
+    <string name="tasmota_open_ui_summary">Opens the Tasmota UI in a browser</string>
 
     <string name="shelly_humidity_sensor_summary">Aktuální vlhkost</string>
     <string name="shelly_powermeter_summary">Aktuální spotřeba energie</string>

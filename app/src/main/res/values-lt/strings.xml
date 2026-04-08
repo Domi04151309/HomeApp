@@ -57,7 +57,8 @@
     <string name="tasmota_delete_command">Ar tikrai norite ištrinti šį įrašą?</string>
     <string name="tasmota_execute_once">Vykdyti komandą</string>
     <string name="tasmota_execute_once_summary">Vykdykite komandą vieną kartą, nepridėdami jos į sąrašą</string>
-    <string name="tasmota_go_to_ui">Eiti į Tasmota vartotojo sąsają</string>
+    <string name="tasmota_open_ui">Eiti į Tasmota vartotojo sąsają</string>
+    <string name="tasmota_open_ui_summary">Opens the Tasmota UI in a browser</string>
 
     <string name="shelly_humidity_sensor_summary">Dabartinė drėgmė</string>
     <string name="shelly_powermeter_summary">Dabartinis energijos suvartojimas</string>

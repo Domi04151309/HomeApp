@@ -57,7 +57,8 @@
     <string name="tasmota_delete_command">هل أنت متأكد من أنك تريد حذف هذا الإدخال؟</string>
     <string name="tasmota_execute_once">تنفيذ الأمر</string>
     <string name="tasmota_execute_once_summary">تنفيذ الأمر مرة واحدة دون إضافته إلى القائمة</string>
-    <string name="tasmota_go_to_ui">الانتقال إلى واجهة Tasmota</string>
+    <string name="tasmota_open_ui">الانتقال إلى واجهة Tasmota</string>
+    <string name="tasmota_open_ui_summary">فتح واجهة Tasmota في المتصفح</string>
 
     <string name="shelly_humidity_sensor_summary">الرطوبة الحالية</string>
     <string name="shelly_powermeter_summary">استهلاك الطاقة الحالي</string>

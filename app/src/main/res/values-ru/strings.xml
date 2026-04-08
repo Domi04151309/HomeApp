@@ -57,7 +57,8 @@
     <string name="tasmota_delete_command">Вы уверены, что хотите удалить эту запись?</string>
     <string name="tasmota_execute_once">Выполнить команду</string>
     <string name="tasmota_execute_once_summary">Выполнить команду один раз без добавления в список</string>
-    <string name="tasmota_go_to_ui">Перейти в Tasmota UI</string>
+    <string name="tasmota_open_ui">Перейти в Tasmota UI</string>
+    <string name="tasmota_open_ui_summary">Opens the Tasmota UI in a browser</string>
 
     <string name="shelly_humidity_sensor_summary">Текущая влажность</string>
     <string name="shelly_powermeter_summary">Текущее потребление энергии</string>
