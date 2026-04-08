@@ -100,9 +100,10 @@ class SettingsActivity : BaseActivity() {
                 val packageName = requireContext().packageName
                 val intent = packageManager.getLaunchIntentForPackage(packageName)
                 intent?.let {
-                    val flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or
-                        Intent.FLAG_ACTIVITY_NEW_TASK or
-                        Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    val flags =
+                        Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                            Intent.FLAG_ACTIVITY_NEW_TASK or
+                            Intent.FLAG_ACTIVITY_CLEAR_TASK
                     it.addFlags(flags)
                     it.putExtra("language_changed", true)
                     startActivity(it)
