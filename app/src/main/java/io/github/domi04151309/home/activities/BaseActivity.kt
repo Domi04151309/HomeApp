@@ -19,7 +19,6 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         // Update configuration before creating the activity
         LocaleHelper.updateActivityConfiguration(this)
-        
         super.onCreate(savedInstanceState)
         if (resources.configuration.uiMode.and(
                 Configuration.UI_MODE_NIGHT_MASK,

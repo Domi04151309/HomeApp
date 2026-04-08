@@ -66,7 +66,7 @@ object LocaleHelper {
             // Use system default
             context
         } else {
-            setLocale(context, language)
+            wrapContextWithLocale(context, language)
         }
     }
 
@@ -85,26 +85,18 @@ object LocaleHelper {
         }
     }
 
-    /**
-     * Creates a locale from a language code.
-     * Handles special cases like Chinese locales.
-     */
-    private fun createLocale(language: String): Locale {
-        return when (language) {
+    private fun localeForLanguageCode(language: String): Locale =
+        when (language) {
             "zh-rCN" -> Locale("zh", "CN")
             "zh-rTW" -> Locale("zh", "TW")
             else -> Locale(language)
         }
-    }
 
-    /**
-     * Creates a new context with the specified locale.
-     */
-    private fun setLocale(
+    private fun wrapContextWithLocale(
         context: Context,
         language: String,
     ): Context {
-        val locale = createLocale(language)
+        val locale = localeForLanguageCode(language)
         Locale.setDefault(locale)
 
         val config = Configuration(context.resources.configuration)
@@ -130,23 +122,24 @@ object LocaleHelper {
         val language = getCurrentLanguage(activity)
         if (language.isEmpty()) return
 
-        val locale = createLocale(language)
+        val locale = localeForLanguageCode(language)
         Locale.setDefault(locale)
+        updateConfiguration(activity, locale)
+    }
 
+    private fun updateConfiguration(
+        activity: Activity,
+        locale: Locale,
+    ) {
         val resources: Resources = activity.resources
         val config: Configuration = resources.configuration
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            val localeList = LocaleList(locale)
-            config.setLocales(localeList)
+            config.setLocales(LocaleList(locale))
+            activity.createConfigurationContext(config)
         } else {
             @Suppress("DEPRECATION")
             config.locale = locale
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            activity.createConfigurationContext(config)
-        } else {
             @Suppress("DEPRECATION")
             resources.updateConfiguration(config, resources.displayMetrics)
         }
