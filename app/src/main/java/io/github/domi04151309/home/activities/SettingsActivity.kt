@@ -28,6 +28,10 @@ import java.util.Date
 import java.util.Locale
 
 class SettingsActivity : BaseActivity() {
+    companion object {
+        private const val KEY_DEVICES = "devices"
+        private const val KEY_ROOMS = "rooms"
+    }
 
     private val exportLauncher = registerForActivityResult(
         ActivityResultContracts.CreateDocument("application/json")
@@ -54,8 +58,8 @@ class SettingsActivity : BaseActivity() {
             // Create pretty printed JSON with 4-space indentation
             val exportData = JSONObject().apply {
                 put("export_date", SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date()))
-                put("devices", JSONObject(devicesJson).optJSONObject("devices") ?: JSONObject())
-                put("rooms", JSONObject(roomsJson).optJSONObject("rooms") ?: JSONObject())
+                put(KEY_DEVICES, JSONObject(devicesJson).optJSONObject(KEY_DEVICES) ?: JSONObject())
+                put(KEY_ROOMS, JSONObject(roomsJson).optJSONObject(KEY_ROOMS) ?: JSONObject())
             }.toString(4)
 
             contentResolver.openOutputStream(uri)?.use { outputStream ->
@@ -75,13 +79,13 @@ class SettingsActivity : BaseActivity() {
                 BufferedReader(InputStreamReader(inputStream)).use { reader ->
                     reader.readText()
                 }
-            } ?: throw IllegalStateException("Could not read file")
+            } ?: error("Could not read file")
 
             val json = JSONObject(jsonString)
 
             // Validate the JSON structure
-            if (!json.has("devices") || !json.has("rooms")) {
-                throw Exception("Invalid configuration file")
+            if (!json.has(KEY_DEVICES) || !json.has(KEY_ROOMS)) {
+                throw IllegalStateException("Invalid configuration file")
             }
 
             MaterialAlertDialogBuilder(this)
@@ -91,8 +95,14 @@ class SettingsActivity : BaseActivity() {
                     try {
                         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
                         prefs.edit {
-                            putString(PREF_DEVICES_JSON, "{\"devices\":${json.getJSONObject("devices").toString()}}")
-                            putString(PREF_ROOMS_JSON, "{\"rooms\":${json.getJSONObject("rooms").toString()}}")
+                            putString(
+                                PREF_DEVICES_JSON,
+                                "{\"devices\":${json.getJSONObject(KEY_DEVICES).toString()}}",
+                            )
+                            putString(
+                                PREF_ROOMS_JSON,
+                                "{\"rooms\":${json.getJSONObject(KEY_ROOMS).toString()}}",
+                            )
                         }
                         Devices.reloadFromPreferences()
                         Rooms.reloadFromPreferences()

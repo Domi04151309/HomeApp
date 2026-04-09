@@ -60,7 +60,7 @@ class EditDeviceActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         try {
             setContentView(R.layout.activity_edit_device)
-        } catch (e: RuntimeException) {
+        } catch (e: IllegalStateException) {
             Log.e(TAG, "Error setting content view", e)
             Toast.makeText(this, getString(R.string.err_loading_ui, e.message), Toast.LENGTH_LONG).show()
             finish()
@@ -85,11 +85,25 @@ class EditDeviceActivity : BaseActivity() {
 
         try {
             deviceSecrets = DeviceSecrets(this, deviceId)
-        } catch (e: RuntimeException) {
+        } catch (e: IllegalStateException) {
             Log.e(TAG, "Error initializing DeviceSecrets", e)
             // Continue without encrypted secrets
         }
 
+        initializeViews()
+        setupSpinners()
+        setupRoomSpinners()
+        setupToolbarAndFab(fab)
+
+        if (editing) {
+            findViewById<TextInputLayout>(R.id.roomSpinner).visibility = View.GONE
+            onEditDevice()
+        } else {
+            onCreateDevice()
+        }
+    }
+
+    private fun initializeViews() {
         deviceIcon = findViewById(R.id.deviceIcn)
         nameText = findViewById(R.id.nameTxt)
         nameBox = findViewById(R.id.nameBox)
@@ -104,13 +118,13 @@ class EditDeviceActivity : BaseActivity() {
         configDirectView = findViewById(R.id.configDirectView)
         configButton = findViewById(R.id.configBtn)
         infoButton = findViewById(R.id.infoBtn)
-
         findViewById<TextView>(R.id.idTxt).text = resources.getString(R.string.pref_add_id, deviceId)
+    }
 
+    private fun setupSpinners() {
         iconSpinner.addTextChangedListener(getIconTextWatcher())
         modeSpinner.addTextChangedListener(getModeTextWatcher(editing))
         nameBox.editText?.addTextChangedListener(getNameTextWatcher())
-
         iconSpinner.setAdapter(IconSpinnerAdapter(resources.getStringArray(R.array.pref_icons)))
         modeSpinner.setAdapter(
             ArrayAdapter(
@@ -119,29 +133,23 @@ class EditDeviceActivity : BaseActivity() {
                 resources.getStringArray(R.array.pref_add_mode_array),
             ),
         )
-        setupRoomSpinner()
-        setupEditRoomSpinner()
-
-        // Disable filtering for dropdown spinners to show all items
         iconSpinner.isFocusable = false
         iconSpinner.isFocusableInTouchMode = false
         iconSpinner.inputType = android.text.InputType.TYPE_NULL
         modeSpinner.isFocusable = false
         modeSpinner.isFocusableInTouchMode = false
         modeSpinner.inputType = android.text.InputType.TYPE_NULL
+    }
 
-        if (editing) {
-            // Hide main room spinner when editing - use the one in edit section instead
-            findViewById<TextInputLayout>(R.id.roomSpinner).visibility = View.GONE
-            onEditDevice()
-        } else {
-            onCreateDevice()
-        }
+    private fun setupRoomSpinners() {
+        setupRoomSpinner()
+        setupEditRoomSpinner()
+    }
 
+    private fun setupToolbarAndFab(fab: FloatingActionButton) {
         fab.setOnClickListener {
             onFloatingActionButtonClicked()
         }
-
         findViewById<MaterialToolbar>(R.id.toolbar).apply {
             setNavigationIcon(R.drawable.ic_arrow_back)
             setNavigationOnClickListener {
@@ -362,25 +370,25 @@ class EditDeviceActivity : BaseActivity() {
     private fun updateRoomSpinnerAdapter() {
         val roomNames = mutableListOf<String>()
         val roomIds = mutableListOf<String>()
-        
+
         // Add "No room" option
         roomNames.add(getString(R.string.device_config_room_none))
         roomIds.add("")
-        
+
         // Add all rooms
         for (i in 0 until rooms.length) {
             val room = rooms.getRoomByIndex(i)
             roomNames.add(room.name)
             roomIds.add(room.id)
         }
-        
+
         val adapter = ArrayAdapter(
             this,
             R.layout.dropdown_item,
             roomNames,
         )
         roomSpinner.setAdapter(adapter)
-        
+
         roomSpinner.setOnItemClickListener { _, _, position, _ ->
             if (position >= 0 && position < roomIds.size) {
                 selectedRoomId = roomIds[position]
@@ -409,25 +417,25 @@ class EditDeviceActivity : BaseActivity() {
     private fun updateEditRoomSpinnerAdapter() {
         val roomNames = mutableListOf<String>()
         val roomIds = mutableListOf<String>()
-        
+
         // Add "No room" option
         roomNames.add(getString(R.string.device_config_room_none))
         roomIds.add("")
-        
+
         // Add all rooms
         for (i in 0 until rooms.length) {
             val room = rooms.getRoomByIndex(i)
             roomNames.add(room.name)
             roomIds.add(room.id)
         }
-        
+
         val adapter = ArrayAdapter(
             this,
             R.layout.dropdown_item,
             roomNames,
         )
         editRoomSpinner.setAdapter(adapter)
-        
+
         editRoomSpinner.setOnItemClickListener { _, _, position, _ ->
             if (position >= 0 && position < roomIds.size) {
                 editSelectedRoomId = roomIds[position]
@@ -467,7 +475,7 @@ class EditDeviceActivity : BaseActivity() {
             val iconText = iconSpinner.text?.toString() ?: "Lamp"
             // Use editSelectedRoomId when editing, selectedRoomId when creating
             val roomId = if (editing) editSelectedRoomId else selectedRoomId
-            
+
             val tempAddress =
                 if (modeText == Global.NODE_RED) {
                     formatNodeREDAddress(addressBox.editText?.text.toString())
@@ -493,11 +501,11 @@ class EditDeviceActivity : BaseActivity() {
                     it.password = passwordBox.editText?.text.toString()
                     it.updateDeviceSecrets()
                 }
-            } catch (e: RuntimeException) {
+            } catch (e: IllegalStateException) {
                 Log.e(TAG, "Error saving device secrets", e)
             }
             finish()
-        } catch (e: RuntimeException) {
+        } catch (e: IllegalStateException) {
             Log.e(TAG, "Error saving device", e)
             Toast.makeText(this, getString(R.string.err_saving_device, e.message), Toast.LENGTH_LONG).show()
         }

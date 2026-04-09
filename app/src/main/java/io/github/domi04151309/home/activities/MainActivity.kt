@@ -635,9 +635,7 @@ class MainActivity : BaseActivity() {
         var actualPosition = 0
         for (i in 0 until devices.length) {
             val currentDevice = devices.getDeviceByIndex(i)
-            if (currentDevice.hide) continue
-
-            if (!shouldShowDevice(currentDevice)) continue
+            if (!shouldProcessDevice(currentDevice)) continue
 
             if (currentDevice.directView &&
                 Global.UNIFIED_MODES.contains(currentDevice.mode) &&
@@ -649,6 +647,9 @@ class MainActivity : BaseActivity() {
             actualPosition++
         }
     }
+
+    private fun shouldProcessDevice(device: DeviceItem): Boolean =
+        !device.hide && shouldShowDevice(device)
 
     private fun shouldShowDevice(device: DeviceItem): Boolean = when (currentRoomId) {
         "" -> true // All devices

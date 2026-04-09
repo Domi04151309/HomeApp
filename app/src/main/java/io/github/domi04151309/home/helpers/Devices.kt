@@ -61,7 +61,7 @@ class Devices(private val context: Context) {
                 json.optString("icon"),
                 json.optBoolean("hide", false),
                 json.optBoolean("direct_view", false),
-                json.optString(ROOM_ID, ""
+                json.optString(ROOM_ID, ""),
             )
         device.address = json.optString(ADDRESS)
         return device
