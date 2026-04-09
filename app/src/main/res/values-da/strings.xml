@@ -1,0 +1,245 @@
+<resources>
+    <string name="app_name">Hjem</string>
+    <string name="app_description">En lille smart home-app til Philips Hue, Arduino og andre enheder</string>
+
+    <string name="main_no_devices">Ingen enheder fundet</string>
+    <string name="main_no_devices_summary">Tilføj en ny enhed i indstillingerne</string>
+    <string name="main_device_nonexistent">Enheden findes ikke på din liste</string>
+    <string name="main_tap_to_connect">Tryk for at forbinde</string>
+    <string name="main_connecting">Forbinder</string>
+    <string name="main_network_not_secure">Forbindelse ikke sikker</string>
+    <string name="main_unknown_mode">Enheden bruger en ukendt tilstand</string>
+    <string name="main_device_unavailable">Enheden er i øjeblikket utilgængelig</string>
+    <string name="main_parse_error">Svaret opfylder ikke kravene</string>
+    <string name="main_client_error">Enheden svarede ikke</string>
+    <string name="main_execution_completed">Udførelse gennemført med succes</string>
+
+    <string name="main_device_icon">Enhedsikon</string>
+    <string name="main_device_name">Dine enheder</string>
+
+    <string name="err">Noget gik galt</string>
+    <string name="err_wrong_format">Forkert format</string>
+    <string name="err_missing_name">Indtast venligst et navn</string>
+    <string name="err_missing_name_summary">Et navn er vigtigt, så du kan genkende posten senere</string>
+    <string name="err_missing_address">Indtast venligst en adresse</string>
+    <string name="err_missing_address_summary">En adresse er vigtig, fordi den gør det muligt for appen at nå enheden</string>
+
+    <string name="hue_connect">Forbind til din Bridge</string>
+    <string name="hue_press_button">Tryk venligst på knappen på din bridge for at fortsætte.</string>
+    <string name="hue_tap">Tryk for at vælge</string>
+    <string name="hue_brightness">Lysstyrke</string>
+    <string name="hue_color_temperature">Farvetemperatur</string>
+    <string name="hue_hue_sat">Farvetone og mætning</string>
+    <string name="hue_scene">Scene</string>
+    <string name="hue_add_scene">Tilføj scene</string>
+    <string name="hue_new_scene">Ny scene</string>
+    <string name="hue_delete_scene">Er du sikker på, at du vil slette denne scene?</string>
+    <string name="hue_bridge">Bridge</string>
+    <string name="hue_bridge_name">Bridge-navn</string>
+    <string name="hue_bridge_model">Bridge-model</string>
+    <string name="hue_bridge_id">Bridge-ID</string>
+    <string name="hue_bridge_software">Softwareversion</string>
+    <string name="hue_bridge_zigbee">Zigbee-kanal</string>
+    <string name="hue_bridge_dhcp">DHCP</string>
+    <string name="hue_bridge_time_zone">Tidszone</string>
+    <string name="hue_users">Brugere</string>
+    <string name="hue_controls">Betjening</string>
+    <string name="hue_lights">Lamper</string>
+    <string name="hue_room">Hue-rum</string>
+    <string name="hue_scene_shortcut">Hue-scene</string>
+
+    <string name="tasmota_empty_list">Ingen kommandoer tilføjet endnu</string>
+    <string name="tasmota_empty_list_summary">Tilføj kommandoer nedenfor</string>
+    <string name="tasmota_add_command">Tilføj kommando til listen</string>
+    <string name="tasmota_add_command_summary">Tilføj en ny kommando til din liste</string>
+    <string name="tasmota_add_command_dialog_title">Titel</string>
+    <string name="tasmota_add_command_dialog_title_empty">Kommando</string>
+    <string name="tasmota_delete_command">Er du sikker på, at du vil slette denne post?</string>
+    <string name="tasmota_execute_once">Udfør kommando</string>
+    <string name="tasmota_execute_once_summary">Udfør kommandoen én gang uden at tilføje den til listen</string>
+    <string name="tasmota_open_ui">Gå til Tasmota-brugerfladen</string>
+    <string name="tasmota_open_ui_summary">Opens the Tasmota UI in a browser</string>
+
+    <string name="shelly_humidity_sensor_summary">Aktuel luftfugtighed</string>
+    <string name="shelly_powermeter_summary">Aktuelt strømforbrug</string>
+    <string name="shelly_powermeter_current">Strøm</string>
+    <string name="shelly_powermeter_voltage">Spænding</string>
+    <string name="shelly_powermeter_energy">Energi</string>
+    <string name="shelly_powermeter_return_energy">Returneret energi</string>
+    <string name="shelly_switch_title">Kontakt %1$d</string>
+    <string name="shelly_temperature_sensor_summary">Aktuel temperatur</string>
+    <string name="shelly_wifi">WiFi</string>
+    <string name="shelly_mqtt">MQTT</string>
+    <string name="shelly_cloud">Cloud</string>
+    <string name="shelly_uptime">Driftstid</string>
+    <string name="shelly_storage">Anvendt lagerplads</string>
+    <string name="shelly_ram">Anvendt RAM</string>
+    <string name="shelly_update">Opdateringer tilgængelige</string>
+
+    <string name="input_title">Indtast venligst noget</string>
+    <string name="input_hint">Input</string>
+
+    <string name="webView">Webvisning</string>
+    <string name="webView_open">Åbn i browser</string>
+    <string name="webView_error">Indlæsning af hjemmesiden mislykkedes</string>
+    <string name="webView_error_summary">Tjek venligst din netværksforbindelse eller prøv igen senere</string>
+    <string name="webView_authentication">Godkendelse</string>
+    <string name="webView_ssl_error">Ikke-godkendt certifikat</string>
+
+    <string name="pref">Indstillinger</string>
+    <string name="pref_general">Generelle indstillinger</string>
+    <string name="pref_columns">Antal kolonner</string>
+    <string name="pref_columns_summary">Ændrer antallet af kolonner i hovedlisten</string>
+    <string name="pref_language">Sprog</string>
+    <string name="pref_language_summary">Vælg app-sprog</string>
+    <string name="pref_language_restart">Genstarter app for at anvende sprog...</string>
+    <string name="pref_devices">Enheder</string>
+    <string name="pref_edit">Rediger enhedsliste</string>
+    <string name="pref_edit_summary">Rediger listen over enheder</string>
+    <string name="pref_delete_device_question">Er du sikker på, at du vil slette denne enhed?</string>
+    <string name="pref_device_config">Enhedskonfiguration</string>
+    <string name="pref_add_shortcut">Tilføj til startskærmen</string>
+    <string name="pref_add_shortcut_failed">Genveje understøttes ikke af dit system</string>
+    <string name="pref_add">Tilføj en ny enhed</string>
+    <string name="pref_add_summary">Tilføj en ny enhed med dens adresse</string>
+    <string name="pref_add_method">Vælg metode</string>
+    <string name="pref_add_new_device">Ny enhed</string>
+    <string name="pref_add_id">Internt ID: %1$s</string>
+    <string name="pref_add_name">Navn</string>
+    <string name="pref_add_name_example">f.eks. Enhed</string>
+    <string name="pref_add_name_empty">Enhed</string>
+    <string name="pref_add_address">Adresse</string>
+    <string name="pref_add_address_example">f.eks. http://127.0.0.1/</string>
+    <string name="pref_add_icon">Ikon</string>
+    <string name="pref_add_mode">Tilstand</string>
+    <string name="pref_add_search">Søger efter kompatible enheder</string>
+    <string name="pref_add_search_summary">Dette kan tage et par sekunder</string>
+    <string name="pref_add_dialog">Tilføj enhed</string>
+    <string name="pref_add_dialog_message">Vil du tilføje \&#8220;%1$s\&#8221; til dine enheder?</string>
+    <string name="pref_controls_auth">Kræv enhedsoplåsning til betjening</string>
+    <string name="pref_controls_auth_summary">Kræv at enheden er oplåst til betjening via strømmenuen</string>
+    <string name="pref_advanced">Avancerede indstillinger</string>
+    <string name="pref_reset">Slet alle enheder</string>
+    <string name="pref_reset_summary">Dette sletter alle dine enheder</string>
+    <string name="pref_reset_question">Er du sikker på, at du vil slette alle dine enheder? Dette kan ikke fortrydes!</string>
+    <string name="pref_reset_toast">Slettede alle enheder</string>
+    <string name="pref_safety_checks">Bloker potentielt usikre anmodninger</string>
+    <string name="pref_safety_checks_summary">Udfør grundlæggende sikkerhedstjek\nAdvarsel: At slå dette fra kan lække forbindelsesdata til angribere!</string>
+    <string name="pref_info">Information</string>
+    <string name="pref_info_wiki">Wiki</string>
+    <string name="pref_info_wiki_summary">Dokumentation og hjælp</string>
+    <string name="pref_info_header">Header-baggrund</string>
+    <string name="pref_info_header_summary">Header-baggrund af Alberto Castillo Q. på Unsplash</string>
+    <string name="pref_device_router">Router</string>
+    <string name="placeholder">Indlæser</string>
+
+    <string name="security_username">Brugernavn</string>
+    <string name="security_password">Adgangskode</string>
+
+    <string name="device_config_direct_view">Indlæs enhed med hovedlisten</string>
+    <string name="device_config_hide">Skjul enhed fra hovedlisten</string>
+    <string name="device_config_hidden">skjult</string>
+    <string name="device_config_info">Enhedsinfo</string>
+    <string name="device_config_info_status">Status</string>
+
+    <string name="str_cancel">Annuller</string>
+    <string name="str_edit">Rediger</string>
+    <string name="str_delete">Slet</string>
+    <string name="str_show">Vis</string>
+    <string name="str_done">Færdig</string>
+    <string name="str_add">Tilføj</string>
+    <string name="str_send">Send</string>
+    <string name="str_on">Tændt</string>
+    <string name="str_off">Slukket</string>
+    <string name="str_yes">Ja</string>
+    <string name="str_no">Nej</string>
+    <string name="str_unreachable">Utilgængelig</string>
+
+    <string name="about">Om</string>
+    <string name="about_summary">Om appen</string>
+    <string name="about_app_version">App-version</string>
+    <string name="about_privacy">Eksternt indhold</string>
+    <string name="about_privacy_desc">Eksternt indhold vil blive indlæst fra GitHub. Læs deres privatlivspolitik for yderligere information.</string>
+    <string name="about_privacy_policy">Privatlivspolitik</string>
+    <string name="about_contributors">Bidragydere</string>
+    <string name="about_contributors_desc">En liste over bidragyderne</string>
+    <string name="about_general">Generelt</string>
+    <string name="about_github">GitHub-repository</string>
+    <string name="about_license">Licens</string>
+    <string name="about_icons">Ikoner</string>
+    <string name="about_icons_desc">Ikoner af Icons8 og Google</string>
+    <string name="about_libraries">Biblioteker</string>
+    <string name="about_libraries_desc">En liste over alle anvendte biblioteker</string>
+
+    <string-array name="pref_columns_array">
+        <item>Auto</item>
+        <item>En</item>
+        <item>To</item>
+        <item>Tre</item>
+        <item>Fire</item>
+    </string-array>
+    <string-array name="pref_add_method_array">
+        <item>Tilføj enhed efter adresse</item>
+        <item>Søg efter kompatible enheder (eksperimentelt)</item>
+    </string-array>
+    <string-array name="pref_language_array">
+        <item>Systemstandard</item>
+        <item>English</item>
+        <item>العربية</item>
+        <item>Български</item>
+        <item>Čeština</item>
+        <item>Dansk</item>
+        <item>Deutsch</item>
+        <item>Ελληνικά</item>
+        <item>Eesti</item>
+        <item>Español</item>
+        <item>Suomi</item>
+        <item>Français</item>
+        <item>Magyar</item>
+        <item>Italiano</item>
+        <item>日本語</item>
+        <item>한국어</item>
+        <item>Lietuvių</item>
+        <item>Latviešu</item>
+        <item>Nederlands</item>
+        <item>Polski</item>
+        <item>Português</item>
+        <item>Română</item>
+        <item>Русский</item>
+        <item>Svenska</item>
+        <item>Türkçe</item>
+        <item>Tiếng Việt</item>
+        <item>简体中文</item>
+        <item>繁體中文</item>
+    </string-array>
+    <string-array name="pref_language_array_values" translatable="false">
+        <item></item>
+        <item>en</item>
+        <item>ar</item>
+        <item>bg</item>
+        <item>cs</item>
+        <item>da</item>
+        <item>de</item>
+        <item>el</item>
+        <item>et</item>
+        <item>es</item>
+        <item>fi</item>
+        <item>fr</item>
+        <item>hu</item>
+        <item>it</item>
+        <item>ja</item>
+        <item>ko</item>
+        <item>lt</item>
+        <item>lv</item>
+        <item>nl</item>
+        <item>pl</item>
+        <item>pt</item>
+        <item>ro</item>
+        <item>ru</item>
+        <item>sv</item>
+        <item>tr</item>
+        <item>vi</item>
+        <item>zh-rCN</item>
+        <item>zh-rTW</item>
+    </string-array>
+</resources>

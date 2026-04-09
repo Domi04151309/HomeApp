@@ -1,5 +1,6 @@
 package io.github.domi04151309.home.activities
 
+import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
@@ -8,9 +9,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import io.github.domi04151309.home.R
+import io.github.domi04151309.home.helpers.LocaleHelper
 
 abstract class BaseActivity : AppCompatActivity() {
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(LocaleHelper.wrapContext(newBase))
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Update configuration before creating the activity
+        LocaleHelper.updateActivityConfiguration(this)
         super.onCreate(savedInstanceState)
         if (resources.configuration.uiMode.and(
                 Configuration.UI_MODE_NIGHT_MASK,

@@ -1,0 +1,245 @@
+<resources>
+    <string name="app_name">家庭</string>
+    <string name="app_description">一个适用于飞利浦 Hue、Arduino 和其他设备的小型智能家居应用</string>
+
+    <string name="main_no_devices">未找到设备</string>
+    <string name="main_no_devices_summary">在设置中添加新设备</string>
+    <string name="main_device_nonexistent">该设备不在您的列表中</string>
+    <string name="main_tap_to_connect">点击连接</string>
+    <string name="main_connecting">正在连接</string>
+    <string name="main_network_not_secure">连接不安全</string>
+    <string name="main_unknown_mode">该设备使用未知模式</string>
+    <string name="main_device_unavailable">该设备当前不可用</string>
+    <string name="main_parse_error">响应不符合要求</string>
+    <string name="main_client_error">设备未响应</string>
+    <string name="main_execution_completed">执行成功完成</string>
+
+    <string name="main_device_icon">设备图标</string>
+    <string name="main_device_name">您的设备</string>
+
+    <string name="err">出了点问题</string>
+    <string name="err_wrong_format">格式错误</string>
+    <string name="err_missing_name">请输入名称</string>
+    <string name="err_missing_name_summary">名称很重要，以便您日后能够识别该条目</string>
+    <string name="err_missing_address">请输入地址</string>
+    <string name="err_missing_address_summary">地址很重要，因为它允许应用连接到设备</string>
+
+    <string name="hue_connect">连接到您的桥接器</string>
+    <string name="hue_press_button">请按下桥接器上的按钮以继续。</string>
+    <string name="hue_tap">点击选择</string>
+    <string name="hue_brightness">亮度</string>
+    <string name="hue_color_temperature">色温</string>
+    <string name="hue_hue_sat">色调和饱和度</string>
+    <string name="hue_scene">场景</string>
+    <string name="hue_add_scene">添加场景</string>
+    <string name="hue_new_scene">新场景</string>
+    <string name="hue_delete_scene">您确定要删除此场景吗？</string>
+    <string name="hue_bridge">桥接器</string>
+    <string name="hue_bridge_name">桥接器名称</string>
+    <string name="hue_bridge_model">桥接器型号</string>
+    <string name="hue_bridge_id">桥接器 ID</string>
+    <string name="hue_bridge_software">软件版本</string>
+    <string name="hue_bridge_zigbee">Zigbee 频道</string>
+    <string name="hue_bridge_dhcp">DHCP</string>
+    <string name="hue_bridge_time_zone">时区</string>
+    <string name="hue_users">用户</string>
+    <string name="hue_controls">控制</string>
+    <string name="hue_lights">灯光</string>
+    <string name="hue_room">Hue 房间</string>
+    <string name="hue_scene_shortcut">Hue 场景</string>
+
+    <string name="tasmota_empty_list">尚未添加命令</string>
+    <string name="tasmota_empty_list_summary">在下面添加命令</string>
+    <string name="tasmota_add_command">添加命令到列表</string>
+    <string name="tasmota_add_command_summary">向您的列表添加新命令</string>
+    <string name="tasmota_add_command_dialog_title">标题</string>
+    <string name="tasmota_add_command_dialog_title_empty">命令</string>
+    <string name="tasmota_delete_command">您确定要删除此条目吗？</string>
+    <string name="tasmota_execute_once">执行命令</string>
+    <string name="tasmota_execute_once_summary">执行一次命令而不将其添加到列表</string>
+    <string name="tasmota_open_ui">前往 Tasmota 界面</string>
+    <string name="tasmota_open_ui_summary">Opens the Tasmota UI in a browser</string>
+
+    <string name="shelly_humidity_sensor_summary">当前湿度</string>
+    <string name="shelly_powermeter_summary">当前功耗</string>
+    <string name="shelly_powermeter_current">电流</string>
+    <string name="shelly_powermeter_voltage">电压</string>
+    <string name="shelly_powermeter_energy">电能</string>
+    <string name="shelly_powermeter_return_energy">返回电能</string>
+    <string name="shelly_switch_title">开关 %1$d</string>
+    <string name="shelly_temperature_sensor_summary">当前温度</string>
+    <string name="shelly_wifi">WiFi</string>
+    <string name="shelly_mqtt">MQTT</string>
+    <string name="shelly_cloud">云</string>
+    <string name="shelly_uptime">运行时间</string>
+    <string name="shelly_storage">已用存储</string>
+    <string name="shelly_ram">已用内存</string>
+    <string name="shelly_update">可用更新</string>
+
+    <string name="input_title">请输入内容</string>
+    <string name="input_hint">输入</string>
+
+    <string name="webView">网页视图</string>
+    <string name="webView_open">在浏览器中打开</string>
+    <string name="webView_error">加载网站失败</string>
+    <string name="webView_error_summary">请检查您的网络连接或稍后再试</string>
+    <string name="webView_authentication">身份验证</string>
+    <string name="webView_ssl_error">不受信任的证书</string>
+
+    <string name="pref">设置</string>
+    <string name="pref_general">常规设置</string>
+    <string name="pref_columns">列数</string>
+    <string name="pref_columns_summary">更改主列表的列数</string>
+    <string name="pref_language">语言</string>
+    <string name="pref_language_summary">选择应用语言</string>
+    <string name="pref_language_restart">正在重新启动应用以应用语言...</string>
+    <string name="pref_devices">设备</string>
+    <string name="pref_edit">编辑设备列表</string>
+    <string name="pref_edit_summary">编辑设备列表</string>
+    <string name="pref_delete_device_question">您确定要删除此设备吗？</string>
+    <string name="pref_device_config">设备配置</string>
+    <string name="pref_add_shortcut">添加到主屏幕</string>
+    <string name="pref_add_shortcut_failed">您的系统不支持快捷方式</string>
+    <string name="pref_add">添加新设备</string>
+    <string name="pref_add_summary">添加带有地址的新设备</string>
+    <string name="pref_add_method">选择方法</string>
+    <string name="pref_add_new_device">新设备</string>
+    <string name="pref_add_id">内部 ID：%1$s</string>
+    <string name="pref_add_name">名称</string>
+    <string name="pref_add_name_example">例如：设备</string>
+    <string name="pref_add_name_empty">设备</string>
+    <string name="pref_add_address">地址</string>
+    <string name="pref_add_address_example">例如：http://127.0.0.1/</string>
+    <string name="pref_add_icon">图标</string>
+    <string name="pref_add_mode">模式</string>
+    <string name="pref_add_search">搜索兼容设备</string>
+    <string name="pref_add_search_summary">这可能需要几秒钟</string>
+    <string name="pref_add_dialog">添加设备</string>
+    <string name="pref_add_dialog_message">您要将 &#8220;%1$s&#8221; 添加到您的设备吗？</string>
+    <string name="pref_controls_auth">需要设备解锁才能进行控制</string>
+    <string name="pref_controls_auth_summary">需要解锁设备才能使用电源菜单控制</string>
+    <string name="pref_advanced">高级设置</string>
+    <string name="pref_reset">删除所有设备</string>
+    <string name="pref_reset_summary">这将删除您的所有设备</string>
+    <string name="pref_reset_question">您确定要删除所有设备吗？此操作无法撤销！</string>
+    <string name="pref_reset_toast">已删除所有设备</string>
+    <string name="pref_safety_checks">阻止潜在的不安全请求</string>
+    <string name="pref_safety_checks_summary">执行基本安全检查\n警告：关闭此功能可能会将连接数据泄露给攻击者！</string>
+    <string name="pref_info">信息</string>
+    <string name="pref_info_wiki">维基</string>
+    <string name="pref_info_wiki_summary">文档和帮助</string>
+    <string name="pref_info_header">标题背景</string>
+    <string name="pref_info_header_summary">标题背景由 Alberto Castillo Q. 在 Unsplash 上提供</string>
+    <string name="pref_device_router">路由器</string>
+    <string name="placeholder">加载中</string>
+
+    <string name="security_username">用户名</string>
+    <string name="security_password">密码</string>
+
+    <string name="device_config_direct_view">随主列表加载设备</string>
+    <string name="device_config_hide">从主列表隐藏设备</string>
+    <string name="device_config_hidden">已隐藏</string>
+    <string name="device_config_info">设备信息</string>
+    <string name="device_config_info_status">状态</string>
+
+    <string name="str_cancel">取消</string>
+    <string name="str_edit">编辑</string>
+    <string name="str_delete">删除</string>
+    <string name="str_show">显示</string>
+    <string name="str_done">完成</string>
+    <string name="str_add">添加</string>
+    <string name="str_send">发送</string>
+    <string name="str_on">开</string>
+    <string name="str_off">关</string>
+    <string name="str_yes">是</string>
+    <string name="str_no">否</string>
+    <string name="str_unreachable">无法访问</string>
+
+    <string name="about">关于</string>
+    <string name="about_summary">关于本应用</string>
+    <string name="about_app_version">应用版本</string>
+    <string name="about_privacy">外部内容</string>
+    <string name="about_privacy_desc">外部内容将从 GitHub 加载。阅读他们的隐私政策以获取更多信息。</string>
+    <string name="about_privacy_policy">隐私政策</string>
+    <string name="about_contributors">贡献者</string>
+    <string name="about_contributors_desc">贡献者列表</string>
+    <string name="about_general">常规</string>
+    <string name="about_github">GitHub 仓库</string>
+    <string name="about_license">许可证</string>
+    <string name="about_icons">图标</string>
+    <string name="about_icons_desc">图标由 Icons8 和 Google 提供</string>
+    <string name="about_libraries">库</string>
+    <string name="about_libraries_desc">所有使用的库列表</string>
+
+    <string-array name="pref_columns_array">
+        <item>自动</item>
+        <item>一</item>
+        <item>二</item>
+        <item>三</item>
+        <item>四</item>
+    </string-array>
+    <string-array name="pref_add_method_array">
+        <item>通过地址添加设备</item>
+        <item>搜索兼容设备（实验性）</item>
+    </string-array>
+    <string-array name="pref_language_array">
+        <item>系统默认</item>
+        <item>English</item>
+        <item>العربية</item>
+        <item>Български</item>
+        <item>Čeština</item>
+        <item>Dansk</item>
+        <item>Deutsch</item>
+        <item>Ελληνικά</item>
+        <item>Eesti</item>
+        <item>Español</item>
+        <item>Suomi</item>
+        <item>Français</item>
+        <item>Magyar</item>
+        <item>Italiano</item>
+        <item>日本語</item>
+        <item>한국어</item>
+        <item>Lietuvių</item>
+        <item>Latviešu</item>
+        <item>Nederlands</item>
+        <item>Polski</item>
+        <item>Português</item>
+        <item>Română</item>
+        <item>Русский</item>
+        <item>Svenska</item>
+        <item>Türkçe</item>
+        <item>Tiếng Việt</item>
+        <item>简体中文</item>
+        <item>繁體中文</item>
+    </string-array>
+    <string-array name="pref_language_array_values" translatable="false">
+        <item></item>
+        <item>en</item>
+        <item>ar</item>
+        <item>bg</item>
+        <item>cs</item>
+        <item>da</item>
+        <item>de</item>
+        <item>el</item>
+        <item>et</item>
+        <item>es</item>
+        <item>fi</item>
+        <item>fr</item>
+        <item>hu</item>
+        <item>it</item>
+        <item>ja</item>
+        <item>ko</item>
+        <item>lt</item>
+        <item>lv</item>
+        <item>nl</item>
+        <item>pl</item>
+        <item>pt</item>
+        <item>ro</item>
+        <item>ru</item>
+        <item>sv</item>
+        <item>tr</item>
+        <item>vi</item>
+        <item>zh-rCN</item>
+        <item>zh-rTW</item>
+    </string-array>
+</resources>

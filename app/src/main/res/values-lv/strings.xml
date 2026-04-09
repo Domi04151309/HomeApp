@@ -1,0 +1,245 @@
+<resources>
+    <string name="app_name">Home</string>
+    <string name="app_description">Maza viedās mājas lietotne Philips Hue, Arduino un citām ierīcēm</string>
+
+    <string name="main_no_devices">Nav atrasta neviena ierīce</string>
+    <string name="main_no_devices_summary">Pievienojiet jaunu ierīci iestatījumos</string>
+    <string name="main_device_nonexistent">Ierīce neeksistē jūsu sarakstā</string>
+    <string name="main_tap_to_connect">Pieskarieties, lai savienotu</string>
+    <string name="main_connecting">Savienojas</string>
+    <string name="main_network_not_secure">Savienojums nav drošs</string>
+    <string name="main_unknown_mode">Ierīce izmanto nezināmu režīmu</string>
+    <string name="main_device_unavailable">Ierīce pašlaik nav pieejama</string>
+    <string name="main_parse_error">Atbilde neatbilst prasībām</string>
+    <string name="main_client_error">Ierīce neatbildēja</string>
+    <string name="main_execution_completed">Izpilde veiksmīgi pabeigta</string>
+
+    <string name="main_device_icon">Ierīces ikona</string>
+    <string name="main_device_name">Jūsu ierīces</string>
+
+    <string name="err">Kaut kas nogāja greizi</string>
+    <string name="err_wrong_format">Nepareizs formāts</string>
+    <string name="err_missing_name">Lūdzu, ievadiet nosaukumu</string>
+    <string name="err_missing_name_summary">Nosaukums ir svarīgs, lai jūs varētu atpazīt ierakstu vēlāk</string>
+    <string name="err_missing_address">Lūdzu, ievadiet adresi</string>
+    <string name="err_missing_address_summary">Adrese ir svarīga, jo tā ļauj lietotnei sasniegt ierīci</string>
+
+    <string name="hue_connect">Savienoties ar jūsu tiltu</string>
+    <string name="hue_press_button">Lūdzu, nospiediet pogu uz tilta, lai turpinātu.</string>
+    <string name="hue_tap">Pieskarieties, lai izvēlētos</string>
+    <string name="hue_brightness">Spilgtums</string>
+    <string name="hue_color_temperature">Krāsas temperatūra</string>
+    <string name="hue_hue_sat">Krāsu niansēšana un piesātinājums</string>
+    <string name="hue_scene">Aina</string>
+    <string name="hue_add_scene">Pievienot ainu</string>
+    <string name="hue_new_scene">Jauna aina</string>
+    <string name="hue_delete_scene">Vai esat pārliecināts, ka vēlaties dzēst šo ainu?</string>
+    <string name="hue_bridge">Tilts</string>
+    <string name="hue_bridge_name">Tilta nosaukums</string>
+    <string name="hue_bridge_model">Tilta modelis</string>
+    <string name="hue_bridge_id">Tilta ID</string>
+    <string name="hue_bridge_software">Programmatūras versija</string>
+    <string name="hue_bridge_zigbee">Zigbee kanāls</string>
+    <string name="hue_bridge_dhcp">DHCP</string>
+    <string name="hue_bridge_time_zone">Laika josla</string>
+    <string name="hue_users">Lietotāji</string>
+    <string name="hue_controls">Vadība</string>
+    <string name="hue_lights">Gaismas</string>
+    <string name="hue_room">Hue istaba</string>
+    <string name="hue_scene_shortcut">Hue aina</string>
+
+    <string name="tasmota_empty_list">Vēl nav pievienota neviena komanda</string>
+    <string name="tasmota_empty_list_summary">Pievienojiet komandas zemāk</string>
+    <string name="tasmota_add_command">Pievienot komandu sarakstam</string>
+    <string name="tasmota_add_command_summary">Pievienot jaunu komandu jūsu sarakstam</string>
+    <string name="tasmota_add_command_dialog_title">Nosaukums</string>
+    <string name="tasmota_add_command_dialog_title_empty">Komanda</string>
+    <string name="tasmota_delete_command">Vai esat pārliecināts, ka vēlaties dzēst šo ierakstu?</string>
+    <string name="tasmota_execute_once">Izpildīt komandu</string>
+    <string name="tasmota_execute_once_summary">Izpildīt komandu vienu reizi, nepievienojot to sarakstam</string>
+    <string name="tasmota_open_ui">Doties uz Tasmota UI</string>
+    <string name="tasmota_open_ui_summary">Opens the Tasmota UI in a browser</string>
+
+    <string name="shelly_humidity_sensor_summary">Pašreizējais mitrums</string>
+    <string name="shelly_powermeter_summary">Pašreizējais elektroenerģijas patēriņš</string>
+    <string name="shelly_powermeter_current">Strāva</string>
+    <string name="shelly_powermeter_voltage">Spriegums</string>
+    <string name="shelly_powermeter_energy">Enerģija</string>
+    <string name="shelly_powermeter_return_energy">Atgrieztā enerģija</string>
+    <string name="shelly_switch_title">Slēdzis %1$d</string>
+    <string name="shelly_temperature_sensor_summary">Pašreizējā temperatūra</string>
+    <string name="shelly_wifi">WiFi</string>
+    <string name="shelly_mqtt">MQTT</string>
+    <string name="shelly_cloud">Mākonis</string>
+    <string name="shelly_uptime">Darba laiks</string>
+    <string name="shelly_storage">Izmantota krātuve</string>
+    <string name="shelly_ram">Izmantota RAM</string>
+    <string name="shelly_update">Pieejami atjauninājumi</string>
+
+    <string name="input_title">Lūdzu, ievadiet kaut ko</string>
+    <string name="input_hint">Ievade</string>
+
+    <string name="webView">Tīkla skats</string>
+    <string name="webView_open">Atvērt pārlūkprogrammā</string>
+    <string name="webView_error">Tīmekļa vietnes ielāde neizdevās</string>
+    <string name="webView_error_summary">Lūdzu, pārbaudiet savu tīkla savienojumu vai mēģiniet vēlāk</string>
+    <string name="webView_authentication">Autentifikācija</string>
+    <string name="webView_ssl_error">Neuzticams sertifikāts</string>
+
+    <string name="pref">Iestatījumi</string>
+    <string name="pref_general">Vispārīgie iestatījumi</string>
+    <string name="pref_columns">Kolonnu skaits</string>
+    <string name="pref_columns_summary">Maina galvenā saraksta kolonnu skaitu</string>
+    <string name="pref_language">Valoda</string>
+    <string name="pref_language_summary">Izvēlieties lietotnes valodu</string>
+    <string name="pref_language_restart">Lietotnes pārstartēšana, lai piemērotu valodu...</string>
+    <string name="pref_devices">Ierīces</string>
+    <string name="pref_edit">Rediģēt ierīču sarakstu</string>
+    <string name="pref_edit_summary">Rediģēt ierīču sarakstu</string>
+    <string name="pref_delete_device_question">Vai esat pārliecināts, ka vēlaties dzēst šo ierīci?</string>
+    <string name="pref_device_config">Ierīces konfigurācija</string>
+    <string name="pref_add_shortcut">Pievienot sākuma ekrānam</string>
+    <string name="pref_add_shortcut_failed">Jūsu sistēma neatbalsta īsceļus</string>
+    <string name="pref_add">Pievienot jaunu ierīci</string>
+    <string name="pref_add_summary">Pievienot jaunu ierīci ar tās adresi</string>
+    <string name="pref_add_method">Izvēlēties metodi</string>
+    <string name="pref_add_new_device">Jauna ierīce</string>
+    <string name="pref_add_id">Iekšējais ID: %1$s</string>
+    <string name="pref_add_name">Nosaukums</string>
+    <string name="pref_add_name_example">piem., Ierīce</string>
+    <string name="pref_add_name_empty">Ierīce</string>
+    <string name="pref_add_address">Adrese</string>
+    <string name="pref_add_address_example">piem., http://127.0.0.1/</string>
+    <string name="pref_add_icon">Ikona</string>
+    <string name="pref_add_mode">Režīms</string>
+    <string name="pref_add_search">Meklē savietojamas ierīces</string>
+    <string name="pref_add_search_summary">Tas var prasīt dažas sekundes</string>
+    <string name="pref_add_dialog">Pievienot ierīci</string>
+    <string name="pref_add_dialog_message">Vai vēlaties pievienot &#8220;%1$s&#8221; savām ierīcēm?</string>
+    <string name="pref_controls_auth">Pieprasīt ierīces atbloķēšanu vadībai</string>
+    <string name="pref_controls_auth_summary">Pieprasīt, lai ierīce būtu atbloķēta enerģijas izvēlnes vadībai</string>
+    <string name="pref_advanced">Uzlaboti iestatījumi</string>
+    <string name="pref_reset">Dzēst visas ierīces</string>
+    <string name="pref_reset_summary">Tas izdzēsīs visas jūsu ierīces</string>
+    <string name="pref_reset_question">Vai esat pārliecināts, ka vēlaties dzēst visas savas ierīces? To nevar atsaukt!</string>
+    <string name="pref_reset_toast">Visas ierīces izdzēstas</string>
+    <string name="pref_safety_checks">Bloķēt potenciāli nedrošus pieprasījumus</string>
+    <string name="pref_safety_checks_summary">Veikt pamata drošības pārbaudes\nBrīdinājums: Šīs izslēgšana var nopludināt savienojuma datus uzbrucējiem!</string>
+    <string name="pref_info">Informācija</string>
+    <string name="pref_info_wiki">Viki</string>
+    <string name="pref_info_wiki_summary">Dokumentācija un palīdzība</string>
+    <string name="pref_info_header">Virsraksta fons</string>
+    <string name="pref_info_header_summary">Virsraksta fons no Alberto Castillo Q. vietnē Unsplash</string>
+    <string name="pref_device_router">Maršrutētājs</string>
+    <string name="placeholder">Ielāde</string>
+
+    <string name="security_username">Lietotājvārds</string>
+    <string name="security_password">Parole</string>
+
+    <string name="device_config_direct_view">Ielādēt ierīci ar galveno sarakstu</string>
+    <string name="device_config_hide">Slēpt ierīci no galvenā saraksta</string>
+    <string name="device_config_hidden">slēpta</string>
+    <string name="device_config_info">Ierīces informācija</string>
+    <string name="device_config_info_status">Statuss</string>
+
+    <string name="str_cancel">Atcelt</string>
+    <string name="str_edit">Rediģēt</string>
+    <string name="str_delete">Dzēst</string>
+    <string name="str_show">Rādīt</string>
+    <string name="str_done">Gatavs</string>
+    <string name="str_add">Pievienot</string>
+    <string name="str_send">Sūtīt</string>
+    <string name="str_on">Ieslēgts</string>
+    <string name="str_off">Izslēgts</string>
+    <string name="str_yes">Jā</string>
+    <string name="str_no">Nē</string>
+    <string name="str_unreachable">Nepieejams</string>
+
+    <string name="about">Par</string>
+    <string name="about_summary">Par lietotni</string>
+    <string name="about_app_version">Lietotnes versija</string>
+    <string name="about_privacy">Ārējs saturs</string>
+    <string name="about_privacy_desc">Ārējs saturs tiks ielādēts no GitHub. Lasiet viņu privātuma politiku, lai iegūtu plašāku informāciju.</string>
+    <string name="about_privacy_policy">Privātuma politika</string>
+    <string name="about_contributors">Līdzstrādnieki</string>
+    <string name="about_contributors_desc">Līdzstrādnieku saraksts</string>
+    <string name="about_general">Vispārīgi</string>
+    <string name="about_github">GitHub repozitorijs</string>
+    <string name="about_license">Licence</string>
+    <string name="about_icons">Ikonas</string>
+    <string name="about_icons_desc">Ikonas no Icons8 un Google</string>
+    <string name="about_libraries">Bibliotēkas</string>
+    <string name="about_libraries_desc">Visu izmantoto bibliotēku saraksts</string>
+
+    <string-array name="pref_columns_array">
+        <item>Auto</item>
+        <item>Viens</item>
+        <item>Divi</item>
+        <item>Trīs</item>
+        <item>Četri</item>
+    </string-array>
+    <string-array name="pref_add_method_array">
+        <item>Pievienot ierīci pēc adreses</item>
+        <item>Meklēt savietojamas ierīces (eksperimentāli)</item>
+    </string-array>
+    <string-array name="pref_language_array">
+        <item>Sistēmas noklusējums</item>
+        <item>English</item>
+        <item>العربية</item>
+        <item>Български</item>
+        <item>Čeština</item>
+        <item>Dansk</item>
+        <item>Deutsch</item>
+        <item>Ελληνικά</item>
+        <item>Eesti</item>
+        <item>Español</item>
+        <item>Suomi</item>
+        <item>Français</item>
+        <item>Magyar</item>
+        <item>Italiano</item>
+        <item>日本語</item>
+        <item>한국어</item>
+        <item>Lietuvių</item>
+        <item>Latviešu</item>
+        <item>Nederlands</item>
+        <item>Polski</item>
+        <item>Português</item>
+        <item>Română</item>
+        <item>Русский</item>
+        <item>Svenska</item>
+        <item>Türkçe</item>
+        <item>Tiếng Việt</item>
+        <item>简体中文</item>
+        <item>繁體中文</item>
+    </string-array>
+    <string-array name="pref_language_array_values" translatable="false">
+        <item></item>
+        <item>en</item>
+        <item>ar</item>
+        <item>bg</item>
+        <item>cs</item>
+        <item>da</item>
+        <item>de</item>
+        <item>el</item>
+        <item>et</item>
+        <item>es</item>
+        <item>fi</item>
+        <item>fr</item>
+        <item>hu</item>
+        <item>it</item>
+        <item>ja</item>
+        <item>ko</item>
+        <item>lt</item>
+        <item>lv</item>
+        <item>nl</item>
+        <item>pl</item>
+        <item>pt</item>
+        <item>ro</item>
+        <item>ru</item>
+        <item>sv</item>
+        <item>tr</item>
+        <item>vi</item>
+        <item>zh-rCN</item>
+        <item>zh-rTW</item>
+    </string-array>
+</resources>

@@ -1,80 +1,245 @@
 <resources>
     <string name="app_name">Huis</string>
+    <string name="app_description">Een kleine Smart-Home-app voor Philips Hue, Arduino en andere apparaten</string>
 
     <string name="main_no_devices">Geen apparaten aangetroffen</string>
     <string name="main_no_devices_summary">Ga naar de instellingen en voeg een apparaat toe</string>
     <string name="main_device_nonexistent">Dit apparaat staat niet op je lijst</string>
     <string name="main_tap_to_connect">Druk hier om te verbinden</string>
-    <string name="main_connecting">Bezig met verbinden…</string>
+    <string name="main_connecting">Bezig met verbinden</string>
+    <string name="main_network_not_secure">Onveilige verbinding</string>
     <string name="main_unknown_mode">Het apparaat maakt gebruik van een onbekende modus</string>
     <string name="main_device_unavailable">Het apparaat is momenteel niet beschikbaar</string>
     <string name="main_parse_error">De terugkoppeling voldoet niet aan de vereisten</string>
     <string name="main_client_error">Het apparaat stuurde geen terugkoppeling</string>
-    <string name="main_execution_completed">Uitvoeren voltooid</string>
+    <string name="main_execution_completed">Succesvol uitgevoerd</string>
 
     <string name="main_device_icon">Apparaatpictogram</string>
     <string name="main_device_name">Mijn apparaten</string>
 
     <string name="err">Er is iets misgegaan</string>
-    <string name="err_wrong_format">Onbekend formaat</string>
+    <string name="err_wrong_format">Onjuist formaat</string>
     <string name="err_missing_name">Voer een naam in</string>
-    <string name="err_missing_name_summary">Voer een naam in om het apparaat makkelijk te herkennen</string>
+    <string name="err_missing_name_summary">Een naam is belangrijk zodat je het item later weer kunt herkennen</string>
     <string name="err_missing_address">Voer een adres in</string>
-    <string name="err_missing_address_summary">Voer een adres in zodat de app verbinding kan maken met het apparaat</string>
+    <string name="err_missing_address_summary">Een adres is belangrijk zodat de app het apparaat kan bereiken</string>
 
     <string name="hue_connect">Koppel je Bridge</string>
     <string name="hue_press_button">Druk op de knop op je bridge om door te gaan.</string>
     <string name="hue_tap">Druk hier om te kiezen</string>
     <string name="hue_brightness">Helderheid</string>
     <string name="hue_color_temperature">Kleurtemperatuur</string>
-    <string name="hue_hue_sat">Tint and verzadiging</string>
+    <string name="hue_hue_sat">Tint en verzadiging</string>
+    <string name="hue_scene">Scène</string>
     <string name="hue_add_scene">Scène toevoegen</string>
     <string name="hue_new_scene">Nieuwe scène</string>
     <string name="hue_delete_scene">Weet je zeker dat je deze scène wilt verwijderen?</string>
+    <string name="hue_bridge">Bridge</string>
+    <string name="hue_bridge_name">Brugnaam</string>
+    <string name="hue_bridge_model">Brugmodel</string>
+    <string name="hue_bridge_id">Bridge-ID</string>
+    <string name="hue_bridge_software">Softwareversie</string>
+    <string name="hue_bridge_zigbee">Zigbee-kanaal</string>
+    <string name="hue_bridge_dhcp">DHCP</string>
+    <string name="hue_bridge_time_zone">Tijdzone</string>
+    <string name="hue_users">Gebruikers</string>
+    <string name="hue_controls">Bedieningen</string>
+    <string name="hue_lights">Lampen</string>
+    <string name="hue_room">Hue-ruimte</string>
+    <string name="hue_scene_shortcut">Hue-scène</string>
+
+    <string name="tasmota_empty_list">Nog geen opdrachten toegevoegd</string>
+    <string name="tasmota_empty_list_summary">Voeg opdrachten hieronder toe</string>
+    <string name="tasmota_add_command">Opdracht toevoegen</string>
+    <string name="tasmota_add_command_summary">Voegt een nieuwe opdracht toe aan de lijst</string>
+    <string name="tasmota_add_command_dialog_title">Titel</string>
+    <string name="tasmota_add_command_dialog_title_empty">Opdracht</string>
+    <string name="tasmota_delete_command">Weet je zeker dat je dit item wilt verwijderen?</string>
+    <string name="tasmota_execute_once">Opdracht uitvoeren</string>
+    <string name="tasmota_execute_once_summary">Voert een opdracht een keer uit zonder deze aan de lijst toe te voegen</string>
+    <string name="tasmota_open_ui">Ga naar de Tasmota-interface</string>
+    <string name="tasmota_open_ui_summary">Opens the Tasmota UI in a browser</string>
+
+    <string name="shelly_humidity_sensor_summary">Huidige luchtvochtigheid</string>
+    <string name="shelly_powermeter_summary">Huidig stroomverbruik</string>
+    <string name="shelly_powermeter_current">Stroomsterkte</string>
+    <string name="shelly_powermeter_voltage">Spanning</string>
+    <string name="shelly_powermeter_energy">Energie</string>
+    <string name="shelly_powermeter_return_energy">Teruggevoerde energie</string>
+    <string name="shelly_switch_title">Schakelaar %1$d</string>
+    <string name="shelly_temperature_sensor_summary">Huidige temperatuur</string>
+    <string name="shelly_wifi">Wi-Fi</string>
+    <string name="shelly_mqtt">MQTT</string>
+    <string name="shelly_cloud">Cloud</string>
+    <string name="shelly_uptime">Bedrijfstijd</string>
+    <string name="shelly_storage">Gebruikte opslag</string>
+    <string name="shelly_ram">Gebruikt RAM-geheugen</string>
+    <string name="shelly_update">Updates beschikbaar</string>
+
+    <string name="input_title">Voer iets in</string>
+    <string name="input_hint">Invoer</string>
 
     <string name="webView">Webweergave</string>
+    <string name="webView_open">Openen in browser</string>
     <string name="webView_error">De website kan niet worden geladen</string>
     <string name="webView_error_summary">Controleer je internetverbinding of probeer het later opnieuw</string>
+    <string name="webView_authentication">Authenticatie</string>
+    <string name="webView_ssl_error">Geen vertrouwd certificaat</string>
 
     <string name="pref">Instellingen</string>
-    <string name="pref_general">Algemeen</string>
+    <string name="pref_general">Algemene instellingen</string>
+    <string name="pref_columns">Aantal kolommen</string>
+    <string name="pref_columns_summary">Wijzigt het aantal kolommen van de hoofdlijst</string>
+    <string name="pref_language">Taal</string>
+    <string name="pref_language_summary">Selecteer de app-taal</string>
+    <string name="pref_language_restart">App opnieuw opstarten om taal toe te passen...</string>
     <string name="pref_devices">Apparaten</string>
     <string name="pref_edit">Apparaatlijst bewerken</string>
-    <string name="pref_edit_summary">Bewerk de lijst met apparaten</string>
+    <string name="pref_edit_summary">Bewerk je apparaatlijst</string>
     <string name="pref_delete_device_question">Weet je zeker dat je dit apparaat wilt verwijderen?</string>
+    <string name="pref_device_config">Apparaatconfiguratie</string>
     <string name="pref_add_shortcut">Toevoegen aan startscherm</string>
-    <string name="pref_add_shortcut_failed">Je systeem heeft geen ondersteuning voor snelkoppelingen</string>
+    <string name="pref_add_shortcut_failed">Snelkoppelingen worden niet ondersteund door je systeem</string>
     <string name="pref_add">Apparaat toevoegen</string>
-    <string name="pref_add_summary">Voeg een apparaat (met bijbehorend adres) toe</string>
+    <string name="pref_add_summary">Voeg een nieuw apparaat met zijn adres toe</string>
     <string name="pref_add_method">Methode kiezen</string>
     <string name="pref_add_new_device">Nieuw apparaat</string>
-    <string name="pref_add_id">Interne id: %1$s</string>
+    <string name="pref_add_id">Interne ID: %1$s</string>
     <string name="pref_add_name">Naam</string>
-    <string name="pref_add_name_example">Apparaat</string>
+    <string name="pref_add_name_example">bijv. Apparaat</string>
     <string name="pref_add_name_empty">Apparaat</string>
     <string name="pref_add_address">Adres</string>
-    <string name="pref_add_address_example">http://127.0.0.1/</string>
+    <string name="pref_add_address_example">bijv. http://127.0.0.1/</string>
     <string name="pref_add_icon">Pictogram</string>
     <string name="pref_add_mode">Modus</string>
-    <string name="pref_edit_text">Expertmodus</string>
-    <string name="pref_edit_text_summary">Pas de json-tekenreeks handmatig aan</string>
+    <string name="pref_add_search">Zoek naar compatibele apparaten</string>
+    <string name="pref_add_search_summary">Dit kan enkele seconden duren</string>
+    <string name="pref_add_dialog">Apparaat toevoegen</string>
+    <string name="pref_add_dialog_message">Wil je &#8220;%1$s&#8221; toevoegen aan je apparaten?</string>
+    <string name="pref_controls_auth">Apparaat ontgrendelen vereist voor bedieningen</string>
+    <string name="pref_controls_auth_summary">Vereisen dat het apparaat ontgrendeld is voor bediening via het power-menu</string>
+    <string name="pref_advanced">Geavanceerde instellingen</string>
+    <string name="pref_reset">Alle apparaten verwijderen</string>
+    <string name="pref_reset_summary">Verwijdert alle apparaten</string>
+    <string name="pref_reset_question">Weet je zeker dat je alle apparaten wilt verwijderen? Dit kan niet ongedaan worden gemaakt!</string>
+    <string name="pref_reset_toast">Alle apparaten verwijderd</string>
+    <string name="pref_safety_checks">Mogelijk onveilige verzoeken blokkeren</string>
+    <string name="pref_safety_checks_summary">Beveiligingscontroles uitvoeren\nWaarschuwing: bij uitschakeling kunnen aanvallers verbindingsgegevens onderscheppen!</string>
     <string name="pref_info">Informatie</string>
     <string name="pref_info_wiki">Wiki</string>
+    <string name="pref_info_wiki_summary">Documentatie en hulp</string>
     <string name="pref_info_header">Kopachtergrond</string>
-    <string name="pref_info_header_summary">De kopachtergrond is gemaakt door Alberto Castillo Q. van Unsplash</string>
+    <string name="pref_info_header_summary">Kopachtergrond van Alberto Castillo Q. op Unsplash</string>
     <string name="pref_device_router">Router</string>
     <string name="placeholder">Bezig met laden</string>
 
+    <string name="security_username">Gebruikersnaam</string>
+    <string name="security_password">Wachtwoord</string>
+
+    <string name="device_config_direct_view">Apparaat laden met hoofdlijst</string>
+    <string name="device_config_hide">Apparaat verbergen uit hoofdlijst</string>
+    <string name="device_config_hidden">verborgen</string>
+    <string name="device_config_info">Apparaatinformatie</string>
+    <string name="device_config_info_status">Status</string>
+
     <string name="str_cancel">Annuleren</string>
+    <string name="str_edit">Bewerken</string>
     <string name="str_delete">Verwijderen</string>
+    <string name="str_show">Weergeven</string>
+    <string name="str_done">Klaar</string>
+    <string name="str_add">Toevoegen</string>
+    <string name="str_send">Verzenden</string>
     <string name="str_on">Aan</string>
     <string name="str_off">Uit</string>
+    <string name="str_yes">Ja</string>
+    <string name="str_no">Nee</string>
+    <string name="str_unreachable">Niet bereikbaar</string>
 
     <string name="about">Over</string>
     <string name="about_summary">Over de app</string>
+    <string name="about_app_version">App-versie</string>
+    <string name="about_privacy">Externe inhoud</string>
+    <string name="about_privacy_desc">Externe inhoud wordt geladen van GitHub. Lees hun privacybeleid voor meer informatie.</string>
+    <string name="about_privacy_policy">Privacybeleid</string>
+    <string name="about_contributors">Bijdragers</string>
+    <string name="about_contributors_desc">Een lijst van bijdragers</string>
+    <string name="about_general">Algemeen</string>
+    <string name="about_github">GitHub-repository</string>
+    <string name="about_license">Licentie</string>
+    <string name="about_icons">Pictogrammen</string>
+    <string name="about_icons_desc">Pictogrammen van Icons8 en Google</string>
+    <string name="about_libraries">Bibliotheken</string>
+    <string name="about_libraries_desc">Een lijst van alle gebruikte bibliotheken</string>
 
+    <string-array name="pref_columns_array">
+        <item>Auto</item>
+        <item>Eén</item>
+        <item>Twee</item>
+        <item>Drie</item>
+        <item>Vier</item>
+    </string-array>
     <string-array name="pref_add_method_array">
-        <item>Apparaat toevoegen middels adres</item>
+        <item>Apparaat toevoegen met adres</item>
         <item>Zoeken naar compatibele apparaten (experimenteel)</item>
+    </string-array>
+    <string-array name="pref_language_array">
+        <item>Systeemstandaard</item>
+        <item>English</item>
+        <item>العربية</item>
+        <item>Български</item>
+        <item>Čeština</item>
+        <item>Dansk</item>
+        <item>Deutsch</item>
+        <item>Ελληνικά</item>
+        <item>Eesti</item>
+        <item>Español</item>
+        <item>Suomi</item>
+        <item>Français</item>
+        <item>Magyar</item>
+        <item>Italiano</item>
+        <item>日本語</item>
+        <item>한국어</item>
+        <item>Lietuvių</item>
+        <item>Latviešu</item>
+        <item>Nederlands</item>
+        <item>Polski</item>
+        <item>Português</item>
+        <item>Română</item>
+        <item>Русский</item>
+        <item>Svenska</item>
+        <item>Türkçe</item>
+        <item>Tiếng Việt</item>
+        <item>简体中文</item>
+        <item>繁體中文</item>
+    </string-array>
+    <string-array name="pref_language_array_values" translatable="false">
+        <item></item>
+        <item>en</item>
+        <item>ar</item>
+        <item>bg</item>
+        <item>cs</item>
+        <item>da</item>
+        <item>de</item>
+        <item>el</item>
+        <item>et</item>
+        <item>es</item>
+        <item>fi</item>
+        <item>fr</item>
+        <item>hu</item>
+        <item>it</item>
+        <item>ja</item>
+        <item>ko</item>
+        <item>lt</item>
+        <item>lv</item>
+        <item>nl</item>
+        <item>pl</item>
+        <item>pt</item>
+        <item>ro</item>
+        <item>ru</item>
+        <item>sv</item>
+        <item>tr</item>
+        <item>vi</item>
+        <item>zh-rCN</item>
+        <item>zh-rTW</item>
     </string-array>
 </resources>

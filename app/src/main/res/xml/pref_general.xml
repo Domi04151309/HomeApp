@@ -12,6 +12,15 @@
             app:title="@string/pref_columns"
             app:iconSpaceReserved="false" />
 
+        <ListPreference
+            app:defaultValue=""
+            app:entries="@array/pref_language_array"
+            app:entryValues="@array/pref_language_array_values"
+            app:key="language"
+            app:summary="@string/pref_language_summary"
+            app:title="@string/pref_language"
+            app:iconSpaceReserved="false" />
+
         <SwitchPreference
             app:defaultValue="false"
             app:key="controls_auth"
@@ -39,11 +48,15 @@
         app:title="@string/pref_advanced"
         app:iconSpaceReserved="false">
 
-        <EditTextPreference
-            app:defaultValue='{"devices":{}}'
-            app:key="devices_json"
-            app:summary="@string/pref_edit_text_summary"
-            app:title="@string/pref_edit_text"
+        <Preference
+            app:key="export_config"
+            app:summary="@string/pref_export_summary"
+            app:title="@string/pref_export"
+            app:iconSpaceReserved="false" />
+        <Preference
+            app:key="import_config"
+            app:summary="@string/pref_import_summary"
+            app:title="@string/pref_import"
             app:iconSpaceReserved="false" />
         <SwitchPreference
             app:defaultValue="true"

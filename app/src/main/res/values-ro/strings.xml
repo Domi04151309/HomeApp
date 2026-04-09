@@ -1,0 +1,245 @@
+<resources>
+    <string name="app_name">Acasă</string>
+    <string name="app_description">O mică aplicație pentru casă inteligentă pentru Philips Hue, Arduino și alte dispozitive</string>
+
+    <string name="main_no_devices">Niciun dispozitiv găsit</string>
+    <string name="main_no_devices_summary">Adăugați un nou dispozitiv în setări</string>
+    <string name="main_device_nonexistent">Dispozitivul nu există în lista dvs.</string>
+    <string name="main_tap_to_connect">Atingeți pentru a vă conecta</string>
+    <string name="main_connecting">Se conectează</string>
+    <string name="main_network_not_secure">Conexiunea nu este securizată</string>
+    <string name="main_unknown_mode">Dispozitivul utilizează un mod necunoscut</string>
+    <string name="main_device_unavailable">Dispozitivul este momentan indisponibil</string>
+    <string name="main_parse_error">Răspunsul nu îndeplinește cerințele</string>
+    <string name="main_client_error">Dispozitivul nu a răspuns</string>
+    <string name="main_execution_completed">Executarea s-a finalizat cu succes</string>
+
+    <string name="main_device_icon">Pictogramă dispozitiv</string>
+    <string name="main_device_name">Dispozitivele dvs.</string>
+
+    <string name="err">Ceva nu a funcționat corect</string>
+    <string name="err_wrong_format">Format greșit</string>
+    <string name="err_missing_name">Vă rugăm să introduceți un nume</string>
+    <string name="err_missing_name_summary">Numele este important pentru a putea recunoaște intrarea mai târziu</string>
+    <string name="err_missing_address">Vă rugăm să introduceți o adresă</string>
+    <string name="err_missing_address_summary">Adresa este importantă deoarece permite aplicației să ajungă la dispozitiv</string>
+
+    <string name="hue_connect">Conectați-vă la Bridge</string>
+    <string name="hue_press_button">Vă rugăm să apăsați butonul de pe bridge pentru a continua.</string>
+    <string name="hue_tap">Atingeți pentru a selecta</string>
+    <string name="hue_brightness">Luminozitate</string>
+    <string name="hue_color_temperature">Temperatură de culoare</string>
+    <string name="hue_hue_sat">Nuanță și saturație</string>
+    <string name="hue_scene">Scenă</string>
+    <string name="hue_add_scene">Adăugare scenă</string>
+    <string name="hue_new_scene">Scenă nouă</string>
+    <string name="hue_delete_scene">Sigur doriți să ștergeți această scenă?</string>
+    <string name="hue_bridge">Bridge</string>
+    <string name="hue_bridge_name">Nume Bridge</string>
+    <string name="hue_bridge_model">Model Bridge</string>
+    <string name="hue_bridge_id">ID Bridge</string>
+    <string name="hue_bridge_software">Versiune software</string>
+    <string name="hue_bridge_zigbee">Canal Zigbee</string>
+    <string name="hue_bridge_dhcp">DHCP</string>
+    <string name="hue_bridge_time_zone">Fus orar</string>
+    <string name="hue_users">Utilizatori</string>
+    <string name="hue_controls">Controale</string>
+    <string name="hue_lights">Lumini</string>
+    <string name="hue_room">Cameră Hue</string>
+    <string name="hue_scene_shortcut">Scenă Hue</string>
+
+    <string name="tasmota_empty_list">Nicio comandă adăugată încă</string>
+    <string name="tasmota_empty_list_summary">Adăugați comenzi mai jos</string>
+    <string name="tasmota_add_command">Adăugați comandă la listă</string>
+    <string name="tasmota_add_command_summary">Adăugați o comandă nouă la lista dvs.</string>
+    <string name="tasmota_add_command_dialog_title">Titlu</string>
+    <string name="tasmota_add_command_dialog_title_empty">Comandă</string>
+    <string name="tasmota_delete_command">Sigur doriți să ștergeți această intrare?</string>
+    <string name="tasmota_execute_once">Executare comandă</string>
+    <string name="tasmota_execute_once_summary">Executați comanda o dată fără a o adăuga la listă</string>
+    <string name="tasmota_open_ui">Mergeți la interfața Tasmota</string>
+    <string name="tasmota_open_ui_summary">Opens the Tasmota UI in a browser</string>
+
+    <string name="shelly_humidity_sensor_summary">Umiditate curentă</string>
+    <string name="shelly_powermeter_summary">Consum de energie curent</string>
+    <string name="shelly_powermeter_current">Curent</string>
+    <string name="shelly_powermeter_voltage">Tensiune</string>
+    <string name="shelly_powermeter_energy">Energie</string>
+    <string name="shelly_powermeter_return_energy">Energie returnată</string>
+    <string name="shelly_switch_title">Întrerupător %1$d</string>
+    <string name="shelly_temperature_sensor_summary">Temperatură curentă</string>
+    <string name="shelly_wifi">WiFi</string>
+    <string name="shelly_mqtt">MQTT</string>
+    <string name="shelly_cloud">Cloud</string>
+    <string name="shelly_uptime">Timp de funcționare</string>
+    <string name="shelly_storage">Stocare utilizată</string>
+    <string name="shelly_ram">RAM utilizată</string>
+    <string name="shelly_update">Actualizări disponibile</string>
+
+    <string name="input_title">Vă rugăm să introduceți ceva</string>
+    <string name="input_hint">Intrare</string>
+
+    <string name="webView">Vizualizare web</string>
+    <string name="webView_open">Deschideți în browser</string>
+    <string name="webView_error">Încărcarea site-ului web a eșuat</string>
+    <string name="webView_error_summary">Vă rugăm să verificați conexiunea la rețea sau să încercați din nou mai târziu</string>
+    <string name="webView_authentication">Autentificare</string>
+    <string name="webView_ssl_error">Certificat nesigur</string>
+
+    <string name="pref">Setări</string>
+    <string name="pref_general">Setări generale</string>
+    <string name="pref_columns">Număr de coloane</string>
+    <string name="pref_columns_summary">Modifică numărul de coloane al listei principale</string>
+    <string name="pref_language">Limbă</string>
+    <string name="pref_language_summary">Selectaţi limba aplicaţiei</string>
+    <string name="pref_language_restart">Se repornește aplicația pentru a aplica limba...</string>
+    <string name="pref_devices">Dispozitive</string>
+    <string name="pref_edit">Editare listă dispozitive</string>
+    <string name="pref_edit_summary">Editați lista de dispozitive</string>
+    <string name="pref_delete_device_question">Sigur doriți să ștergeți acest dispozitiv?</string>
+    <string name="pref_device_config">Configurare dispozitiv</string>
+    <string name="pref_add_shortcut">Adăugați pe ecranul principal</string>
+    <string name="pref_add_shortcut_failed">Comenzile rapide nu sunt acceptate de sistemul dvs.</string>
+    <string name="pref_add">Adăugați un dispozitiv nou</string>
+    <string name="pref_add_summary">Adăugați un nou dispozitiv cu adresa sa</string>
+    <string name="pref_add_method">Selectați metoda</string>
+    <string name="pref_add_new_device">Dispozitiv nou</string>
+    <string name="pref_add_id">ID intern: %1$s</string>
+    <string name="pref_add_name">Nume</string>
+    <string name="pref_add_name_example">de ex., Dispozitiv</string>
+    <string name="pref_add_name_empty">Dispozitiv</string>
+    <string name="pref_add_address">Adresă</string>
+    <string name="pref_add_address_example">de ex., http://127.0.0.1/</string>
+    <string name="pref_add_icon">Pictogramă</string>
+    <string name="pref_add_mode">Mod</string>
+    <string name="pref_add_search">Se caută dispozitive compatibile</string>
+    <string name="pref_add_search_summary">Acest lucru poate dura câteva secunde</string>
+    <string name="pref_add_dialog">Adăugare dispozitiv</string>
+    <string name="pref_add_dialog_message">Doriți să adăugați &#8220;%1$s&#8221; la dispozitivele dvs.?</string>
+    <string name="pref_controls_auth">Solicitați deblocarea dispozitivului pentru controale</string>
+    <string name="pref_controls_auth_summary">Solicitați ca dispozitivul să fie deblocat pentru controalele din meniul de alimentare</string>
+    <string name="pref_advanced">Setări avansate</string>
+    <string name="pref_reset">Ștergeți toate dispozitivele</string>
+    <string name="pref_reset_summary">Aceasta șterge toate dispozitivele dvs.</string>
+    <string name="pref_reset_question">Sigur doriți să ștergeți toate dispozitivele dvs.? Acest lucru nu poate fi anulat!</string>
+    <string name="pref_reset_toast">Toate dispozitivele au fost șterse</string>
+    <string name="pref_safety_checks">Blocați cererile potențial nesigure</string>
+    <string name="pref_safety_checks_summary">Efectuați verificări de securitate de bază\nAvertisment: Dezactivarea acestei opțiuni poate duce la scurgerea datelor de conexiune către atacatori!</string>
+    <string name="pref_info">Informații</string>
+    <string name="pref_info_wiki">Wiki</string>
+    <string name="pref_info_wiki_summary">Documentație și ajutor</string>
+    <string name="pref_info_header">Fundal antet</string>
+    <string name="pref_info_header_summary">Fundal antet de Alberto Castillo Q. pe Unsplash</string>
+    <string name="pref_device_router">Router</string>
+    <string name="placeholder">Se încarcă</string>
+
+    <string name="security_username">Nume de utilizator</string>
+    <string name="security_password">Parolă</string>
+
+    <string name="device_config_direct_view">Încărcați dispozitivul cu lista principală</string>
+    <string name="device_config_hide">Ascundeți dispozitivul din lista principală</string>
+    <string name="device_config_hidden">ascuns</string>
+    <string name="device_config_info">Informații dispozitiv</string>
+    <string name="device_config_info_status">Stare</string>
+
+    <string name="str_cancel">Anulare</string>
+    <string name="str_edit">Editare</string>
+    <string name="str_delete">Ștergere</string>
+    <string name="str_show">Afișare</string>
+    <string name="str_done">Gata</string>
+    <string name="str_add">Adăugare</string>
+    <string name="str_send">Trimite</string>
+    <string name="str_on">Pornit</string>
+    <string name="str_off">Oprit</string>
+    <string name="str_yes">Da</string>
+    <string name="str_no">Nu</string>
+    <string name="str_unreachable">Inaccesibil</string>
+
+    <string name="about">Despre</string>
+    <string name="about_summary">Despre aplicație</string>
+    <string name="about_app_version">Versiune aplicație</string>
+    <string name="about_privacy">Conținut extern</string>
+    <string name="about_privacy_desc">Conținutul extern va fi încărcat de pe GitHub. Citiți politica lor de confidențialitate pentru mai multe informații.</string>
+    <string name="about_privacy_policy">Politica de confidențialitate</string>
+    <string name="about_contributors">Contribuitori</string>
+    <string name="about_contributors_desc">O listă a contribuitorilor</string>
+    <string name="about_general">General</string>
+    <string name="about_github">Repository GitHub</string>
+    <string name="about_license">Licență</string>
+    <string name="about_icons">Pictograme</string>
+    <string name="about_icons_desc">Pictograme de Icons8 și Google</string>
+    <string name="about_libraries">Biblioteci</string>
+    <string name="about_libraries_desc">O listă a tuturor bibliotecilor utilizate</string>
+
+    <string-array name="pref_columns_array">
+        <item>Automat</item>
+        <item>Unu</item>
+        <item>Doi</item>
+        <item>Trei</item>
+        <item>Patru</item>
+    </string-array>
+    <string-array name="pref_add_method_array">
+        <item>Adăugați dispozitiv după adresă</item>
+        <item>Căutați dispozitive compatibile (experimental)</item>
+    </string-array>
+    <string-array name="pref_language_array">
+        <item>Implicită sistemului</item>
+        <item>English</item>
+        <item>العربية</item>
+        <item>Български</item>
+        <item>Čeština</item>
+        <item>Dansk</item>
+        <item>Deutsch</item>
+        <item>Ελληνικά</item>
+        <item>Eesti</item>
+        <item>Español</item>
+        <item>Suomi</item>
+        <item>Français</item>
+        <item>Magyar</item>
+        <item>Italiano</item>
+        <item>日本語</item>
+        <item>한국어</item>
+        <item>Lietuvių</item>
+        <item>Latviešu</item>
+        <item>Nederlands</item>
+        <item>Polski</item>
+        <item>Português</item>
+        <item>Română</item>
+        <item>Русский</item>
+        <item>Svenska</item>
+        <item>Türkçe</item>
+        <item>Tiếng Việt</item>
+        <item>简体中文</item>
+        <item>繁體中文</item>
+    </string-array>
+    <string-array name="pref_language_array_values" translatable="false">
+        <item></item>
+        <item>en</item>
+        <item>ar</item>
+        <item>bg</item>
+        <item>cs</item>
+        <item>da</item>
+        <item>de</item>
+        <item>el</item>
+        <item>et</item>
+        <item>es</item>
+        <item>fi</item>
+        <item>fr</item>
+        <item>hu</item>
+        <item>it</item>
+        <item>ja</item>
+        <item>ko</item>
+        <item>lt</item>
+        <item>lv</item>
+        <item>nl</item>
+        <item>pl</item>
+        <item>pt</item>
+        <item>ro</item>
+        <item>ru</item>
+        <item>sv</item>
+        <item>tr</item>
+        <item>vi</item>
+        <item>zh-rCN</item>
+        <item>zh-rTW</item>
+    </string-array>
+</resources>

@@ -32,7 +32,9 @@ class HueConnectActivity : BaseActivity() {
         val jsonRequestObject = JSONObject("""{ "devicetype": "Home App#${android.os.Build.PRODUCT}" }""")
         requestToRegisterUser =
             CustomJsonArrayRequest(
-                Request.Method.POST, Devices(this).getDeviceById(deviceId).address + "api", jsonRequestObject,
+                Request.Method.POST,
+                Devices(this).getDeviceById(deviceId).address + "api",
+                jsonRequestObject,
                 { response ->
                     val responseObject = response.getJSONObject(0)
                     if (responseObject.has("success") && !success) {

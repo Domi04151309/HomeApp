@@ -103,6 +103,7 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
 
                     <AutoCompleteTextView
+                        android:id="@+id/iconSpinnerAutoComplete"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@null"
@@ -119,6 +120,24 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
 
                     <AutoCompleteTextView
+                        android:id="@+id/modeSpinnerAutoComplete"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@null"
+                        android:focusable="false"
+                        android:inputType="none|textNoSuggestions" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/roomSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dialog_item_margin"
+                    android:hint="@string/device_config_room"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/roomSpinnerAutoComplete"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@null"
@@ -214,6 +233,23 @@
                 android:orientation="vertical"
                 android:paddingHorizontal="?dialogPreferredPadding"
                 android:paddingVertical="@dimen/list_padding_vertical">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/editRoomSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dialog_item_margin"
+                    android:hint="@string/device_config_room"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/editRoomSpinnerAutoComplete"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@null"
+                        android:focusable="false"
+                        android:inputType="none|textNoSuggestions" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
                     style="@style/Widget.Material3.Button.TextButton"

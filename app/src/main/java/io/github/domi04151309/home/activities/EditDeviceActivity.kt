@@ -29,17 +29,21 @@ import io.github.domi04151309.home.data.DeviceItem
 import io.github.domi04151309.home.helpers.DeviceSecrets
 import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.helpers.Global
+import io.github.domi04151309.home.helpers.Rooms
 
 class EditDeviceActivity : BaseActivity() {
     private lateinit var devices: Devices
+    private lateinit var rooms: Rooms
     private lateinit var deviceId: String
-    private lateinit var deviceSecrets: DeviceSecrets
+    private var deviceSecrets: DeviceSecrets? = null
     private lateinit var deviceIcon: ImageView
     private lateinit var nameText: TextView
     private lateinit var nameBox: TextInputLayout
     private lateinit var addressBox: TextInputLayout
     private lateinit var iconSpinner: AutoCompleteTextView
     private lateinit var modeSpinner: AutoCompleteTextView
+    private lateinit var roomSpinner: AutoCompleteTextView
+    private lateinit var editRoomSpinner: AutoCompleteTextView
     private lateinit var specialDivider: View
     private lateinit var specialSection: LinearLayout
     private lateinit var usernameBox: TextInputLayout
@@ -48,18 +52,29 @@ class EditDeviceActivity : BaseActivity() {
     private lateinit var configDirectView: CheckBox
     private lateinit var configButton: Button
     private lateinit var infoButton: Button
+    private var selectedRoomId: String = ""
+    private var editSelectedRoomId: String = ""
+    private var editing: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_device)
+        try {
+            setContentView(R.layout.activity_edit_device)
+        } catch (e: IllegalStateException) {
+            Log.e(TAG, "Error setting content view", e)
+            Toast.makeText(this, getString(R.string.err_loading_ui, e.message), Toast.LENGTH_LONG).show()
+            finish()
+            return
+        }
 
         val fab = findViewById<FloatingActionButton>(R.id.fab)
         applyBottomInsetPadding(findViewById(R.id.scrollView))
         applyBottomInsetMargin(fab)
 
         devices = Devices(this)
+        rooms = Rooms(this)
         var deviceId = intent.getStringExtra("deviceId")
-        val editing =
+        editing =
             if (deviceId == null) {
                 deviceId = devices.generateNewId()
                 false
@@ -68,14 +83,33 @@ class EditDeviceActivity : BaseActivity() {
             }
         this.deviceId = deviceId
 
-        deviceSecrets = DeviceSecrets(this, deviceId)
+        try {
+            deviceSecrets = DeviceSecrets(this, deviceId)
+        } catch (e: IllegalStateException) {
+            Log.e(TAG, "Error initializing DeviceSecrets", e)
+            // Continue without encrypted secrets
+        }
 
+        initializeViews()
+        setupSpinners()
+        setupRoomSpinners()
+        setupToolbarAndFab(fab)
+
+        if (editing) {
+            findViewById<TextInputLayout>(R.id.roomSpinner).visibility = View.GONE
+            onEditDevice()
+        } else {
+            onCreateDevice()
+        }
+    }
+
+    private fun initializeViews() {
         deviceIcon = findViewById(R.id.deviceIcn)
         nameText = findViewById(R.id.nameTxt)
         nameBox = findViewById(R.id.nameBox)
         addressBox = findViewById(R.id.addressBox)
-        iconSpinner = findViewById<TextInputLayout>(R.id.iconSpinner).editText as AutoCompleteTextView
-        modeSpinner = findViewById<TextInputLayout>(R.id.modeSpinner).editText as AutoCompleteTextView
+        iconSpinner = findViewById<AutoCompleteTextView>(R.id.iconSpinnerAutoComplete)
+        modeSpinner = findViewById<AutoCompleteTextView>(R.id.modeSpinnerAutoComplete)
         specialDivider = findViewById(R.id.specialDivider)
         specialSection = findViewById(R.id.specialSection)
         usernameBox = findViewById(R.id.usernameBox)
@@ -84,19 +118,13 @@ class EditDeviceActivity : BaseActivity() {
         configDirectView = findViewById(R.id.configDirectView)
         configButton = findViewById(R.id.configBtn)
         infoButton = findViewById(R.id.infoBtn)
-
         findViewById<TextView>(R.id.idTxt).text = resources.getString(R.string.pref_add_id, deviceId)
+    }
 
+    private fun setupSpinners() {
         iconSpinner.addTextChangedListener(getIconTextWatcher())
         modeSpinner.addTextChangedListener(getModeTextWatcher(editing))
         nameBox.editText?.addTextChangedListener(getNameTextWatcher())
-
-        if (editing) {
-            onEditDevice()
-        } else {
-            onCreateDevice()
-        }
-
         iconSpinner.setAdapter(IconSpinnerAdapter(resources.getStringArray(R.array.pref_icons)))
         modeSpinner.setAdapter(
             ArrayAdapter(
@@ -105,11 +133,23 @@ class EditDeviceActivity : BaseActivity() {
                 resources.getStringArray(R.array.pref_add_mode_array),
             ),
         )
+        iconSpinner.isFocusable = false
+        iconSpinner.isFocusableInTouchMode = false
+        iconSpinner.inputType = android.text.InputType.TYPE_NULL
+        modeSpinner.isFocusable = false
+        modeSpinner.isFocusableInTouchMode = false
+        modeSpinner.inputType = android.text.InputType.TYPE_NULL
+    }
 
+    private fun setupRoomSpinners() {
+        setupRoomSpinner()
+        setupEditRoomSpinner()
+    }
+
+    private fun setupToolbarAndFab(fab: FloatingActionButton) {
         fab.setOnClickListener {
             onFloatingActionButtonClicked()
         }
-
         findViewById<MaterialToolbar>(R.id.toolbar).apply {
             setNavigationIcon(R.drawable.ic_arrow_back)
             setNavigationOnClickListener {
@@ -190,10 +230,15 @@ class EditDeviceActivity : BaseActivity() {
         val device = devices.getDeviceById(deviceId)
         nameBox.editText?.setText(device.name)
         addressBox.editText?.setText(device.address)
-        iconSpinner.setText(device.iconName)
-        modeSpinner.setText(device.mode)
-        usernameBox.editText?.setText(deviceSecrets.username)
-        passwordBox.editText?.setText(deviceSecrets.password)
+        iconSpinner.setText(device.iconName, false)
+        modeSpinner.setText(device.mode, false)
+        selectedRoomId = device.roomId
+        updateRoomSpinnerSelection()
+        // Set up edit room spinner
+        editSelectedRoomId = device.roomId
+        updateEditRoomSpinnerSelection()
+        usernameBox.editText?.setText(deviceSecrets?.username ?: "")
+        passwordBox.editText?.setText(deviceSecrets?.password ?: "")
         configHide.isChecked = device.hide
         configDirectView.isChecked = device.directView
 
@@ -305,52 +350,167 @@ class EditDeviceActivity : BaseActivity() {
     }
 
     private fun onCreateDevice() {
-        iconSpinner.setText(resources.getStringArray(R.array.pref_icons)[0])
-        modeSpinner.setText(resources.getStringArray(R.array.pref_add_mode_array)[0])
+        iconSpinner.setText(resources.getStringArray(R.array.pref_icons)[0], false)
+        modeSpinner.setText(resources.getStringArray(R.array.pref_add_mode_array)[0], false)
+        selectedRoomId = ""
+        updateRoomSpinnerSelection()
         findViewById<View>(R.id.editDivider).visibility = View.GONE
         findViewById<LinearLayout>(R.id.editSection).visibility = View.GONE
     }
 
-    private fun onFloatingActionButtonClicked() {
-        val name = nameBox.editText?.text.toString()
-        if (name == "") {
-            MaterialAlertDialogBuilder(this)
-                .setTitle(R.string.err_missing_name)
-                .setMessage(R.string.err_missing_name_summary)
-                .setPositiveButton(android.R.string.ok) { _, _ -> }
-                .show()
-            return
-        } else if (addressBox.editText?.text.toString() == "") {
-            MaterialAlertDialogBuilder(this)
-                .setTitle(R.string.err_missing_address)
-                .setMessage(R.string.err_missing_address_summary)
-                .setPositiveButton(android.R.string.ok) { _, _ -> }
-                .show()
-            return
+    private fun setupRoomSpinner() {
+        roomSpinner = findViewById<AutoCompleteTextView>(R.id.roomSpinnerAutoComplete)
+        // Disable filtering for dropdown spinners to show all items
+        roomSpinner.isFocusable = false
+        roomSpinner.isFocusableInTouchMode = false
+        roomSpinner.inputType = android.text.InputType.TYPE_NULL
+        updateRoomSpinnerAdapter()
+    }
+
+    private fun updateRoomSpinnerAdapter() {
+        val roomNames = mutableListOf<String>()
+        val roomIds = mutableListOf<String>()
+
+        // Add "No room" option
+        roomNames.add(getString(R.string.device_config_room_none))
+        roomIds.add("")
+
+        // Add all rooms
+        for (i in 0 until rooms.length) {
+            val room = rooms.getRoomByIndex(i)
+            roomNames.add(room.name)
+            roomIds.add(room.id)
         }
 
-        val tempAddress =
-            if (modeSpinner.text.toString() == Global.NODE_RED) {
-                formatNodeREDAddress(addressBox.editText?.text.toString())
-            } else {
-                addressBox.editText?.text.toString()
+        val adapter =
+            ArrayAdapter(
+                this,
+                R.layout.dropdown_item,
+                roomNames,
+            )
+        roomSpinner.setAdapter(adapter)
+
+        roomSpinner.setOnItemClickListener { _, _, position, _ ->
+            if (position >= 0 && position < roomIds.size) {
+                selectedRoomId = roomIds[position]
+            }
+        }
+    }
+
+    private fun updateRoomSpinnerSelection() {
+        if (selectedRoomId.isEmpty()) {
+            roomSpinner.setText(getString(R.string.device_config_room_none), false)
+        } else {
+            val room = rooms.getRoomById(selectedRoomId)
+            roomSpinner.setText(room.name, false)
+        }
+    }
+
+    private fun setupEditRoomSpinner() {
+        editRoomSpinner = findViewById<AutoCompleteTextView>(R.id.editRoomSpinnerAutoComplete)
+        // Disable filtering for dropdown spinners to show all items
+        editRoomSpinner.isFocusable = false
+        editRoomSpinner.isFocusableInTouchMode = false
+        editRoomSpinner.inputType = android.text.InputType.TYPE_NULL
+        updateEditRoomSpinnerAdapter()
+    }
+
+    private fun updateEditRoomSpinnerAdapter() {
+        val roomNames = mutableListOf<String>()
+        val roomIds = mutableListOf<String>()
+
+        // Add "No room" option
+        roomNames.add(getString(R.string.device_config_room_none))
+        roomIds.add("")
+
+        // Add all rooms
+        for (i in 0 until rooms.length) {
+            val room = rooms.getRoomByIndex(i)
+            roomNames.add(room.name)
+            roomIds.add(room.id)
+        }
+
+        val adapter =
+            ArrayAdapter(
+                this,
+                R.layout.dropdown_item,
+                roomNames,
+            )
+        editRoomSpinner.setAdapter(adapter)
+
+        editRoomSpinner.setOnItemClickListener { _, _, position, _ ->
+            if (position >= 0 && position < roomIds.size) {
+                editSelectedRoomId = roomIds[position]
+            }
+        }
+    }
+
+    private fun updateEditRoomSpinnerSelection() {
+        if (editSelectedRoomId.isEmpty()) {
+            editRoomSpinner.setText(getString(R.string.device_config_room_none), false)
+        } else {
+            val room = rooms.getRoomById(editSelectedRoomId)
+            editRoomSpinner.setText(room.name, false)
+        }
+    }
+
+    private fun onFloatingActionButtonClicked() {
+        try {
+            val name = nameBox.editText?.text.toString()
+            if (name == "") {
+                MaterialAlertDialogBuilder(this)
+                    .setTitle(R.string.err_missing_name)
+                    .setMessage(R.string.err_missing_name_summary)
+                    .setPositiveButton(android.R.string.ok) { _, _ -> }
+                    .show()
+                return
+            } else if (addressBox.editText?.text.toString() == "") {
+                MaterialAlertDialogBuilder(this)
+                    .setTitle(R.string.err_missing_address)
+                    .setMessage(R.string.err_missing_address_summary)
+                    .setPositiveButton(android.R.string.ok) { _, _ -> }
+                    .show()
+                return
             }
 
-        val newItem =
-            DeviceItem(
-                deviceId,
-                name,
-                modeSpinner.text.toString(),
-                iconSpinner.text.toString(),
-                configHide.isChecked,
-                configDirectView.isChecked,
-            )
-        newItem.address = tempAddress
-        devices.addDevice(newItem)
-        deviceSecrets.username = usernameBox.editText?.text.toString()
-        deviceSecrets.password = passwordBox.editText?.text.toString()
-        deviceSecrets.updateDeviceSecrets()
-        finish()
+            val modeText = modeSpinner.text?.toString() ?: "Website"
+            val iconText = iconSpinner.text?.toString() ?: "Lamp"
+            // Use editSelectedRoomId when editing, selectedRoomId when creating
+            val roomId = if (editing) editSelectedRoomId else selectedRoomId
+
+            val tempAddress =
+                if (modeText == Global.NODE_RED) {
+                    formatNodeREDAddress(addressBox.editText?.text.toString())
+                } else {
+                    addressBox.editText?.text.toString()
+                }
+
+            val newItem =
+                DeviceItem(
+                    deviceId,
+                    name,
+                    modeText,
+                    iconText,
+                    configHide.isChecked,
+                    configDirectView.isChecked,
+                    roomId,
+                )
+            newItem.address = tempAddress
+            devices.addDevice(newItem)
+            try {
+                deviceSecrets?.let {
+                    it.username = usernameBox.editText?.text.toString()
+                    it.password = passwordBox.editText?.text.toString()
+                    it.updateDeviceSecrets()
+                }
+            } catch (e: IllegalStateException) {
+                Log.e(TAG, "Error saving device secrets", e)
+            }
+            finish()
+        } catch (e: IllegalStateException) {
+            Log.e(TAG, "Error saving device", e)
+            Toast.makeText(this, getString(R.string.err_saving_device, e.message), Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun formatNodeREDAddress(url: String): String {
@@ -363,6 +523,7 @@ class EditDeviceActivity : BaseActivity() {
     }
 
     companion object {
+        private const val TAG = "EditDeviceActivity"
         private val SUPPORTS_DIRECT_VIEW =
             arrayOf(
                 Global.ESP_EASY,

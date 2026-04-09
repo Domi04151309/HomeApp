@@ -68,7 +68,9 @@ class HueScenesFragment :
 
         scenesRequest =
             JsonObjectRequest(
-                Request.Method.GET, lampInterface.addressPrefix + SCENES_PATH, null,
+                Request.Method.GET,
+                lampInterface.addressPrefix + SCENES_PATH,
+                null,
                 this,
             ) { error ->
                 Toast.makeText(
