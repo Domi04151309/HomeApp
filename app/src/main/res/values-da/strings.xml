@@ -116,8 +116,6 @@
     <string name="pref_add_search_summary">Dette kan tage et par sekunder</string>
     <string name="pref_add_dialog">Tilføj enhed</string>
     <string name="pref_add_dialog_message">Vil du tilføje \&#8220;%1$s\&#8221; til dine enheder?</string>
-    <string name="pref_edit_text">Avanceret redigering</string>
-    <string name="pref_edit_text_summary">Rediger JSON-strengen selv</string>
     <string name="pref_controls_auth">Kræv enhedsoplåsning til betjening</string>
     <string name="pref_controls_auth_summary">Kræv at enheden er oplåst til betjening via strømmenuen</string>
     <string name="pref_advanced">Avancerede indstillinger</string>

@@ -116,8 +116,6 @@
     <string name="pref_add_search_summary">Это может занять несколько секунд</string>
     <string name="pref_add_dialog">Добавить устройство</string>
     <string name="pref_add_dialog_message">Хотите добавить &#8220;%1$s&#8221; в ваши устройства?</string>
-    <string name="pref_edit_text">Расширенное редактирование</string>
-    <string name="pref_edit_text_summary">Отредактируйте JSON-строку самостоятельно</string>
     <string name="pref_controls_auth">Требовать разблокировку устройства для управления</string>
     <string name="pref_controls_auth_summary">Требовать разблокировку устройства для элементов управления в меню питания</string>
     <string name="pref_advanced">Расширенные настройки</string>

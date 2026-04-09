@@ -116,8 +116,6 @@
     <string name="pref_add_search_summary">Tas var prasīt dažas sekundes</string>
     <string name="pref_add_dialog">Pievienot ierīci</string>
     <string name="pref_add_dialog_message">Vai vēlaties pievienot &#8220;%1$s&#8221; savām ierīcēm?</string>
-    <string name="pref_edit_text">Uzlabota rediģēšana</string>
-    <string name="pref_edit_text_summary">Rediģēt JSON virkni pašam</string>
     <string name="pref_controls_auth">Pieprasīt ierīces atbloķēšanu vadībai</string>
     <string name="pref_controls_auth_summary">Pieprasīt, lai ierīce būtu atbloķēta enerģijas izvēlnes vadībai</string>
     <string name="pref_advanced">Uzlaboti iestatījumi</string>

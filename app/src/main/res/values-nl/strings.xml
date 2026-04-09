@@ -116,8 +116,6 @@
     <string name="pref_add_search_summary">Dit kan enkele seconden duren</string>
     <string name="pref_add_dialog">Apparaat toevoegen</string>
     <string name="pref_add_dialog_message">Wil je &#8220;%1$s&#8221; toevoegen aan je apparaten?</string>
-    <string name="pref_edit_text">Geavanceerd bewerken</string>
-    <string name="pref_edit_text_summary">Bewerk de JSON-tekenreeks zelf</string>
     <string name="pref_controls_auth">Apparaat ontgrendelen vereist voor bedieningen</string>
     <string name="pref_controls_auth_summary">Vereisen dat het apparaat ontgrendeld is voor bediening via het power-menu</string>
     <string name="pref_advanced">Geavanceerde instellingen</string>

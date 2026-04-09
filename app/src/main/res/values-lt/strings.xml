@@ -116,8 +116,6 @@
     <string name="pref_add_search_summary">Tai gali užtrukti kelias sekundes</string>
     <string name="pref_add_dialog">Pridėti įrenginį</string>
     <string name="pref_add_dialog_message">Ar norite pridėti \u201C%1$s\u201D į savo įrenginius?</string>
-    <string name="pref_edit_text">Išplėstinė redagavimas</string>
-    <string name="pref_edit_text_summary">Redaguoti JSON eilutę patiems</string>
     <string name="pref_controls_auth">Reikalauti įrenginio atrakinimo valdikliams</string>
     <string name="pref_controls_auth_summary">Reikalauti, kad įrenginys būtų atrakintas, norint naudoti energijos meniu valdiklius</string>
     <string name="pref_advanced">Išplėstiniai nustatymai</string>

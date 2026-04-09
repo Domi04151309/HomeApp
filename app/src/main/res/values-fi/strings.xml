@@ -116,8 +116,6 @@
     <string name="pref_add_search_summary">Tämä voi kestää muutaman sekunnin</string>
     <string name="pref_add_dialog">Lisää laite</string>
     <string name="pref_add_dialog_message">Haluatko lisätä &#8220;%1$s&#8221; laitteisiisi?</string>
-    <string name="pref_edit_text">Edistynyt muokkaus</string>
-    <string name="pref_edit_text_summary">Muokkaa JSON-merkkijonoa itse</string>
     <string name="pref_controls_auth">Vaadi laitteen lukituksen avaus ohjauksille</string>
     <string name="pref_controls_auth_summary">Vaadi laitteen olevan avattu virranhallintavalikon ohjauksille</string>
     <string name="pref_advanced">Edistyneet asetukset</string>

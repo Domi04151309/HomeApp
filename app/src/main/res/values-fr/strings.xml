@@ -116,8 +116,6 @@
     <string name="pref_add_search_summary">Cela peut prendre quelques secondes</string>
     <string name="pref_add_dialog">Ajouter un appareil</string>
     <string name="pref_add_dialog_message">Voulez-vous ajouter &#8220;%1$s&#8221; à vos appareils ?</string>
-    <string name="pref_edit_text">Édition avancée</string>
-    <string name="pref_edit_text_summary">Modifiez vous-même la chaîne JSON</string>
     <string name="pref_controls_auth">Exiger le déverrouillage de l\'appareil pour les contrôles</string>
     <string name="pref_controls_auth_summary">Exiger que l\'appareil soit déverrouillé pour les contrôles du menu d\'alimentation</string>
     <string name="pref_advanced">Paramètres avancés</string>

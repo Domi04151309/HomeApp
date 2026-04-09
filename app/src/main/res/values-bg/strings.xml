@@ -116,8 +116,6 @@
     <string name="pref_add_search_summary">Това може да отнеме няколко секунди</string>
     <string name="pref_add_dialog">Добавяне на устройство</string>
     <string name="pref_add_dialog_message">Искате ли да добавите &#8220;%1$s&#8221; към вашите устройства?</string>
-    <string name="pref_edit_text">Разширено редактиране</string>
-    <string name="pref_edit_text_summary">Редактирайте JSON низа сами</string>
     <string name="pref_controls_auth">Изискване на отключване на устройство за контроли</string>
     <string name="pref_controls_auth_summary">Изисквайте устройството да бъде отключено за контроли в менюто за захранване</string>
     <string name="pref_advanced">Разширени настройки</string>
