@@ -1,9 +1,12 @@
 package io.github.domi04151309.home.activities
 
+import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.edit
 import androidx.core.net.toUri
 import androidx.preference.Preference
@@ -16,8 +19,96 @@ import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.LocaleHelper
 import io.github.domi04151309.home.helpers.P
+import io.github.domi04151309.home.helpers.Rooms
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import org.json.JSONObject
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class SettingsActivity : BaseActivity() {
+
+    private val exportLauncher = registerForActivityResult(
+        ActivityResultContracts.CreateDocument("application/json")
+    ) { uri: Uri? ->
+        if (uri != null) {
+            exportConfiguration(uri)
+        }
+    }
+
+    private val importLauncher = registerForActivityResult(
+        ActivityResultContracts.OpenDocument()
+    ) { uri: Uri? ->
+        if (uri != null) {
+            importConfiguration(uri)
+        }
+    }
+
+    private fun exportConfiguration(uri: Uri) {
+        try {
+            val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+            val devicesJson = prefs.getString("devices_json", Global.DEFAULT_JSON) ?: Global.DEFAULT_JSON
+            val roomsJson = prefs.getString("rooms_json", "{\"rooms\":{}}") ?: "{\"rooms\":{}}"
+            
+            // Create pretty printed JSON with 4-space indentation
+            val exportData = JSONObject().apply {
+                put("export_date", SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date()))
+                put("devices", JSONObject(devicesJson).optJSONObject("devices") ?: JSONObject())
+                put("rooms", JSONObject(roomsJson).optJSONObject("rooms") ?: JSONObject())
+            }.toString(4)
+
+            contentResolver.openOutputStream(uri)?.use { outputStream ->
+                OutputStreamWriter(outputStream).use { writer ->
+                    writer.write(exportData)
+                }
+            }
+            Toast.makeText(this, "Configuration exported successfully", Toast.LENGTH_LONG).show()
+        } catch (e: Exception) {
+            Toast.makeText(this, "Export failed: ${e.message}", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun importConfiguration(uri: Uri) {
+        try {
+            val jsonString = contentResolver.openInputStream(uri)?.use { inputStream ->
+                BufferedReader(InputStreamReader(inputStream)).use { reader ->
+                    reader.readText()
+                }
+            } ?: throw Exception("Could not read file")
+
+            val json = JSONObject(jsonString)
+            
+            // Validate the JSON structure
+            if (!json.has("devices") || !json.has("rooms")) {
+                throw Exception("Invalid configuration file")
+            }
+
+            MaterialAlertDialogBuilder(this)
+                .setTitle("Import Configuration")
+                .setMessage("This will replace all your current devices and rooms. Continue?")
+                .setPositiveButton("Import") { _, _ ->
+                    try {
+                        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+                        prefs.edit {
+                            putString("devices_json", "{\"devices\":${json.getJSONObject("devices").toString()}}")
+                            putString("rooms_json", "{\"rooms\":${json.getJSONObject("rooms").toString()}}")
+                        }
+                        Devices.reloadFromPreferences()
+                        Rooms.reloadFromPreferences()
+                        Toast.makeText(this, "Configuration imported successfully", Toast.LENGTH_LONG).show()
+                    } catch (e: Exception) {
+                        Toast.makeText(this, "Import failed: ${e.message}", Toast.LENGTH_LONG).show()
+                    }
+                }
+                .setNegativeButton(android.R.string.cancel, null)
+                .show()
+        } catch (e: Exception) {
+            Toast.makeText(this, "Import failed: ${e.message}", Toast.LENGTH_LONG).show()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -28,6 +119,15 @@ class SettingsActivity : BaseActivity() {
             .beginTransaction()
             .replace(R.id.settings, GeneralPreferenceFragment())
             .commit()
+    }
+
+    fun openExportLauncher() {
+        val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        exportLauncher.launch("homeapp_config_$timestamp.json")
+    }
+
+    fun openImportLauncher() {
+        importLauncher.launch(arrayOf("application/json", "text/plain", "*/*"))
     }
 
     class GeneralPreferenceFragment : PreferenceFragment() {
@@ -42,8 +142,12 @@ class SettingsActivity : BaseActivity() {
                 startActivity(Intent(context, DevicesActivity::class.java))
                 true
             }
-            findPreference<Preference>("devices_json")?.setOnPreferenceClickListener {
-                Devices.reloadFromPreferences()
+            findPreference<Preference>("export_config")?.setOnPreferenceClickListener {
+                (activity as? SettingsActivity)?.openExportLauncher()
+                true
+            }
+            findPreference<Preference>("import_config")?.setOnPreferenceClickListener {
+                (activity as? SettingsActivity)?.openImportLauncher()
                 true
             }
             findPreference<Preference>("reset_json")?.setOnPreferenceClickListener {

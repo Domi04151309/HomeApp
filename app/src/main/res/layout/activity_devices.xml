@@ -22,4 +22,14 @@
         android:layout_height="match_parent"
         android:layout_below="@id/top_app_bar"
         android:clipToPadding="false" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/roomsFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/fab_margin"
+        android:contentDescription="@string/rooms_manage"
+        app:srcCompat="@drawable/ic_device_lamp" />
 </RelativeLayout>

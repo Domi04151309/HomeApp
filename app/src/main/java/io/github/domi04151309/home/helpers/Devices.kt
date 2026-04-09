@@ -61,6 +61,7 @@ class Devices(private val context: Context) {
                 json.optString("icon"),
                 json.optBoolean("hide", false),
                 json.optBoolean("direct_view", false),
+                json.optString("room_id", ""),
             )
         device.address = json.optString(ADDRESS)
         return device
@@ -98,6 +99,7 @@ class Devices(private val context: Context) {
                 .put("icon", device.iconName)
                 .put("hide", device.hide)
                 .put("direct_view", device.directView)
+                .put("room_id", device.roomId)
         devicesObject.put(device.id, deviceObject)
         saveChanges()
     }
@@ -128,6 +130,34 @@ class Devices(private val context: Context) {
 
     fun saveChanges() {
         preferences.edit { putString("devices_json", data.toString()) }
+    }
+
+    fun getDevicesByRoom(roomId: String): List<DeviceItem> {
+        val result = mutableListOf<DeviceItem>()
+        for (i in 0 until length) {
+            val device = getDeviceByIndex(i)
+            if (device.roomId == roomId) {
+                result.add(device)
+            }
+        }
+        return result
+    }
+
+    fun getDevicesWithoutRoom(): List<DeviceItem> {
+        val result = mutableListOf<DeviceItem>()
+        for (i in 0 until length) {
+            val device = getDeviceByIndex(i)
+            if (device.roomId.isEmpty()) {
+                result.add(device)
+            }
+        }
+        return result
+    }
+
+    fun moveDeviceToRoom(deviceId: String, roomId: String) {
+        val json = devicesObject.optJSONObject(deviceId) ?: return
+        json.put("room_id", roomId)
+        saveChanges()
     }
 
     companion object {

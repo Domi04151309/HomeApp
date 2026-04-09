@@ -100,7 +100,7 @@
     <string name="pref_edit">Edit device list</string>
     <string name="pref_edit_summary">Edit the list of devices</string>
     <string name="pref_delete_device_question">Are you sure you want to delete this device?</string>
-    <string name="pref_device_config">Device Configuration</string>
+    <string name="pref_device_config">Export and Import Configuration</string>
     <string name="pref_add_shortcut">Add to Home screen</string>
     <string name="pref_add_shortcut_failed">Shortcuts are not supported by your system</string>
     <string name="pref_add">Add a new device</string>
@@ -119,8 +119,10 @@
     <string name="pref_add_search_summary">This might take a couple of seconds</string>
     <string name="pref_add_dialog">Add Device</string>
     <string name="pref_add_dialog_message">Do you want to add &#8220;%1$s&#8221; to your devices?</string>
-    <string name="pref_edit_text">Advanced editing</string>
-    <string name="pref_edit_text_summary">Edit the JSON string by yourself</string>
+    <string name="pref_export">Export Configuration</string>
+    <string name="pref_export_summary">Save devices and rooms to a JSON file</string>
+    <string name="pref_import">Import Configuration</string>
+    <string name="pref_import_summary">Load devices and rooms from a JSON file</string>
     <string name="pref_controls_auth">Require device unlock for controls</string>
     <string name="pref_controls_auth_summary">Require the device to be unlocked for power menu controls</string>
     <string name="pref_advanced">Advanced Settings</string>
@@ -144,6 +146,21 @@
     <string name="device_config_direct_view">Load device with main list</string>
     <string name="device_config_hide">Hide device from main list</string>
     <string name="device_config_hidden">hidden</string>
+    <string name="device_config_room">Room</string>
+    <string name="device_config_room_none">No room</string>
+
+    <string name="rooms_title">Rooms</string>
+    <string name="rooms_add">Add a new room</string>
+    <string name="rooms_add_summary">Create a new room for organizing devices</string>
+    <string name="rooms_new_room">New Room</string>
+    <string name="rooms_name">Room Name</string>
+    <string name="rooms_name_example">e.g., Living Room</string>
+    <string name="rooms_icon">Room Icon</string>
+    <string name="rooms_manage">Manage rooms</string>
+    <string name="rooms_manage_summary">Create and edit rooms for organizing devices</string>
+    <string name="rooms_delete_question">Are you sure you want to delete this room? Devices in this room will be moved to no room.</string>
+    <string name="rooms_all">All Devices</string>
+    <string name="rooms_no_room">No Room</string>
     <string name="device_config_info">Device Info</string>
     <string name="device_config_info_status">Status</string>
 

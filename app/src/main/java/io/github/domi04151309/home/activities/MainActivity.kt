@@ -25,6 +25,7 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.tabs.TabLayout
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.adapters.MainListAdapter
 import io.github.domi04151309.home.api.UnifiedAPI
@@ -33,6 +34,7 @@ import io.github.domi04151309.home.data.ListViewItem
 import io.github.domi04151309.home.data.UnifiedRequestCallback
 import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.helpers.Global
+import io.github.domi04151309.home.helpers.Rooms
 import io.github.domi04151309.home.helpers.Global.checkNetwork
 import io.github.domi04151309.home.helpers.P
 import io.github.domi04151309.home.helpers.TasmotaHelper
@@ -50,12 +52,15 @@ class MainActivity : BaseActivity() {
     private var canReceiveRequest = false
     private var currentView: View? = null
     internal lateinit var devices: Devices
+    internal lateinit var rooms: Rooms
     internal lateinit var adapter: MainListAdapter
     private lateinit var deviceIcon: ImageSwitcher
     private lateinit var deviceName: TextSwitcher
     private lateinit var fab: FloatingActionButton
+    private lateinit var roomTabs: TabLayout
 
     private var columns: Int? = null
+    private var currentRoomId: String = ""
 
     /*
      * Unified callbacks
@@ -261,10 +266,13 @@ class MainActivity : BaseActivity() {
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         devices = Devices(this)
+        rooms = Rooms(this)
         deviceIcon = findViewById(R.id.deviceIcon)
         deviceName = findViewById(R.id.deviceName)
         fab = findViewById(R.id.fab)
+        roomTabs = findViewById(R.id.roomTabs)
         columns = getColumns()
+        setupRoomTabs()
 
         setupHeader()
         applyBottomInsetPadding(recyclerView)
@@ -277,6 +285,17 @@ class MainActivity : BaseActivity() {
         fab.setOnClickListener {
             startActivityAndReset(Intent(this, DevicesActivity::class.java))
         }
+
+        roomTabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                currentRoomId = tab?.tag as? String ?: ""
+                loadDeviceList()
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+        })
 
         val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
         toolbar.setTitle(R.string.app_name)
@@ -400,6 +419,7 @@ class MainActivity : BaseActivity() {
             recreate()
         }
         if (shouldReset) {
+            setupRoomTabs()
             loadDeviceList()
             shouldReset = false
         }
@@ -539,6 +559,46 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    private fun setupRoomTabs() {
+        if (rooms.length == 0) {
+            roomTabs.visibility = View.GONE
+            return
+        }
+
+        roomTabs.visibility = View.VISIBLE
+        roomTabs.removeAllTabs()
+
+        // Add "All" tab
+        val allTab = roomTabs.newTab()
+        allTab.text = getString(R.string.rooms_all)
+        allTab.tag = ""
+        roomTabs.addTab(allTab)
+
+        // Add tabs for each room
+        for (i in 0 until rooms.length) {
+            val room = rooms.getRoomByIndex(i)
+            val tab = roomTabs.newTab()
+            tab.text = room.name
+            tab.tag = room.id
+            roomTabs.addTab(tab)
+        }
+
+        // Add "No Room" tab
+        val noRoomTab = roomTabs.newTab()
+        noRoomTab.text = getString(R.string.rooms_no_room)
+        noRoomTab.tag = "_no_room_"
+        roomTabs.addTab(noRoomTab)
+
+        // Select the current tab
+        for (i in 0 until roomTabs.tabCount) {
+            val tab = roomTabs.getTabAt(i)
+            if (tab?.tag == currentRoomId) {
+                roomTabs.selectTab(tab)
+                break
+            }
+        }
+    }
+
     internal fun loadDeviceList() {
         updateHandler.stop()
         val registeredForUpdates: HashMap<Int, UnifiedAPI?> = hashMapOf()
@@ -556,15 +616,24 @@ class MainActivity : BaseActivity() {
         for (i in 0 until devices.length) {
             val currentDevice = devices.getDeviceByIndex(i)
             if (!currentDevice.hide) {
-                if (
-                    currentDevice.directView &&
-                    Global.UNIFIED_MODES.contains(currentDevice.mode) &&
-                    checkNetwork(this)
-                ) {
-                    onDirectView(currentDevice, actualPosition, registeredForUpdates)
+                // Filter by room
+                val shouldShow = when (currentRoomId) {
+                    "" -> true // All devices
+                    "_no_room_" -> currentDevice.roomId.isEmpty() // Devices without room
+                    else -> currentDevice.roomId == currentRoomId // Devices in specific room
                 }
-                listItems += getDeviceItem(currentDevice)
-                actualPosition++
+
+                if (shouldShow) {
+                    if (
+                        currentDevice.directView &&
+                        Global.UNIFIED_MODES.contains(currentDevice.mode) &&
+                        checkNetwork(this)
+                    ) {
+                        onDirectView(currentDevice, actualPosition, registeredForUpdates)
+                    }
+                    listItems += getDeviceItem(currentDevice)
+                    actualPosition++
+                }
             }
         }
 
