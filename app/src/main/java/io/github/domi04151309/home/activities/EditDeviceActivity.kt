@@ -60,9 +60,9 @@ class EditDeviceActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         try {
             setContentView(R.layout.activity_edit_device)
-        } catch (e: Exception) {
-            Log.e("EditDeviceActivity", "Error setting content view", e)
-            Toast.makeText(this, "Error loading UI: ${e.message}", Toast.LENGTH_LONG).show()
+        } catch (e: RuntimeException) {
+            Log.e(TAG, "Error setting content view", e)
+            Toast.makeText(this, getString(R.string.err_loading_ui, e.message), Toast.LENGTH_LONG).show()
             finish()
             return
         }
@@ -85,8 +85,8 @@ class EditDeviceActivity : BaseActivity() {
 
         try {
             deviceSecrets = DeviceSecrets(this, deviceId)
-        } catch (e: Exception) {
-            Log.e("EditDeviceActivity", "Error initializing DeviceSecrets", e)
+        } catch (e: RuntimeException) {
+            Log.e(TAG, "Error initializing DeviceSecrets", e)
             // Continue without encrypted secrets
         }
 
@@ -493,13 +493,13 @@ class EditDeviceActivity : BaseActivity() {
                     it.password = passwordBox.editText?.text.toString()
                     it.updateDeviceSecrets()
                 }
-            } catch (e: Exception) {
-                Log.e("EditDeviceActivity", "Error saving device secrets", e)
+            } catch (e: RuntimeException) {
+                Log.e(TAG, "Error saving device secrets", e)
             }
             finish()
-        } catch (e: Exception) {
-            Log.e(EditDeviceActivity::class.simpleName, "Error saving device", e)
-            Toast.makeText(this, "Error saving device: ${e.message}", Toast.LENGTH_LONG).show()
+        } catch (e: RuntimeException) {
+            Log.e(TAG, "Error saving device", e)
+            Toast.makeText(this, getString(R.string.err_saving_device, e.message), Toast.LENGTH_LONG).show()
         }
     }
 
@@ -513,6 +513,7 @@ class EditDeviceActivity : BaseActivity() {
     }
 
     companion object {
+        private const val TAG = "EditDeviceActivity"
         private val SUPPORTS_DIRECT_VIEW =
             arrayOf(
                 Global.ESP_EASY,

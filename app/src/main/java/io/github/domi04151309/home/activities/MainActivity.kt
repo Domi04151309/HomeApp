@@ -309,7 +309,18 @@ class MainActivity : BaseActivity() {
             true
         }
 
-        // Handle shortcut
+        handleShortcutIntent(intent)
+
+        onBackPressedDispatcher.addCallback {
+            if (isDeviceSelected) {
+                loadDeviceList()
+            } else {
+                finish()
+            }
+        }
+    }
+
+    private fun handleShortcutIntent(intent: Intent) {
         if (intent.hasExtra(Devices.INTENT_EXTRA_DEVICE)) {
             val deviceId = intent.getStringExtra(Devices.INTENT_EXTRA_DEVICE) ?: ""
             if (devices.idExists(deviceId)) {
@@ -320,8 +331,7 @@ class MainActivity : BaseActivity() {
                     selectDevice(deviceId)
                 } else {
                     loadDeviceList()
-                    Toast.makeText(this, R.string.main_network_not_secure, Toast.LENGTH_LONG)
-                        .show()
+                    Toast.makeText(this, R.string.main_network_not_secure, Toast.LENGTH_LONG).show()
                 }
             } else {
                 loadDeviceList()
@@ -329,14 +339,6 @@ class MainActivity : BaseActivity() {
             }
         } else {
             loadDeviceList()
-        }
-
-        onBackPressedDispatcher.addCallback {
-            if (isDeviceSelected) {
-                loadDeviceList()
-            } else {
-                finish()
-            }
         }
     }
 
@@ -611,30 +613,8 @@ class MainActivity : BaseActivity() {
                     summary = resources.getString(R.string.main_no_devices_summary),
                     icon = R.drawable.ic_info,
                 )
-        }
-        var actualPosition = 0
-        for (i in 0 until devices.length) {
-            val currentDevice = devices.getDeviceByIndex(i)
-            if (!currentDevice.hide) {
-                // Filter by room
-                val shouldShow = when (currentRoomId) {
-                    "" -> true // All devices
-                    "_no_room_" -> currentDevice.roomId.isEmpty() // Devices without room
-                    else -> currentDevice.roomId == currentRoomId // Devices in specific room
-                }
-
-                if (shouldShow) {
-                    if (
-                        currentDevice.directView &&
-                        Global.UNIFIED_MODES.contains(currentDevice.mode) &&
-                        checkNetwork(this)
-                    ) {
-                        onDirectView(currentDevice, actualPosition, registeredForUpdates)
-                    }
-                    listItems += getDeviceItem(currentDevice)
-                    actualPosition++
-                }
-            }
+        } else {
+            processDevices(listItems, registeredForUpdates)
         }
 
         adapter.updateData(listItems, mainHelperInterface)
@@ -646,6 +626,34 @@ class MainActivity : BaseActivity() {
             updateStates(registeredForUpdates)
         }
         unified = null
+    }
+
+    private fun processDevices(
+        listItems: ArrayList<ListViewItem>,
+        registeredForUpdates: HashMap<Int, UnifiedAPI?>,
+    ) {
+        var actualPosition = 0
+        for (i in 0 until devices.length) {
+            val currentDevice = devices.getDeviceByIndex(i)
+            if (currentDevice.hide) continue
+
+            if (!shouldShowDevice(currentDevice)) continue
+
+            if (currentDevice.directView &&
+                Global.UNIFIED_MODES.contains(currentDevice.mode) &&
+                checkNetwork(this)
+            ) {
+                onDirectView(currentDevice, actualPosition, registeredForUpdates)
+            }
+            listItems += getDeviceItem(currentDevice)
+            actualPosition++
+        }
+    }
+
+    private fun shouldShowDevice(device: DeviceItem): Boolean = when (currentRoomId) {
+        "" -> true // All devices
+        "_no_room_" -> device.roomId.isEmpty() // Devices without room
+        else -> device.roomId == currentRoomId // Devices in specific room
     }
 
     internal fun startActivityAndReset(intent: Intent) {

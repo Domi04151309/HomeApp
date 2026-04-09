@@ -123,6 +123,13 @@
     <string name="pref_export_summary">Save devices and rooms to a JSON file</string>
     <string name="pref_import">Import Configuration</string>
     <string name="pref_import_summary">Load devices and rooms from a JSON file</string>
+    <string name="pref_import_confirm_message">This will replace all your current devices and rooms. Continue?</string>
+    <string name="pref_import_success">Configuration imported successfully</string>
+    <string name="pref_import_failed">Import failed: %1$s</string>
+    <string name="pref_export_failed">Export failed: %1$s</string>
+    <string name="str_import">Import</string>
+    <string name="err_loading_ui">Error loading UI: %1$s</string>
+    <string name="err_saving_device">Error saving device: %1$s</string>
     <string name="pref_controls_auth">Require device unlock for controls</string>
     <string name="pref_controls_auth_summary">Require the device to be unlocked for power menu controls</string>
     <string name="pref_advanced">Advanced Settings</string>

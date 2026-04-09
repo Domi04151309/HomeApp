@@ -33,7 +33,7 @@ class Rooms(private val context: Context) {
         return storedData!!
     }
 
-    private val roomsObject: JSONObject get() = data.optJSONObject(ROOMS) ?: JSONObject()
+    private val roomsObject: JSONObject get() = data.optJSONObject(KEY_ROOMS) ?: JSONObject()
 
     private val roomOrder: JSONArray get() {
         if (!data.has(ORDER)) {
@@ -144,12 +144,10 @@ class Rooms(private val context: Context) {
         return null
     }
 
-    fun getRoomNameById(id: String): String {
-        return if (idExists(id)) {
-            getRoomById(id).name
-        } else {
-            ""
-        }
+    fun getRoomNameById(id: String): String = if (idExists(id)) {
+        getRoomById(id).name
+    } else {
+        ""
     }
 
     companion object {
@@ -157,7 +155,7 @@ class Rooms(private val context: Context) {
         const val DEFAULT_JSON: String = "{\"rooms\":{}}"
         const val DEFAULT_ICON: String = "Lamp"
 
-        private const val ROOMS = "rooms"
+        private const val KEY_ROOMS = "rooms"
         private const val ORDER = "order"
         private const val NAME = "name"
         private const val ICON = "icon"

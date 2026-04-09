@@ -52,6 +52,10 @@ android {
     lint {
         disable += "MissingTranslation"
     }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
     project.tasks.preBuild.dependsOn("license")
 }
 
@@ -59,6 +63,10 @@ detekt {
     config.setFrom(file("detekt-config.yml"))
     buildUponDefaultConfig = true
     basePath = rootProject.projectDir.absolutePath
+}
+
+tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+    jvmTarget = "17"
 }
 
 tasks.register("license") {

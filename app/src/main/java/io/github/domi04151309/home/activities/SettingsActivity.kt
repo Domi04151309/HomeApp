@@ -1,6 +1,5 @@
 package io.github.domi04151309.home.activities
 
-import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -49,9 +48,9 @@ class SettingsActivity : BaseActivity() {
     private fun exportConfiguration(uri: Uri) {
         try {
             val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-            val devicesJson = prefs.getString("devices_json", Global.DEFAULT_JSON) ?: Global.DEFAULT_JSON
-            val roomsJson = prefs.getString("rooms_json", "{\"rooms\":{}}") ?: "{\"rooms\":{}}"
-            
+            val devicesJson = prefs.getString(PREF_DEVICES_JSON, Global.DEFAULT_JSON) ?: Global.DEFAULT_JSON
+            val roomsJson = prefs.getString(PREF_ROOMS_JSON, DEFAULT_ROOMS_JSON) ?: DEFAULT_ROOMS_JSON
+
             // Create pretty printed JSON with 4-space indentation
             val exportData = JSONObject().apply {
                 put("export_date", SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date()))
@@ -65,8 +64,8 @@ class SettingsActivity : BaseActivity() {
                 }
             }
             Toast.makeText(this, "Configuration exported successfully", Toast.LENGTH_LONG).show()
-        } catch (e: Exception) {
-            Toast.makeText(this, "Export failed: ${e.message}", Toast.LENGTH_LONG).show()
+        } catch (e: IllegalStateException) {
+            Toast.makeText(this, getString(R.string.pref_export_failed, e.message), Toast.LENGTH_LONG).show()
         }
     }
 
@@ -76,36 +75,36 @@ class SettingsActivity : BaseActivity() {
                 BufferedReader(InputStreamReader(inputStream)).use { reader ->
                     reader.readText()
                 }
-            } ?: throw Exception("Could not read file")
+            } ?: throw IllegalStateException("Could not read file")
 
             val json = JSONObject(jsonString)
-            
+
             // Validate the JSON structure
             if (!json.has("devices") || !json.has("rooms")) {
                 throw Exception("Invalid configuration file")
             }
 
             MaterialAlertDialogBuilder(this)
-                .setTitle("Import Configuration")
-                .setMessage("This will replace all your current devices and rooms. Continue?")
-                .setPositiveButton("Import") { _, _ ->
+                .setTitle(R.string.pref_import)
+                .setMessage(R.string.pref_import_confirm_message)
+                .setPositiveButton(R.string.str_import) { _, _ ->
                     try {
                         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
                         prefs.edit {
-                            putString("devices_json", "{\"devices\":${json.getJSONObject("devices").toString()}}")
-                            putString("rooms_json", "{\"rooms\":${json.getJSONObject("rooms").toString()}}")
+                            putString(PREF_DEVICES_JSON, "{\"devices\":${json.getJSONObject("devices").toString()}}")
+                            putString(PREF_ROOMS_JSON, "{\"rooms\":${json.getJSONObject("rooms").toString()}}")
                         }
                         Devices.reloadFromPreferences()
                         Rooms.reloadFromPreferences()
-                        Toast.makeText(this, "Configuration imported successfully", Toast.LENGTH_LONG).show()
-                    } catch (e: Exception) {
-                        Toast.makeText(this, "Import failed: ${e.message}", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, R.string.pref_import_success, Toast.LENGTH_LONG).show()
+                    } catch (e: IllegalStateException) {
+                        Toast.makeText(this, getString(R.string.pref_import_failed, e.message), Toast.LENGTH_LONG).show()
                     }
                 }
                 .setNegativeButton(android.R.string.cancel, null)
                 .show()
-        } catch (e: Exception) {
-            Toast.makeText(this, "Import failed: ${e.message}", Toast.LENGTH_LONG).show()
+        } catch (e: IllegalStateException) {
+            Toast.makeText(this, getString(R.string.pref_import_failed, e.message), Toast.LENGTH_LONG).show()
         }
     }
 
@@ -156,7 +155,7 @@ class SettingsActivity : BaseActivity() {
                     .setMessage(R.string.pref_reset_question)
                     .setPositiveButton(R.string.str_delete) { _, _ ->
                         PreferenceManager.getDefaultSharedPreferences(requireContext()).edit {
-                            putString("devices_json", Global.DEFAULT_JSON)
+                            putString(PREF_DEVICES_JSON, Global.DEFAULT_JSON)
                         }
                         Toast.makeText(context, R.string.pref_reset_toast, Toast.LENGTH_LONG).show()
                         Devices.reloadFromPreferences()
@@ -219,6 +218,9 @@ class SettingsActivity : BaseActivity() {
 
         companion object {
             private const val RESTART_DELAY_MS = 500L
+            private const val PREF_DEVICES_JSON = "devices_json"
+            private const val PREF_ROOMS_JSON = "rooms_json"
+            private const val DEFAULT_ROOMS_JSON = "{\"rooms\":{}}"
         }
     }
 }

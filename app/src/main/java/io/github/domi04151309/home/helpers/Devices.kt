@@ -61,7 +61,7 @@ class Devices(private val context: Context) {
                 json.optString("icon"),
                 json.optBoolean("hide", false),
                 json.optBoolean("direct_view", false),
-                json.optString("room_id", ""),
+                json.optString(ROOM_ID, ""
             )
         device.address = json.optString(ADDRESS)
         return device
@@ -99,7 +99,7 @@ class Devices(private val context: Context) {
                 .put("icon", device.iconName)
                 .put("hide", device.hide)
                 .put("direct_view", device.directView)
-                .put("room_id", device.roomId)
+                .put(ROOM_ID, device.roomId)
         devicesObject.put(device.id, deviceObject)
         saveChanges()
     }
@@ -156,7 +156,7 @@ class Devices(private val context: Context) {
 
     fun moveDeviceToRoom(deviceId: String, roomId: String) {
         val json = devicesObject.optJSONObject(deviceId) ?: return
-        json.put("room_id", roomId)
+        json.put(ROOM_ID, roomId)
         saveChanges()
     }
 
@@ -167,6 +167,7 @@ class Devices(private val context: Context) {
         private const val ID_LENGTH = 8
         private const val ORDER = "order"
         private const val ADDRESS = "address"
+        private const val ROOM_ID = "room_id"
         private var storedData: JSONObject? = null
 
         fun reloadFromPreferences() {

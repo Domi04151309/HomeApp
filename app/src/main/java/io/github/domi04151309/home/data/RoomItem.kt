@@ -1,6 +1,6 @@
 package io.github.domi04151309.home.data
 
-class RoomItem(
+data class RoomItem(
     val id: String,
     val name: String = "Room",
     val iconName: String = "Lamp",
