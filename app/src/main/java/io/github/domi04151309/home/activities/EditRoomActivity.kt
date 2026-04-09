@@ -58,7 +58,7 @@ class EditRoomActivity : BaseActivity() {
         iconSpinner.addTextChangedListener(
             TextWatcher {
                 roomIcon.setImageResource(Global.getIcon(it))
-            }
+            },
         )
         nameBox.editText?.addTextChangedListener(
             TextWatcher {
@@ -67,7 +67,7 @@ class EditRoomActivity : BaseActivity() {
                 } else {
                     nameText.text = it
                 }
-            }
+            },
         )
 
         if (editing) {

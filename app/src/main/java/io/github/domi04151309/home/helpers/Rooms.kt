@@ -144,11 +144,12 @@ class Rooms(private val context: Context) {
         return null
     }
 
-    fun getRoomNameById(id: String): String = if (idExists(id)) {
-        getRoomById(id).name
-    } else {
-        ""
-    }
+    fun getRoomNameById(id: String): String =
+        if (idExists(id)) {
+            getRoomById(id).name
+        } else {
+            ""
+        }
 
     companion object {
         const val PREF_KEY: String = "rooms_json"

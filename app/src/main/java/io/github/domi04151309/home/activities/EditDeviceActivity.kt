@@ -382,11 +382,12 @@ class EditDeviceActivity : BaseActivity() {
             roomIds.add(room.id)
         }
 
-        val adapter = ArrayAdapter(
-            this,
-            R.layout.dropdown_item,
-            roomNames,
-        )
+        val adapter =
+            ArrayAdapter(
+                this,
+                R.layout.dropdown_item,
+                roomNames,
+            )
         roomSpinner.setAdapter(adapter)
 
         roomSpinner.setOnItemClickListener { _, _, position, _ ->
@@ -429,11 +430,12 @@ class EditDeviceActivity : BaseActivity() {
             roomIds.add(room.id)
         }
 
-        val adapter = ArrayAdapter(
-            this,
-            R.layout.dropdown_item,
-            roomNames,
-        )
+        val adapter =
+            ArrayAdapter(
+                this,
+                R.layout.dropdown_item,
+                roomNames,
+            )
         editRoomSpinner.setAdapter(adapter)
 
         editRoomSpinner.setOnItemClickListener { _, _, position, _ ->

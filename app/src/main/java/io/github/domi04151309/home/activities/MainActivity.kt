@@ -34,9 +34,9 @@ import io.github.domi04151309.home.data.ListViewItem
 import io.github.domi04151309.home.data.UnifiedRequestCallback
 import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.helpers.Global
-import io.github.domi04151309.home.helpers.Rooms
 import io.github.domi04151309.home.helpers.Global.checkNetwork
 import io.github.domi04151309.home.helpers.P
+import io.github.domi04151309.home.helpers.Rooms
 import io.github.domi04151309.home.helpers.TasmotaHelper
 import io.github.domi04151309.home.helpers.UpdateHandler
 import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
@@ -286,16 +286,18 @@ class MainActivity : BaseActivity() {
             startActivityAndReset(Intent(this, DevicesActivity::class.java))
         }
 
-        roomTabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                currentRoomId = tab?.tag as? String ?: ""
-                loadDeviceList()
-            }
+        roomTabs.addOnTabSelectedListener(
+            object : TabLayout.OnTabSelectedListener {
+                override fun onTabSelected(tab: TabLayout.Tab?) {
+                    currentRoomId = tab?.tag as? String ?: ""
+                    loadDeviceList()
+                }
 
-            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+                override fun onTabUnselected(tab: TabLayout.Tab?) {}
 
-            override fun onTabReselected(tab: TabLayout.Tab?) {}
-        })
+                override fun onTabReselected(tab: TabLayout.Tab?) {}
+            },
+        )
 
         val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
         toolbar.setTitle(R.string.app_name)
@@ -648,14 +650,14 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun shouldProcessDevice(device: DeviceItem): Boolean =
-        !device.hide && shouldShowDevice(device)
+    private fun shouldProcessDevice(device: DeviceItem): Boolean = !device.hide && shouldShowDevice(device)
 
-    private fun shouldShowDevice(device: DeviceItem): Boolean = when (currentRoomId) {
-        "" -> true // All devices
-        "_no_room_" -> device.roomId.isEmpty() // Devices without room
-        else -> device.roomId == currentRoomId // Devices in specific room
-    }
+    private fun shouldShowDevice(device: DeviceItem): Boolean =
+        when (currentRoomId) {
+            "" -> true // All devices
+            "_no_room_" -> device.roomId.isEmpty() // Devices without room
+            else -> device.roomId == currentRoomId // Devices in specific room
+        }
 
     internal fun startActivityAndReset(intent: Intent) {
         shouldReset = true

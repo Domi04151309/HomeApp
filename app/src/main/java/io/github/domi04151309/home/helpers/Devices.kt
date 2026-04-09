@@ -154,7 +154,10 @@ class Devices(private val context: Context) {
         return result
     }
 
-    fun moveDeviceToRoom(deviceId: String, roomId: String) {
+    fun moveDeviceToRoom(
+        deviceId: String,
+        roomId: String,
+    ) {
         val json = devicesObject.optJSONObject(deviceId) ?: return
         json.put(ROOM_ID, roomId)
         saveChanges()

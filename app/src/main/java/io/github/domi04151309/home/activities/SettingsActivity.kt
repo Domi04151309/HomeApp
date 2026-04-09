@@ -19,35 +19,32 @@ import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.LocaleHelper
 import io.github.domi04151309.home.helpers.P
 import io.github.domi04151309.home.helpers.Rooms
+import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
-import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 class SettingsActivity : BaseActivity() {
-    companion object {
-        private const val KEY_DEVICES = "devices"
-        private const val KEY_ROOMS = "rooms"
-    }
-
-    private val exportLauncher = registerForActivityResult(
-        ActivityResultContracts.CreateDocument("application/json")
-    ) { uri: Uri? ->
-        if (uri != null) {
-            exportConfiguration(uri)
+    private val exportLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.CreateDocument("application/json"),
+        ) { uri: Uri? ->
+            if (uri != null) {
+                exportConfiguration(uri)
+            }
         }
-    }
 
-    private val importLauncher = registerForActivityResult(
-        ActivityResultContracts.OpenDocument()
-    ) { uri: Uri? ->
-        if (uri != null) {
-            importConfiguration(uri)
+    private val importLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.OpenDocument(),
+        ) { uri: Uri? ->
+            if (uri != null) {
+                importConfiguration(uri)
+            }
         }
-    }
 
     private fun exportConfiguration(uri: Uri) {
         try {
@@ -56,11 +53,12 @@ class SettingsActivity : BaseActivity() {
             val roomsJson = prefs.getString(PREF_ROOMS_JSON, DEFAULT_ROOMS_JSON) ?: DEFAULT_ROOMS_JSON
 
             // Create pretty printed JSON with 4-space indentation
-            val exportData = JSONObject().apply {
-                put("export_date", SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date()))
-                put(KEY_DEVICES, JSONObject(devicesJson).optJSONObject(KEY_DEVICES) ?: JSONObject())
-                put(KEY_ROOMS, JSONObject(roomsJson).optJSONObject(KEY_ROOMS) ?: JSONObject())
-            }.toString(4)
+            val exportData =
+                JSONObject().apply {
+                    put("export_date", SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date()))
+                    put(KEY_DEVICES, JSONObject(devicesJson).optJSONObject(KEY_DEVICES) ?: JSONObject())
+                    put(KEY_ROOMS, JSONObject(roomsJson).optJSONObject(KEY_ROOMS) ?: JSONObject())
+                }.toString(4)
 
             contentResolver.openOutputStream(uri)?.use { outputStream ->
                 OutputStreamWriter(outputStream).use { writer ->
@@ -75,17 +73,18 @@ class SettingsActivity : BaseActivity() {
 
     private fun importConfiguration(uri: Uri) {
         try {
-            val jsonString = contentResolver.openInputStream(uri)?.use { inputStream ->
-                BufferedReader(InputStreamReader(inputStream)).use { reader ->
-                    reader.readText()
-                }
-            } ?: error("Could not read file")
+            val jsonString =
+                contentResolver.openInputStream(uri)?.use { inputStream ->
+                    BufferedReader(InputStreamReader(inputStream)).use { reader ->
+                        reader.readText()
+                    }
+                } ?: error("Could not read file")
 
             val json = JSONObject(jsonString)
 
             // Validate the JSON structure
             if (!json.has(KEY_DEVICES) || !json.has(KEY_ROOMS)) {
-                throw IllegalStateException("Invalid configuration file")
+                error("Invalid configuration file")
             }
 
             MaterialAlertDialogBuilder(this)
@@ -97,18 +96,24 @@ class SettingsActivity : BaseActivity() {
                         prefs.edit {
                             putString(
                                 PREF_DEVICES_JSON,
-                                "{\"devices\":${json.getJSONObject(KEY_DEVICES).toString()}}",
+                                "{\"devices\":${json.getJSONObject(KEY_DEVICES)}}",
                             )
                             putString(
                                 PREF_ROOMS_JSON,
-                                "{\"rooms\":${json.getJSONObject(KEY_ROOMS).toString()}}",
+                                "{\"rooms\":${json.getJSONObject(KEY_ROOMS)}}",
                             )
                         }
                         Devices.reloadFromPreferences()
                         Rooms.reloadFromPreferences()
                         Toast.makeText(this, R.string.pref_import_success, Toast.LENGTH_LONG).show()
                     } catch (e: IllegalStateException) {
-                        Toast.makeText(this, getString(R.string.pref_import_failed, e.message), Toast.LENGTH_LONG).show()
+                        Toast
+                            .makeText(
+                                this,
+                                getString(R.string.pref_import_failed, e.message),
+                                Toast.LENGTH_LONG,
+                            )
+                            .show()
                     }
                 }
                 .setNegativeButton(android.R.string.cancel, null)
@@ -228,9 +233,14 @@ class SettingsActivity : BaseActivity() {
 
         companion object {
             private const val RESTART_DELAY_MS = 500L
-            private const val PREF_DEVICES_JSON = "devices_json"
-            private const val PREF_ROOMS_JSON = "rooms_json"
-            private const val DEFAULT_ROOMS_JSON = "{\"rooms\":{}}"
         }
+    }
+
+    companion object {
+        private const val KEY_DEVICES = "devices"
+        private const val KEY_ROOMS = "rooms"
+        private const val PREF_DEVICES_JSON = "devices_json"
+        private const val PREF_ROOMS_JSON = "rooms_json"
+        private const val DEFAULT_ROOMS_JSON = "{\"rooms\":{}}"
     }
 }
