@@ -14,6 +14,7 @@ import io.github.domi04151309.home.R
 import io.github.domi04151309.home.fragments.PreferenceFragment
 import io.github.domi04151309.home.helpers.Devices
 import io.github.domi04151309.home.helpers.Global
+import io.github.domi04151309.home.helpers.LocaleHelper
 import io.github.domi04151309.home.helpers.P
 
 class SettingsActivity : BaseActivity() {
@@ -80,6 +81,40 @@ class SettingsActivity : BaseActivity() {
                 )
                 true
             }
+            setupLanguagePreference()
+        }
+
+        private fun setupLanguagePreference() {
+            findPreference<Preference>(P.PREF_LANGUAGE)?.setOnPreferenceChangeListener { _, newValue ->
+                val newLang = newValue as String
+                LocaleHelper.setNewLocale(requireContext(), newLang)
+                Toast.makeText(context, R.string.pref_language_restart, Toast.LENGTH_SHORT).show()
+                restartApp()
+                true
+            }
+        }
+
+        private fun restartApp() {
+            android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                val packageManager = requireContext().packageManager
+                val packageName = requireContext().packageName
+                val intent = packageManager.getLaunchIntentForPackage(packageName)
+                intent?.let {
+                    val flags =
+                        Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                            Intent.FLAG_ACTIVITY_NEW_TASK or
+                            Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    it.addFlags(flags)
+                    it.putExtra("language_changed", true)
+                    startActivity(it)
+                }
+                android.os.Process.killProcess(android.os.Process.myPid())
+                System.exit(0)
+            }, RESTART_DELAY_MS)
+        }
+
+        companion object {
+            private const val RESTART_DELAY_MS = 500L
         }
     }
 }

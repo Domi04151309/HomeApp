@@ -90,6 +90,9 @@
     <string name="pref_general">Ajustes generales</string>
     <string name="pref_columns">Número de columnas</string>
     <string name="pref_columns_summary">Cambia el número de columnas de la lista principal</string>
+    <string name="pref_language">Idioma</string>
+    <string name="pref_language_summary">Seleccione el idioma de la aplicación</string>
+    <string name="pref_language_restart">Reiniciando la aplicación para aplicar el idioma...</string>
     <string name="pref_devices">Dispositivos</string>
     <string name="pref_edit">Editar lista de dispositivos</string>
     <string name="pref_edit_summary">Editar la lista de dispositivos</string>
@@ -180,5 +183,65 @@
     <string-array name="pref_add_method_array">
         <item>Añadir dispositivo por dirección</item>
         <item>Buscar dispositivos compatibles (experimental)</item>
+    </string-array>
+    <string-array name="pref_language_array">
+        <item>Predeterminado del sistema</item>
+        <item>English</item>
+        <item>العربية</item>
+        <item>Български</item>
+        <item>Čeština</item>
+        <item>Dansk</item>
+        <item>Deutsch</item>
+        <item>Ελληνικά</item>
+        <item>Eesti</item>
+        <item>Español</item>
+        <item>Suomi</item>
+        <item>Français</item>
+        <item>Magyar</item>
+        <item>Italiano</item>
+        <item>日本語</item>
+        <item>한국어</item>
+        <item>Lietuvių</item>
+        <item>Latviešu</item>
+        <item>Nederlands</item>
+        <item>Polski</item>
+        <item>Português</item>
+        <item>Română</item>
+        <item>Русский</item>
+        <item>Svenska</item>
+        <item>Türkçe</item>
+        <item>Tiếng Việt</item>
+        <item>简体中文</item>
+        <item>繁體中文</item>
+    </string-array>
+    <string-array name="pref_language_array_values" translatable="false">
+        <item></item>
+        <item>en</item>
+        <item>ar</item>
+        <item>bg</item>
+        <item>cs</item>
+        <item>da</item>
+        <item>de</item>
+        <item>el</item>
+        <item>et</item>
+        <item>es</item>
+        <item>fi</item>
+        <item>fr</item>
+        <item>hu</item>
+        <item>it</item>
+        <item>ja</item>
+        <item>ko</item>
+        <item>lt</item>
+        <item>lv</item>
+        <item>nl</item>
+        <item>pl</item>
+        <item>pt</item>
+        <item>ro</item>
+        <item>ru</item>
+        <item>sv</item>
+        <item>tr</item>
+        <item>vi</item>
+        <item>zh-rCN</item>
+        <item>zh-rTW</item>
     </string-array>
 </resources>

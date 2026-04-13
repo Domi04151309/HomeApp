@@ -90,6 +90,9 @@
     <string name="pref_general">一般設定</string>
     <string name="pref_columns">欄數</string>
     <string name="pref_columns_summary">變更主清單的欄數</string>
+    <string name="pref_language">語言</string>
+    <string name="pref_language_summary">選擇應用語言</string>
+    <string name="pref_language_restart">正在重新啟動應用以套用語言...</string>
     <string name="pref_devices">裝置</string>
     <string name="pref_edit">編輯裝置清單</string>
     <string name="pref_edit_summary">編輯裝置清單</string>
@@ -180,5 +183,65 @@
     <string-array name="pref_add_method_array">
         <item>使用位址新增裝置</item>
         <item>搜尋相容裝置（實驗性）</item>
+    </string-array>
+    <string-array name="pref_language_array">
+        <item>系統預設</item>
+        <item>English</item>
+        <item>العربية</item>
+        <item>Български</item>
+        <item>Čeština</item>
+        <item>Dansk</item>
+        <item>Deutsch</item>
+        <item>Ελληνικά</item>
+        <item>Eesti</item>
+        <item>Español</item>
+        <item>Suomi</item>
+        <item>Français</item>
+        <item>Magyar</item>
+        <item>Italiano</item>
+        <item>日本語</item>
+        <item>한국어</item>
+        <item>Lietuvių</item>
+        <item>Latviešu</item>
+        <item>Nederlands</item>
+        <item>Polski</item>
+        <item>Português</item>
+        <item>Română</item>
+        <item>Русский</item>
+        <item>Svenska</item>
+        <item>Türkçe</item>
+        <item>Tiếng Việt</item>
+        <item>简体中文</item>
+        <item>繁體中文</item>
+    </string-array>
+    <string-array name="pref_language_array_values" translatable="false">
+        <item></item>
+        <item>en</item>
+        <item>ar</item>
+        <item>bg</item>
+        <item>cs</item>
+        <item>da</item>
+        <item>de</item>
+        <item>el</item>
+        <item>et</item>
+        <item>es</item>
+        <item>fi</item>
+        <item>fr</item>
+        <item>hu</item>
+        <item>it</item>
+        <item>ja</item>
+        <item>ko</item>
+        <item>lt</item>
+        <item>lv</item>
+        <item>nl</item>
+        <item>pl</item>
+        <item>pt</item>
+        <item>ro</item>
+        <item>ru</item>
+        <item>sv</item>
+        <item>tr</item>
+        <item>vi</item>
+        <item>zh-rCN</item>
+        <item>zh-rTW</item>
     </string-array>
 </resources>
