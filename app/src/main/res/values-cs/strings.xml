@@ -1,0 +1,184 @@
+<resources>
+    <string name="app_name">Domov</string>
+    <string name="app_description">Malá aplikace pro chytrou domácnost pro Philips Hue, Arduino a další zařízení</string>
+
+    <string name="main_no_devices">Nenalezena žádná zařízení</string>
+    <string name="main_no_devices_summary">Přidejte nové zařízení v nastavení</string>
+    <string name="main_device_nonexistent">Zařízení neexistuje ve vašem seznamu</string>
+    <string name="main_tap_to_connect">Klepněte pro připojení</string>
+    <string name="main_connecting">Připojování</string>
+    <string name="main_network_not_secure">Připojení není zabezpečené</string>
+    <string name="main_unknown_mode">Zařízení používá neznámý režim</string>
+    <string name="main_device_unavailable">Zařízení je momentálně nedostupné</string>
+    <string name="main_parse_error">Odpověď nesplňuje požadavky</string>
+    <string name="main_client_error">Zařízení neodpovědělo</string>
+    <string name="main_execution_completed">Provádění bylo úspěšně dokončeno</string>
+
+    <string name="main_device_icon">Ikona zařízení</string>
+    <string name="main_device_name">Vaše zařízení</string>
+
+    <string name="err">Něco se pokazilo</string>
+    <string name="err_wrong_format">Špatný formát</string>
+    <string name="err_missing_name">Zadejte prosím název</string>
+    <string name="err_missing_name_summary">Název je důležitý, abyste později mohli položku rozpoznat</string>
+    <string name="err_missing_address">Zadejte prosím adresu</string>
+    <string name="err_missing_address_summary">Adresa je důležitá, protože umožňuje aplikaci dosáhnout zařízení</string>
+
+    <string name="hue_connect">Připojte se k vašemu Bridge</string>
+    <string name="hue_press_button">Stiskněte prosím tlačítko na vašem bridge pro pokračování.</string>
+    <string name="hue_tap">Klepněte pro výběr</string>
+    <string name="hue_brightness">Jas</string>
+    <string name="hue_color_temperature">Barva teploty</string>
+    <string name="hue_hue_sat">Odstín a sytost</string>
+    <string name="hue_scene">Scéna</string>
+    <string name="hue_add_scene">Přidat scénu</string>
+    <string name="hue_new_scene">Nová scéna</string>
+    <string name="hue_delete_scene">Jste si jisti, že chcete smazat tuto scénu?</string>
+    <string name="hue_bridge">Bridge</string>
+    <string name="hue_bridge_name">Název Bridge</string>
+    <string name="hue_bridge_model">Model Bridge</string>
+    <string name="hue_bridge_id">ID Bridge</string>
+    <string name="hue_bridge_software">Verze softwaru</string>
+    <string name="hue_bridge_zigbee">Zigbee kanál</string>
+    <string name="hue_bridge_dhcp">DHCP</string>
+    <string name="hue_bridge_time_zone">Časové pásmo</string>
+    <string name="hue_users">Uživatelé</string>
+    <string name="hue_controls">Ovládání</string>
+    <string name="hue_lights">Světla</string>
+    <string name="hue_room">Hue místnost</string>
+    <string name="hue_scene_shortcut">Hue scéna</string>
+
+    <string name="tasmota_empty_list">Zatím nebyly přidány žádné příkazy</string>
+    <string name="tasmota_empty_list_summary">Přidejte příkazy níže</string>
+    <string name="tasmota_add_command">Přidat příkaz do seznamu</string>
+    <string name="tasmota_add_command_summary">Přidejte nový příkaz do vašeho seznamu</string>
+    <string name="tasmota_add_command_dialog_title">Název</string>
+    <string name="tasmota_add_command_dialog_title_empty">Příkaz</string>
+    <string name="tasmota_delete_command">Jste si jisti, že chcete smazat tuto položku?</string>
+    <string name="tasmota_execute_once">Provést příkaz</string>
+    <string name="tasmota_execute_once_summary">Provést příkaz jednou bez přidání do seznamu</string>
+    <string name="tasmota_open_ui">Přejít na Tasmota UI</string>
+    <string name="tasmota_open_ui_summary">Opens the Tasmota UI in a browser</string>
+
+    <string name="shelly_humidity_sensor_summary">Aktuální vlhkost</string>
+    <string name="shelly_powermeter_summary">Aktuální spotřeba energie</string>
+    <string name="shelly_powermeter_current">Proud</string>
+    <string name="shelly_powermeter_voltage">Napětí</string>
+    <string name="shelly_powermeter_energy">Energie</string>
+    <string name="shelly_powermeter_return_energy">Vrácená energie</string>
+    <string name="shelly_switch_title">Spínač %1$d</string>
+    <string name="shelly_temperature_sensor_summary">Aktuální teplota</string>
+    <string name="shelly_wifi">WiFi</string>
+    <string name="shelly_mqtt">MQTT</string>
+    <string name="shelly_cloud">Cloud</string>
+    <string name="shelly_uptime">Doba provozu</string>
+    <string name="shelly_storage">Použité úložiště</string>
+    <string name="shelly_ram">Použitá RAM</string>
+    <string name="shelly_update">Dostupné aktualizace</string>
+
+    <string name="input_title">Zadejte prosím něco</string>
+    <string name="input_hint">Vstup</string>
+
+    <string name="webView">Webové zobrazení</string>
+    <string name="webView_open">Otevřít v prohlížeči</string>
+    <string name="webView_error">Načítání webové stránky selhalo</string>
+    <string name="webView_error_summary">Zkontrolujte prosím své síťové připojení nebo to zkuste znovu později</string>
+    <string name="webView_authentication">Autentizace</string>
+    <string name="webView_ssl_error">Nedůvěryhodný certifikát</string>
+
+    <string name="pref">Nastavení</string>
+    <string name="pref_general">Obecná nastavení</string>
+    <string name="pref_columns">Počet sloupců</string>
+    <string name="pref_columns_summary">Změní počet sloupců hlavního seznamu</string>
+    <string name="pref_devices">Zařízení</string>
+    <string name="pref_edit">Upravit seznam zařízení</string>
+    <string name="pref_edit_summary">Upravte seznam zařízení</string>
+    <string name="pref_delete_device_question">Jste si jisti, že chcete smazat toto zařízení?</string>
+    <string name="pref_device_config">Konfigurace zařízení</string>
+    <string name="pref_add_shortcut">Přidat na domovskou obrazovku</string>
+    <string name="pref_add_shortcut_failed">Zkratky nejsou vaším systémem podporovány</string>
+    <string name="pref_add">Přidat nové zařízení</string>
+    <string name="pref_add_summary">Přidejte nové zařízení s jeho adresou</string>
+    <string name="pref_add_method">Vyberte metodu</string>
+    <string name="pref_add_new_device">Nové zařízení</string>
+    <string name="pref_add_id">Interní ID: %1$s</string>
+    <string name="pref_add_name">Název</string>
+    <string name="pref_add_name_example">např. Zařízení</string>
+    <string name="pref_add_name_empty">Zařízení</string>
+    <string name="pref_add_address">Adresa</string>
+    <string name="pref_add_address_example">např. http://127.0.0.1/</string>
+    <string name="pref_add_icon">Ikona</string>
+    <string name="pref_add_mode">Režim</string>
+    <string name="pref_add_search">Hledání kompatibilních zařízení</string>
+    <string name="pref_add_search_summary">To může trvat několik sekund</string>
+    <string name="pref_add_dialog">Přidat zařízení</string>
+    <string name="pref_add_dialog_message">Chcete přidat &#8220;%1$s&#8221; do vašich zařízení?</string>
+    <string name="pref_edit_text">Pokročilá úprava</string>
+    <string name="pref_edit_text_summary">Upravte JSON řetězec sami</string>
+    <string name="pref_controls_auth">Vyžadovat odemknutí zařízení pro ovládání</string>
+    <string name="pref_controls_auth_summary">Vyžadovat odemknutí zařízení pro ovládání v menu napájení</string>
+    <string name="pref_advanced">Pokročilá nastavení</string>
+    <string name="pref_reset">Smazat všechna zařízení</string>
+    <string name="pref_reset_summary">Toto smaže všechna vaše zařízení</string>
+    <string name="pref_reset_question">Jste si jisti, že chcete smazat všechna vaše zařízení? Toto nelze vrátit zpět!</string>
+    <string name="pref_reset_toast">Všechna zařízení byla smazána</string>
+    <string name="pref_safety_checks">Blokovat potenciálně nebezpečné požadavky</string>
+    <string name="pref_safety_checks_summary">Provést základní bezpečnostní kontroly\nVarování: Vypnutí této funkce může vést k úniku připojovacích dat útočníkům!</string>
+    <string name="pref_info">Informace</string>
+    <string name="pref_info_wiki">Wiki</string>
+    <string name="pref_info_wiki_summary">Dokumentace a nápověda</string>
+    <string name="pref_info_header">Pozadí hlavičky</string>
+    <string name="pref_info_header_summary">Pozadí hlavičky od Alberta Castilla Q. na Unsplash</string>
+    <string name="pref_device_router">Router</string>
+    <string name="placeholder">Načítání</string>
+
+    <string name="security_username">Uživatelské jméno</string>
+    <string name="security_password">Heslo</string>
+
+    <string name="device_config_direct_view">Načíst zařízení s hlavním seznamem</string>
+    <string name="device_config_hide">Skrýt zařízení z hlavního seznamu</string>
+    <string name="device_config_hidden">skryté</string>
+    <string name="device_config_info">Informace o zařízení</string>
+    <string name="device_config_info_status">Stav</string>
+
+    <string name="str_cancel">Zrušit</string>
+    <string name="str_edit">Upravit</string>
+    <string name="str_delete">Smazat</string>
+    <string name="str_show">Zobrazit</string>
+    <string name="str_done">Hotovo</string>
+    <string name="str_add">Přidat</string>
+    <string name="str_send">Odeslat</string>
+    <string name="str_on">Zapnuto</string>
+    <string name="str_off">Vypnuto</string>
+    <string name="str_yes">Ano</string>
+    <string name="str_no">Ne</string>
+    <string name="str_unreachable">Nedostupné</string>
+
+    <string name="about">O aplikaci</string>
+    <string name="about_summary">O aplikaci</string>
+    <string name="about_app_version">Verze aplikace</string>
+    <string name="about_privacy">Externí obsah</string>
+    <string name="about_privacy_desc">Externí obsah bude načten z GitHubu. Přečtěte si jejich zásady ochrany osobních údajů pro další informace.</string>
+    <string name="about_privacy_policy">Zásady ochrany osobních údajů</string>
+    <string name="about_contributors">Přispěvatelé</string>
+    <string name="about_contributors_desc">Seznam přispěvatelů</string>
+    <string name="about_general">Obecné</string>
+    <string name="about_github">GitHub repozitář</string>
+    <string name="about_license">Licence</string>
+    <string name="about_icons">Ikony</string>
+    <string name="about_icons_desc">Ikony od Icons8 a Google</string>
+    <string name="about_libraries">Knihovny</string>
+    <string name="about_libraries_desc">Seznam všech použitých knihoven</string>
+
+    <string-array name="pref_columns_array">
+        <item>Auto</item>
+        <item>Jeden</item>
+        <item>Dva</item>
+        <item>Tři</item>
+        <item>Čtyři</item>
+    </string-array>
+    <string-array name="pref_add_method_array">
+        <item>Přidat zařízení podle adresy</item>
+        <item>Hledat kompatibilní zařízení (experimentální)</item>
+    </string-array>
+</resources>

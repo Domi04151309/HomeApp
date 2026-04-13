@@ -1,0 +1,184 @@
+<resources>
+    <string name="app_name">Home</string>
+    <string name="app_description">Philips Hue、Arduino、その他のデバイス用のスマートホームアプリ</string>
+
+    <string name="main_no_devices">デバイスが見つかりません</string>
+    <string name="main_no_devices_summary">設定で新しいデバイスを追加してください</string>
+    <string name="main_device_nonexistent">リストにこのデバイスは存在しません</string>
+    <string name="main_tap_to_connect">タップして接続</string>
+    <string name="main_connecting">接続中</string>
+    <string name="main_network_not_secure">接続が安全ではありません</string>
+    <string name="main_unknown_mode">デバイスが不明なモードを使用しています</string>
+    <string name="main_device_unavailable">デバイスは現在利用できません</string>
+    <string name="main_parse_error">応答が要件を満たしていません</string>
+    <string name="main_client_error">デバイスが応答しませんでした</string>
+    <string name="main_execution_completed">実行が正常に完了しました</string>
+
+    <string name="main_device_icon">デバイスアイコン</string>
+    <string name="main_device_name">あなたのデバイス</string>
+
+    <string name="err">エラーが発生しました</string>
+    <string name="err_wrong_format">形式が正しくありません</string>
+    <string name="err_missing_name">名前を入力してください</string>
+    <string name="err_missing_name_summary">名前は後でエントリーを認識できるようにするために重要です</string>
+    <string name="err_missing_address">アドレスを入力してください</string>
+    <string name="err_missing_address_summary">アドレスはアプリがデバイスに到達できるようにするために重要です</string>
+
+    <string name="hue_connect">ブリッジに接続</string>
+    <string name="hue_press_button">続行するにはブリッジのボタンを押してください。</string>
+    <string name="hue_tap">タップして選択</string>
+    <string name="hue_brightness">明るさ</string>
+    <string name="hue_color_temperature">色温度</string>
+    <string name="hue_hue_sat">色相と彩度</string>
+    <string name="hue_scene">シーン</string>
+    <string name="hue_add_scene">シーンを追加</string>
+    <string name="hue_new_scene">新しいシーン</string>
+    <string name="hue_delete_scene">このシーンを削除してもよろしいですか？</string>
+    <string name="hue_bridge">ブリッジ</string>
+    <string name="hue_bridge_name">ブリッジ名</string>
+    <string name="hue_bridge_model">ブリッジモデル</string>
+    <string name="hue_bridge_id">ブリッジID</string>
+    <string name="hue_bridge_software">ソフトウェアバージョン</string>
+    <string name="hue_bridge_zigbee">Zigbeeチャンネル</string>
+    <string name="hue_bridge_dhcp">DHCP</string>
+    <string name="hue_bridge_time_zone">タイムゾーン</string>
+    <string name="hue_users">ユーザー</string>
+    <string name="hue_controls">コントロール</string>
+    <string name="hue_lights">ライト</string>
+    <string name="hue_room">Hueルーム</string>
+    <string name="hue_scene_shortcut">Hueシーン</string>
+
+    <string name="tasmota_empty_list">コマンドがまだ追加されていません</string>
+    <string name="tasmota_empty_list_summary">以下にコマンドを追加してください</string>
+    <string name="tasmota_add_command">リストにコマンドを追加</string>
+    <string name="tasmota_add_command_summary">リストに新しいコマンドを追加</string>
+    <string name="tasmota_add_command_dialog_title">タイトル</string>
+    <string name="tasmota_add_command_dialog_title_empty">コマンド</string>
+    <string name="tasmota_delete_command">このエントリーを削除してもよろしいですか？</string>
+    <string name="tasmota_execute_once">コマンドを実行</string>
+    <string name="tasmota_execute_once_summary">リストに追加せずに一度だけコマンドを実行</string>
+    <string name="tasmota_open_ui">Tasmota UIへ移動</string>
+    <string name="tasmota_open_ui_summary">Opens the Tasmota UI in a browser</string>
+
+    <string name="shelly_humidity_sensor_summary">現在の湿度</string>
+    <string name="shelly_powermeter_summary">現在の消費電力</string>
+    <string name="shelly_powermeter_current">電流</string>
+    <string name="shelly_powermeter_voltage">電圧</string>
+    <string name="shelly_powermeter_energy">エネルギー</string>
+    <string name="shelly_powermeter_return_energy">返還エネルギー</string>
+    <string name="shelly_switch_title">スイッチ %1$d</string>
+    <string name="shelly_temperature_sensor_summary">現在の温度</string>
+    <string name="shelly_wifi">WiFi</string>
+    <string name="shelly_mqtt">MQTT</string>
+    <string name="shelly_cloud">クラウド</string>
+    <string name="shelly_uptime">稼働時間</string>
+    <string name="shelly_storage">使用ストレージ</string>
+    <string name="shelly_ram">使用RAM</string>
+    <string name="shelly_update">利用可能な更新</string>
+
+    <string name="input_title">何かを入力してください</string>
+    <string name="input_hint">入力</string>
+
+    <string name="webView">ウェブビュー</string>
+    <string name="webView_open">ブラウザで開く</string>
+    <string name="webView_error">ウェブサイトの読み込みに失敗しました</string>
+    <string name="webView_error_summary">ネットワーク接続を確認するか、後でもう一度お試しください</string>
+    <string name="webView_authentication">認証</string>
+    <string name="webView_ssl_error">信頼できない証明書</string>
+
+    <string name="pref">設定</string>
+    <string name="pref_general">一般設定</string>
+    <string name="pref_columns">列数</string>
+    <string name="pref_columns_summary">メインリストの列数を変更</string>
+    <string name="pref_devices">デバイス</string>
+    <string name="pref_edit">デバイスリストを編集</string>
+    <string name="pref_edit_summary">デバイスのリストを編集</string>
+    <string name="pref_delete_device_question">このデバイスを削除してもよろしいですか？</string>
+    <string name="pref_device_config">デバイス設定</string>
+    <string name="pref_add_shortcut">ホーム画面に追加</string>
+    <string name="pref_add_shortcut_failed">ショートカットはお使いのシステムでサポートされていません</string>
+    <string name="pref_add">新しいデバイスを追加</string>
+    <string name="pref_add_summary">アドレスを指定して新しいデバイスを追加</string>
+    <string name="pref_add_method">方法を選択</string>
+    <string name="pref_add_new_device">新しいデバイス</string>
+    <string name="pref_add_id">内部ID: %1$s</string>
+    <string name="pref_add_name">名前</string>
+    <string name="pref_add_name_example">例: デバイス</string>
+    <string name="pref_add_name_empty">デバイス</string>
+    <string name="pref_add_address">アドレス</string>
+    <string name="pref_add_address_example">例: http://127.0.0.1/</string>
+    <string name="pref_add_icon">アイコン</string>
+    <string name="pref_add_mode">モード</string>
+    <string name="pref_add_search">互換性のあるデバイスを検索中</string>
+    <string name="pref_add_search_summary">これには数秒かかる場合があります</string>
+    <string name="pref_add_dialog">デバイスを追加</string>
+    <string name="pref_add_dialog_message">「%1$s」をデバイスに追加しますか？</string>
+    <string name="pref_edit_text">詳細編集</string>
+    <string name="pref_edit_text_summary">JSON文字列を自分で編集</string>
+    <string name="pref_controls_auth">コントロールにデバイスのロック解除が必要</string>
+    <string name="pref_controls_auth_summary">電源メニューのコントロールにデバイスのロック解除が必要</string>
+    <string name="pref_advanced">詳細設定</string>
+    <string name="pref_reset">すべてのデバイスを削除</string>
+    <string name="pref_reset_summary">すべてのデバイスを削除します</string>
+    <string name="pref_reset_question">すべてのデバイスを削除してもよろしいですか？これは元に戻せません！</string>
+    <string name="pref_reset_toast">すべてのデバイスを削除しました</string>
+    <string name="pref_safety_checks">潜在的に安全でないリクエストをブロック</string>
+    <string name="pref_safety_checks_summary">基本的なセキュリティチェックを実行\n警告: これをオフにすると、接続データが攻撃者に漏れる可能性があります！</string>
+    <string name="pref_info">情報</string>
+    <string name="pref_info_wiki">Wiki</string>
+    <string name="pref_info_wiki_summary">ドキュメントとヘルプ</string>
+    <string name="pref_info_header">ヘッダー背景</string>
+    <string name="pref_info_header_summary">ヘッダー背景 by Alberto Castillo Q. on Unsplash</string>
+    <string name="pref_device_router">ルーター</string>
+    <string name="placeholder">読み込み中</string>
+
+    <string name="security_username">ユーザー名</string>
+    <string name="security_password">パスワード</string>
+
+    <string name="device_config_direct_view">メインリストでデバイスを読み込む</string>
+    <string name="device_config_hide">メインリストからデバイスを非表示</string>
+    <string name="device_config_hidden">非表示</string>
+    <string name="device_config_info">デバイス情報</string>
+    <string name="device_config_info_status">ステータス</string>
+
+    <string name="str_cancel">キャンセル</string>
+    <string name="str_edit">編集</string>
+    <string name="str_delete">削除</string>
+    <string name="str_show">表示</string>
+    <string name="str_done">完了</string>
+    <string name="str_add">追加</string>
+    <string name="str_send">送信</string>
+    <string name="str_on">オン</string>
+    <string name="str_off">オフ</string>
+    <string name="str_yes">はい</string>
+    <string name="str_no">いいえ</string>
+    <string name="str_unreachable">到達不能</string>
+
+    <string name="about">アプリについて</string>
+    <string name="about_summary">アプリについて</string>
+    <string name="about_app_version">アプリバージョン</string>
+    <string name="about_privacy">外部コンテンツ</string>
+    <string name="about_privacy_desc">外部コンテンツはGitHubから読み込まれます。詳細についてはプライバシーポリシーをお読みください。</string>
+    <string name="about_privacy_policy">プライバシーポリシー</string>
+    <string name="about_contributors">貢献者</string>
+    <string name="about_contributors_desc">貢献者のリスト</string>
+    <string name="about_general">一般</string>
+    <string name="about_github">GitHubリポジトリ</string>
+    <string name="about_license">ライセンス</string>
+    <string name="about_icons">アイコン</string>
+    <string name="about_icons_desc">Icons8とGoogleによるアイコン</string>
+    <string name="about_libraries">ライブラリ</string>
+    <string name="about_libraries_desc">使用されているすべてのライブラリのリスト</string>
+
+    <string-array name="pref_columns_array">
+        <item>自動</item>
+        <item>1列</item>
+        <item>2列</item>
+        <item>3列</item>
+        <item>4列</item>
+    </string-array>
+    <string-array name="pref_add_method_array">
+        <item>アドレスでデバイスを追加</item>
+        <item>互換性のあるデバイスを検索（実験的）</item>
+    </string-array>
+</resources>

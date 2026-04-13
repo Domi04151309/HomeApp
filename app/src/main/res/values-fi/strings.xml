@@ -1,0 +1,184 @@
+<resources>
+    <string name="app_name">Home</string>
+    <string name="app_description">Pieni älykotisovellus Philips Huelle, Arduinolle ja muille laitteille</string>
+
+    <string name="main_no_devices">Laitteita ei löytynyt</string>
+    <string name="main_no_devices_summary">Lisää uusi laite asetuksista</string>
+    <string name="main_device_nonexistent">Laitetta ei ole listallasi</string>
+    <string name="main_tap_to_connect">Napauta yhdistääksesi</string>
+    <string name="main_connecting">Yhdistetään</string>
+    <string name="main_network_not_secure">Yhteys ei ole turvallinen</string>
+    <string name="main_unknown_mode">Laite käyttää tuntematonta tilaa</string>
+    <string name="main_device_unavailable">Laite ei ole tällä hetkellä saatavilla</string>
+    <string name="main_parse_error">Vastaus ei täytä vaatimuksia</string>
+    <string name="main_client_error">Laite ei vastannut</string>
+    <string name="main_execution_completed">Suoritus onnistui</string>
+
+    <string name="main_device_icon">Laitteen kuvake</string>
+    <string name="main_device_name">Laitteesi</string>
+
+    <string name="err">Jotain meni vikaan</string>
+    <string name="err_wrong_format">Väärä muoto</string>
+    <string name="err_missing_name">Anna nimi</string>
+    <string name="err_missing_name_summary">Nimi on tärkeä, jotta voit tunnistaa merkinnän myöhemmin</string>
+    <string name="err_missing_address">Anna osoite</string>
+    <string name="err_missing_address_summary">Osoite on tärkeä, koska se mahdollistaa sovelluksen yhteyden laitteeseen</string>
+
+    <string name="hue_connect">Yhdistä Bridgeesi</string>
+    <string name="hue_press_button">Paina painiketta bridgessä jatkaaksesi.</string>
+    <string name="hue_tap">Napauta valitaksesi</string>
+    <string name="hue_brightness">Kirkkaus</string>
+    <string name="hue_color_temperature">Värilämpötila</string>
+    <string name="hue_hue_sat">Sävy ja kylläisyys</string>
+    <string name="hue_scene">Tilanne</string>
+    <string name="hue_add_scene">Lisää tilanne</string>
+    <string name="hue_new_scene">Uusi tilanne</string>
+    <string name="hue_delete_scene">Haluatko varmasti poistaa tämän tilanteen?</string>
+    <string name="hue_bridge">Bridge</string>
+    <string name="hue_bridge_name">Bridgen nimi</string>
+    <string name="hue_bridge_model">Bridgen malli</string>
+    <string name="hue_bridge_id">Bridgen tunniste</string>
+    <string name="hue_bridge_software">Ohjelmistoversio</string>
+    <string name="hue_bridge_zigbee">Zigbee-kanava</string>
+    <string name="hue_bridge_dhcp">DHCP</string>
+    <string name="hue_bridge_time_zone">Aikavyöhyke</string>
+    <string name="hue_users">Käyttäjät</string>
+    <string name="hue_controls">Ohjaukset</string>
+    <string name="hue_lights">Valot</string>
+    <string name="hue_room">Hue-huone</string>
+    <string name="hue_scene_shortcut">Hue-tilanne</string>
+
+    <string name="tasmota_empty_list">Komentoja ei ole vielä lisätty</string>
+    <string name="tasmota_empty_list_summary">Lisää komentoja alta</string>
+    <string name="tasmota_add_command">Lisää komento listaan</string>
+    <string name="tasmota_add_command_summary">Lisää uusi komento listaasi</string>
+    <string name="tasmota_add_command_dialog_title">Otsikko</string>
+    <string name="tasmota_add_command_dialog_title_empty">Komento</string>
+    <string name="tasmota_delete_command">Haluatko varmasti poistaa tämän merkinnän?</string>
+    <string name="tasmota_execute_once">Suorita komento</string>
+    <string name="tasmota_execute_once_summary">Suorita komento kerran lisäämättä sitä listaan</string>
+    <string name="tasmota_open_ui">Siirry Tasmota-käyttöliittymään</string>
+    <string name="tasmota_open_ui_summary">Opens the Tasmota UI in a browser</string>
+
+    <string name="shelly_humidity_sensor_summary">Nykyinen kosteus</string>
+    <string name="shelly_powermeter_summary">Nykyinen virrankulutus</string>
+    <string name="shelly_powermeter_current">Virta</string>
+    <string name="shelly_powermeter_voltage">Jännite</string>
+    <string name="shelly_powermeter_energy">Energia</string>
+    <string name="shelly_powermeter_return_energy">Palautettu energia</string>
+    <string name="shelly_switch_title">Kytkin %1$d</string>
+    <string name="shelly_temperature_sensor_summary">Nykyinen lämpötila</string>
+    <string name="shelly_wifi">WiFi</string>
+    <string name="shelly_mqtt">MQTT</string>
+    <string name="shelly_cloud">Pilvi</string>
+    <string name="shelly_uptime">Käyntiaika</string>
+    <string name="shelly_storage">Käytetty tallennustila</string>
+    <string name="shelly_ram">Käytetty RAM</string>
+    <string name="shelly_update">Päivityksiä saatavilla</string>
+
+    <string name="input_title">Anna jotain</string>
+    <string name="input_hint">Syöte</string>
+
+    <string name="webView">Verkkonäkymä</string>
+    <string name="webView_open">Avaa selaimessa</string>
+    <string name="webView_error">Verkkosivun lataaminen epäonnistui</string>
+    <string name="webView_error_summary">Tarkista verkkoyhteytesi tai yritä myöhemmin uudelleen</string>
+    <string name="webView_authentication">Todennus</string>
+    <string name="webView_ssl_error">Ei-luotettu varmenne</string>
+
+    <string name="pref">Asetukset</string>
+    <string name="pref_general">Yleiset asetukset</string>
+    <string name="pref_columns">Sarakkeiden määrä</string>
+    <string name="pref_columns_summary">Muuttaa päälistan sarakkeiden määrää</string>
+    <string name="pref_devices">Laitteet</string>
+    <string name="pref_edit">Muokkaa laiteluetteloa</string>
+    <string name="pref_edit_summary">Muokkaa laitelistaa</string>
+    <string name="pref_delete_device_question">Haluatko varmasti poistaa tämän laitteen?</string>
+    <string name="pref_device_config">Laitteen asetukset</string>
+    <string name="pref_add_shortcut">Lisää aloitusnäytölle</string>
+    <string name="pref_add_shortcut_failed">Pikakuvakkeita ei tueta järjestelmässäsi</string>
+    <string name="pref_add">Lisää uusi laite</string>
+    <string name="pref_add_summary">Lisää uusi laite sen osoitteella</string>
+    <string name="pref_add_method">Valitse menetelmä</string>
+    <string name="pref_add_new_device">Uusi laite</string>
+    <string name="pref_add_id">Sisäinen tunniste: %1$s</string>
+    <string name="pref_add_name">Nimi</string>
+    <string name="pref_add_name_example">esim. Laite</string>
+    <string name="pref_add_name_empty">Laite</string>
+    <string name="pref_add_address">Osoite</string>
+    <string name="pref_add_address_example">esim. http://127.0.0.1/</string>
+    <string name="pref_add_icon">Kuvake</string>
+    <string name="pref_add_mode">Tila</string>
+    <string name="pref_add_search">Etsitään yhteensopivia laitteita</string>
+    <string name="pref_add_search_summary">Tämä voi kestää muutaman sekunnin</string>
+    <string name="pref_add_dialog">Lisää laite</string>
+    <string name="pref_add_dialog_message">Haluatko lisätä &#8220;%1$s&#8221; laitteisiisi?</string>
+    <string name="pref_edit_text">Edistynyt muokkaus</string>
+    <string name="pref_edit_text_summary">Muokkaa JSON-merkkijonoa itse</string>
+    <string name="pref_controls_auth">Vaadi laitteen lukituksen avaus ohjauksille</string>
+    <string name="pref_controls_auth_summary">Vaadi laitteen olevan avattu virranhallintavalikon ohjauksille</string>
+    <string name="pref_advanced">Edistyneet asetukset</string>
+    <string name="pref_reset">Poista kaikki laitteet</string>
+    <string name="pref_reset_summary">Tämä poistaa kaikki laitteesi</string>
+    <string name="pref_reset_question">Haluatko varmasti poistaa kaikki laitteesi? Tätä ei voi peruuttaa!</string>
+    <string name="pref_reset_toast">Kaikki laitteet poistettu</string>
+    <string name="pref_safety_checks">Estä mahdollisesti vaaralliset pyynnöt</string>
+    <string name="pref_safety_checks_summary">Suorita perusturvatarkistukset\nVaroitus: Tämän poistaminen käytöstä voi vuotaa yhteystietoja hyökkääjille!</string>
+    <string name="pref_info">Tiedot</string>
+    <string name="pref_info_wiki">Wiki</string>
+    <string name="pref_info_wiki_summary">Dokumentaatio ja ohjeet</string>
+    <string name="pref_info_header">Otsikon tausta</string>
+    <string name="pref_info_header_summary">Otsikon tausta: Alberto Castillo Q. Unsplashissa</string>
+    <string name="pref_device_router">Reititin</string>
+    <string name="placeholder">Ladataan</string>
+
+    <string name="security_username">Käyttäjätunnus</string>
+    <string name="security_password">Salasana</string>
+
+    <string name="device_config_direct_view">Lataa laite päälistan kanssa</string>
+    <string name="device_config_hide">Piilota laite päälistasta</string>
+    <string name="device_config_hidden">piilotettu</string>
+    <string name="device_config_info">Laitteen tiedot</string>
+    <string name="device_config_info_status">Tila</string>
+
+    <string name="str_cancel">Peruuta</string>
+    <string name="str_edit">Muokkaa</string>
+    <string name="str_delete">Poista</string>
+    <string name="str_show">Näytä</string>
+    <string name="str_done">Valmis</string>
+    <string name="str_add">Lisää</string>
+    <string name="str_send">Lähetä</string>
+    <string name="str_on">Päällä</string>
+    <string name="str_off">Pois</string>
+    <string name="str_yes">Kyllä</string>
+    <string name="str_no">Ei</string>
+    <string name="str_unreachable">Tavoittamattomissa</string>
+
+    <string name="about">Tietoja</string>
+    <string name="about_summary">Tietoja sovelluksesta</string>
+    <string name="about_app_version">Sovellusversio</string>
+    <string name="about_privacy">Ulkoinen sisältö</string>
+    <string name="about_privacy_desc">Ulkoinen sisältö ladataan GitHubista. Lue heidän tietosuojakäytäntönsä lisätietoja varten.</string>
+    <string name="about_privacy_policy">Tietosuojakäytäntö</string>
+    <string name="about_contributors">Avustajat</string>
+    <string name="about_contributors_desc">Luettelo avustajista</string>
+    <string name="about_general">Yleistä</string>
+    <string name="about_github">GitHub-repositorio</string>
+    <string name="about_license">Lisenssi</string>
+    <string name="about_icons">Kuvakkeet</string>
+    <string name="about_icons_desc">Kuvakkeet: Icons8 ja Google</string>
+    <string name="about_libraries">Kirjastot</string>
+    <string name="about_libraries_desc">Luettelo kaikista käytetyistä kirjastoista</string>
+
+    <string-array name="pref_columns_array">
+        <item>Auto</item>
+        <item>Yksi</item>
+        <item>Kaksi</item>
+        <item>Kolme</item>
+        <item>Neljä</item>
+    </string-array>
+    <string-array name="pref_add_method_array">
+        <item>Lisää laite osoitteella</item>
+        <item>Etsi yhteensopivia laitteita (kokeellinen)</item>
+    </string-array>
+</resources>

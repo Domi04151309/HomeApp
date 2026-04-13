@@ -1,0 +1,184 @@
+<resources>
+    <string name="app_name">Начало</string>
+    <string name="app_description">Малко приложение за интелигентен дом за Philips Hue, Arduino и други устройства</string>
+
+    <string name="main_no_devices">Няма намерени устройства</string>
+    <string name="main_no_devices_summary">Добавете ново устройство в настройките</string>
+    <string name="main_device_nonexistent">Устройството не съществува във вашия списък</string>
+    <string name="main_tap_to_connect">Докоснете за свързване</string>
+    <string name="main_connecting">Свързване</string>
+    <string name="main_network_not_secure">Връзката не е сигурна</string>
+    <string name="main_unknown_mode">Устройството използва неизвестен режим</string>
+    <string name="main_device_unavailable">Устройството в момента е недостъпно</string>
+    <string name="main_parse_error">Отговорът не отговаря на изискванията</string>
+    <string name="main_client_error">Устройството не отговори</string>
+    <string name="main_execution_completed">Изпълнението завърши успешно</string>
+
+    <string name="main_device_icon">Икона на устройство</string>
+    <string name="main_device_name">Вашите устройства</string>
+
+    <string name="err">Нещо се обърка</string>
+    <string name="err_wrong_format">Грешен формат</string>
+    <string name="err_missing_name">Моля, въведете име</string>
+    <string name="err_missing_name_summary">Името е важно, за да можете да разпознаете записа по-късно</string>
+    <string name="err_missing_address">Моля, въведете адрес</string>
+    <string name="err_missing_address_summary">Адресът е важен, защото позволява на приложението да достигне устройството</string>
+
+    <string name="hue_connect">Свързване към вашия Bridge</string>
+    <string name="hue_press_button">Моля, натиснете бутона на вашия bridge, за да продължите.</string>
+    <string name="hue_tap">Докоснете за избор</string>
+    <string name="hue_brightness">Яркост</string>
+    <string name="hue_color_temperature">Цветова температура</string>
+    <string name="hue_hue_sat">Hue и наситеност</string>
+    <string name="hue_scene">Сцена</string>
+    <string name="hue_add_scene">Добавяне на сцена</string>
+    <string name="hue_new_scene">Нова сцена</string>
+    <string name="hue_delete_scene">Сигурни ли сте, че искате да изтриете тази сцена?</string>
+    <string name="hue_bridge">Bridge</string>
+    <string name="hue_bridge_name">Име на Bridge</string>
+    <string name="hue_bridge_model">Модел на Bridge</string>
+    <string name="hue_bridge_id">ID на Bridge</string>
+    <string name="hue_bridge_software">Версия на софтуера</string>
+    <string name="hue_bridge_zigbee">Zigbee канал</string>
+    <string name="hue_bridge_dhcp">DHCP</string>
+    <string name="hue_bridge_time_zone">Часова зона</string>
+    <string name="hue_users">Потребители</string>
+    <string name="hue_controls">Контроли</string>
+    <string name="hue_lights">Осветление</string>
+    <string name="hue_room">Стая Hue</string>
+    <string name="hue_scene_shortcut">Сцена Hue</string>
+
+    <string name="tasmota_empty_list">Все още няма добавени команди</string>
+    <string name="tasmota_empty_list_summary">Добавете команди по-долу</string>
+    <string name="tasmota_add_command">Добавяне на команда към списъка</string>
+    <string name="tasmota_add_command_summary">Добавете нова команда към вашия списък</string>
+    <string name="tasmota_add_command_dialog_title">Заглавие</string>
+    <string name="tasmota_add_command_dialog_title_empty">Команда</string>
+    <string name="tasmota_delete_command">Сигурни ли сте, че искате да изтриете този запис?</string>
+    <string name="tasmota_execute_once">Изпълнение на команда</string>
+    <string name="tasmota_execute_once_summary">Изпълнете командата веднъж, без да я добавяте към списъка</string>
+    <string name="tasmota_open_ui">Отидете към Tasmota UI</string>
+    <string name="tasmota_open_ui_summary">Opens the Tasmota UI in a browser</string>
+
+    <string name="shelly_humidity_sensor_summary">Текуща влажност</string>
+    <string name="shelly_powermeter_summary">Текуща консумация на енергия</string>
+    <string name="shelly_powermeter_current">Ток</string>
+    <string name="shelly_powermeter_voltage">Напрежение</string>
+    <string name="shelly_powermeter_energy">Енергия</string>
+    <string name="shelly_powermeter_return_energy">Върната енергия</string>
+    <string name="shelly_switch_title">Превключвател %1$d</string>
+    <string name="shelly_temperature_sensor_summary">Текуща температура</string>
+    <string name="shelly_wifi">WiFi</string>
+    <string name="shelly_mqtt">MQTT</string>
+    <string name="shelly_cloud">Облак</string>
+    <string name="shelly_uptime">Време на работа</string>
+    <string name="shelly_storage">Използвано хранилище</string>
+    <string name="shelly_ram">Използвана RAM</string>
+    <string name="shelly_update">Налични актуализации</string>
+
+    <string name="input_title">Моля, въведете нещо</string>
+    <string name="input_hint">Вход</string>
+
+    <string name="webView">Уеб изглед</string>
+    <string name="webView_open">Отвори в браузър</string>
+    <string name="webView_error">Зареждането на уебсайта не бе успешно</string>
+    <string name="webView_error_summary">Моля, проверете вашата мрежова връзка или опитайте отново по-късно</string>
+    <string name="webView_authentication">Удостоверяване</string>
+    <string name="webView_ssl_error">Недоверено сертификат</string>
+
+    <string name="pref">Настройки</string>
+    <string name="pref_general">Общи настройки</string>
+    <string name="pref_columns">Брой колони</string>
+    <string name="pref_columns_summary">Променя броя колони на основния списък</string>
+    <string name="pref_devices">Устройства</string>
+    <string name="pref_edit">Редактиране на списъка с устройства</string>
+    <string name="pref_edit_summary">Редактирайте списъка с устройства</string>
+    <string name="pref_delete_device_question">Сигурни ли сте, че искате да изтриете това устройство?</string>
+    <string name="pref_device_config">Конфигурация на устройство</string>
+    <string name="pref_add_shortcut">Добавяне към началния екран</string>
+    <string name="pref_add_shortcut_failed">Преки пътища не се поддържат от вашата система</string>
+    <string name="pref_add">Добавяне на ново устройство</string>
+    <string name="pref_add_summary">Добавете ново устройство с неговия адрес</string>
+    <string name="pref_add_method">Избор на метод</string>
+    <string name="pref_add_new_device">Ново устройство</string>
+    <string name="pref_add_id">Вътрешно ID: %1$s</string>
+    <string name="pref_add_name">Име</string>
+    <string name="pref_add_name_example">напр., Устройство</string>
+    <string name="pref_add_name_empty">Устройство</string>
+    <string name="pref_add_address">Адрес</string>
+    <string name="pref_add_address_example">напр., http://127.0.0.1/</string>
+    <string name="pref_add_icon">Икона</string>
+    <string name="pref_add_mode">Режим</string>
+    <string name="pref_add_search">Търсене на съвместими устройства</string>
+    <string name="pref_add_search_summary">Това може да отнеме няколко секунди</string>
+    <string name="pref_add_dialog">Добавяне на устройство</string>
+    <string name="pref_add_dialog_message">Искате ли да добавите &#8220;%1$s&#8221; към вашите устройства?</string>
+    <string name="pref_edit_text">Разширено редактиране</string>
+    <string name="pref_edit_text_summary">Редактирайте JSON низа сами</string>
+    <string name="pref_controls_auth">Изискване на отключване на устройство за контроли</string>
+    <string name="pref_controls_auth_summary">Изисквайте устройството да бъде отключено за контроли в менюто за захранване</string>
+    <string name="pref_advanced">Разширени настройки</string>
+    <string name="pref_reset">Изтриване на всички устройства</string>
+    <string name="pref_reset_summary">Това изтрива всички ваши устройства</string>
+    <string name="pref_reset_question">Сигурни ли сте, че искате да изтриете всичките си устройства? Това не може да бъде отменено!</string>
+    <string name="pref_reset_toast">Изтрити всички устройства</string>
+    <string name="pref_safety_checks">Блокиране на потенциално опасни заявки</string>
+    <string name="pref_safety_checks_summary">Извършване на основни проверки за сигурност\nПредупреждение: Изключването на това може да изтече данни за връзка към нападатели!</string>
+    <string name="pref_info">Информация</string>
+    <string name="pref_info_wiki">Wiki</string>
+    <string name="pref_info_wiki_summary">Документация и помощ</string>
+    <string name="pref_info_header">Фон на заглавката</string>
+    <string name="pref_info_header_summary">Фон на заглавката от Alberto Castillo Q. на Unsplash</string>
+    <string name="pref_device_router">Рутер</string>
+    <string name="placeholder">Зареждане</string>
+
+    <string name="security_username">Потребителско име</string>
+    <string name="security_password">Парола</string>
+
+    <string name="device_config_direct_view">Зареждане на устройство с основния списък</string>
+    <string name="device_config_hide">Скриване на устройство от основния списък</string>
+    <string name="device_config_hidden">скрито</string>
+    <string name="device_config_info">Информация за устройство</string>
+    <string name="device_config_info_status">Състояние</string>
+
+    <string name="str_cancel">Отказ</string>
+    <string name="str_edit">Редактиране</string>
+    <string name="str_delete">Изтриване</string>
+    <string name="str_show">Показване</string>
+    <string name="str_done">Готово</string>
+    <string name="str_add">Добавяне</string>
+    <string name="str_send">Изпращане</string>
+    <string name="str_on">Включено</string>
+    <string name="str_off">Изключено</string>
+    <string name="str_yes">Да</string>
+    <string name="str_no">Не</string>
+    <string name="str_unreachable">Недостъпно</string>
+
+    <string name="about">Относно</string>
+    <string name="about_summary">Относно приложението</string>
+    <string name="about_app_version">Версия на приложението</string>
+    <string name="about_privacy">Външно съдържание</string>
+    <string name="about_privacy_desc">Външно съдържание ще бъде заредено от GitHub. Прочетете тяхната политика за поверителност за допълнителна информация.</string>
+    <string name="about_privacy_policy">Политика за поверителност</string>
+    <string name="about_contributors">Сътрудници</string>
+    <string name="about_contributors_desc">Списък на сътрудниците</string>
+    <string name="about_general">Общи</string>
+    <string name="about_github">GitHub хранилище</string>
+    <string name="about_license">Лиценз</string>
+    <string name="about_icons">Икони</string>
+    <string name="about_icons_desc">Икони от Icons8 и Google</string>
+    <string name="about_libraries">Библиотеки</string>
+    <string name="about_libraries_desc">Списък на всички използвани библиотеки</string>
+
+    <string-array name="pref_columns_array">
+        <item>Автоматично</item>
+        <item>Една</item>
+        <item>Две</item>
+        <item>Три</item>
+        <item>Четири</item>
+    </string-array>
+    <string-array name="pref_add_method_array">
+        <item>Добавяне на устройство по адрес</item>
+        <item>Търсене на съвместими устройства (експериментално)</item>
+    </string-array>
+</resources>

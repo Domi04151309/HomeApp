@@ -1,0 +1,184 @@
+<resources>
+    <string name="app_name">Dom</string>
+    <string name="app_description">Mała aplikacja do inteligentnego domu dla Philips Hue, Arduino i innych urządzeń</string>
+
+    <string name="main_no_devices">Nie znaleziono urządzeń</string>
+    <string name="main_no_devices_summary">Dodaj nowe urządzenie w ustawieniach</string>
+    <string name="main_device_nonexistent">Urządzenie nie istnieje na Twojej liście</string>
+    <string name="main_tap_to_connect">Dotknij, aby połączyć</string>
+    <string name="main_connecting">Łączenie</string>
+    <string name="main_network_not_secure">Połączenie nie jest bezpieczne</string>
+    <string name="main_unknown_mode">Urządzenie używa nieznanego trybu</string>
+    <string name="main_device_unavailable">Urządzenie jest obecnie niedostępne</string>
+    <string name="main_parse_error">Odpowiedź nie spełnia wymagań</string>
+    <string name="main_client_error">Urządzenie nie odpowiedziało</string>
+    <string name="main_execution_completed">Wykonanie zakończone pomyślnie</string>
+
+    <string name="main_device_icon">Ikona urządzenia</string>
+    <string name="main_device_name">Twoje urządzenia</string>
+
+    <string name="err">Coś poszło nie tak</string>
+    <string name="err_wrong_format">Nieprawidłowy format</string>
+    <string name="err_missing_name">Proszę wpisać nazwę</string>
+    <string name="err_missing_name_summary">Nazwa jest ważna, abyś mógł później rozpoznać wpis</string>
+    <string name="err_missing_address">Proszę wpisać adres</string>
+    <string name="err_missing_address_summary">Adres jest ważny, ponieważ umożliwia aplikacji połączenie z urządzeniem</string>
+
+    <string name="hue_connect">Połącz z Bridge</string>
+    <string name="hue_press_button">Naciśnij przycisk na swoim bridge, aby kontynuować.</string>
+    <string name="hue_tap">Dotknij, aby wybrać</string>
+    <string name="hue_brightness">Jasność</string>
+    <string name="hue_color_temperature">Temperatura koloru</string>
+    <string name="hue_hue_sat">Odcień i nasycenie</string>
+    <string name="hue_scene">Scena</string>
+    <string name="hue_add_scene">Dodaj scenę</string>
+    <string name="hue_new_scene">Nowa scena</string>
+    <string name="hue_delete_scene">Czy na pewno chcesz usunąć tę scenę?</string>
+    <string name="hue_bridge">Bridge</string>
+    <string name="hue_bridge_name">Nazwa bridge</string>
+    <string name="hue_bridge_model">Model bridge</string>
+    <string name="hue_bridge_id">ID bridge</string>
+    <string name="hue_bridge_software">Wersja oprogramowania</string>
+    <string name="hue_bridge_zigbee">Kanał Zigbee</string>
+    <string name="hue_bridge_dhcp">DHCP</string>
+    <string name="hue_bridge_time_zone">Strefa czasowa</string>
+    <string name="hue_users">Użytkownicy</string>
+    <string name="hue_controls">Sterowanie</string>
+    <string name="hue_lights">Światła</string>
+    <string name="hue_room">Pokój Hue</string>
+    <string name="hue_scene_shortcut">Scena Hue</string>
+
+    <string name="tasmota_empty_list">Nie dodano jeszcze żadnych poleceń</string>
+    <string name="tasmota_empty_list_summary">Dodaj polecenia poniżej</string>
+    <string name="tasmota_add_command">Dodaj polecenie do listy</string>
+    <string name="tasmota_add_command_summary">Dodaj nowe polecenie do swojej listy</string>
+    <string name="tasmota_add_command_dialog_title">Tytuł</string>
+    <string name="tasmota_add_command_dialog_title_empty">Polecenie</string>
+    <string name="tasmota_delete_command">Czy na pewno chcesz usunąć ten wpis?</string>
+    <string name="tasmota_execute_once">Wykonaj polecenie</string>
+    <string name="tasmota_execute_once_summary">Wykonaj polecenie raz bez dodawania go do listy</string>
+    <string name="tasmota_open_ui">Przejdź do interfejsu Tasmota</string>
+    <string name="tasmota_open_ui_summary">Opens the Tasmota UI in a browser</string>
+
+    <string name="shelly_humidity_sensor_summary">Aktualna wilgotność</string>
+    <string name="shelly_powermeter_summary">Aktualne zużycie energii</string>
+    <string name="shelly_powermeter_current">Natężenie</string>
+    <string name="shelly_powermeter_voltage">Napięcie</string>
+    <string name="shelly_powermeter_energy">Energia</string>
+    <string name="shelly_powermeter_return_energy">Zwrócona energia</string>
+    <string name="shelly_switch_title">Przełącznik %1$d</string>
+    <string name="shelly_temperature_sensor_summary">Aktualna temperatura</string>
+    <string name="shelly_wifi">WiFi</string>
+    <string name="shelly_mqtt">MQTT</string>
+    <string name="shelly_cloud">Chmura</string>
+    <string name="shelly_uptime">Czas działania</string>
+    <string name="shelly_storage">Użyte miejsce</string>
+    <string name="shelly_ram">Użyta pamięć RAM</string>
+    <string name="shelly_update">Dostępne aktualizacje</string>
+
+    <string name="input_title">Proszę coś wpisać</string>
+    <string name="input_hint">Wprowadź</string>
+
+    <string name="webView">Widok sieciowy</string>
+    <string name="webView_open">Otwórz w przeglądarce</string>
+    <string name="webView_error">Ładowanie strony nie powiodło się</string>
+    <string name="webView_error_summary">Sprawdź połączenie sieciowe lub spróbuj ponownie później</string>
+    <string name="webView_authentication">Uwierzytelnianie</string>
+    <string name="webView_ssl_error">Certyfikat niezaufany</string>
+
+    <string name="pref">Ustawienia</string>
+    <string name="pref_general">Ustawienia ogólne</string>
+    <string name="pref_columns">Liczba kolumn</string>
+    <string name="pref_columns_summary">Zmienia liczbę kolumn głównej listy</string>
+    <string name="pref_devices">Urządzenia</string>
+    <string name="pref_edit">Edytuj listę urządzeń</string>
+    <string name="pref_edit_summary">Edytuj listę urządzeń</string>
+    <string name="pref_delete_device_question">Czy na pewno chcesz usunąć to urządzenie?</string>
+    <string name="pref_device_config">Konfiguracja urządzenia</string>
+    <string name="pref_add_shortcut">Dodaj do ekranu głównego</string>
+    <string name="pref_add_shortcut_failed">Skróty nie są obsługiwane przez Twój system</string>
+    <string name="pref_add">Dodaj nowe urządzenie</string>
+    <string name="pref_add_summary">Dodaj nowe urządzenie wraz z jego adresem</string>
+    <string name="pref_add_method">Wybierz metodę</string>
+    <string name="pref_add_new_device">Nowe urządzenie</string>
+    <string name="pref_add_id">Wewnętrzne ID: %1$s</string>
+    <string name="pref_add_name">Nazwa</string>
+    <string name="pref_add_name_example">np. Urządzenie</string>
+    <string name="pref_add_name_empty">Urządzenie</string>
+    <string name="pref_add_address">Adres</string>
+    <string name="pref_add_address_example">np. http://127.0.0.1/</string>
+    <string name="pref_add_icon">Ikona</string>
+    <string name="pref_add_mode">Tryb</string>
+    <string name="pref_add_search">Wyszukiwanie kompatybilnych urządzeń</string>
+    <string name="pref_add_search_summary">To może potrwać kilka sekund</string>
+    <string name="pref_add_dialog">Dodaj urządzenie</string>
+    <string name="pref_add_dialog_message">Czy chcesz dodać &#8220;%1$s&#8221; do swoich urządzeń?</string>
+    <string name="pref_edit_text">Edycja zaawansowana</string>
+    <string name="pref_edit_text_summary">Edytuj ciąg JSON samodzielnie</string>
+    <string name="pref_controls_auth">Wymagaj odblokowania urządzenia dla sterowania</string>
+    <string name="pref_controls_auth_summary">Wymagaj odblokowania urządzenia dla sterowania z menu zasilania</string>
+    <string name="pref_advanced">Ustawienia zaawansowane</string>
+    <string name="pref_reset">Usuń wszystkie urządzenia</string>
+    <string name="pref_reset_summary">To usunie wszystkie Twoje urządzenia</string>
+    <string name="pref_reset_question">Czy na pewno chcesz usunąć wszystkie swoje urządzenia? Tej operacji nie można cofnąć!</string>
+    <string name="pref_reset_toast">Usunięto wszystkie urządzenia</string>
+    <string name="pref_safety_checks">Blokuj potencjalnie niebezpieczne żądania</string>
+    <string name="pref_safety_checks_summary">Wykonuj podstawowe kontrole bezpieczeństwa\nOstrzeżenie: Wyłączenie tej opcji może doprowadzić do wycieku danych połączenia do atakujących!</string>
+    <string name="pref_info">Informacje</string>
+    <string name="pref_info_wiki">Wiki</string>
+    <string name="pref_info_wiki_summary">Dokumentacja i pomoc</string>
+    <string name="pref_info_header">Tło nagłówka</string>
+    <string name="pref_info_header_summary">Tło nagłówka autorstwa Alberto Castillo Q. na Unsplash</string>
+    <string name="pref_device_router">Router</string>
+    <string name="placeholder">Ładowanie</string>
+
+    <string name="security_username">Nazwa użytkownika</string>
+    <string name="security_password">Hasło</string>
+
+    <string name="device_config_direct_view">Ładuj urządzenie z główną listą</string>
+    <string name="device_config_hide">Ukryj urządzenie z głównej listy</string>
+    <string name="device_config_hidden">ukryte</string>
+    <string name="device_config_info">Informacje o urządzeniu</string>
+    <string name="device_config_info_status">Status</string>
+
+    <string name="str_cancel">Anuluj</string>
+    <string name="str_edit">Edytuj</string>
+    <string name="str_delete">Usuń</string>
+    <string name="str_show">Pokaż</string>
+    <string name="str_done">Gotowe</string>
+    <string name="str_add">Dodaj</string>
+    <string name="str_send">Wyślij</string>
+    <string name="str_on">Włącz</string>
+    <string name="str_off">Wyłącz</string>
+    <string name="str_yes">Tak</string>
+    <string name="str_no">Nie</string>
+    <string name="str_unreachable">Nieosiągalny</string>
+
+    <string name="about">O aplikacji</string>
+    <string name="about_summary">O aplikacji</string>
+    <string name="about_app_version">Wersja aplikacji</string>
+    <string name="about_privacy">Zawartość zewnętrzna</string>
+    <string name="about_privacy_desc">Zawartość zewnętrzna będzie załadowana z GitHub. Zapoznaj się z ich polityką prywatności, aby uzyskać więcej informacji.</string>
+    <string name="about_privacy_policy">Polityka prywatności</string>
+    <string name="about_contributors">Współtwórcy</string>
+    <string name="about_contributors_desc">Lista współtwórców</string>
+    <string name="about_general">Ogólne</string>
+    <string name="about_github">Repozytorium GitHub</string>
+    <string name="about_license">Licencja</string>
+    <string name="about_icons">Ikony</string>
+    <string name="about_icons_desc">Ikony autorstwa Icons8 i Google</string>
+    <string name="about_libraries">Biblioteki</string>
+    <string name="about_libraries_desc">Lista wszystkich używanych bibliotek</string>
+
+    <string-array name="pref_columns_array">
+        <item>Automatycznie</item>
+        <item>Jedna</item>
+        <item>Dwie</item>
+        <item>Trzy</item>
+        <item>Cztery</item>
+    </string-array>
+    <string-array name="pref_add_method_array">
+        <item>Dodaj urządzenie po adresie</item>
+        <item>Wyszukaj kompatybilne urządzenia (eksperymentalne)</item>
+    </string-array>
+</resources>

@@ -1,0 +1,184 @@
+<resources>
+    <string name="app_name">Accueil</string>
+    <string name="app_description">Une petite application de maison intelligente pour Philips Hue, Arduino et autres appareils</string>
+
+    <string name="main_no_devices">Aucun appareil trouvé</string>
+    <string name="main_no_devices_summary">Ajouter un nouvel appareil dans les paramètres</string>
+    <string name="main_device_nonexistent">L’appareil n’existe pas dans votre liste</string>
+    <string name="main_tap_to_connect">Appuyez pour connecter</string>
+    <string name="main_connecting">Connexion en cours</string>
+    <string name="main_network_not_secure">Connexion non sécurisée</string>
+    <string name="main_unknown_mode">L’appareil utilise un mode inconnu</string>
+    <string name="main_device_unavailable">L’appareil est actuellement indisponible</string>
+    <string name="main_parse_error">La réponse ne répond pas aux exigences</string>
+    <string name="main_client_error">L’appareil n’a pas répondu</string>
+    <string name="main_execution_completed">Exécution terminée avec succès</string>
+
+    <string name="main_device_icon">Icône de l’appareil</string>
+    <string name="main_device_name">Vos appareils</string>
+
+    <string name="err">Quelque chose s’est mal passé</string>
+    <string name="err_wrong_format">Format incorrect</string>
+    <string name="err_missing_name">Veuillez saisir un nom</string>
+    <string name="err_missing_name_summary">Un nom est important pour pouvoir reconnaître l’entrée plus tard</string>
+    <string name="err_missing_address">Veuillez saisir une adresse</string>
+    <string name="err_missing_address_summary">Une adresse est importante car elle permet à l’application de joindre l’appareil</string>
+
+    <string name="hue_connect">Connectez-vous à votre Bridge</string>
+    <string name="hue_press_button">Veuillez appuyer sur le bouton de votre bridge pour continuer.</string>
+    <string name="hue_tap">Appuyez pour sélectionner</string>
+    <string name="hue_brightness">Luminosité</string>
+    <string name="hue_color_temperature">Température de couleur</string>
+    <string name="hue_hue_sat">Teinte et saturation</string>
+    <string name="hue_scene">Scène</string>
+    <string name="hue_add_scene">Ajouter une scène</string>
+    <string name="hue_new_scene">Nouvelle scène</string>
+    <string name="hue_delete_scene">Êtes-vous sûr de vouloir supprimer cette scène ?</string>
+    <string name="hue_bridge">Bridge</string>
+    <string name="hue_bridge_name">Nom du Bridge</string>
+    <string name="hue_bridge_model">Modèle du Bridge</string>
+    <string name="hue_bridge_id">ID du Bridge</string>
+    <string name="hue_bridge_software">Version du logiciel</string>
+    <string name="hue_bridge_zigbee">Canal Zigbee</string>
+    <string name="hue_bridge_dhcp">DHCP</string>
+    <string name="hue_bridge_time_zone">Fuseau horaire</string>
+    <string name="hue_users">Utilisateurs</string>
+    <string name="hue_controls">Contrôles</string>
+    <string name="hue_lights">Lumières</string>
+    <string name="hue_room">Pièce Hue</string>
+    <string name="hue_scene_shortcut">Scène Hue</string>
+
+    <string name="tasmota_empty_list">Aucune commande ajoutée pour l’instant</string>
+    <string name="tasmota_empty_list_summary">Ajoutez des commandes ci-dessous</string>
+    <string name="tasmota_add_command">Ajouter une commande à la liste</string>
+    <string name="tasmota_add_command_summary">Ajouter une nouvelle commande à votre liste</string>
+    <string name="tasmota_add_command_dialog_title">Titre</string>
+    <string name="tasmota_add_command_dialog_title_empty">Commande</string>
+    <string name="tasmota_delete_command">Êtes-vous sûr de vouloir supprimer cette entrée ?</string>
+    <string name="tasmota_execute_once">Exécuter la commande</string>
+    <string name="tasmota_execute_once_summary">Exécuter la commande une fois sans l’ajouter à la liste</string>
+    <string name="tasmota_open_ui">Aller à l’interface Tasmota</string>
+    <string name="tasmota_open_ui_summary">Opens the Tasmota UI in a browser</string>
+
+    <string name="shelly_humidity_sensor_summary">Humidité actuelle</string>
+    <string name="shelly_powermeter_summary">Consommation électrique actuelle</string>
+    <string name="shelly_powermeter_current">Courant</string>
+    <string name="shelly_powermeter_voltage">Tension</string>
+    <string name="shelly_powermeter_energy">Énergie</string>
+    <string name="shelly_powermeter_return_energy">Énergie retournée</string>
+    <string name="shelly_switch_title">Interrupteur %1$d</string>
+    <string name="shelly_temperature_sensor_summary">Température actuelle</string>
+    <string name="shelly_wifi">WiFi</string>
+    <string name="shelly_mqtt">MQTT</string>
+    <string name="shelly_cloud">Cloud</string>
+    <string name="shelly_uptime">Temps de fonctionnement</string>
+    <string name="shelly_storage">Stockage utilisé</string>
+    <string name="shelly_ram">RAM utilisée</string>
+    <string name="shelly_update">Mises à jour disponibles</string>
+
+    <string name="input_title">Veuillez saisir quelque chose</string>
+    <string name="input_hint">Saisie</string>
+
+    <string name="webView">Vue Web</string>
+    <string name="webView_open">Ouvrir dans le navigateur</string>
+    <string name="webView_error">Le chargement du site web a échoué</string>
+    <string name="webView_error_summary">Veuillez vérifier votre connexion réseau ou réessayer plus tard</string>
+    <string name="webView_authentication">Authentification</string>
+    <string name="webView_ssl_error">Certificat non approuvé</string>
+
+    <string name="pref">Paramètres</string>
+    <string name="pref_general">Paramètres généraux</string>
+    <string name="pref_columns">Nombre de colonnes</string>
+    <string name="pref_columns_summary">Modifie le nombre de colonnes de la liste principale</string>
+    <string name="pref_devices">Appareils</string>
+    <string name="pref_edit">Modifier la liste des appareils</string>
+    <string name="pref_edit_summary">Modifier la liste des appareils</string>
+    <string name="pref_delete_device_question">Êtes-vous sûr de vouloir supprimer cet appareil ?</string>
+    <string name="pref_device_config">Configuration de l’appareil</string>
+    <string name="pref_add_shortcut">Ajouter à l’écran d’accueil</string>
+    <string name="pref_add_shortcut_failed">Les raccourcis ne sont pas pris en charge par votre système</string>
+    <string name="pref_add">Ajouter un nouvel appareil</string>
+    <string name="pref_add_summary">Ajouter un nouvel appareil avec son adresse</string>
+    <string name="pref_add_method">Sélectionner la méthode</string>
+    <string name="pref_add_new_device">Nouvel appareil</string>
+    <string name="pref_add_id">ID interne : %1$s</string>
+    <string name="pref_add_name">Nom</string>
+    <string name="pref_add_name_example">ex. : Appareil</string>
+    <string name="pref_add_name_empty">Appareil</string>
+    <string name="pref_add_address">Adresse</string>
+    <string name="pref_add_address_example">ex. : http://127.0.0.1/</string>
+    <string name="pref_add_icon">Icône</string>
+    <string name="pref_add_mode">Mode</string>
+    <string name="pref_add_search">Recherche d’appareils compatibles</string>
+    <string name="pref_add_search_summary">Cela peut prendre quelques secondes</string>
+    <string name="pref_add_dialog">Ajouter un appareil</string>
+    <string name="pref_add_dialog_message">Voulez-vous ajouter &#8220;%1$s&#8221; à vos appareils ?</string>
+    <string name="pref_edit_text">Édition avancée</string>
+    <string name="pref_edit_text_summary">Modifiez vous-même la chaîne JSON</string>
+    <string name="pref_controls_auth">Exiger le déverrouillage de l’appareil pour les contrôles</string>
+    <string name="pref_controls_auth_summary">Exiger que l’appareil soit déverrouillé pour les contrôles du menu d’alimentation</string>
+    <string name="pref_advanced">Paramètres avancés</string>
+    <string name="pref_reset">Supprimer tous les appareils</string>
+    <string name="pref_reset_summary">Cela supprime tous vos appareils</string>
+    <string name="pref_reset_question">Êtes-vous sûr de vouloir supprimer tous vos appareils ? Cela ne peut pas être annulé !</string>
+    <string name="pref_reset_toast">Tous les appareils ont été supprimés</string>
+    <string name="pref_safety_checks">Bloquer les requêtes potentiellement dangereuses</string>
+    <string name="pref_safety_checks_summary">Effectuer des vérifications de sécurité de base\nAttention : Désactiver cela peut divulguer des données de connexion aux attaquants !</string>
+    <string name="pref_info">Informations</string>
+    <string name="pref_info_wiki">Wiki</string>
+    <string name="pref_info_wiki_summary">Documentation et aide</string>
+    <string name="pref_info_header">Arrière-plan de l’en-tête</string>
+    <string name="pref_info_header_summary">Arrière-plan de l’en-tête par Alberto Castillo Q. sur Unsplash</string>
+    <string name="pref_device_router">Routeur</string>
+    <string name="placeholder">Chargement</string>
+
+    <string name="security_username">Nom d’utilisateur</string>
+    <string name="security_password">Mot de passe</string>
+
+    <string name="device_config_direct_view">Charger l’appareil avec la liste principale</string>
+    <string name="device_config_hide">Masquer l’appareil de la liste principale</string>
+    <string name="device_config_hidden">masqué</string>
+    <string name="device_config_info">Infos de l’appareil</string>
+    <string name="device_config_info_status">Statut</string>
+
+    <string name="str_cancel">Annuler</string>
+    <string name="str_edit">Modifier</string>
+    <string name="str_delete">Supprimer</string>
+    <string name="str_show">Afficher</string>
+    <string name="str_done">Terminé</string>
+    <string name="str_add">Ajouter</string>
+    <string name="str_send">Envoyer</string>
+    <string name="str_on">Activé</string>
+    <string name="str_off">Désactivé</string>
+    <string name="str_yes">Oui</string>
+    <string name="str_no">Non</string>
+    <string name="str_unreachable">Inaccessible</string>
+
+    <string name="about">À propos</string>
+    <string name="about_summary">À propos de l’application</string>
+    <string name="about_app_version">Version de l’application</string>
+    <string name="about_privacy">Contenu externe</string>
+    <string name="about_privacy_desc">Le contenu externe sera chargé depuis GitHub. Consultez leur politique de confidentialité pour plus d’informations.</string>
+    <string name="about_privacy_policy">Politique de confidentialité</string>
+    <string name="about_contributors">Contributeurs</string>
+    <string name="about_contributors_desc">Une liste des contributeurs</string>
+    <string name="about_general">Général</string>
+    <string name="about_github">Dépôt GitHub</string>
+    <string name="about_license">Licence</string>
+    <string name="about_icons">Icônes</string>
+    <string name="about_icons_desc">Icônes par Icons8 et Google</string>
+    <string name="about_libraries">Bibliothèques</string>
+    <string name="about_libraries_desc">Une liste de toutes les bibliothèques utilisées</string>
+
+    <string-array name="pref_columns_array">
+        <item>Auto</item>
+        <item>Une</item>
+        <item>Deux</item>
+        <item>Trois</item>
+        <item>Quatre</item>
+    </string-array>
+    <string-array name="pref_add_method_array">
+        <item>Ajouter un appareil par adresse</item>
+        <item>Rechercher des appareils compatibles (expérimental)</item>
+    </string-array>
+</resources>

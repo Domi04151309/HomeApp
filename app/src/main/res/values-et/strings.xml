@@ -1,0 +1,184 @@
+<resources>
+    <string name="app_name">Kodu</string>
+    <string name="app_description">Väike nutikodu rakendus Philips Hue, Arduino ja muude seadmete jaoks</string>
+
+    <string name="main_no_devices">Seadmeid ei leitud</string>
+    <string name="main_no_devices_summary">Lisa uus seade seadetes</string>
+    <string name="main_device_nonexistent">Seadet ei ole sinu nimekirjas</string>
+    <string name="main_tap_to_connect">Puuduta ühendamiseks</string>
+    <string name="main_connecting">Ühendamine</string>
+    <string name="main_network_not_secure">Ühendus ei ole turvaline</string>
+    <string name="main_unknown_mode">Seade kasutab tundmatut režiimi</string>
+    <string name="main_device_unavailable">Seade pole hetkel saadaval</string>
+    <string name="main_parse_error">Vastus ei vasta nõuetele</string>
+    <string name="main_client_error">Seade ei vastanud</string>
+    <string name="main_execution_completed">Käivitus edukalt lõpetatud</string>
+
+    <string name="main_device_icon">Seadme ikoon</string>
+    <string name="main_device_name">Sinu seadmed</string>
+
+    <string name="err">Midagi läks valesti</string>
+    <string name="err_wrong_format">Vale vorming</string>
+    <string name="err_missing_name">Palun sisesta nimi</string>
+    <string name="err_missing_name_summary">Nimi on oluline, et saaksid kirje hiljem ära tunda</string>
+    <string name="err_missing_address">Palun sisesta aadress</string>
+    <string name="err_missing_address_summary">Aadress on oluline, sest see võimaldab rakendusel seadmele ligi pääseda</string>
+
+    <string name="hue_connect">Ühenda oma Bridge’iga</string>
+    <string name="hue_press_button">Palun vajuta oma bridge’i nuppu, et jätkata.</string>
+    <string name="hue_tap">Puuduta valimiseks</string>
+    <string name="hue_brightness">Heledus</string>
+    <string name="hue_color_temperature">Värvestemperatuur</string>
+    <string name="hue_hue_sat">Toon ja küllastus</string>
+    <string name="hue_scene">Stseen</string>
+    <string name="hue_add_scene">Lisa stseen</string>
+    <string name="hue_new_scene">Uus stseen</string>
+    <string name="hue_delete_scene">Kas oled kindel, et soovid selle stseeni kustutada?</string>
+    <string name="hue_bridge">Bridge</string>
+    <string name="hue_bridge_name">Bridge’i nimi</string>
+    <string name="hue_bridge_model">Bridge’i mudel</string>
+    <string name="hue_bridge_id">Bridge’i ID</string>
+    <string name="hue_bridge_software">Tarkvara versioon</string>
+    <string name="hue_bridge_zigbee">Zigbee kanal</string>
+    <string name="hue_bridge_dhcp">DHCP</string>
+    <string name="hue_bridge_time_zone">Ajavöönd</string>
+    <string name="hue_users">Kasutajad</string>
+    <string name="hue_controls">Juhtnupud</string>
+    <string name="hue_lights">Tuled</string>
+    <string name="hue_room">Hue tuba</string>
+    <string name="hue_scene_shortcut">Hue stseen</string>
+
+    <string name="tasmota_empty_list">Käske pole veel lisatud</string>
+    <string name="tasmota_empty_list_summary">Lisa käsud allpool</string>
+    <string name="tasmota_add_command">Lisa käsk nimekirja</string>
+    <string name="tasmota_add_command_summary">Lisa uus käsk oma nimekirja</string>
+    <string name="tasmota_add_command_dialog_title">Pealkiri</string>
+    <string name="tasmota_add_command_dialog_title_empty">Käsk</string>
+    <string name="tasmota_delete_command">Kas oled kindel, et soovid selle kirje kustutada?</string>
+    <string name="tasmota_execute_once">Käivita käsk</string>
+    <string name="tasmota_execute_once_summary">Käivita käsk üks kord ilma seda nimekirja lisamata</string>
+    <string name="tasmota_open_ui">Mine Tasmota kasutajaliidesesse</string>
+    <string name="tasmota_open_ui_summary">Opens the Tasmota UI in a browser</string>
+
+    <string name="shelly_humidity_sensor_summary">Praegune niiskus</string>
+    <string name="shelly_powermeter_summary">Praegune energiatarbimine</string>
+    <string name="shelly_powermeter_current">Vool</string>
+    <string name="shelly_powermeter_voltage">Pinge</string>
+    <string name="shelly_powermeter_energy">Energia</string>
+    <string name="shelly_powermeter_return_energy">Tagastatud energia</string>
+    <string name="shelly_switch_title">Lüliti %1$d</string>
+    <string name="shelly_temperature_sensor_summary">Praegune temperatuur</string>
+    <string name="shelly_wifi">WiFi</string>
+    <string name="shelly_mqtt">MQTT</string>
+    <string name="shelly_cloud">Pilv</string>
+    <string name="shelly_uptime">Tööaeg</string>
+    <string name="shelly_storage">Kasutatud salvestusruum</string>
+    <string name="shelly_ram">Kasutatud RAM</string>
+    <string name="shelly_update">Saadaval uuendused</string>
+
+    <string name="input_title">Palun sisesta midagi</string>
+    <string name="input_hint">Sisend</string>
+
+    <string name="webView">Veebivaade</string>
+    <string name="webView_open">Ava brauseris</string>
+    <string name="webView_error">Veebilehe laadimine ebaõnnestus</string>
+    <string name="webView_error_summary">Palun kontrolli oma võrguühendust või proovi hiljem uuesti</string>
+    <string name="webView_authentication">Autentimine</string>
+    <string name="webView_ssl_error">Usaldamatu sertifikaat</string>
+
+    <string name="pref">Seaded</string>
+    <string name="pref_general">Üldised seaded</string>
+    <string name="pref_columns">Veergude arv</string>
+    <string name="pref_columns_summary">Muudab peamise nimekirja veergude arvu</string>
+    <string name="pref_devices">Seadmed</string>
+    <string name="pref_edit">Muuda seadme nimekirja</string>
+    <string name="pref_edit_summary">Muuda seadmete nimekirja</string>
+    <string name="pref_delete_device_question">Kas oled kindel, et soovid selle seadme kustutada?</string>
+    <string name="pref_device_config">Seadme konfiguratsioon</string>
+    <string name="pref_add_shortcut">Lisa avaekraanile</string>
+    <string name="pref_add_shortcut_failed">Otseteid ei toeta sinu süsteem</string>
+    <string name="pref_add">Lisa uus seade</string>
+    <string name="pref_add_summary">Lisa uus seade koos oma aadressiga</string>
+    <string name="pref_add_method">Vali meetod</string>
+    <string name="pref_add_new_device">Uus seade</string>
+    <string name="pref_add_id">Sisemine ID: %1$s</string>
+    <string name="pref_add_name">Nimi</string>
+    <string name="pref_add_name_example">nt Seade</string>
+    <string name="pref_add_name_empty">Seade</string>
+    <string name="pref_add_address">Aadress</string>
+    <string name="pref_add_address_example">nt http://127.0.0.1/</string>
+    <string name="pref_add_icon">Ikoon</string>
+    <string name="pref_add_mode">Režiim</string>
+    <string name="pref_add_search">Ühilduvate seadmete otsimine</string>
+    <string name="pref_add_search_summary">See võib võtta mõne sekundi</string>
+    <string name="pref_add_dialog">Lisa seade</string>
+    <string name="pref_add_dialog_message">Kas soovid lisada „%1$s“ oma seadmete hulka?</string>
+    <string name="pref_edit_text">Täpsem muutmine</string>
+    <string name="pref_edit_text_summary">Muuda JSON stringi ise</string>
+    <string name="pref_controls_auth">Nõua seadme avamist juhtnuppude jaoks</string>
+    <string name="pref_controls_auth_summary">Nõua seadme avamist toitenupu juhtnuppude jaoks</string>
+    <string name="pref_advanced">Täpsemad seaded</string>
+    <string name="pref_reset">Kustuta kõik seadmed</string>
+    <string name="pref_reset_summary">See kustutab kõik sinu seadmed</string>
+    <string name="pref_reset_question">Kas oled kindel, et soovid kustutada kõik oma seadmed? Seda ei saa tagasi võtta!</string>
+    <string name="pref_reset_toast">Kõik seadmed kustutatud</string>
+    <string name="pref_safety_checks">Blokeeri potentsiaalselt ebaturvalised päringud</string>
+    <string name="pref_safety_checks_summary">Teosta põhilised turvakontrollid\nHoiatus: Selle välja lülitamine võib lekkida ühenduse andmeid ründajatele!</string>
+    <string name="pref_info">Teave</string>
+    <string name="pref_info_wiki">Viki</string>
+    <string name="pref_info_wiki_summary">Dokumentatsioon ja abi</string>
+    <string name="pref_info_header">Päise taust</string>
+    <string name="pref_info_header_summary">Päise taust Alberto Castillo Q. poolt Unsplashis</string>
+    <string name="pref_device_router">Ruuter</string>
+    <string name="placeholder">Laadimine</string>
+
+    <string name="security_username">Kasutajanimi</string>
+    <string name="security_password">Parool</string>
+
+    <string name="device_config_direct_view">Laadi seade koos peamise nimekirjaga</string>
+    <string name="device_config_hide">Peida seade peamisest nimekirjast</string>
+    <string name="device_config_hidden">peidetud</string>
+    <string name="device_config_info">Seadme teave</string>
+    <string name="device_config_info_status">Olek</string>
+
+    <string name="str_cancel">Tühista</string>
+    <string name="str_edit">Muuda</string>
+    <string name="str_delete">Kustuta</string>
+    <string name="str_show">Näita</string>
+    <string name="str_done">Valmis</string>
+    <string name="str_add">Lisa</string>
+    <string name="str_send">Saada</string>
+    <string name="str_on">Sees</string>
+    <string name="str_off">Väljas</string>
+    <string name="str_yes">Jah</string>
+    <string name="str_no">Ei</string>
+    <string name="str_unreachable">Kättesaamatu</string>
+
+    <string name="about">Teave</string>
+    <string name="about_summary">Teave rakenduse kohta</string>
+    <string name="about_app_version">Rakenduse versioon</string>
+    <string name="about_privacy">Väline sisu</string>
+    <string name="about_privacy_desc">Väline sisu laaditakse GitHubist. Loe nende privaatsuspoliitikat lisateabe saamiseks.</string>
+    <string name="about_privacy_policy">Privaatsuspoliitika</string>
+    <string name="about_contributors">Kaasautorid</string>
+    <string name="about_contributors_desc">Kaasautorite nimekiri</string>
+    <string name="about_general">Üldine</string>
+    <string name="about_github">GitHubi hoidla</string>
+    <string name="about_license">Litsents</string>
+    <string name="about_icons">Ikoonid</string>
+    <string name="about_icons_desc">Ikoonid autoritelt Icons8 ja Google</string>
+    <string name="about_libraries">Teegid</string>
+    <string name="about_libraries_desc">Kasutatud teekide nimekiri</string>
+
+    <string-array name="pref_columns_array">
+        <item>Automaatne</item>
+        <item>Üks</item>
+        <item>Kaks</item>
+        <item>Kolm</item>
+        <item>Neli</item>
+    </string-array>
+    <string-array name="pref_add_method_array">
+        <item>Lisa seade aadressi järgi</item>
+        <item>Otsi ühilduvaid seadmeid (katsejärgus)</item>
+    </string-array>
+</resources>

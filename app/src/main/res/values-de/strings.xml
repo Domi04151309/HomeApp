@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Home</string>
+    <string name="app_name">Zuhause</string>
     <string name="app_description">Eine kleine Smart-Home-App für Philips Hue, Arduino und andere Geräte</string>
 
     <string name="main_no_devices">Keine Geräte gefunden</string>
