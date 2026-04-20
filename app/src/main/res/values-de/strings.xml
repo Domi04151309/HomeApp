@@ -113,8 +113,15 @@
     <string name="pref_add_search_summary">Dies kann einige Sekunden dauern</string>
     <string name="pref_add_dialog">Gerär hinzufügen</string>
     <string name="pref_add_dialog_message">Wollen Sie &#8220;%1$s&#8221; zu Ihren Geräten hinzufügen?</string>
-    <string name="pref_edit_text">Erweitertes Bearbeiten</string>
-    <string name="pref_edit_text_summary">Bearbeiten Sie die JSON-Zeichenfolge selbst</string>
+    <string name="pref_import">Konfiguration importieren</string>
+    <string name="pref_import_summary">Importiert Geräte aus einer JSON-Datei</string>
+    <string name="pref_import_success">Konfiguration erfolgreich importiert</string>
+    <string name="pref_import_failed">Importieren der Konfiguration fehlgeschlagen</string>
+    <string name="pref_import_confirmation">Sind Sie sich sicher, dass Sie alle aktuellen Geräte ersätzen möchten? Dies kann nicht rückgängig gemacht werden!</string>
+    <string name="pref_export">Konfiguration exportieren</string>
+    <string name="pref_export_summary">Exportiert Geräte in eine JSON-Datei</string>
+    <string name="pref_export_success">Konfiguration erfolgreich exportiert</string>
+    <string name="pref_export_failed">Exportieren der Konfiguration fehlgeschlagen</string>
     <string name="pref_controls_auth">Entsperren des Geräts für Steuerelemente erfordern</string>
     <string name="pref_controls_auth_summary">Erfordern, dass das Gerät für die Steuerung über das Power-Menü entsperrt wird</string>
     <string name="pref_advanced">Erweiterte Einstellungen</string>
@@ -153,6 +160,7 @@
     <string name="str_yes">Ja</string>
     <string name="str_no">Nein</string>
     <string name="str_unreachable">Nicht erreichbar</string>
+    <string name="str_import">Importieren</string>
 
     <string name="about">Über</string>
     <string name="about_summary">Über die App</string>

@@ -113,8 +113,6 @@
     <string name="pref_add_search_summary">這可能需要幾秒鐘</string>
     <string name="pref_add_dialog">新增裝置</string>
     <string name="pref_add_dialog_message">您要將「%1$s」新增到您的裝置嗎？</string>
-    <string name="pref_edit_text">進階編輯</string>
-    <string name="pref_edit_text_summary">自行編輯 JSON 字串</string>
     <string name="pref_controls_auth">控制項需要裝置解鎖</string>
     <string name="pref_controls_auth_summary">電源選單控制項需要裝置已解鎖</string>
     <string name="pref_advanced">進階設定</string>

@@ -113,8 +113,6 @@
     <string name="pref_add_search_summary">Detta kan ta några sekunder</string>
     <string name="pref_add_dialog">Lägg till enhet</string>
     <string name="pref_add_dialog_message">Vill du lägga till &#8220;%1$s&#8221; i dina enheter?</string>
-    <string name="pref_edit_text">Avancerad redigering</string>
-    <string name="pref_edit_text_summary">Redigera JSON-strängen själv</string>
     <string name="pref_controls_auth">Kräv enhetsupplåsning för kontroller</string>
     <string name="pref_controls_auth_summary">Kräv att enheten är upplåst för strömmenykontroller</string>
     <string name="pref_advanced">Avancerade inställningar</string>

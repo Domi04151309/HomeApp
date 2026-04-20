@@ -113,8 +113,6 @@
     <string name="pref_add_search_summary">Điều này có thể mất vài giây</string>
     <string name="pref_add_dialog">Thêm thiết bị</string>
     <string name="pref_add_dialog_message">Bạn có muốn thêm &#8220;%1$s&#8221; vào thiết bị của mình?</string>
-    <string name="pref_edit_text">Chỉnh sửa nâng cao</string>
-    <string name="pref_edit_text_summary">Tự chỉnh sửa chuỗi JSON</string>
     <string name="pref_controls_auth">Yêu cầu mở khóa thiết bị để điều khiển</string>
     <string name="pref_controls_auth_summary">Yêu cầu thiết bị được mở khóa để điều khiển từ menu nguồn</string>
     <string name="pref_advanced">Cài đặt nâng cao</string>

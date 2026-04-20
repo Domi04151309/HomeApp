@@ -113,8 +113,6 @@
     <string name="pref_add_search_summary">Ez eltarthat néhány másodpercig</string>
     <string name="pref_add_dialog">Eszköz hozzáadása</string>
     <string name="pref_add_dialog_message">Hozzá szeretnéd adni a(z) &#8220;%1$s&#8221; az eszközeidhez?</string>
-    <string name="pref_edit_text">Speciális szerkesztés</string>
-    <string name="pref_edit_text_summary">A JSON karakterlánc saját magad általi szerkesztése</string>
     <string name="pref_controls_auth">Eszköz feloldásának megkövetelése a vezérlőkhöz</string>
     <string name="pref_controls_auth_summary">Az eszköz feloldásának megkövetelése a bekapcsológomb-vezérlőkhöz</string>
     <string name="pref_advanced">Speciális beállítások</string>

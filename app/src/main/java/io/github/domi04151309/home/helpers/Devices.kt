@@ -22,12 +22,12 @@ class Devices(private val context: Context) {
             storedData =
                 try {
                     JSONObject(
-                        preferences.getString("devices_json", Global.DEFAULT_JSON)
-                            ?: Global.DEFAULT_JSON,
+                        preferences.getString(P.PREF_DEVICES_JSON, P.PREF_DEVICES_JSON_DEFAULT)
+                            ?: P.PREF_DEVICES_JSON_DEFAULT,
                     )
                 } catch (e: JSONException) {
                     Log.w(Devices::class.simpleName, e)
-                    JSONObject(Global.DEFAULT_JSON)
+                    JSONObject(P.PREF_DEVICES_JSON_DEFAULT)
                 }
         }
         return storedData!!
@@ -127,7 +127,7 @@ class Devices(private val context: Context) {
     }
 
     fun saveChanges() {
-        preferences.edit { putString("devices_json", data.toString()) }
+        preferences.edit { putString(P.PREF_DEVICES_JSON, data.toString()) }
     }
 
     companion object {

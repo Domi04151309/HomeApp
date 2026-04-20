@@ -113,8 +113,6 @@
     <string name="pref_add_search_summary">Αυτό μπορεί να διαρκέσει μερικά δευτερόλεπτα</string>
     <string name="pref_add_dialog">Προσθήκη συσκευής</string>
     <string name="pref_add_dialog_message">Θέλετε να προσθέσετε &#8220;%1$s&#8221; στις συσκευές σας;</string>
-    <string name="pref_edit_text">Σύνθετη επεξεργασία</string>
-    <string name="pref_edit_text_summary">Επεξεργαστείτε μόνοι σας το string JSON</string>
     <string name="pref_controls_auth">Απαίτηση ξεκλειδώματος συσκευής για χειρισμούς</string>
     <string name="pref_controls_auth_summary">Απαιτείται η συσκευή να είναι ξεκλείδωτη για χειρισμούς μενού ενέργειας</string>
     <string name="pref_advanced">Σύνθετες ρυθμίσεις</string>

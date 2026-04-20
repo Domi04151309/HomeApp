@@ -113,8 +113,6 @@
     <string name="pref_add_search_summary">To může trvat několik sekund</string>
     <string name="pref_add_dialog">Přidat zařízení</string>
     <string name="pref_add_dialog_message">Chcete přidat &#8220;%1$s&#8221; do vašich zařízení?</string>
-    <string name="pref_edit_text">Pokročilá úprava</string>
-    <string name="pref_edit_text_summary">Upravte JSON řetězec sami</string>
     <string name="pref_controls_auth">Vyžadovat odemknutí zařízení pro ovládání</string>
     <string name="pref_controls_auth_summary">Vyžadovat odemknutí zařízení pro ovládání v menu napájení</string>
     <string name="pref_advanced">Pokročilá nastavení</string>

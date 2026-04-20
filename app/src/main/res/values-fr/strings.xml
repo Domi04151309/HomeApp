@@ -113,8 +113,15 @@
     <string name="pref_add_search_summary">Cela peut prendre quelques secondes</string>
     <string name="pref_add_dialog">Ajouter un appareil</string>
     <string name="pref_add_dialog_message">Voulez-vous ajouter &#8220;%1$s&#8221; à vos appareils ?</string>
-    <string name="pref_edit_text">Édition avancée</string>
-    <string name="pref_edit_text_summary">Modifiez vous-même la chaîne JSON</string>
+    <string name="pref_import">Importer la configuration</string>
+    <string name="pref_import_summary">Importer des appareils depuis un fichier JSON</string>
+    <string name="pref_import_success">Configuration importée avec succès</string>
+    <string name="pref_import_failed">Échec de l’importation de la configuration</string>
+    <string name="pref_import_confirmation">Voulez-vous vraiment remplacer tous vos appareils actuels ? Cette action est irréversible !</string>
+    <string name="pref_export">Exporter la configuration</string>
+    <string name="pref_export_summary">Exporter les appareils vers un fichier JSON</string>
+    <string name="pref_export_success">Configuration exportée avec succès</string>
+    <string name="pref_export_failed">Échec de l’exportation de la configuration</string>
     <string name="pref_controls_auth">Exiger le déverrouillage de l’appareil pour les contrôles</string>
     <string name="pref_controls_auth_summary">Exiger que l’appareil soit déverrouillé pour les contrôles du menu d’alimentation</string>
     <string name="pref_advanced">Paramètres avancés</string>
@@ -153,6 +160,7 @@
     <string name="str_yes">Oui</string>
     <string name="str_no">Non</string>
     <string name="str_unreachable">Inaccessible</string>
+    <string name="str_import">Importer</string>
 
     <string name="about">À propos</string>
     <string name="about_summary">À propos de l’application</string>

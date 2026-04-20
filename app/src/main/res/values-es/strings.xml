@@ -113,8 +113,6 @@
     <string name="pref_add_search_summary">Esto puede tardar unos segundos</string>
     <string name="pref_add_dialog">Añadir dispositivo</string>
     <string name="pref_add_dialog_message">¿Quieres añadir &#8220;%1$s&#8221; a tus dispositivos?</string>
-    <string name="pref_edit_text">Edición avanzada</string>
-    <string name="pref_edit_text_summary">Edita la cadena JSON por tu cuenta</string>
     <string name="pref_controls_auth">Requerir desbloqueo del dispositivo para los controles</string>
     <string name="pref_controls_auth_summary">Requerir que el dispositivo esté desbloqueado para el control desde el menú de energía</string>
     <string name="pref_advanced">Ajustes avanzados</string>

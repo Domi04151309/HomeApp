@@ -25,7 +25,6 @@ import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
 internal object Global {
     const val LOG_TAG: String = "HomeApp"
 
-    const val DEFAULT_JSON: String = "{\"devices\":{}}"
     const val ESP_EASY = "ESP Easy"
     const val HUE_API = "Hue API"
     const val SHELLY_GEN_1 = "Shelly Gen 1"

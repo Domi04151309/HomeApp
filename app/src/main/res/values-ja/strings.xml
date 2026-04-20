@@ -113,8 +113,6 @@
     <string name="pref_add_search_summary">これには数秒かかる場合があります</string>
     <string name="pref_add_dialog">デバイスを追加</string>
     <string name="pref_add_dialog_message">「%1$s」をデバイスに追加しますか？</string>
-    <string name="pref_edit_text">詳細編集</string>
-    <string name="pref_edit_text_summary">JSON文字列を自分で編集</string>
     <string name="pref_controls_auth">コントロールにデバイスのロック解除が必要</string>
     <string name="pref_controls_auth_summary">電源メニューのコントロールにデバイスのロック解除が必要</string>
     <string name="pref_advanced">詳細設定</string>

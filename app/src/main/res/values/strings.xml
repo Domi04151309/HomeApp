@@ -116,8 +116,15 @@
     <string name="pref_add_search_summary">This might take a couple of seconds</string>
     <string name="pref_add_dialog">Add Device</string>
     <string name="pref_add_dialog_message">Do you want to add &#8220;%1$s&#8221; to your devices?</string>
-    <string name="pref_edit_text">Advanced editing</string>
-    <string name="pref_edit_text_summary">Edit the JSON string by yourself</string>
+    <string name="pref_import">Import configuration</string>
+    <string name="pref_import_summary">Import devices from a JSON file</string>
+    <string name="pref_import_success">Configuration imported successfully</string>
+    <string name="pref_import_failed">Failed importing the configuration</string>
+    <string name="pref_import_confirmation">Are you sure you want to replace all your current devices? This cannot be undone!</string>
+    <string name="pref_export">Export configuration</string>
+    <string name="pref_export_summary">Export devices to a JSON file</string>
+    <string name="pref_export_success">Configuration exported successfully</string>
+    <string name="pref_export_failed">Failed exporting the configuration</string>
     <string name="pref_controls_auth">Require device unlock for controls</string>
     <string name="pref_controls_auth_summary">Require the device to be unlocked for power menu controls</string>
     <string name="pref_advanced">Advanced Settings</string>
@@ -156,6 +163,7 @@
     <string name="str_yes">Yes</string>
     <string name="str_no">No</string>
     <string name="str_unreachable">Unreachable</string>
+    <string name="str_import">Import</string>
 
     <string name="about">About</string>
     <string name="about_summary">About the app</string>

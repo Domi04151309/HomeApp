@@ -113,8 +113,6 @@
     <string name="pref_add_search_summary">Bu birkac saniye surabilir</string>
     <string name="pref_add_dialog">Cihaz Ekle</string>
     <string name="pref_add_dialog_message">Cihazlariniza &#8220;%1$s&#8221; eklemek istiyor musunuz?</string>
-    <string name="pref_edit_text">Gelismis duzenleme</string>
-    <string name="pref_edit_text_summary">JSON dizisini kendiniz duzenleyin</string>
     <string name="pref_controls_auth">Kontroller icin cihaz kilidini gerektir</string>
     <string name="pref_controls_auth_summary">Guc menusu kontrolleri icin cihazin kilidinin acilmasini gerektir</string>
     <string name="pref_advanced">Gelismis Ayarlar</string>

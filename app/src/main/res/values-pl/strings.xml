@@ -113,8 +113,6 @@
     <string name="pref_add_search_summary">To może potrwać kilka sekund</string>
     <string name="pref_add_dialog">Dodaj urządzenie</string>
     <string name="pref_add_dialog_message">Czy chcesz dodać &#8220;%1$s&#8221; do swoich urządzeń?</string>
-    <string name="pref_edit_text">Edycja zaawansowana</string>
-    <string name="pref_edit_text_summary">Edytuj ciąg JSON samodzielnie</string>
     <string name="pref_controls_auth">Wymagaj odblokowania urządzenia dla sterowania</string>
     <string name="pref_controls_auth_summary">Wymagaj odblokowania urządzenia dla sterowania z menu zasilania</string>
     <string name="pref_advanced">Ustawienia zaawansowane</string>

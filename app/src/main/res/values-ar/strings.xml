@@ -113,8 +113,6 @@
     <string name="pref_add_search_summary">قد يستغرق هذا بضع ثوانٍ</string>
     <string name="pref_add_dialog">إضافة جهاز</string>
     <string name="pref_add_dialog_message">هل تريد إضافة “%1$s” إلى أجهزتك؟</string>
-    <string name="pref_edit_text">التحرير المتقدم</string>
-    <string name="pref_edit_text_summary">تحرير سلسلة JSON بنفسك</string>
     <string name="pref_controls_auth">طلب فتح الجهاز للضوابط</string>
     <string name="pref_controls_auth_summary">طلب فتح الجهاز لضوابط قائمة الطاقة</string>
     <string name="pref_advanced">الإعدادات المتقدمة</string>

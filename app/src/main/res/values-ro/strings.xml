@@ -113,8 +113,6 @@
     <string name="pref_add_search_summary">Acest lucru poate dura câteva secunde</string>
     <string name="pref_add_dialog">Adăugare dispozitiv</string>
     <string name="pref_add_dialog_message">Doriți să adăugați &#8220;%1$s&#8221; la dispozitivele dvs.?</string>
-    <string name="pref_edit_text">Editare avansată</string>
-    <string name="pref_edit_text_summary">Editați șirul JSON singur</string>
     <string name="pref_controls_auth">Solicitați deblocarea dispozitivului pentru controale</string>
     <string name="pref_controls_auth_summary">Solicitați ca dispozitivul să fie deblocat pentru controalele din meniul de alimentare</string>
     <string name="pref_advanced">Setări avansate</string>

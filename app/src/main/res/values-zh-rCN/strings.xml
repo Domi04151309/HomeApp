@@ -113,8 +113,6 @@
     <string name="pref_add_search_summary">这可能需要几秒钟</string>
     <string name="pref_add_dialog">添加设备</string>
     <string name="pref_add_dialog_message">您要将 &#8220;%1$s&#8221; 添加到您的设备吗？</string>
-    <string name="pref_edit_text">高级编辑</string>
-    <string name="pref_edit_text_summary">自行编辑 JSON 字符串</string>
     <string name="pref_controls_auth">需要设备解锁才能进行控制</string>
     <string name="pref_controls_auth_summary">需要解锁设备才能使用电源菜单控制</string>
     <string name="pref_advanced">高级设置</string>
