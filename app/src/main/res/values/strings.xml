@@ -148,6 +148,21 @@
     <string name="device_config_direct_view">Load device with main list</string>
     <string name="device_config_hide">Hide device from main list</string>
     <string name="device_config_hidden">hidden</string>
+    <string name="device_config_room">Room</string>
+    <string name="device_config_room_none">No room</string>
+
+    <string name="rooms_title">Rooms</string>
+    <string name="rooms_add">Add a new room</string>
+    <string name="rooms_add_summary">Create a new room for organizing devices</string>
+    <string name="rooms_new_room">New Room</string>
+    <string name="rooms_name">Room Name</string>
+    <string name="rooms_name_example">e.g., Living Room</string>
+    <string name="rooms_icon">Room Icon</string>
+    <string name="rooms_manage">Manage rooms</string>
+    <string name="rooms_manage_summary">Create and edit rooms for organizing devices</string>
+    <string name="rooms_delete_question">Are you sure you want to delete this room? Devices in this room will be moved to no room.</string>
+    <string name="rooms_all">All Devices</string>
+    <string name="rooms_no_room">No Room</string>
     <string name="device_config_info">Device Info</string>
     <string name="device_config_info_status">Status</string>
 
