@@ -8,18 +8,17 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.adapters.DeviceListAdapter
-import io.github.domi04151309.home.data.DeviceItem
+import io.github.domi04151309.home.data.RoomItem
 import io.github.domi04151309.home.data.SimpleListItem
-import io.github.domi04151309.home.helpers.Devices
+import io.github.domi04151309.home.helpers.Rooms
 import io.github.domi04151309.home.interfaces.RecyclerViewHelperInterfaceAdvanced
 
-class DevicesActivity : BaseActivity(), RecyclerViewHelperInterfaceAdvanced {
+class RoomsActivity : BaseActivity(), RecyclerViewHelperInterfaceAdvanced {
     private var reset = true
-    private lateinit var devices: Devices
+    private lateinit var rooms: Rooms
     private lateinit var recyclerView: RecyclerView
     private lateinit var itemTouchHelper: ItemTouchHelper
 
@@ -50,7 +49,7 @@ class DevicesActivity : BaseActivity(), RecyclerViewHelperInterfaceAdvanced {
                         viewHolder.bindingAdapterPosition,
                         target.bindingAdapterPosition,
                     )
-                    devices.moveDevice(viewHolder.bindingAdapterPosition, target.bindingAdapterPosition)
+                    rooms.moveRoom(viewHolder.bindingAdapterPosition, target.bindingAdapterPosition)
                     true
                 }
             }
@@ -69,7 +68,7 @@ class DevicesActivity : BaseActivity(), RecyclerViewHelperInterfaceAdvanced {
                 viewHolder: RecyclerView.ViewHolder,
             ) {
                 super.clearView(recyclerView, viewHolder)
-                devices.saveChanges()
+                rooms.saveChanges()
             }
         }
 
@@ -78,8 +77,9 @@ class DevicesActivity : BaseActivity(), RecyclerViewHelperInterfaceAdvanced {
         setContentView(R.layout.activity_devices)
         setSupportActionBar(findViewById<MaterialToolbar>(R.id.toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setTitle(R.string.rooms_title)
 
-        devices = Devices(this)
+        rooms = Rooms(this)
         recyclerView = findViewById(R.id.recyclerView)
         itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
 
@@ -88,34 +88,30 @@ class DevicesActivity : BaseActivity(), RecyclerViewHelperInterfaceAdvanced {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         val fab = findViewById<FloatingActionButton>(R.id.roomsFab)
-        fab.setImageResource(R.drawable.ic_device_lamp)
+        fab.setImageResource(R.drawable.ic_add)
         fab.setOnClickListener {
-            startActivity(Intent(this, RoomsActivity::class.java))
+            reset = true
+            startActivity(Intent(this, EditRoomActivity::class.java))
         }
     }
 
-    private fun loadDevices() {
-        val listItems: ArrayList<SimpleListItem> = ArrayList(devices.length)
-        var currentDevice: DeviceItem
-        for (i in 0 until devices.length) {
-            currentDevice = devices.getDeviceByIndex(i)
+    private fun loadRooms() {
+        val listItems: ArrayList<SimpleListItem> = ArrayList(rooms.length)
+        var currentRoom: RoomItem
+        for (i in 0 until rooms.length) {
+            currentRoom = rooms.getRoomByIndex(i)
             listItems +=
                 SimpleListItem(
-                    title = currentDevice.name,
-                    summary =
-                        if (currentDevice.hide) {
-                            resources.getString(R.string.device_config_hidden) + " · " + currentDevice.address
-                        } else {
-                            currentDevice.address
-                        },
-                    hidden = "edit#${currentDevice.id}",
-                    icon = currentDevice.iconId,
+                    title = currentRoom.name,
+                    summary = "",
+                    hidden = "edit#${currentRoom.id}",
+                    icon = currentRoom.iconId,
                 )
         }
         listItems +=
             SimpleListItem(
-                title = resources.getString(R.string.pref_add),
-                summary = resources.getString(R.string.pref_add_summary),
+                title = resources.getString(R.string.rooms_add),
+                summary = resources.getString(R.string.rooms_add_summary),
                 hidden = "add",
                 icon = R.drawable.ic_add,
             )
@@ -131,21 +127,12 @@ class DevicesActivity : BaseActivity(), RecyclerViewHelperInterfaceAdvanced {
         if (action.contains("edit")) {
             reset = true
             startActivity(
-                Intent(this, EditDeviceActivity::class.java)
-                    .putExtra("deviceId", action.substring(action.indexOf('#') + 1)),
+                Intent(this, EditRoomActivity::class.java)
+                    .putExtra("roomId", action.substring(action.indexOf('#') + 1)),
             )
         } else if (action == "add") {
             reset = true
-            MaterialAlertDialogBuilder(this)
-                .setTitle(R.string.pref_add_method)
-                .setItems(resources.getStringArray(R.array.pref_add_method_array)) { _, which ->
-                    if (which == 0) {
-                        startActivity(Intent(this, EditDeviceActivity::class.java))
-                    } else if (which == 1) {
-                        startActivity(Intent(this, SearchDevicesActivity::class.java))
-                    }
-                }
-                .show()
+            startActivity(Intent(this, EditRoomActivity::class.java))
         }
     }
 
@@ -157,7 +144,7 @@ class DevicesActivity : BaseActivity(), RecyclerViewHelperInterfaceAdvanced {
         super.onStart()
         if (reset) {
             reset = false
-            loadDevices()
+            loadRooms()
         }
     }
 }

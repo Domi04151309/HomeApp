@@ -84,6 +84,15 @@
             android:launchMode="singleTop"
             android:parentActivityName=".activities.DevicesActivity" />
         <activity
+            android:name=".activities.RoomsActivity"
+            android:label="@string/rooms_title"
+            android:launchMode="singleTop"
+            android:parentActivityName=".activities.SettingsActivity" />
+        <activity
+            android:name=".activities.EditRoomActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".activities.RoomsActivity" />
+        <activity
             android:name=".activities.DeviceInfoActivity"
             android:label="@string/device_config_info"
             android:launchMode="singleTop"
