@@ -121,16 +121,21 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
     ): List<ListViewItem> {
         val listItems = mutableListOf<ListViewItem>()
         for (switchKey in config.keys()) {
-            if (switchKey.startsWith("switch:")) {
-                listItems.addAll(
-                    parseSwitchV2(
-                        config.getJSONObject(switchKey),
-                        status.getJSONObject(switchKey),
-                        config,
-                    ),
-                )
-            } else if (switchKey.startsWith("pm1:")) {
-                listItems.addAll(parsePowermeter1V2(config.getJSONObject(switchKey), status.getJSONObject(switchKey)))
+            val switchKeyTrim = switchKey.split(":", limit = 2)[0]
+            when(switchKeyTrim) {
+                "switch" -> {
+                    listItems.addAll(
+                        parseSwitchV2(
+                            config.getJSONObject(switchKey),
+                            status.getJSONObject(switchKey),
+                            config,
+                        ),
+                    )
+                }
+                "pm1" -> {
+                    listItems.addAll(parsePowermeter1V2(config.getJSONObject(switchKey), status.getJSONObject(switchKey)))
+                }
+                else -> {}
             }
         }
         return listItems
