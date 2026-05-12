@@ -123,17 +123,8 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
         for (switchKey in config.keys()) {
             val switchKeyTrim = switchKey.split(":", limit = 2)[0]
             when(switchKeyTrim) {
-                "switch" -> {
-                    listItems.addAll(
-                        parseSwitchV2(
-                            config.getJSONObject(switchKey),
-                            status.getJSONObject(switchKey),
-                            config,
-                        ),
-                    )
-                }
-                "pm1" -> {
-                    listItems.addAll(parsePowermeter1V2(config.getJSONObject(switchKey), status.getJSONObject(switchKey)))
+                "switch", "pm1" -> {
+                    listItems.addAll(parseV2(switchKey, config, status))
                 }
                 else -> {}
             }
@@ -141,55 +132,89 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
         return listItems
     }
 
-    private fun parsePowermeter1V2(
-        pm1Config: JSONObject,
-        pm1Status: JSONObject,
+    private fun parseV2(
+        deviceKey: String,
+        config: JSONObject,
+        status: JSONObject,
     ): List<ListViewItem> {
         val listItems = mutableListOf<ListViewItem>()
-        val currentId = pm1Config.getInt("id").toString()
         val format = DecimalFormat("#.###")
+        val deviceConfig = config.getJSONObject(deviceKey)
+        val deviceStatus = status.getJSONObject(deviceKey)
+        val currentId = deviceConfig.getInt("id")
 
-        for (statusKey in pm1Status.keys()) {
+        for (statusKey in deviceStatus.keys()) {
             when(statusKey){
+                // Switch/Light
+                "output" -> {
+                    val currentState = deviceStatus.getBoolean("output")
+                    listItems +=
+                        ListViewItem(
+                            title =
+                                nameOrDefault(
+                                    if (deviceConfig.isNull("name")) "" else deviceConfig.getString("name"),
+                                    currentId,
+                                ),
+                            summary =
+                                resources.getString(
+                                    if (currentState) {
+                                        R.string.str_on
+                                    } else {
+                                        R.string.str_off
+                                    },
+                                ),
+                            hidden = currentId.toString(),
+                            state = currentState,
+                            icon =
+                                Global.getIcon(
+                                    config.optJSONObject("sys")?.optJSONObject("ui_data")
+                                        ?.optJSONArray("consumption_types")
+                                        ?.getString(currentId)
+                                        ?: "",
+                                    R.drawable.ic_do,
+                                ),
+                        )
+                }
+                // Power meter
                 "apower" -> {
                     listItems +=
                         ListViewItem(
-                            title = "${format.format(pm1Status.getDouble("apower"))} W",
+                            title = "${format.format(deviceStatus.getDouble("apower"))} W",
                             summary = resources.getString(R.string.shelly_powermeter_summary),
-                            hidden = currentId,
+                            hidden = currentId.toString(),
                             icon = R.drawable.ic_device_electricity,
                         )
                 }
                 "current" -> {
                     listItems +=
                         ListViewItem(
-                            title = "${format.format(pm1Status.getDouble("current"))} A",
+                            title = "${format.format(deviceStatus.getDouble("current"))} A",
                             summary = resources.getString(R.string.shelly_powermeter_current),
-                            hidden = currentId + "c",
+                            hidden = currentId.toString() + "c",
                         )
                 }
                 "voltage" -> {
                     listItems +=
                         ListViewItem(
-                            title = "${format.format(pm1Status.getDouble("voltage"))} V",
+                            title = "${format.format(deviceStatus.getDouble("voltage"))} V",
                             summary = resources.getString(R.string.shelly_powermeter_voltage),
-                            hidden = currentId + "v",
+                            hidden = currentId.toString() + "v",
                         )
                 }
                 "aenergy" -> {
                     listItems +=
                         ListViewItem(
-                            title = "${format.format(pm1Status.getJSONObject("aenergy").getDouble("total") / KILO)} kWh",
+                            title = "${format.format(deviceStatus.getJSONObject("aenergy").getDouble("total") / KILO)} kWh",
                             summary = resources.getString(R.string.shelly_powermeter_energy),
-                            hidden = currentId + "e",
+                            hidden = currentId.toString() + "e",
                         )
                 }
                 "ret_aenergy" -> {
                     listItems +=
                         ListViewItem(
-                            title = "${format.format(pm1Status.getJSONObject("ret_aenergy").getDouble("total") / KILO)} kWh",
+                            title = "${format.format(deviceStatus.getJSONObject("ret_aenergy").getDouble("total") / KILO)} kWh",
                             summary = resources.getString(R.string.shelly_powermeter_return_energy),
-                            hidden = currentId + "rete",
+                            hidden = currentId.toString() + "rete",
                         )
                 }
                 else -> {}
@@ -198,45 +223,6 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
 
         return listItems
     }
-
-    private fun parseSwitchV2(
-        switchConfig: JSONObject,
-        switchStatus: JSONObject,
-        config: JSONObject,
-    ): List<ListViewItem> {
-        val listItems = mutableListOf<ListViewItem>()
-        val currentId = switchConfig.getInt("id")
-        val currentState = switchStatus.getBoolean("output")
-
-        listItems +=
-            ListViewItem(
-                title =
-                    nameOrDefault(
-                        if (switchConfig.isNull("name")) "" else switchConfig.getString("name"),
-                        currentId,
-                    ),
-                summary =
-                    resources.getString(
-                        if (currentState) {
-                            R.string.str_on
-                        } else {
-                            R.string.str_off
-                        },
-                    ),
-                hidden = currentId.toString(),
-                state = currentState,
-                icon =
-                    Global.getIcon(
-                        config.optJSONObject("sys")?.optJSONObject("ui_data")
-                            ?.optJSONArray("consumption_types")
-                            ?.getString(currentId)
-                            ?: "",
-                        R.drawable.ic_do,
-                    ),
-            )
-        return listItems
-    }
-
     private fun nameOrDefault(
         name: String,
         id: Int,
