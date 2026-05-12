@@ -149,37 +149,52 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
         val currentId = pm1Config.getInt("id").toString()
         val format = DecimalFormat("#.###")
 
-        listItems +=
-            ListViewItem(
-                title = "${format.format(pm1Status.getDouble("apower"))} W",
-                summary = resources.getString(R.string.shelly_powermeter_summary),
-                hidden = currentId,
-                icon = R.drawable.ic_device_electricity,
-            )
-        listItems +=
-            ListViewItem(
-                title = "${format.format(pm1Status.getDouble("current"))} A",
-                summary = resources.getString(R.string.shelly_powermeter_current),
-                hidden = currentId + "c",
-            )
-        listItems +=
-            ListViewItem(
-                title = "${format.format(pm1Status.getDouble("voltage"))} V",
-                summary = resources.getString(R.string.shelly_powermeter_voltage),
-                hidden = currentId + "v",
-            )
-        listItems +=
-            ListViewItem(
-                title = "${format.format(pm1Status.getJSONObject("aenergy").getDouble("total") / KILO)} kWh",
-                summary = resources.getString(R.string.shelly_powermeter_energy),
-                hidden = currentId + "e",
-            )
-        listItems +=
-            ListViewItem(
-                title = "${format.format(pm1Status.getJSONObject("ret_aenergy").getDouble("total") / KILO)} kWh",
-                summary = resources.getString(R.string.shelly_powermeter_return_energy),
-                hidden = currentId + "rete",
-            )
+        for (statusKey in pm1Status.keys()) {
+            when(statusKey){
+                "apower" -> {
+                    listItems +=
+                        ListViewItem(
+                            title = "${format.format(pm1Status.getDouble("apower"))} W",
+                            summary = resources.getString(R.string.shelly_powermeter_summary),
+                            hidden = currentId,
+                            icon = R.drawable.ic_device_electricity,
+                        )
+                }
+                "current" -> {
+                    listItems +=
+                        ListViewItem(
+                            title = "${format.format(pm1Status.getDouble("current"))} A",
+                            summary = resources.getString(R.string.shelly_powermeter_current),
+                            hidden = currentId + "c",
+                        )
+                }
+                "voltage" -> {
+                    listItems +=
+                        ListViewItem(
+                            title = "${format.format(pm1Status.getDouble("voltage"))} V",
+                            summary = resources.getString(R.string.shelly_powermeter_voltage),
+                            hidden = currentId + "v",
+                        )
+                }
+                "aenergy" -> {
+                    listItems +=
+                        ListViewItem(
+                            title = "${format.format(pm1Status.getJSONObject("aenergy").getDouble("total") / KILO)} kWh",
+                            summary = resources.getString(R.string.shelly_powermeter_energy),
+                            hidden = currentId + "e",
+                        )
+                }
+                "ret_aenergy" -> {
+                    listItems +=
+                        ListViewItem(
+                            title = "${format.format(pm1Status.getJSONObject("ret_aenergy").getDouble("total") / KILO)} kWh",
+                            summary = resources.getString(R.string.shelly_powermeter_return_energy),
+                            hidden = currentId + "rete",
+                        )
+                }
+                else -> {}
+            }
+        }
 
         return listItems
     }

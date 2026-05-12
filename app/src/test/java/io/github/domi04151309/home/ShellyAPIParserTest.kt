@@ -137,14 +137,14 @@ class ShellyAPIParserTest {
         assertThat(listItems.size, `is`(5))
 
         var num = 0
-        assertThat(listItems[num].title, `is`("4 W"))
+        assertThat(listItems[num].title, `is`("231.5 V"))
         assertThat(
             listItems[num].summary,
-            `is`(resources.getString(R.string.shelly_powermeter_summary)),
+            `is`(resources.getString(R.string.shelly_powermeter_voltage)),
         )
         assertThat(listItems[num].state, `is`(null as Boolean?))
-        assertThat(listItems[num].hidden, `is`("0"))
-        assertThat(listItems[num].icon, `is`(R.drawable.ic_device_electricity))
+        assertThat(listItems[num].hidden, `is`("0v"))
+        assertThat(listItems[num].icon, `is`(0))
 
         num = 1
         assertThat(listItems[num].title, `is`("0.033 A"))
@@ -157,14 +157,14 @@ class ShellyAPIParserTest {
         assertThat(listItems[num].icon, `is`(0))
 
         num = 2
-        assertThat(listItems[num].title, `is`("231.5 V"))
+        assertThat(listItems[num].title, `is`("4 W"))
         assertThat(
             listItems[num].summary,
-            `is`(resources.getString(R.string.shelly_powermeter_voltage)),
+            `is`(resources.getString(R.string.shelly_powermeter_summary)),
         )
         assertThat(listItems[num].state, `is`(null as Boolean?))
-        assertThat(listItems[num].hidden, `is`("0v"))
-        assertThat(listItems[num].icon, `is`(0))
+        assertThat(listItems[num].hidden, `is`("0"))
+        assertThat(listItems[num].icon, `is`(R.drawable.ic_device_electricity))
 
         num = 3
         assertThat(listItems[num].title, `is`("0.002 kWh"))
