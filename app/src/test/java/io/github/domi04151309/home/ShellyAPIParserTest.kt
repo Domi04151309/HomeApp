@@ -129,6 +129,65 @@ class ShellyAPIParserTest {
     }
 
     @Test
+    fun parseListItemsJsonV2_shellyPlus1PM() {
+        val configJson = JSONObject(Helpers.getFileContents("/shelly/shelly-plus-1-pm-Shelly.GetConfig.json"))
+        val statusJson = JSONObject(Helpers.getFileContents("/shelly/shelly-plus-1-pm-Shelly.GetStatus.json"))
+
+        val listItems = parserV2.parseResponse(configJson, statusJson)
+        assertThat(listItems.size, `is`(5))
+
+        var num = 0
+        assertThat(listItems[num].title, `is`("Switch 1"))
+        assertThat(
+            listItems[num].summary,
+            `is`(resources.getString(R.string.str_on)),
+        )
+        assertThat(listItems[num].state, `is`(true))
+        assertThat(listItems[num].hidden, `is`("0"))
+        assertThat(listItems[num].icon, `is`(R.drawable.ic_do))
+
+        num = 1
+        assertThat(listItems[num].title, `is`("2738 W"))
+        assertThat(
+            listItems[num].summary,
+            `is`(resources.getString(R.string.shelly_powermeter_summary)),
+        )
+        assertThat(listItems[num].state, `is`(null as Boolean?))
+        assertThat(listItems[num].hidden, `is`("0"))
+        assertThat(listItems[num].icon, `is`(R.drawable.ic_device_electricity))
+
+        num = 2
+        assertThat(listItems[num].title, `is`("217.6 V"))
+        assertThat(
+            listItems[num].summary,
+            `is`(resources.getString(R.string.shelly_powermeter_voltage)),
+        )
+        assertThat(listItems[num].state, `is`(null as Boolean?))
+        assertThat(listItems[num].hidden, `is`("0v"))
+        assertThat(listItems[num].icon, `is`(0))
+
+        num = 3
+        assertThat(listItems[num].title, `is`("12.456 A"))
+        assertThat(
+            listItems[num].summary,
+            `is`(resources.getString(R.string.shelly_powermeter_current)),
+        )
+        assertThat(listItems[num].state, `is`(null as Boolean?))
+        assertThat(listItems[num].hidden, `is`("0c"))
+        assertThat(listItems[num].icon, `is`(0))
+
+        num = 4
+        assertThat(listItems[num].title, `is`("0.017 kWh"))
+        assertThat(
+            listItems[num].summary,
+            `is`(resources.getString(R.string.shelly_powermeter_energy)),
+        )
+        assertThat(listItems[num].state, `is`(null as Boolean?))
+        assertThat(listItems[num].hidden, `is`("0e"))
+        assertThat(listItems[num].icon, `is`(0))
+    }
+
+    @Test
     fun parseListItemsJsonV2_shellyMiniPMG3() {
         val configJson = JSONObject(Helpers.getFileContents("/shelly/shelly-MiniPMG3-Shelly.GetConfig.json"))
         val statusJson = JSONObject(Helpers.getFileContents("/shelly/shelly-MiniPMG3-Shelly.GetStatus.json"))
@@ -137,14 +196,14 @@ class ShellyAPIParserTest {
         assertThat(listItems.size, `is`(5))
 
         var num = 0
-        assertThat(listItems[num].title, `is`("4 W"))
+        assertThat(listItems[num].title, `is`("231.5 V"))
         assertThat(
             listItems[num].summary,
-            `is`(resources.getString(R.string.shelly_powermeter_summary)),
+            `is`(resources.getString(R.string.shelly_powermeter_voltage)),
         )
         assertThat(listItems[num].state, `is`(null as Boolean?))
-        assertThat(listItems[num].hidden, `is`("0"))
-        assertThat(listItems[num].icon, `is`(R.drawable.ic_device_electricity))
+        assertThat(listItems[num].hidden, `is`("0v"))
+        assertThat(listItems[num].icon, `is`(0))
 
         num = 1
         assertThat(listItems[num].title, `is`("0.033 A"))
@@ -157,14 +216,14 @@ class ShellyAPIParserTest {
         assertThat(listItems[num].icon, `is`(0))
 
         num = 2
-        assertThat(listItems[num].title, `is`("231.5 V"))
+        assertThat(listItems[num].title, `is`("4 W"))
         assertThat(
             listItems[num].summary,
-            `is`(resources.getString(R.string.shelly_powermeter_voltage)),
+            `is`(resources.getString(R.string.shelly_powermeter_summary)),
         )
         assertThat(listItems[num].state, `is`(null as Boolean?))
-        assertThat(listItems[num].hidden, `is`("0v"))
-        assertThat(listItems[num].icon, `is`(0))
+        assertThat(listItems[num].hidden, `is`("0"))
+        assertThat(listItems[num].icon, `is`(R.drawable.ic_device_electricity))
 
         num = 3
         assertThat(listItems[num].title, `is`("0.002 kWh"))
