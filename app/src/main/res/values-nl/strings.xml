@@ -90,6 +90,8 @@
     <string name="pref_general">Algemene instellingen</string>
     <string name="pref_columns">Aantal kolommen</string>
     <string name="pref_columns_summary">Wijzigt het aantal kolommen van de hoofdlijst</string>
+    <string name="pref_language">Taal</string>
+    <string name="pref_language_summary">Selecteer de app-taal</string>
     <string name="pref_devices">Apparaten</string>
     <string name="pref_edit">Apparaatlijst bewerken</string>
     <string name="pref_edit_summary">Bewerk je apparaatlijst</string>

@@ -90,6 +90,8 @@
     <string name="pref_general">Yleiset asetukset</string>
     <string name="pref_columns">Sarakkeiden määrä</string>
     <string name="pref_columns_summary">Muuttaa päälistan sarakkeiden määrää</string>
+    <string name="pref_language">Kieli</string>
+    <string name="pref_language_summary">Valitse sovelluksen kieli</string>
     <string name="pref_devices">Laitteet</string>
     <string name="pref_edit">Muokkaa laiteluetteloa</string>
     <string name="pref_edit_summary">Muokkaa laitelistaa</string>

@@ -90,6 +90,8 @@
     <string name="pref_general">일반 설정</string>
     <string name="pref_columns">열 수</string>
     <string name="pref_columns_summary">메인 목록의 열 수 변경</string>
+    <string name="pref_language">언어</string>
+    <string name="pref_language_summary">앱 언어 선택</string>
     <string name="pref_devices">장치</string>
     <string name="pref_edit">장치 목록 편집</string>
     <string name="pref_edit_summary">장치 목록을 편집합니다</string>

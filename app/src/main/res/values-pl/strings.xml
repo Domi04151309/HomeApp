@@ -90,6 +90,8 @@
     <string name="pref_general">Ustawienia ogólne</string>
     <string name="pref_columns">Liczba kolumn</string>
     <string name="pref_columns_summary">Zmienia liczbę kolumn głównej listy</string>
+    <string name="pref_language">Język</string>
+    <string name="pref_language_summary">Wybierz język aplikacji</string>
     <string name="pref_devices">Urządzenia</string>
     <string name="pref_edit">Edytuj listę urządzeń</string>
     <string name="pref_edit_summary">Edytuj listę urządzeń</string>

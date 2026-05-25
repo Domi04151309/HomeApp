@@ -90,6 +90,8 @@
     <string name="pref_general">Общи настройки</string>
     <string name="pref_columns">Брой колони</string>
     <string name="pref_columns_summary">Променя броя колони на основния списък</string>
+    <string name="pref_language">Език</string>
+    <string name="pref_language_summary">Изберете езика на приложението</string>
     <string name="pref_devices">Устройства</string>
     <string name="pref_edit">Редактиране на списъка с устройства</string>
     <string name="pref_edit_summary">Редактирайте списъка с устройства</string>

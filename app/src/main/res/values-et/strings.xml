@@ -90,6 +90,8 @@
     <string name="pref_general">Üldised seaded</string>
     <string name="pref_columns">Veergude arv</string>
     <string name="pref_columns_summary">Muudab peamise nimekirja veergude arvu</string>
+    <string name="pref_language">Keel</string>
+    <string name="pref_language_summary">Vali rakenduse keel</string>
     <string name="pref_devices">Seadmed</string>
     <string name="pref_edit">Muuda seadme nimekirja</string>
     <string name="pref_edit_summary">Muuda seadmete nimekirja</string>

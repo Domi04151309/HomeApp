@@ -90,6 +90,8 @@
     <string name="pref_general">Generelle Einstellungen</string>
     <string name="pref_columns">Spaltenanzahl</string>
     <string name="pref_columns_summary">Ändert die Anzahl der Spalten der Hauptliste</string>
+    <string name="pref_language">Sprache</string>
+    <string name="pref_language_summary">Wählen Sie die App-Sprache</string>
     <string name="pref_devices">Geräte</string>
     <string name="pref_edit">Geräteliste bearbeiten</string>
     <string name="pref_edit_summary">Bearbeiten Sie Ihre Geräteliste</string>

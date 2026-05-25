@@ -90,6 +90,8 @@
     <string name="pref_general">Impostazioni generali</string>
     <string name="pref_columns">Numero di colonne</string>
     <string name="pref_columns_summary">Modifica il numero di colonne della lista principale</string>
+    <string name="pref_language">Lingua</string>
+    <string name="pref_language_summary">Seleziona la lingua dell’app</string>
     <string name="pref_devices">Dispositivi</string>
     <string name="pref_edit">Modifica lista dispositivi</string>
     <string name="pref_edit_summary">Modifica la lista dei dispositivi</string>

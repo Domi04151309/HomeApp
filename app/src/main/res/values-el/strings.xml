@@ -90,6 +90,8 @@
     <string name="pref_general">Γενικές ρυθμίσεις</string>
     <string name="pref_columns">Αριθμός στηλών</string>
     <string name="pref_columns_summary">Αλλάζει τον αριθμό των στηλών της κύριας λίστας</string>
+    <string name="pref_language">Γλώσσα</string>
+    <string name="pref_language_summary">Επιλέξτε τη γλώσσα της εφαρμογής</string>
     <string name="pref_devices">Συσκευές</string>
     <string name="pref_edit">Επεξεργασία λίστας συσκευών</string>
     <string name="pref_edit_summary">Επεξεργασία της λίστας συσκευών</string>

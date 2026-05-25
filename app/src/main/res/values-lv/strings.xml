@@ -90,6 +90,8 @@
     <string name="pref_general">Vispārīgie iestatījumi</string>
     <string name="pref_columns">Kolonnu skaits</string>
     <string name="pref_columns_summary">Maina galvenā saraksta kolonnu skaitu</string>
+    <string name="pref_language">Valoda</string>
+    <string name="pref_language_summary">Izvēlieties lietotnes valodu</string>
     <string name="pref_devices">Ierīces</string>
     <string name="pref_edit">Rediģēt ierīču sarakstu</string>
     <string name="pref_edit_summary">Rediģēt ierīču sarakstu</string>

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings.ACTION_APP_LOCALE_SETTINGS
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -125,25 +126,45 @@ class SettingsActivity : BaseActivity() {
     }
 
     class GeneralPreferenceFragment : PreferenceFragment() {
+        @Suppress("LongMethod")
         override fun onCreatePreferences(
             savedInstanceState: Bundle?,
             rootKey: String?,
         ) {
             addPreferencesFromResource(R.xml.pref_general)
+
+            findPreference<Preference>("language")?.isVisible =
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+
             findPreference<Preference>(P.PREF_CONTROLS_AUTH)?.isVisible =
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+
+            findPreference<Preference>("language")?.setOnPreferenceClickListener {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    startActivity(
+                        Intent(ACTION_APP_LOCALE_SETTINGS).apply {
+                            data = Uri.fromParts("package", requireContext().packageName, null)
+                        },
+                    )
+                }
+                true
+            }
+
             findPreference<Preference>("devices")?.setOnPreferenceClickListener {
                 startActivity(Intent(context, DevicesActivity::class.java))
                 true
             }
+
             findPreference<Preference>("export_config")?.setOnPreferenceClickListener {
                 (activity as? SettingsActivity)?.openExportLauncher()
                 true
             }
+
             findPreference<Preference>("import_config")?.setOnPreferenceClickListener {
                 (activity as? SettingsActivity)?.openImportLauncher()
                 true
             }
+
             findPreference<Preference>("reset_json")?.setOnPreferenceClickListener {
                 MaterialAlertDialogBuilder(requireContext())
                     .setTitle(R.string.pref_reset)
@@ -159,10 +180,12 @@ class SettingsActivity : BaseActivity() {
                     .show()
                 true
             }
+
             findPreference<Preference>("about")?.setOnPreferenceClickListener {
                 startActivity(Intent(context, AboutActivity::class.java))
                 true
             }
+
             findPreference<Preference>("wiki")?.setOnPreferenceClickListener {
                 val uri = "https://github.com/Domi04151309/HomeApp/wiki"
                 startActivity(
@@ -170,6 +193,7 @@ class SettingsActivity : BaseActivity() {
                 )
                 true
             }
+
             findPreference<Preference>("header")?.setOnPreferenceClickListener {
                 startActivity(
                     Intent(

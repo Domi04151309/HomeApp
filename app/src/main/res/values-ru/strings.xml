@@ -90,6 +90,8 @@
     <string name="pref_general">Общие настройки</string>
     <string name="pref_columns">Количество столбцов</string>
     <string name="pref_columns_summary">Изменяет количество столбцов главного списка</string>
+    <string name="pref_language">Язык</string>
+    <string name="pref_language_summary">Выберите язык приложения</string>
     <string name="pref_devices">Устройства</string>
     <string name="pref_edit">Изменить список устройств</string>
     <string name="pref_edit_summary">Изменить список устройств</string>

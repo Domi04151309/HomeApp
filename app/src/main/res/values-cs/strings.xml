@@ -90,6 +90,8 @@
     <string name="pref_general">Obecná nastavení</string>
     <string name="pref_columns">Počet sloupců</string>
     <string name="pref_columns_summary">Změní počet sloupců hlavního seznamu</string>
+    <string name="pref_language">Jazyk</string>
+    <string name="pref_language_summary">Vyberte jazyk aplikace</string>
     <string name="pref_devices">Zařízení</string>
     <string name="pref_edit">Upravit seznam zařízení</string>
     <string name="pref_edit_summary">Upravte seznam zařízení</string>

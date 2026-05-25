@@ -93,6 +93,8 @@
     <string name="pref_general">General Settings</string>
     <string name="pref_columns">Column count</string>
     <string name="pref_columns_summary">Changes the number of columns of the main list</string>
+    <string name="pref_language">Language</string>
+    <string name="pref_language_summary">Select the app language</string>
     <string name="pref_devices">Devices</string>
     <string name="pref_edit">Edit device list</string>
     <string name="pref_edit_summary">Edit the list of devices</string>

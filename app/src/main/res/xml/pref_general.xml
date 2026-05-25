@@ -11,6 +11,12 @@
             app:summary="@string/pref_columns_summary"
             app:title="@string/pref_columns"
             app:iconSpaceReserved="false" />
+
+        <Preference
+            app:key="language"
+            app:summary="@string/pref_language_summary"
+            app:title="@string/pref_language"
+            app:iconSpaceReserved="false" />
     </PreferenceCategory>
     <PreferenceCategory
         app:title="@string/pref_devices"

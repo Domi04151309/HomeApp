@@ -90,6 +90,8 @@
     <string name="pref_general">Általános beállítások</string>
     <string name="pref_columns">Oszlopok száma</string>
     <string name="pref_columns_summary">Megváltoztatja a főlista oszlopainak számát</string>
+    <string name="pref_language">Nyelv</string>
+    <string name="pref_language_summary">Válassza ki az alkalmazás nyelvét</string>
     <string name="pref_devices">Eszközök</string>
     <string name="pref_edit">Eszközlista szerkesztése</string>
     <string name="pref_edit_summary">Az eszközök listájának szerkesztése</string>

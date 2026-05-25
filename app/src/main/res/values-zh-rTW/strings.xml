@@ -90,6 +90,8 @@
     <string name="pref_general">一般設定</string>
     <string name="pref_columns">欄數</string>
     <string name="pref_columns_summary">變更主清單的欄數</string>
+    <string name="pref_language">語言</string>
+    <string name="pref_language_summary">選擇應用語言</string>
     <string name="pref_devices">裝置</string>
     <string name="pref_edit">編輯裝置清單</string>
     <string name="pref_edit_summary">編輯裝置清單</string>

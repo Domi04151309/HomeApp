@@ -90,6 +90,8 @@
     <string name="pref_general">Genel Ayarlar</string>
     <string name="pref_columns">Sutun sayisi</string>
     <string name="pref_columns_summary">Ana listenin sutun sayisini degistirir</string>
+    <string name="pref_language">Dil</string>
+    <string name="pref_language_summary">Uygulama dilini secin</string>
     <string name="pref_devices">Cihazlar</string>
     <string name="pref_edit">Cihaz listesini duzenle</string>
     <string name="pref_edit_summary">Cihaz listesini duzenleyin</string>

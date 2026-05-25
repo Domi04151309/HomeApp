@@ -90,6 +90,8 @@
     <string name="pref_general">Setări generale</string>
     <string name="pref_columns">Număr de coloane</string>
     <string name="pref_columns_summary">Modifică numărul de coloane al listei principale</string>
+    <string name="pref_language">Limbă</string>
+    <string name="pref_language_summary">Selectaţi limba aplicaţiei</string>
     <string name="pref_devices">Dispozitive</string>
     <string name="pref_edit">Editare listă dispozitive</string>
     <string name="pref_edit_summary">Editați lista de dispozitive</string>
