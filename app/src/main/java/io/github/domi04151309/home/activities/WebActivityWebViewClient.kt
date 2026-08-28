@@ -115,6 +115,10 @@ class WebActivityWebViewClient(
         request: WebResourceRequest,
         error: WebResourceError,
     ) {
+        if (request.url.toString() != view.url) {
+            return
+        }
+
         view.loadUrl(ABOUT_BLANK)
         hasError = true
         progressView.visibility = View.GONE
