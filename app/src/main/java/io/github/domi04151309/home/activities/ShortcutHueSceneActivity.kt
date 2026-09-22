@@ -59,7 +59,7 @@ class ShortcutHueSceneActivity : BaseActivity(), RecyclerViewHelperInterface {
                         title = currentDevice.name,
                         summary = currentDevice.address,
                         hidden = currentDevice.id,
-                        icon = currentDevice.iconId,
+                        icon = currentDevice.drawableId,
                     )
             }
         }
@@ -148,7 +148,7 @@ class ShortcutHueSceneActivity : BaseActivity(), RecyclerViewHelperInterface {
                         ShortcutInfo.Builder(this, device.id + lampName)
                             .setShortLabel(view.findViewById<TextView>(R.id.title).text)
                             .setLongLabel(view.findViewById<TextView>(R.id.title).text)
-                            .setIcon(Icon.createWithResource(this, device.iconId))
+                            .setIcon(Icon.createWithResource(this, device.drawableId))
                             .setIntent(
                                 Intent(this, ShortcutHueSceneActionActivity::class.java)
                                     .putExtra(

@@ -120,7 +120,7 @@ class EditDeviceActivity : BaseActivity() {
 
     private fun getIconTextWatcher() =
         TextWatcher {
-            deviceIcon.setImageResource(Global.getIcon(it))
+            deviceIcon.setImageResource(Global.getDrawable(it))
         }
 
     private fun showExternalInfoBasedOnMode(mode: String) {
@@ -286,7 +286,7 @@ class EditDeviceActivity : BaseActivity() {
                                     resources.getString(R.string.pref_add_name_empty)
                                 },
                             )
-                            .setIcon(Icon.createWithResource(this, device.iconId))
+                            .setIcon(Icon.createWithResource(this, device.mipmapId))
                             .setIntent(
                                 Intent(this, MainActivity::class.java)
                                     .putExtra(Devices.INTENT_EXTRA_DEVICE, deviceId)

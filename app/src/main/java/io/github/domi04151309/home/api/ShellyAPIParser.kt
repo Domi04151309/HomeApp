@@ -63,7 +63,7 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
                         ),
                     hidden = relayId.toString(),
                     state = currentState,
-                    icon = Global.getIcon(currentRelay.optString("appliance_type"), R.drawable.ic_do),
+                    icon = Global.getDrawable(currentRelay.optString("appliance_type"), R.drawable.ic_do),
                 )
             // Shelly1 has the "user power constant" setting, but no actual meter
             hideMeters = currentRelay.has("power")
@@ -206,7 +206,7 @@ class ShellyAPIParser(resources: Resources, private val version: Int) :
                 hidden = currentId.toString(),
                 state = currentState,
                 icon =
-                    Global.getIcon(
+                    Global.getDrawable(
                         config.optJSONObject("sys")?.optJSONObject("ui_data")
                             ?.optJSONArray("consumption_types")
                             ?.getString(currentId)

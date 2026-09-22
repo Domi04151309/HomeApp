@@ -69,7 +69,7 @@ class MainActivity : BaseActivity() {
             ) {
                 if (holder.response != null) {
                     val device = devices.getDeviceById(holder.deviceId)
-                    deviceIcon.setImageResource(device.iconId)
+                    deviceIcon.setImageResource(device.drawableId)
                     deviceName.setText(device.name)
                     adapter.updateData(holder.response, recyclerViewInterface)
                     fab.hide()
@@ -294,7 +294,7 @@ class MainActivity : BaseActivity() {
             if (devices.idExists(deviceId)) {
                 if (checkNetwork(this)) {
                     val device = devices.getDeviceById(deviceId)
-                    deviceIcon.setImageResource(device.iconId)
+                    deviceIcon.setImageResource(device.drawableId)
                     deviceName.setText(device.name)
                     selectDevice(deviceId)
                 } else {
@@ -521,7 +521,7 @@ class MainActivity : BaseActivity() {
             title = device.name,
             summary = resources.getString(R.string.main_tap_to_connect),
             hidden = device.id,
-            icon = device.iconId,
+            icon = device.drawableId,
         )
 
     private fun updateStates(registeredForUpdates: HashMap<Int, UnifiedAPI?>) {

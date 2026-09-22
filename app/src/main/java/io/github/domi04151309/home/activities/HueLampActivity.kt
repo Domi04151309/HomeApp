@@ -243,7 +243,7 @@ class HueLampActivity : BaseActivity(), HueRoomInterface, Toolbar.OnMenuItemClic
                 ShortcutInfo.Builder(this, device.id + lampName)
                     .setShortLabel(lampName)
                     .setLongLabel(lampName)
-                    .setIcon(Icon.createWithResource(this, device.iconId))
+                    .setIcon(Icon.createWithResource(this, device.drawableId))
                     .setIntent(
                         Intent(this, HueLampActivity::class.java)
                             .putExtra("id", id)

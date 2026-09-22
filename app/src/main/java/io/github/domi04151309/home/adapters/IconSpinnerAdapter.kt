@@ -30,7 +30,7 @@ internal class IconSpinnerAdapter(
         val vi: View =
             convertView
                 ?: LayoutInflater.from(parent.context).inflate(R.layout.icon_dropdown_item, parent, false)
-        vi.findViewById<ImageView>(R.id.drawable).setImageResource(Global.getIcon(itemArray[position]))
+        vi.findViewById<ImageView>(R.id.drawable).setImageResource(Global.getDrawable(itemArray[position]))
         vi.findViewById<TextView>(R.id.title).text = itemArray[position]
         return vi
     }

@@ -71,7 +71,7 @@ object ControlBuilders {
         id: String,
         device: DeviceItem,
     ): Control =
-        Control.StatefulBuilder(id, getPendingIntent(context, id, device.iconId, device.name, device.name))
+        Control.StatefulBuilder(id, getPendingIntent(context, id, device.drawableId, device.name, device.name))
             .setTitle(device.name)
             .setZone(device.name)
             .setStructure(context.resources.getString(R.string.app_name))

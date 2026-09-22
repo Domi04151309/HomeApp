@@ -48,7 +48,7 @@ class ShortcutTasmotaActivity : BaseActivity(), RecyclerViewHelperInterface {
                         title = currentDevice.name,
                         summary = currentDevice.address,
                         hidden = currentDevice.id,
-                        icon = currentDevice.iconId,
+                        icon = currentDevice.drawableId,
                     )
             }
         }
@@ -105,7 +105,7 @@ class ShortcutTasmotaActivity : BaseActivity(), RecyclerViewHelperInterface {
                             ShortcutInfo.Builder(this, device.id + lampName)
                                 .setShortLabel(lampName)
                                 .setLongLabel(lampName)
-                                .setIcon(Icon.createWithResource(this, device.iconId))
+                                .setIcon(Icon.createWithResource(this, device.drawableId))
                                 .setIntent(
                                     Intent(this, ShortcutTasmotaActionActivity::class.java)
                                         .putExtra(

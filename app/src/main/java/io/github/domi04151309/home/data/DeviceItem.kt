@@ -14,7 +14,8 @@ class DeviceItem(
         set(value) {
             field = formatAddress(value)
         }
-    val iconId: Int get() = Global.getIcon(iconName)
+    val drawableId: Int get() = Global.getDrawable(iconName)
+    val mipmapId: Int get() = Global.getMipmap(iconName)
 
     companion object {
         fun formatAddress(address: String): String {

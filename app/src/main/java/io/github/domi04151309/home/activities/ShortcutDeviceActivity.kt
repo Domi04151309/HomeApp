@@ -38,7 +38,7 @@ class ShortcutDeviceActivity : BaseActivity(), RecyclerViewHelperInterface {
                     title = currentDevice.name,
                     summary = currentDevice.address,
                     hidden = currentDevice.id,
-                    icon = currentDevice.iconId,
+                    icon = currentDevice.drawableId,
                 )
         }
 
@@ -68,7 +68,7 @@ class ShortcutDeviceActivity : BaseActivity(), RecyclerViewHelperInterface {
                                     resources.getString(R.string.pref_add_name_empty)
                                 },
                             )
-                            .setIcon(Icon.createWithResource(this, device.iconId))
+                            .setIcon(Icon.createWithResource(this, device.drawableId))
                             .setIntent(
                                 Intent(this, MainActivity::class.java)
                                     .putExtra(Devices.INTENT_EXTRA_DEVICE, device.id)

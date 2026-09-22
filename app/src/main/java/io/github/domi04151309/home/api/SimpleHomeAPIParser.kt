@@ -20,7 +20,7 @@ class SimpleHomeAPIParser(resources: Resources, api: UnifiedAPI?) : UnifiedAPI.P
                     title = currentObject.optString("title"),
                     summary = currentObject.optString("summary"),
                     hidden = "$currentMode@$i",
-                    icon = Global.getIcon(currentObject.optString("icon"), R.drawable.ic_do),
+                    icon = Global.getDrawable(currentObject.optString("icon"), R.drawable.ic_do),
                     state = if (currentMode == SWITCH) currentObject.optBoolean("data", false) else null,
                 )
             if (currentMode == SWITCH) api?.needsRealTimeData = true

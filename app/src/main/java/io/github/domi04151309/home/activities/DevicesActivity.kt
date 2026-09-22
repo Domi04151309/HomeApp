@@ -102,7 +102,7 @@ class DevicesActivity : BaseActivity(), RecyclerViewHelperInterfaceAdvanced {
                             currentDevice.address
                         },
                     hidden = "edit#${currentDevice.id}",
-                    icon = currentDevice.iconId,
+                    icon = currentDevice.drawableId,
                 )
         }
         listItems +=

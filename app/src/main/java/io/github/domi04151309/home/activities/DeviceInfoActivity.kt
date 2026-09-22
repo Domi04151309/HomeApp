@@ -48,7 +48,7 @@ class DeviceInfoActivity : BaseActivity(), RecyclerViewHelperInterface {
             SimpleListItem(
                 device.name,
                 device.address,
-                icon = device.iconId,
+                icon = device.drawableId,
             ),
         )
 

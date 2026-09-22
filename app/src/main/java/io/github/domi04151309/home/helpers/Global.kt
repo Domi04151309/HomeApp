@@ -81,7 +81,7 @@ internal object Global {
         }
 
     @Suppress("CyclomaticComplexMethod")
-    fun getIcon(
+    fun getDrawable(
         icon: String,
         default: Int = R.drawable.ic_warning,
     ): Int =
@@ -108,6 +108,37 @@ internal object Global {
             "socket" -> R.drawable.ic_device_socket
             "thermometer" -> R.drawable.ic_device_thermometer
             "webcam" -> R.drawable.ic_device_webcam
+            else -> default
+        }
+
+    @Suppress("CyclomaticComplexMethod")
+    fun getMipmap(
+        icon: String,
+        default: Int = R.drawable.ic_warning,
+    ): Int =
+        when (icon.lowercase()) {
+            "christmas tree" -> R.mipmap.ic_device_christmas_tree
+            "clock" -> R.mipmap.ic_device_clock
+            "display" -> R.mipmap.ic_device_display
+            "display alt" -> R.mipmap.ic_device_display_alt
+            "docker" -> R.mipmap.ic_device_docker
+            "electricity" -> R.mipmap.ic_device_electricity
+            "entertainment" -> R.mipmap.ic_device_speaker
+            "gauge" -> R.mipmap.ic_device_gauge
+            "grafana" -> R.mipmap.ic_device_grafana
+            "heating" -> R.mipmap.ic_device_thermometer
+            "hygrometer" -> R.mipmap.ic_device_hygrometer
+            "lamp" -> R.mipmap.ic_device_lamp
+            "lights" -> R.mipmap.ic_device_lamp
+            "raspberry pi" -> R.mipmap.ic_device_raspberry_pi
+            "raspberry pi alt" -> R.mipmap.ic_device_raspberry_pi_alt
+            "router" -> R.mipmap.ic_device_router
+            "speaker" -> R.mipmap.ic_device_speaker
+            "schwibbogen" -> R.mipmap.ic_device_schwibbogen
+            "stack" -> R.mipmap.ic_device_stack
+            "socket" -> R.mipmap.ic_device_socket
+            "thermometer" -> R.mipmap.ic_device_thermometer
+            "webcam" -> R.mipmap.ic_device_webcam
             else -> default
         }
 
