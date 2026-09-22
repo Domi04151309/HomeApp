@@ -4,11 +4,12 @@ private val readAndUnderstoodLicense = false
 
 plugins {
     id("com.android.application")
-    id("io.gitlab.arturbosch.detekt")
+    id("dev.detekt")
 }
 
 android {
     namespace = "io.github.domi04151309.home"
+
     compileSdk {
         version =
             release(36) {
@@ -34,6 +35,7 @@ android {
                 "proguard-rules.pro",
             )
         }
+
         release {
             isMinifyEnabled = true
             isShrinkResources = true
@@ -43,25 +45,37 @@ android {
             )
         }
     }
+
     testOptions {
         unitTests.isIncludeAndroidResources = true
+        unitTests.all {
+            it.jvmArgs(
+                "--add-opens=java.base/jdk.internal.access=ALL-UNNAMED",
+                "--add-opens=java.base/java.io=ALL-UNNAMED",
+            )
+        }
     }
+
     buildFeatures {
         buildConfig = true
     }
+
     lint {
         disable += "MissingTranslation"
     }
+
     project.tasks.preBuild.dependsOn("license")
 }
 
 detekt {
     config.setFrom(file("detekt-config.yml"))
     buildUponDefaultConfig = true
-    basePath = rootProject.projectDir.absolutePath
+    basePath.set(rootProject.projectDir)
 }
 
 tasks.register("license") {
+    description = "Checks the license."
+
     doFirst {
         val data =
             file("./src/main/res/xml/pref_about.xml")
@@ -87,14 +101,14 @@ tasks.register("license") {
 }
 
 dependencies {
-    implementation("androidx.appcompat:appcompat:1.7.1")
+    implementation("androidx.appcompat:appcompat:1.8.0")
     implementation("com.google.android.material:material:1.14.0")
     implementation("androidx.preference:preference-ktx:1.2.1")
     implementation("androidx.annotation:annotation:1.10.0")
     implementation("com.android.volley:volley:1.2.1")
     implementation("androidx.security:security-crypto-ktx:1.1.0")
-    implementation("com.github.skydoves:colorpickerview:2.4.0")
+    implementation("com.github.skydoves:colorpickerview:2.5.0")
 
     testImplementation("junit:junit:4.13.2")
-    testImplementation("org.robolectric:robolectric:4.16.1")
+    testImplementation("org.robolectric:robolectric:4.17")
 }

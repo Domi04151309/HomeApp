@@ -45,8 +45,8 @@ class ControlService : ControlsProviderService() {
                 }
             }
             finishedRequests = 0
-            for (index in 0 until relevantDevices.size) {
-                Global.getCorrectAPI(this, relevantDevices[index].mode, relevantDevices[index].id)
+            for ((index, element) in relevantDevices.withIndex()) {
+                Global.getCorrectAPI(this, element.mode, element.id)
                     .loadList(
                         getAllAvailableCallback(
                             subscriber,

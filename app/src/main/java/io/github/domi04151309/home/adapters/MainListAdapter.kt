@@ -105,7 +105,7 @@ class MainListAdapter(private var attachedTo: RecyclerView) : RecyclerView.Adapt
             animate = preferredAnimationState == true
             val changed = mutableListOf<Int>()
             items.clear()
-            for (i in 0 until items.size) {
+            for (i in items.indices) {
                 if (items[i] != newItems[i]) changed.add(i)
                 items.add(newItems[i])
             }
