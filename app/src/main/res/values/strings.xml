@@ -236,6 +236,7 @@
         <item>Shelly Gen 4</item>
         <item>Tasmota</item>
         <item>Website</item>
+        <item>Website Edge-to-Edge</item>
     </string-array>
     <string-array name="about_icons_array" translatable="false">
         <item>Icons8</item>

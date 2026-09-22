@@ -451,8 +451,9 @@ class MainActivity : BaseActivity() {
                     Global.NODE_RED -> {
                         intent.putExtra("URI", deviceObj.address + "ui/")
                     }
-                    Global.WEBSITE -> {
+                    Global.WEBSITE, Global.WEBSITE_EDGE_TO_EDGE -> {
                         intent.putExtra("URI", deviceObj.address)
+                        intent.putExtra("edge_to_edge", true)
                     }
                 }
                 startActivityAndReset(intent)
@@ -611,6 +612,7 @@ class MainActivity : BaseActivity() {
                 Global.PI_HOLE_AUTO_LOGIN,
                 Global.NODE_RED,
                 Global.WEBSITE,
+                Global.WEBSITE_EDGE_TO_EDGE,
             )
         private const val TINY_DELAY = 100L
         private const val COLUMN_COUNT_FRACTION = 192

@@ -33,6 +33,7 @@ class WebActivity : BaseActivity() {
         setContentView(R.layout.activity_web)
 
         val url = intent.getStringExtra("URI") ?: ABOUT_BLANK
+        val edgeToEdge = intent.getBooleanExtra("edge_to_edge", false)
 
         val webView = findViewById<WebView>(R.id.webView)
         val errorButton = findViewById<Button>(R.id.openBtn)
@@ -44,20 +45,7 @@ class WebActivity : BaseActivity() {
                 findViewById<ProgressBar>(R.id.error),
             )
 
-        ViewCompat.setOnApplyWindowInsetsListener(webView) { view, windowInsets ->
-            val mask = WindowInsetsCompat.Type.systemBars()
-            val systemBars = windowInsets.getInsets(mask)
-            val onlyBottom = Insets.of(0, 0, 0, systemBars.bottom)
-            val modifiedInsets =
-                WindowInsetsCompat.Builder()
-                    .setInsets(mask, onlyBottom)
-                    .setInsetsIgnoringVisibility(mask, onlyBottom)
-                    .build()
-
-            view.onApplyWindowInsets(modifiedInsets.toWindowInsets())
-
-            WindowInsetsCompat.CONSUMED
-        }
+        setupEdgeToEdge(edgeToEdge, webView)
 
         webView.settings.javaScriptEnabled = true
         webView.settings.domStorageEnabled = true
@@ -107,6 +95,33 @@ class WebActivity : BaseActivity() {
                 }
             },
         )
+    }
+
+    private fun setupEdgeToEdge(
+        edgeToEdge: Boolean,
+        webView: WebView,
+    ) {
+        if (edgeToEdge) {
+            ViewCompat.setOnApplyWindowInsetsListener(window.decorView) { view, windowInsets ->
+                view.setPadding(0, 0, 0, 0)
+                windowInsets
+            }
+        } else {
+            ViewCompat.setOnApplyWindowInsetsListener(webView) { view, windowInsets ->
+                val mask = WindowInsetsCompat.Type.systemBars()
+                val systemBars = windowInsets.getInsets(mask)
+                val onlyBottom = Insets.of(0, 0, 0, systemBars.bottom)
+                val modifiedInsets =
+                    WindowInsetsCompat.Builder()
+                        .setInsets(mask, onlyBottom)
+                        .setInsetsIgnoringVisibility(mask, onlyBottom)
+                        .build()
+
+                view.onApplyWindowInsets(modifiedInsets.toWindowInsets())
+
+                WindowInsetsCompat.CONSUMED
+            }
+        }
     }
 
     internal fun showFileChooser(filePathCallback: ValueCallback<Array<Uri>>?): Boolean {
