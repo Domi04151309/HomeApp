@@ -118,7 +118,7 @@ class WebActivityWebViewClient(
     ) {
         Toast.makeText(context, R.string.webView_ssl_error, Toast.LENGTH_LONG)
             .show()
-        handler.proceed()
+        handler.cancel()
     }
 
     override fun onReceivedError(
