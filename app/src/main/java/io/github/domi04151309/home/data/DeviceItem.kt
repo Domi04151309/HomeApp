@@ -9,6 +9,7 @@ class DeviceItem(
     val iconName: String = "Lamp",
     val hide: Boolean = false,
     val directView: Boolean = false,
+    val roomId: String = "",
 ) {
     var address: String = "http://127.0.0.1/"
         set(value) {

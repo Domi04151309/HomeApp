@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.adapters.DeviceListAdapter
 import io.github.domi04151309.home.data.DeviceItem
@@ -85,6 +86,12 @@ class DevicesActivity : BaseActivity(), RecyclerViewHelperInterfaceAdvanced {
         applyBottomInsetPadding(recyclerView)
         itemTouchHelper.attachToRecyclerView(recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
+
+        val fab = findViewById<FloatingActionButton>(R.id.roomsFab)
+        fab.setImageResource(R.drawable.ic_device_lamp)
+        fab.setOnClickListener {
+            startActivity(Intent(this, RoomsActivity::class.java))
+        }
     }
 
     private fun loadDevices() {
