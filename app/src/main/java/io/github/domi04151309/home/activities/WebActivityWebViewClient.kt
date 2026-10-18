@@ -68,6 +68,17 @@ class WebActivityWebViewClient(
                         intent.getStringExtra("pi_hole_auto_login") ?: "",
                     ).password,
                 )
+            } else if (intent.hasExtra("open_wrt_auto_login")) {
+                val secrets =
+                    DeviceSecrets(
+                        context,
+                        intent.getStringExtra("open_wrt_auto_login") ?: "",
+                    )
+                injectOpenWrtLogin(
+                    view,
+                    secrets.username,
+                    secrets.password,
+                )
             }
             isFirstLoad = false
         }
@@ -185,6 +196,29 @@ class WebActivityWebViewClient(
             """
             document.getElementById('current-password').value = '$password';
             document.querySelector('button[type=submit]').click();
+            """,
+        ) {}
+    }
+
+    private fun injectOpenWrtLogin(
+        webView: WebView,
+        username: String,
+        password: String,
+    ) {
+        webView.evaluateJavascript(
+            """  
+            const check = setInterval(() => {
+                const username = document.getElementById('luci_username');
+                const password = document.getElementById('luci_password');
+                if (username && password) {
+                    clearInterval(check);
+                    
+                    username.value = '$username';
+                    password.value = '$password';
+                    
+                    document.querySelector('button').click();
+                }
+            }, 100);
             """,
         ) {}
     }

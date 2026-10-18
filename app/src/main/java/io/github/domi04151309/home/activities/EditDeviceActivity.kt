@@ -146,6 +146,7 @@ class EditDeviceActivity : BaseActivity() {
                     it == Global.FRITZ_AUTO_LOGIN ||
                     it == Global.GRAFANA_AUTO_LOGIN ||
                     it == Global.PI_HOLE_AUTO_LOGIN ||
+                    it == Global.OPEN_WRT_AUTO_LOGIN ||
                     it == Global.SHELLY_GEN_1
                 ) {
                     View.VISIBLE
@@ -155,6 +156,7 @@ class EditDeviceActivity : BaseActivity() {
             val usernameVisibility =
                 if (
                     it == Global.GRAFANA_AUTO_LOGIN ||
+                    it == Global.OPEN_WRT_AUTO_LOGIN ||
                     it == Global.SHELLY_GEN_1
                 ) {
                     View.VISIBLE

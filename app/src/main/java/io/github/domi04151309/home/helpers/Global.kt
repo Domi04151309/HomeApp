@@ -39,6 +39,7 @@ internal object Global {
     const val FRITZ_AUTO_LOGIN = "Fritz! Auto-Login"
     const val GRAFANA_AUTO_LOGIN = "Grafana Auto-Login"
     const val PI_HOLE_AUTO_LOGIN = "Pi-hole Auto-Login"
+    const val OPEN_WRT_AUTO_LOGIN = "OpenWrt Auto-Login"
     val UNIFIED_MODES =
         arrayOf(
             ESP_EASY,
