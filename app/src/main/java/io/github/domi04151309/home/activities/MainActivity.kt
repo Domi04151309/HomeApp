@@ -451,7 +451,10 @@ class MainActivity : BaseActivity() {
                     Global.NODE_RED -> {
                         intent.putExtra("URI", deviceObj.address + "ui/")
                     }
-                    Global.WEBSITE, Global.WEBSITE_EDGE_TO_EDGE -> {
+                    Global.WEBSITE -> {
+                        intent.putExtra("URI", deviceObj.address)
+                    }
+                    Global.WEBSITE_EDGE_TO_EDGE -> {
                         intent.putExtra("URI", deviceObj.address)
                         intent.putExtra("edge_to_edge", true)
                     }
