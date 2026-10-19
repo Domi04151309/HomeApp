@@ -216,7 +216,9 @@ class WebActivityWebViewClient(
                     username.value = '$username';
                     password.value = '$password';
                     
-                    document.querySelector('button').click();
+                    setTimeout(() => {
+                        document.querySelector('button').click();
+                    }, 1000);
                 }
             }, 100);
             """,
