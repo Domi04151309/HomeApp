@@ -60,6 +60,12 @@
             app:summary="@string/pref_safety_checks_summary"
             app:title="@string/pref_safety_checks"
             app:iconSpaceReserved="false" />
+        <SwitchPreference
+            app:defaultValue="false"
+            app:key="allow_untrusted_certificates"
+            app:summary="@string/pref_allow_untrusted_certificates_summary"
+            app:title="@string/pref_allow_untrusted_certificates"
+            app:iconSpaceReserved="false" />
     </PreferenceCategory>
 
     <PreferenceCategory
