@@ -18,6 +18,7 @@ import android.widget.Toast
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.helpers.DeviceSecrets
+import androidx.preference.PreferenceManager
 
 class WebActivityWebViewClient(
     private val context: Context,
@@ -118,7 +119,14 @@ class WebActivityWebViewClient(
     ) {
         Toast.makeText(context, R.string.webView_ssl_error, Toast.LENGTH_LONG)
             .show()
-        handler.cancel()
+        if (
+            PreferenceManager.getDefaultSharedPreferences(context)
+                .getBoolean("allow_untrusted_certificates", false)
+        ) {
+            handler.proceed()
+        } else {
+            handler.cancel()
+        }
     }
 
     override fun onReceivedError(
