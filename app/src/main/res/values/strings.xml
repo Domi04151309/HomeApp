@@ -137,7 +137,7 @@
     <string name="pref_safety_checks">Block potentially unsafe requests</string>
     <string name="pref_safety_checks_summary">Perform basic security checks\nWarning: Turning this off can leak connection data to attackers!</string>
     <string name="pref_allow_untrusted_certificates">Allow untrusted certificates</string>
-    <string name="pref_allow_untrusted_certificates_summary">Accept all certificate errors when opening device web interfaces</string>
+    <string name="pref_allow_untrusted_certificates_summary">Ignore all certificate errors when opening web interfaces</string>
     <string name="pref_info">Information</string>
     <string name="pref_info_wiki">Wiki</string>
     <string name="pref_info_wiki_summary">Documentation and help</string>
