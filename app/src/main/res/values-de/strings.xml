@@ -133,6 +133,8 @@
     <string name="pref_reset_toast">Alle Geräte gelöscht</string>
     <string name="pref_safety_checks">Potenziell unsichere Anfragen blockieren</string>
     <string name="pref_safety_checks_summary">Sicherheitsüberprüfungen durchführen\nWarnung: Bei Deaktivierung können Angreifer Verbindungsdaten abgreifen!</string>
+    <string name="pref_allow_untrusted_certificates">Nicht vertrauenswürdige Zertifikate erlauben</string>
+    <string name="pref_allow_untrusted_certificates_summary">Alle Zertifikatsfehler beim Öffnen von Web-Oberflächen ignorieren</string>
     <string name="pref_info">Informationen</string>
     <string name="pref_info_wiki">Wiki</string>
     <string name="pref_info_wiki_summary">Dokumentation und Hilfe</string>

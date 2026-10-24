@@ -133,6 +133,8 @@
     <string name="pref_reset_toast">Tous les appareils ont été supprimés</string>
     <string name="pref_safety_checks">Bloquer les requêtes potentiellement dangereuses</string>
     <string name="pref_safety_checks_summary">Effectuer des vérifications de sécurité de base\nAttention : Désactiver cela peut divulguer des données de connexion aux attaquants !</string>
+    <string name="pref_allow_untrusted_certificates">Autoriser les certificats non approuvés</string>
+    <string name="pref_allow_untrusted_certificates_summary">Ignorer toutes les erreurs de certificat lors de l’ouverture des interfaces web</string>
     <string name="pref_info">Informations</string>
     <string name="pref_info_wiki">Wiki</string>
     <string name="pref_info_wiki_summary">Documentation et aide</string>
