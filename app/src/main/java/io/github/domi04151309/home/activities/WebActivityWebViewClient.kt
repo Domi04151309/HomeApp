@@ -15,10 +15,11 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.EditText
 import android.widget.Toast
+import androidx.preference.PreferenceManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import io.github.domi04151309.home.R
 import io.github.domi04151309.home.helpers.DeviceSecrets
-import androidx.preference.PreferenceManager
+import io.github.domi04151309.home.helpers.P
 
 class WebActivityWebViewClient(
     private val context: Context,
@@ -121,7 +122,7 @@ class WebActivityWebViewClient(
             .show()
         if (
             PreferenceManager.getDefaultSharedPreferences(context)
-                .getBoolean("allow_untrusted_certificates", false)
+                .getBoolean(P.PREF_ALLOW_UNTRUSTED_CERTIFICATES, P.PREF_ALLOW_UNTRUSTED_CERTIFICATES_DEFAULT)
         ) {
             handler.proceed()
         } else {
