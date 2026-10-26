@@ -61,11 +61,13 @@ class TasmotaStatusParser(resources: Resources) : UnifiedAPI.Parser(resources) {
         enum: JSONObject?,
         unknown: String,
     ): ListViewItem {
+        // TuyaEnum2 is 0-based for the four manual fan speeds: 0->gear 1 .. 3->gear 4.
         val summary =
             when (enum?.takeIf { it.has("Enum2") }?.optInt("Enum2", -1)) {
-                1 -> "1"
-                2 -> "2"
-                3 -> "3"
+                0 -> "1"
+                1 -> "2"
+                2 -> "3"
+                3 -> "4"
                 else -> unknown
             }
         return ListViewItem(
