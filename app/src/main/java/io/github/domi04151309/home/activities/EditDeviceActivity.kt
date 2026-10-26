@@ -147,7 +147,8 @@ class EditDeviceActivity : BaseActivity() {
                     it == Global.GRAFANA_AUTO_LOGIN ||
                     it == Global.PI_HOLE_AUTO_LOGIN ||
                     it == Global.OPEN_WRT_AUTO_LOGIN ||
-                    it == Global.SHELLY_GEN_1
+                    it == Global.SHELLY_GEN_1 ||
+                    it == Global.TASMOTA
                 ) {
                     View.VISIBLE
                 } else {
@@ -157,7 +158,8 @@ class EditDeviceActivity : BaseActivity() {
                 if (
                     it == Global.GRAFANA_AUTO_LOGIN ||
                     it == Global.OPEN_WRT_AUTO_LOGIN ||
-                    it == Global.SHELLY_GEN_1
+                    it == Global.SHELLY_GEN_1 ||
+                    it == Global.TASMOTA
                 ) {
                     View.VISIBLE
                 } else {
