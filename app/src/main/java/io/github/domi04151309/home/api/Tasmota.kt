@@ -5,10 +5,11 @@ import android.util.Log
 import android.widget.Toast
 import androidx.preference.PreferenceManager
 import com.android.volley.Request
-import com.android.volley.toolbox.StringRequest
 import io.github.domi04151309.home.R
+import io.github.domi04151309.home.custom.StringRequestAuth
 import io.github.domi04151309.home.data.ListViewItem
 import io.github.domi04151309.home.data.UnifiedRequestCallback
+import io.github.domi04151309.home.helpers.DeviceSecrets
 import io.github.domi04151309.home.helpers.Global
 import io.github.domi04151309.home.helpers.TasmotaHelper
 import io.github.domi04151309.home.interfaces.HomeRecyclerViewHelperInterface
@@ -22,6 +23,7 @@ class Tasmota(
     recyclerViewInterface: HomeRecyclerViewHelperInterface?,
 ) : UnifiedAPI(c, deviceId, recyclerViewInterface) {
     private val prefs = PreferenceManager.getDefaultSharedPreferences(c)
+    private val secrets = DeviceSecrets(c, deviceId)
 
     override fun loadList(
         callback: CallbackInterface,
@@ -90,9 +92,10 @@ class Tasmota(
         callback: CallbackInterface,
     ) {
         val request =
-            StringRequest(
+            StringRequestAuth(
                 Request.Method.GET,
                 url + path,
+                secrets,
                 { response ->
                     callback.onExecuted(response)
                 },
