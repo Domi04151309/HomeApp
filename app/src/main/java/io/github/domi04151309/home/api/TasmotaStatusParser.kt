@@ -9,7 +9,8 @@ class TasmotaStatusParser(resources: Resources) : UnifiedAPI.Parser(resources) {
     override fun parseResponse(response: JSONObject): List<ListViewItem> {
         val unknown = resources.getString(R.string.tasmota_status_unknown)
 
-        val sns = response.optJSONObject("StatusSNS")?.optJSONObject("TuyaSNS")
+        val statusSns = response.optJSONObject("StatusSNS")
+        val sns = statusSns?.optJSONObject("TuyaSNS")
         val sts = response.optJSONObject("StatusSTS")
         val enum = response.optJSONObject("TuyaEnum")
 
@@ -17,7 +18,7 @@ class TasmotaStatusParser(resources: Resources) : UnifiedAPI.Parser(resources) {
             airQualityItem(sns, unknown),
             modeItem(enum, unknown),
             fanItem(enum, unknown),
-            childLockItem(sts, unknown),
+            childLockItem(statusSns, unknown),
             powerItem(sts, unknown),
         )
     }
@@ -78,9 +79,9 @@ class TasmotaStatusParser(resources: Resources) : UnifiedAPI.Parser(resources) {
     }
 
     private fun childLockItem(
-        sts: JSONObject?,
+        statusSns: JSONObject?,
         unknown: String,
-    ): ListViewItem = booleanItem(sts, "Switch1", R.string.tasmota_status_child_lock, R.drawable.ic_do, unknown)
+    ): ListViewItem = booleanItem(statusSns, "Switch1", R.string.tasmota_status_child_lock, R.drawable.ic_do, unknown)
 
     private fun powerItem(
         sts: JSONObject?,
