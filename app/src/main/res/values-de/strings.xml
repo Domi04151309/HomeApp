@@ -59,6 +59,16 @@
     <string name="tasmota_execute_once_summary">Führt einen Befehl ein Mal aus ohne ihn der Liste hinzuzufügen</string>
     <string name="tasmota_open_ui">Tasmota-UI öffnen</string>
     <string name="tasmota_open_ui_summary">Öffnet das Tasmota-UI in einem Browser</string>
+    <string name="tasmota_status_air_quality">Luftqualität (PM2.5)</string>
+    <string name="tasmota_status_mode">Modus</string>
+    <string name="tasmota_status_fan">Lüfterstufe</string>
+    <string name="tasmota_status_child_lock">Kindersicherung</string>
+    <string name="tasmota_status_power">Status</string>
+    <string name="tasmota_status_unknown" translatable="false">—</string>
+    <string name="tasmota_status_pm_format" translatable="false">%1$d µg/m³</string>
+    <string name="tasmota_mode_manual">Manuell</string>
+    <string name="tasmota_mode_auto">Auto</string>
+    <string name="tasmota_mode_sleep">Sleep</string>
 
     <string name="shelly_humidity_sensor_summary">Aktuelle Luftfeuchtigkeit</string>
     <string name="shelly_powermeter_summary">Aktueller Stromverbrauch</string>

@@ -144,6 +144,8 @@ class MainActivity : BaseActivity() {
             ) {
                 val helper = TasmotaHelper(this@MainActivity, unified ?: return)
                 when (data.hidden) {
+                    // Read-only status rows carry no hidden tag; ignore taps on them.
+                    "" -> return
                     "add" -> helper.addToList(unifiedRequestCallback)
                     "execute_once" -> helper.executeOnce(unifiedRequestCallback)
                     "open_ui" ->
