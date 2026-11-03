@@ -118,14 +118,22 @@ class WebActivityWebViewClient(
         handler: SslErrorHandler,
         error: SslError,
     ) {
-        Toast.makeText(context, R.string.webView_ssl_error, Toast.LENGTH_LONG)
-            .show()
         if (
             PreferenceManager.getDefaultSharedPreferences(context)
                 .getBoolean(P.PREF_ALLOW_UNTRUSTED_CERTIFICATES, P.PREF_ALLOW_UNTRUSTED_CERTIFICATES_DEFAULT)
         ) {
+            Toast.makeText(context, R.string.webView_ssl_error, Toast.LENGTH_LONG)
+                .show()
             handler.proceed()
         } else {
+            MaterialAlertDialogBuilder(context)
+                .setTitle(R.string.webView_ssl_error)
+                .setPositiveButton(android.R.string.ok) { _, _ ->
+                }
+                .setNeutralButton(R.string.pref) { _, _ ->
+                    context.startActivity(Intent(context, SettingsActivity::class.java))
+                }
+                .show()
             handler.cancel()
         }
     }
